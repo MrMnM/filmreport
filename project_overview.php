@@ -55,15 +55,15 @@ include './includes/inc_variables.php';
 
                         <!-- /.panel-heading -->
                         <div class="panel-body">
-                            <table width="100%" class="table table-striped table-bordered table-hover" id="projectTable">
+                            <table width="100%" class=" table responsive no-wrap" id="projectTable"> <!--//TODO MAKE AJAX as well-->
                                 <thead>
                                     <tr>
-                                        <th width="120px">Datum</th>
-                                        <th>Projektname</th>
-                                        <th>Produktionsfirma</th>
-                                        <th width="100px">Stunden</th>
-                                        <th width="100px">Einnahmen</th>
-                                        <th width="120px"></th>
+                                        <th data-priority="2">Datum</th>
+                                        <th data-priority="1">Projektname</th>
+                                        <th data-priority="3">Produktionsfirma</th>
+                                        <th data-priority="6">Stunden</th>
+                                        <th data-priority="5">Einnahmen</th>
+                                        <th data-priority="6"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -129,7 +129,8 @@ include './includes/inc_variables.php';
                                     <h4 class="modal-title" id="myModalLabel">Neues Projekt</h4>
                                 </div>
                                 <div class="modal-body">
-                                    <form role="form" action="h_new_project.php" method="post" id="newProject">
+                                    <form role="form" action="h_project.php" method="post" id="newProject">
+                                        <input type="hidden" name="action" value="new">
                                         <div class="form-group input-group">
                                             <span class="input-group-addon">Produktionsfirma</span>
                                             <select class="form-control"  name="company" id="companylist" required>
@@ -259,7 +260,8 @@ include './includes/inc_variables.php';
                                     <h4 class="modal-title" id="myModalLabel">Projekt wirklich L&ouml;schen ?</h4>
                                 </div>
                                 <div class="modal-body">
-                                    <form role="form" action="h_delete_project.php" method="post" id="deleteProject">
+                                    <form role="form" action="h_project.php" method="post" id="deleteProject">
+                                        <input type="hidden" name="action" value="delete">
                                         <div class="form-group input-group">
                                             <span class="input-group-addon">Projekt ID:</span>
                                             <input type="text" class="form-control" name="id" id="toDelID">
@@ -298,6 +300,7 @@ include './includes/inc_variables.php';
 <script src="./vendor/datatables/js/jquery.dataTables.min.js"></script>
 <script src="./vendor/datatables-plugins/dataTables.bootstrap.min.js"></script>
 <script src="./vendor/datatables-responsive/dataTables.responsive.js"></script>
+
 <!-- Custom Theme JavaScript -->
 <script src="./js/sb-admin-2.js"></script>
 <!-- Custom Theme JavaScript -->
@@ -307,7 +310,7 @@ include './includes/inc_variables.php';
 <script>
 $(document).ready(function() {
     $('#projectTable').DataTable({
-        responsive: true,
+        "pagingType": "numbers",
         "lengthChange": false,
         "aoColumns": [
             null,
@@ -317,10 +320,11 @@ $(document).ready(function() {
             null,
             {
                 "bSearchable": false ,
-                "bSortable": false
+                "bSortable": false,
             }
         ]
     });
+
     $('#newProject').ajaxForm({
             dataType:  'json',
             success:  newCreated

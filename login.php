@@ -100,17 +100,12 @@ if (!empty($_POST["pw"]) && !empty($_POST["mail"])) {
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-
-
     <!--
-
 </div>
 -->
-
 </head>
 
 <body>
-
     <div class="container">
         <div class="row">
             <div class="col-md-4 col-md-offset-4">

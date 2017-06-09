@@ -1,20 +1,25 @@
 <?
 header("content-type: application/x-javascript");
-
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting( E_ALL | E_STRICT );
 
 include './includes/inc_sessionhandler_ajax.php';
+include './includes/inc_dbconnect.php';
 
 if (!empty($_GET["y"])&&!empty($_GET["m"])) {
     $s_year=$_GET["y"];
     $s_month=$_GET["m"];
+    if (!empty($_GET["m2"])) {
+            $e_month=$_GET["m2"];
+    }else {
+        $e_month=1;
+    }
+// TODO Secify End and Start Month aso to Move in Graph
 }else{
     die('{ "message": "ERROR: KEINE DATEN ANGEGEBEN}');
 }
 
-include './includes/inc_dbconnect.php';
 $conn = new mysqli($servername, $username, $password, $dbname);
 // Check connection
 if ($conn->connect_error) {
@@ -28,8 +33,10 @@ $(function() {
         element: 'morris-area-chart',
         data: [{
 <?
+
+// Count Money
+$totalMoney = array_pad(array(0), 12, 0);
 if ($result->num_rows > 0) {
-    $totalMoney = array(0,0,0,0,0,0,0,0,0,0,0,0);
     while($row = $result->fetch_assoc()) {
         $money = $row["tot_money"];
         $endmonth = $row["p_end"];
@@ -37,30 +44,31 @@ if ($result->num_rows > 0) {
         $month = $date->format('n');
         $year = $date->format('Y');
         if ($year==$s_year) {
-                for ($mcount=0; $mcount<13 ; $mcount++) {
+                for ($mcount=0; $mcount<count($totalMoney) ; $mcount++) {
                     if(($month-1)==$mcount){
                         $totalMoney[$mcount]=$totalMoney[$mcount]+$money;
+                    }
                 }
-            }
         }
     }
 }
+
+//Write out Months
 for ($i=0; $i < $s_month; $i++) {
     $m = sprintf("%02d", ($i+1));
     echo 'period: \''.$s_year.'-'.$m.'\','.PHP_EOL;
     echo 'Pay:'. $totalMoney[$i].PHP_EOL;
     if ($i<($s_month-1)) {
         echo '}, {'.PHP_EOL;
-        }else{
-            echo '}],'.PHP_EOL;
-        }
+    }else{
+        echo '}],'.PHP_EOL;
+    }
 }
-
 ?>
         xkey: 'period',
         ykeys: ['Pay'],
         labels: ['Einnahmen'],
-        pointSize: 2,
+        pointSize: 4,
         hideHover: 'auto',
         resize: true
     });

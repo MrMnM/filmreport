@@ -14,10 +14,11 @@ jQuery('button.saveButton').click(function(event){
     var comment = $("#comment").val();;
     $("#saveButton").hide();
     $("#saveButtonDisabled").show();
+
     $.ajax({
-        url: 'h_save.php',
+        url: 'h_project.php',
         dataType: 'json',
-        data : {'id':projectId, 'data':rows, 'add':additional, 'comment':comment},
+        data : {'action':'save','id':projectId, 'data':rows, 'add':additional, 'comment':comment},
         type: 'POST',
         success: function(data){
             if (data.message=="SUCCESS:") {
@@ -33,6 +34,7 @@ jQuery('button.saveButton').click(function(event){
             }
         }
     });
+
     $("#saveButton").show();
     $("#saveButtonDisabled").hide();
     updateSaveStatus();
@@ -371,8 +373,8 @@ function loadJSON(data){
     }
 }
 
-        //-------------------------------------------------------------------------------
-        //OBJECTS -----------------------------------------------------------------------
+//-------------------------------------------------------------------------------
+//OBJECTS -----------------------------------------------------------------------
 function Row(idNr) {
     var obj = {};
     obj.id = idNr;

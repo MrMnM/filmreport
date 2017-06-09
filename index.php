@@ -18,7 +18,8 @@ include './includes/inc_variables.php';
     <title>Projektabrechnung</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="./vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!--<link href="./vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
 
     <!-- MetisMenu CSS -->
     <link href="./vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
@@ -30,7 +31,8 @@ include './includes/inc_variables.php';
     <link href="./vendor/morrisjs/morris.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
-    <link href="./vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!--<link href="./vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -46,98 +48,6 @@ include './includes/inc_variables.php';
 
         <div id="page-wrapper">
 <p></br></p>
-<!--
-            <div class="row">
-                <div class="col-lg-3 col-md-6">
-                    <div class="panel panel-primary">
-                        <div class="panel-heading">
-                            <div class="row">
-                                <div class="col-xs-3">
-                                    <i class="fa fa-comments fa-5x"></i>
-                                </div>
-                                <div class="col-xs-9 text-right">
-                                    <div class="huge">26</div>
-                                    <div>New Comments!</div>
-                                </div>
-                            </div>
-                        </div>
-                        <a href="#">
-                            <div class="panel-footer">
-                                <span class="pull-left">View Details</span>
-                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                <div class="clearfix"></div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <div class="panel panel-green">
-                        <div class="panel-heading">
-                            <div class="row">
-                                <div class="col-xs-3">
-                                    <i class="fa fa-tasks fa-5x"></i>
-                                </div>
-                                <div class="col-xs-9 text-right">
-                                    <div class="huge">12</div>
-                                    <div>New Tasks!</div>
-                                </div>
-                            </div>
-                        </div>
-                        <a href="#">
-                            <div class="panel-footer">
-                                <span class="pull-left">View Details</span>
-                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                <div class="clearfix"></div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <div class="panel panel-yellow">
-                        <div class="panel-heading">
-                            <div class="row">
-                                <div class="col-xs-3">
-                                    <i class="fa fa-shopping-cart fa-5x"></i>
-                                </div>
-                                <div class="col-xs-9 text-right">
-                                    <div class="huge">124</div>
-                                    <div>New Orders!</div>
-                                </div>
-                            </div>
-                        </div>
-                        <a href="#">
-                            <div class="panel-footer">
-                                <span class="pull-left">View Details</span>
-                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                <div class="clearfix"></div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <div class="panel panel-red">
-                        <div class="panel-heading">
-                            <div class="row">
-                                <div class="col-xs-3">
-                                    <i class="fa fa-support fa-5x"></i>
-                                </div>
-                                <div class="col-xs-9 text-right">
-                                    <div class="huge">13</div>
-                                    <div>Support Tickets!</div>
-                                </div>
-                            </div>
-                        </div>
-                        <a href="#">
-                            <div class="panel-footer">
-                                <span class="pull-left">View Details</span>
-                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                <div class="clearfix"></div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        -->
             <!-- /.row -->
             <div class="row">
                 <div class="col-lg-8">
@@ -219,7 +129,6 @@ include './includes/inc_variables.php';
                     <!-- /.panel .chat-panel -->
                 </div>
                 <!-- /.col-lg-4 -->
-                            v0.1.0
             </div>
 
             <!-- /.row -->
@@ -230,23 +139,31 @@ include './includes/inc_variables.php';
     <!-- /#wrapper -->
 
     <!-- jQuery -->
-    <script src="./vendor/jquery/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script>
+<!--    <script src="./vendor/jquery/jquery.min.js"></script>-->
 
     <!-- Bootstrap Core JavaScript -->
-    <script src="./vendor/bootstrap/js/bootstrap.min.js"></script>
+    <!--<script src="./vendor/bootstrap/js/bootstrap.min.js"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+
 
     <!-- Metis Menu Plugin JavaScript -->
     <script src="./vendor/metisMenu/metisMenu.min.js"></script>
 
     <!-- Morris Charts JavaScript -->
     <script src="./vendor/raphael/raphael.min.js"></script>
+
+        <!-- Raphael JavaScript -->
     <script src="./vendor/morrisjs/morris.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="./js/sb-admin-2.js"></script>
+
     <?
     $curY = date("Y");
     $curM = date("n");
     ?>
-    <script type="text/javascript" src="./h_linechart.php?y=<?echo $curY.'&m='.$curM;?>></script>
-    <!-- Custom Theme JavaScript -->
-    <script src="./js/sb-admin-2.js"></script>
+
+    <script type="text/javascript" src="./h_linechart.php?y=<?echo $curY.'&m='.$curM.'"';?>></script>
 </body>
 </html>
