@@ -1,0 +1,340 @@
+.f6h {
+font-family: Arial, Helvetica, sans-serif;
+font-size:6pt;
+}
+
+table {
+    font-family: Arial, Helvetica, sans-serif;
+    min-width: 900px;
+    width: 100%;
+}
+
+.f9 {
+font-size:9pt;
+}
+
+.f10 {
+font-size:10pt;
+}
+
+.f12 {
+font-size:12pt;
+}
+
+.xl7021306 {
+background:#FF9;
+font-size:8pt;
+text-align:center;
+}
+
+.xl7221306,.xl7321306 {
+background:#FFC;
+font-size:8pt;
+}
+
+.line {
+border-top:.5pt solid gray;
+}
+
+.xl8421306 {
+background:gray;
+color:#FFF;
+font-size:8pt;
+text-align:center;
+}
+
+.xl9521306 {
+background:#FFFFE5;
+font-size:7pt;
+text-align:center;
+}
+
+.xl10021306 {
+background:#F2FFF2;
+font-size:9pt;
+}
+
+.xl12021306 {
+background:#CCE5FF;
+font-size:9pt;
+}
+
+.xl13121306 {
+background:#FFC;
+font-size:8pt;
+text-align:center;
+}
+
+.xl14621306 {
+font-size:7pt;
+background:#F2FFF2;
+text-align:right;
+}
+
+.xl14721306 {
+font-size:10pt;
+text-align:center;
+}
+
+.brightgreen {
+background:#F2FFF2;
+font-size:7pt;
+border: .5px solid #fff;
+text-align: right;
+}
+
+.xl15421306 {
+color:#969696;
+font-size:10pt;
+}
+
+.bold{
+    font-weight: 800;
+}
+
+.pay {
+font-size:8pt;
+text-align:center;
+font-weight: 800;
+}
+
+.base{
+    background:#FFC;
+}
+
+.overtime{
+    background:#FFE5CC;
+}
+
+.additional{
+    background:#E5FFE5;
+}
+
+.f7 {
+font-size:7pt;
+}
+
+.f6 {
+font-size:6pt;
+}
+
+.xl16221306 {
+font-family:"Wingdings 3";
+font-size:7pt;
+}
+
+.td173 {
+background:#FFF2E5;
+font-size:7pt;
+text-align:center;
+vertical-align:bottom;
+}
+
+.xl18121306 {
+background:#CCE5FF;
+color:#000;
+font-size:8pt;
+vertical-align:bottom;
+}
+
+.f14 {
+font-size:14pt;
+}
+
+.brightorange {
+background:#FFD8B2;
+font-size:8pt;
+text-align:center;
+border: .5px solid #fff;
+}
+
+.wingdings {
+color:gray;
+font-family:"Wingdings 3";
+font-size:9pt;
+text-align:center;
+}
+
+
+
+.td202 {
+background:#FFF2E5;
+font-size:7pt;
+text-align:right;
+border: .5px solid #fff;
+}
+
+.td17 {
+background:#CCE5FF;
+font-size:8pt;
+text-align:center;
+vertical-align:middle;
+}
+
+.xl14521306 {
+font-size:7pt;
+text-align:right;
+vertical-align:bottom;
+}
+
+.xl8 {
+background:gray;
+color:#000;
+font-size:8pt;
+}
+
+
+.td111 {
+background:#E5F2FF;
+color:#000;
+font-size:8pt;
+text-align:center;
+}
+
+.vbottom {
+vertical-align:bottom;
+}
+
+.xl9321306,.xl10521306 {
+background:#E5F2FF;
+color:#000;
+font-size:9pt;
+text-align:center;
+}
+
+.brightyellow {
+background:#FFFFE5;
+font-size:8pt;
+text-align:center;
+border: .5px solid #fff;
+}
+
+.td127 {
+background:#F2FFF2;
+font-size:8pt;
+text-align:center;
+}
+
+.td128 {
+background:#FFF2E5;
+font-size:7pt;
+text-align:center;
+}
+
+.darkyellow {
+background:#FFFFB2;
+font-size:9pt;
+text-align:center;
+}
+
+.xl19721306,.xl18521306,.xl18921306 {
+background:#CCE5FF;
+color:#000;
+font-size:9pt;
+vertical-align:bottom;
+}
+
+.xl7821306,.xl7921306,.xl8521306,.xl8721306 {
+background:gray;
+color:#FFF;
+font-size:8pt;
+}
+
+.xl11521306,.xl13621306,.xl13821306 {
+font-size:9pt;
+vertical-align:bottom;
+}
+
+.td118,.xl10121306,.td102,.td117,.td119,.td128 {
+font-size:8pt;
+text-align:center;
+}
+
+.brightgreen{
+        background:#F2FFF2;
+        font-size:8pt;
+        text-align:center;
+        border: .5px solid #fff;
+}
+.darkgreen {
+background:#E5FFE5;
+font-size:8pt;
+text-align:center;
+border: .5px solid #fff;
+}
+
+.xl14121306,.xl14221306 {
+font-size:12pt;
+vertical-align:bottom;
+}
+
+.xl16521306,.xl15021306,.xl16321306 {
+font-size:7pt;
+vertical-align:bottom;
+}
+
+.blue {
+background:#CCE5FF;
+font-size:8pt;
+padding-left: 5px;
+}
+
+.td186,.xl12421306,.xl18721306 {
+background:#CCE5FF;
+font-size:9pt;
+text-align:center;
+border: .5px solid #fff;
+}
+
+.td187 {
+text-align:left;
+padding-left: 5px;
+}
+
+.darkorange {
+background:#FFE5CC;
+font-size:8pt;
+text-align:center;
+border: .5px solid #fff;
+}
+
+.td135 {
+font-size:9pt;
+text-align:center;
+}
+
+.totals{
+    font-size:8pt;
+    text-align:center;
+    vertical-align:bottom;
+    border-bottom: .5px solid;
+    border-left: .5px solid;
+    border-right: .5px solid;
+    border-color: black;
+}
+
+.xl16721306,.xl18421306,.xl7121306,.xl12921306 {
+font-size:8pt;
+text-align:center;
+vertical-align:bottom;
+}
+
+.xl1 {
+font-size:8pt;
+}
+
+.xl8021306,.xl15821306,.xl15921306 {
+font-size:8pt;
+}
+
+.td972,.xl19821306 {
+background:#FFF2E5;
+font-size:8pt;
+text-align:center;
+}
+
+.xl14321306,.xl14821306 {
+background:#FFFFE5;
+font-size:8pt;
+text-align:right;
+}
