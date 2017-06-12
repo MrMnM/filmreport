@@ -49,7 +49,7 @@ if ($result->num_rows > 0) {
         echo '"'.$row["tot_money"].'",'.PHP_EOL;
         echo '"'.$row["project_id"].'"'.PHP_EOL;
         if ($counter == $rowCount) {
-            echo ']'.PHP_EOL; // TODO check if works
+            echo ']'.PHP_EOL
         }else{
             echo '],'.PHP_EOL;
         }

@@ -30,7 +30,7 @@ function projDeleted(data) {
     }
 }
 
-function setDelete(choice){
-    $('#toDelID').val(choice);
-    console.log(choice);
+function setDelete(id,name){
+    $('#toDelID').val(id);
+    $('#toDelName').val(name);
 }

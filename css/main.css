@@ -494,4 +494,28 @@ input {
   margin-right: 5px;
 }
 
+
+.spinner {
+  position: absolute;
+  width: 2rem;
+  height: 2rem;
+  border: 0.25rem solid #ffc000;
+  border-bottom: 0.25rem solid rgba(0,0,0,0);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  z-index: 9999;
+}
+.savetext{
+    margin-left: 3rem;
+}
+
+.spinner--hidden {
+  display: none;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
 /* end .squaredFour */

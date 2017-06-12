@@ -242,7 +242,7 @@ include './includes/inc_variables.php';
 <!-- onload -->
 <script>
 var table=null;
-$(document).ready(function() { //TODO Check Ajax Implementation
+$(document).ready(function() {
     table = $('#projectTable').DataTable({
         "ajax": 'h_listprojects.php',
         "pagingType": "numbers",
@@ -252,10 +252,11 @@ $(document).ready(function() { //TODO Check Ajax Implementation
             "data": 5,
             "searchable": false,
             "sortable":false,
-            "render": function ( data, type, full, meta ) {
+            "render": function ( data, type, row) {
+                console.log(row[1]);
                     return '<button type="button" class="btn btn-default btn-circle"  onclick="window.open(\'view.php?id='+data+'\')"><i class="fa fa-eye"></i></button>\
                     <button type="button" class="btn btn-default btn-circle" onclick="window.location.href=\'project.php?id='+data+'\'"><i class="fa fa-pencil"></i></button>\
-                    <button type="button" class="btn btn-danger btn-circle" data-toggle="modal" data-target="#deleteProjectModal" onclick="setDelete(\''+data+'\')"><i class="fa fa-times"></i></button>';
+                    <button type="button" class="btn btn-danger btn-circle" data-toggle="modal" data-target="#deleteProjectModal" onclick="setDelete(\''+data+'\',\''+row[1]+'\')"><i class="fa fa-times"></i></button>';
                     }
             } ]
     });
@@ -272,7 +273,7 @@ $(document).ready(function() { //TODO Check Ajax Implementation
         dataType:  'json',
         success:   companyCreated
     });
-    //TODO Ajax setup cache etc
+    //TODO cache etc
     $('#companylist').html('').load("./h_load_companies.php");
 });
 </script>

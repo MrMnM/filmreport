@@ -5,9 +5,16 @@ var rowElement = new Array();
 var saved = true;
 var basePay = $("#basePay").val();
 var startDate = new Date($("#startDate").val());
+var us_id = null;
+var p_id = null;
 
 jQuery('button.saveButton').click(function(event){
     event.preventDefault();
+    Save();
+    updateSaveStatus(saved);
+});
+
+function Save() {
     var rows = JSON.stringify(rowElement);
     var additional = JSON.stringify(addInfo);
     var projectId =  $("#projectId").val();
@@ -34,11 +41,10 @@ jQuery('button.saveButton').click(function(event){
             }
         }
     });
+}
 
-    $("#saveButton").show();
-    $("#saveButtonDisabled").hide();
-    updateSaveStatus();
-});
+$("#saveButton").show();
+$("#saveButtonDisabled").hide();
 
 
 jQuery('button.add-row').click(function(event){
@@ -373,6 +379,28 @@ function loadJSON(data){
     }
 }
 
+function updateSuccess(data){
+    if (data.message=="SUCCESS:") {
+        updateProjectInfo()
+        $('#updateProjectModal').modal('hide');
+    }else{
+        alert(data.message);
+    }
+}
+
+function updateProjectInfo(){
+    $.post( "h_project.php", { action: "getinfo", us_id: us_id, p_id: p_id }).done(function( data ) {
+    data = jQuery.parseJSON(data);
+    $( "#projectName" ).html( data.name );
+    $( "#title" ).html( data.name );
+    $( "#projectJob" ).html( data.job );
+    $( "#projectPay" ).html( data.pay );
+    $( "#projectCompany" ).html( data.company );
+});
+}
+
+
+
 //-------------------------------------------------------------------------------
 //OBJECTS -----------------------------------------------------------------------
 function Row(idNr) {
@@ -500,5 +528,14 @@ function Row(idNr) {
         return ret;
     };
 
+    return obj;
+}
+
+function Project() {
+    var obj = {};
+    obj.name=null;
+    obj.work=null;
+    obj.pay=null;
+    obj.company=null;
     return obj;
 }

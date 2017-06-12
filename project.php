@@ -40,7 +40,8 @@ include './includes/inc_variables.php';
         <div class="col-lg-12">
             <p></p>
             <div class="alert alert-warning" id="saveWarning" style="display:none">
-                Nicht gespeicherte &Auml;nderungen.
+                <div class="spinner"></div>
+            <span class="savetext">Nicht gespeicherte &Auml;nderungen.</span>
                 <button type="button" class="btn btn-warning saveButton" id="saveButton"><span class="glyphicon glyphicon-save"> Speichern</span></button>
                 <button type="button" class="btn btn-warning disabled" id="saveButtonDisabled" style="display:none"><span class="glyphicon glyphicon-save"> Speichern</span</button>
             </div>
@@ -69,7 +70,7 @@ if (!empty($_GET["id"])) {
         die("Connection failed: " . $conn->connect_error);
     }
 
-    //TODO ESCAPES! Get THis Data Dynamically!
+    //TODO ESCAPES! Get all of THis Data Dynamically!
 
     //Get Projects
     $sql = "SELECT p_name, p_company, p_job, p_gage, p_start, p_json, p_comment FROM `projects` WHERE project_id='$p_id';";
@@ -133,7 +134,7 @@ if (!empty($json)){
 <!-- MAINCONTENT -->
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h4><? echo $name;?></h4>
+            <h4 id="title"></h4>
             <div style="float:right; top:-10px;">
                 <button type="button" class="btn btn-default refreshButton"><i class="fa fa-refresh"></i></button>
                 <button type="button" class="btn btn-default" onclick="window.open('view.php?id=<?echo $p_id;?>')"><i class="fa fa-eye"></i></button>
@@ -162,7 +163,7 @@ if (!empty($json)){
                                     <i class="fa fa-briefcase fa-fw"></i> Projektinformationen
                                     <div class="pull-right">
                                         <div class="btn-group">
-                                            <button type="button" class="btn btn-default btn-xs">
+                                            <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#updateProjectModal">
                                                 <span class="glyphicon glyphicon-pencil"></span>Bearbeiten
                                             </button>
                                         </div><!--btn-group-->
@@ -174,19 +175,19 @@ if (!empty($json)){
                                             <tbody>
                                                 <tr>
                                                     <td width=150px><strong>Projektname:</strong></td>
-                                                    <td><? echo $name;?></td>
+                                                    <td id="projectName"></td>
                                                 </tr>
                                                 <tr>
                                                     <td><strong>Arbeit als:</strong></td>
-                                                    <td><? echo $job;?></td>
+                                                    <td id="projectJob"></td>
                                                 </tr>
                                                 <tr>
                                                     <td><strong>Tagesgage:</strong></td>
-                                                    <td><? echo $pay;?></td>
+                                                    <td id=projectPay></td>
                                                 </tr>
                                                 <tr>
                                                     <td><strong>Produktionsfirma:</strong></td>
-                                                    <td><? echo $company;?></td>
+                                                    <td><div id=projectCompany></div></td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -400,6 +401,96 @@ if (!empty($json)){
         </div><!--panel-body-->
     </div><!--panel-->
 
+
+    <div class="modal fade" id="updateProjectModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Projektinformationen anpassen</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form" action="h_project.php" method="post" id="updateProject">
+                        <input type="hidden" name="action" value="update">
+                        <input type="hidden" name="us_id" value="<? echo $u_id;?>">
+                        <input type="hidden" name="p_id" value="<? echo $p_id;?>">
+                    <div class="form-group input-group">
+                        <span class="input-group-addon">Projektname</span>
+                        <input type="text" name="name" class="form-control" value="<? echo $name;?>" required="">
+                    </div>
+                    <datalist id="jobs">
+                        <option value="ProduktionsleiterIn">ProduktionsleiterIn</option>
+                        <option value="Produktions-AssistentIn">Produktions-AssistentIn</option>
+                        <option value="Produktions-SekretärIn">Produktions-SekretärIn</option>
+                        <option value="AufnahmeleiterIn">AufnahmeleiterIn</option>
+                        <option value="Set-AufnahmeleiterIn">Set-AufnahmeleiterIn</option>
+                        <option value="Aufnahmeleiter-AssistentIn">Aufnahmeleiter-AssistentIn</option>
+                        <option value="Regie-AssistentIn">Regie-AssistentIn</option>
+                        <option value="2. RegieassistentIn">2. RegieassistentIn</option>
+                        <option value="Continuity">Continuity</option>
+                        <option value="Chef-Kameramann">Chef-Kameramann</option>
+                        <option value="SchwenkerIn">SchwenkerIn</option>
+                        <option value="Kamera-Assistent">Kamera-Assistent</option>
+                        <option value="2. Kamera-AssistentIn">2. Kamera-AssistentIn</option>
+                        <option value="DIT">DIT</option>
+                        <option value="Video-TechnikerIn">Video-TechnikerIn</option>
+                        <option value="Chef-BeleuchterIn">Chef-BeleuchterIn</option>
+                        <option value="BeleuchterIn">BeleuchterIn</option>
+                        <option value="Key Grip">Key Grip</option>
+                        <option value="Grip">Grip</option>
+                        <option value="TonmeisterIn">TonmeisterIn</option>
+                        <option value="TonoperateurIn">TonoperateurIn</option>
+                        <option value="Perche">Perche</option>
+                        <option value="Ausstattungsleitung">Ausstattungsleitung</option>
+                        <option value="AusstatterIn">AusstatterIn</option>
+                        <option value="AusstattungsassistentIn">AusstattungsassistentIn</option>
+                        <option value="RequisiteurIn">RequisiteurIn</option>
+                        <option value="Decorbau">Decorbau</option>
+                        <option value="KostümbildnerIn">KostümbildnerIn</option>
+                        <option value="Kostüm AssistentIn">Kostüm AssistentIn</option>
+                        <option value="Garderobe">Garderobe</option>
+                        <option value="Chef-MaskenbildnerIn">Chef-MaskenbildnerIn</option>
+                        <option value="MaskenbildnerIn">MaskenbildnerIn</option>
+                        <option value="Maskenbildner-Assistentin">Maskenbildner-Assistentin</option>
+                        <option value="Hair-StylistIn">Hair-StylistIn</option>
+                        <option value="Chef-Editor">Chef-Editor</option>
+                        <option value="Editor">Editor</option>
+                        <option value="Ton-Editor">Ton-Editor</option>
+                        <option value="Editor-AssistentIn">Editor-AssistentIn</option>
+                    </datalist>
+                    <div class="form-group input-group">
+                        <span class="input-group-addon">Arbeit als:</span>
+                        <input type="text" list="jobs" class="form-control" name="work" value="<? echo $job;?>" required>
+                    </div>
+                    <div class="form-group input-group">
+                        <span class="input-group-addon">Tagesgage</span>
+                        <input type="number" name="pay" class="form-control" value="<? echo $pay;?>" required>
+                    </div>
+
+                        <div class="form-group input-group">
+                            <span class="input-group-addon">Produktionsfirma</span>
+                            <select class="form-control"  name="company" id="companylist" value="<? echo $company;?>">
+                            </select>
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button" data-toggle="modal" data-target="#newCompany"><i class="fa fa-plus"></i>
+                                </button>
+                            </span>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
+                        <button type="submit" class="btn btn-primary" onclick="">Projektinformationen anpassen</button>
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
+
+
+
 </div><!--pagewrapper-->
 </div><!-- /#wrapper -->
 
@@ -409,6 +500,8 @@ if (!empty($json)){
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 <!-- Metis Menu Plugin JavaScript -->
 <script src="https://cdn.jsdelivr.net/jquery.metismenu/1.1.3/metisMenu.min.js" integrity="sha256-OrCnS705nv33ycm/+2ifCnVfxxMdWvBMg5PUX1Fjpps=" crossorigin="anonymous"></script>
+<!-- JqueryForms -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.1/jquery.form.min.js" integrity="sha384-tIwI8+qJdZBtYYCKwRkjxBGQVZS3gGozr3CtI+5JF/oL1JmPEHzCEnIKbDbLTCer" crossorigin="anonymous"></script>
 <!-- Custom Theme JavaScript -->
 <script src="./js/sb-admin-2.js"></script>
 <!-- Custom Functions JavaScript -->
@@ -422,7 +515,28 @@ $(document).ready(function() {
         loadJSON(loadElement);
         updateAll();
     }
-    });
+
+    us_id = "<? echo $u_id;?>";
+    p_id = "<?echo $p_id;?>";
+
+    updateProjectInfo();
+
+    setInterval(function() {
+        if(!saved){
+    Save();
+}
+}, 15000);
+
+    $('#updateProject').ajaxForm({
+            dataType:  'json',
+            success: updateSuccess
+        });
+
+
+
+});
+
+
 </script>
 </body>
 </html>

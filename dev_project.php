@@ -69,7 +69,7 @@ if (!empty($_GET["id"])) {
         die("Connection failed: " . $conn->connect_error);
     }
 
-    //TODO ESCAPES! Get THis Data Dynamically!
+
 
     //Get Projects
     $sql = "SELECT p_name, p_company, p_job, p_gage, p_start, p_json, p_comment FROM `projects` WHERE project_id='$p_id';";
