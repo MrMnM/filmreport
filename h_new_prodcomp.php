@@ -17,7 +17,7 @@ if (!empty($_POST["name"]) && !empty($_POST["address1"]) && !empty($_POST["addre
     $address1=mysqli_real_escape_string($conn, $_POST["address1"]);
     $address2=mysqli_real_escape_string($conn, $_POST["address2"]);
     $phone= mysqli_real_escape_string($conn, $_POST["phone"]);
-    $companyid = crc32($name.$address1.$phone);
+    $companyid = substr(md5($name.$address1.$phone),0,5);
     $mail = mysqli_real_escape_string($conn, $_POST["mail"]);
 
     $sql = "INSERT INTO companies (company_id,name,address_1,address_2,telephone,mail)

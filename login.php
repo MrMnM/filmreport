@@ -88,10 +88,8 @@ if (!empty($_POST["pw"]) && !empty($_POST["mail"])) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/jquery.metismenu/1.1.3/metisMenu.min.css" integrity="sha256-4NxXT7KyZtupE4YdYLDGnR5B8P0JWjNBpF8mQBzYtrM=" crossorigin="anonymous">
     <!-- Custom Fonts -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
-
     <!-- Custom CSS -->
     <link href="./css/main.css" rel="stylesheet">
-
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -104,130 +102,126 @@ if (!empty($_POST["pw"]) && !empty($_POST["mail"])) {
 </head>
 
 <body>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4 col-md-offset-4">
-                <div class="login-panel panel panel-default">
-                    <div class="panel-heading">
-                        <!--<i class="fa fa-briefcase fa-fw"></i>--><b> Login</b>
-                        <div class="pull-right">
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-outline btn-success btn-xs dropdown-toggle" data-toggle="modal" data-target="#newAccount">
-                                    <i class="fa fa-plus fa-fw"></i> Neues Konto
-                                </button>
-                            </div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+            <div class="login-panel panel panel-default">
+                <div class="panel-heading">
+                    <!--<i class="fa fa-briefcase fa-fw"></i>--><b> Login</b>
+                    <div class="pull-right">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-outline btn-success btn-xs dropdown-toggle" data-toggle="modal" data-target="#newAccount">
+                                <i class="fa fa-plus fa-fw"></i> Neues Konto
+                            </button>
                         </div>
                     </div>
-                    <div class="panel-body">
-                        <? if ($unknownUser || $invalidPassword) {?>
-                            <div class="alert alert-danger alert-dismissable">
+                </div>
+                <div class="panel-body">
+                    <? if ($unknownUser || $invalidPassword) {?>
+                        <div class="alert alert-danger alert-dismissable">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            Benutzername und/oder Passwort stimmen nicht &uuml;berein.
+                        </div>
+                        <?}elseif (!$activated) {?>
+                            <div class="alert alert-warning alert-dismissable">
                                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                                Benutzername und/oder Passwort stimmen nicht &uuml;berein.
+                                Die E-Mail Addresse wurde noch nicht best&auml;tigt.
                             </div>
-                            <?}elseif (!$activated) {?>
-                                <div class="alert alert-warning alert-dismissable">
+                            <?}?>
+                            <? if ($closedExisting) {?>
+                                <div class="alert alert-success alert-dismissable">
                                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                                    Die E-Mail Addresse wurde noch nicht best&auml;tigt.
+                                    Erfolgreich ausgeloggt
                                 </div>
                                 <?}?>
-                                <? if ($closedExisting) {?>
-                                    <div class="alert alert-success alert-dismissable">
-                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                                        Erfolgreich ausgeloggt
-                                    </div>
-                                    <?}?>
-                                    <form role="form" method="post" action="<? echo $_SERVER['PHP_SELF']; ?>">
-                                        <fieldset>
-                                            <div class="form-group">
-                                                <input class="form-control" placeholder="E-mail" name="mail" type="email" autofocus required>
-                                            </div>
-                                            <div class="form-group">
-                                                <input class="form-control" placeholder="Password" name="pw" type="password" value="" required>
-                                            </div>
-                                            <!--
-                                            <div class="checkbox">
-                                            <label>
-                                            <input name="remember" type="checkbox" value="Remember Me">Remember Me
-                                        </label>
-                                    </div>
-                                -->
-                                <!-- Change this to a button or input when using this as a form -->
-                                <button type="submit" class="btn btn-lg btn-success btn-block">Login</button>
-                            </fieldset>
-                        </form>
-                    </div>
-                </div>
-                <p align="right"><font size="-1" color="#888888"><? echo $VERSION; ?></font></p>
-            </div>
-        </div>
-
-        <!-- Modal -->
-        <div class="modal fade" id="newAccount" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="myModalLabel">Neues Konto erstellen</h4>
-                    </div>
-                    <div class="modal-body modalContent" name="modalContent" id="modalContent">
-                        <p>Um ein Konto zu erstellen, m&uuml;ssen Sie eine g&uuml;ltige E-Mail Addresse angeben, mit der Sie das Konto aktivieren können.</p>
-                        <p>Danach m&uuml;ssen Sie Ihr Konto freischalten und weitere Pers&ouml;nliche Infos eingeben, um die Abrechnungen zu erstellen.</p>
-                        <p></p>
-                        <form role="form" action="h_new_account.php" method="post" id="newAccountForm">
-                            <div class="form-group input-group">
-                                <span class="input-group-addon">E-Mail</span>
-                                <input type="email" name="mail" class="form-control" placeholder="mail@mail.com" required>
-                            </div>
-                            <div class="form-group input-group">
-                                <span class="input-group-addon">Passwort</span>
-                                <input type="password" name="pw" class="form-control" placeholder="Passwort eingeben" required>
-                                <input type="password" name="pw2" class="form-control" placeholder="Passwort wiederholen" required>
-                            </div>
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
-                            <button type="submit" class="btn btn-primary" onclick="" id="submitbutton" name="submitbutton">Neues Konto erstellen</button>
-                            <button type="submit" class="btn btn-primary" data-dismiss="modal" id="closebutton" name="closebutton" style="display:none">OK</button>
-                        </div>
+                                <form role="form" method="post" action="<? echo $_SERVER['PHP_SELF']; ?>">
+                                    <fieldset>
+                                        <div class="form-group">
+                                            <input class="form-control" placeholder="E-mail" name="mail" type="email" autofocus required>
+                                        </div>
+                                        <div class="form-group">
+                                            <input class="form-control" placeholder="Password" name="pw" type="password" value="" required>
+                                        </div>
+                                        <!--
+                                        <div class="checkbox">
+                                        <label>
+                                        <input name="remember" type="checkbox" value="Remember Me">Remember Me
+                                    </label>
+                                </div>
+                            -->
+                            <!-- Change this to a button or input when using this as a form -->
+                            <button type="submit" class="btn btn-lg btn-success btn-block">Login</button>
+                        </fieldset>
                     </form>
                 </div>
-                <!-- /.modal-content -->
             </div>
-            <!-- /.modal-dialog -->
+            <p align="right"><font size="-1" color="#888888"><? echo $VERSION; ?></font></p>
         </div>
-        <!-- /.modal -->
     </div>
 
-    <!-- jQuery -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script>
-    <!-- Bootstrap Core JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
-    <!-- Metis Menu Plugin JavaScript -->
-    <script src="https://cdn.jsdelivr.net/jquery.metismenu/1.1.3/metisMenu.min.js" integrity="sha256-OrCnS705nv33ycm/+2ifCnVfxxMdWvBMg5PUX1Fjpps=" crossorigin="anonymous"></script>
+    <!-- Modal -->
+    <div class="modal fade" id="newAccount" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Neues Konto erstellen</h4>
+                </div>
+                <div class="modal-body modalContent" name="modalContent" id="modalContent">
+                    <p>Um ein Konto zu erstellen, m&uuml;ssen Sie eine g&uuml;ltige E-Mail Addresse angeben, mit der Sie das Konto aktivieren können.</p>
+                    <p>Danach m&uuml;ssen Sie Ihr Konto freischalten und weitere Pers&ouml;nliche Infos eingeben, um die Abrechnungen zu erstellen.</p>
+                    <p></p>
+                    <form role="form" action="h_new_account.php" method="post" id="newAccountForm">
+                        <div class="form-group input-group">
+                            <span class="input-group-addon">E-Mail</span>
+                            <input type="email" name="mail" class="form-control" placeholder="mail@mail.com" required>
+                        </div>
+                        <div class="form-group input-group">
+                            <span class="input-group-addon">Passwort</span>
+                            <input type="password" name="pw" class="form-control" placeholder="Passwort eingeben" required>
+                            <input type="password" name="pw2" class="form-control" placeholder="Passwort wiederholen" required>
+                        </div>
+                    </div>
 
-    <!-- Custom Theme JavaScript -->
-    <script src="./js/sb-admin-2.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.1/jquery.form.min.js" integrity="sha384-tIwI8+qJdZBtYYCKwRkjxBGQVZS3gGozr3CtI+5JF/oL1JmPEHzCEnIKbDbLTCer" crossorigin="anonymous"></script>
-    <script>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
+                        <button type="submit" class="btn btn-primary" onclick="" id="submitbutton" name="submitbutton">Neues Konto erstellen</button>
+                        <button type="submit" class="btn btn-primary" data-dismiss="modal" id="closebutton" name="closebutton" style="display:none">OK</button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+</div>
 
-    function newCreated(data) {
-        if (data.message=="SUCCESS") {
-            $('#modalContent').html('<div class="alert alert-success">Account wurde erstellt. Bitte den Link im Best&auml;tigungsemail klicken um die Registrierung abzuschliessen.</div>');
-            $('#submitbutton').hide();
-            $('#closebutton').show();
-        }else{
-            alert(data.message);
-        }
+<!-- jQuery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script>
+<!-- Bootstrap Core JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<!-- Metis Menu Plugin JavaScript -->
+<script src="https://cdn.jsdelivr.net/jquery.metismenu/1.1.3/metisMenu.min.js" integrity="sha256-OrCnS705nv33ycm/+2ifCnVfxxMdWvBMg5PUX1Fjpps=" crossorigin="anonymous"></script>
+<!-- Custom Theme JavaScript -->
+<script src="./js/sb-admin-2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.1/jquery.form.min.js" integrity="sha384-tIwI8+qJdZBtYYCKwRkjxBGQVZS3gGozr3CtI+5JF/oL1JmPEHzCEnIKbDbLTCer" crossorigin="anonymous"></script>
+<script>
+function newCreated(data) {
+    if (data.message=="SUCCESS") {
+        $('#modalContent').html('<div class="alert alert-success">Account wurde erstellt. Bitte den Link im Best&auml;tigungsemail klicken um die Registrierung abzuschliessen.</div>');
+        $('#submitbutton').hide();
+        $('#closebutton').show();
+    }else{
+        alert(data.message);
     }
-
-    $(document).ready(function() {
-        $('#newAccountForm').ajaxForm({
-            dataType:  'json',
-            success:  newCreated
-        });
+}
+$(document).ready(function() {
+    $('#newAccountForm').ajaxForm({
+        dataType:  'json',
+        success:  newCreated
     });
-    </script>
-
+});
+</script>
 </body>
 </html>

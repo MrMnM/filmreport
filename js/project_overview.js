@@ -1,3 +1,5 @@
+
+
 function newCreated(data) {
     if (data.message=="SUCCESS") {
         window.location.href = "./project.php?id="+data.project_id;
@@ -21,7 +23,8 @@ function companyCreated(data) {
 
 function projDeleted(data) {
     if (data.message=="SUCCESS") {
-        window.location.reload(false);
+        $('#deleteProjectModal').modal('hide');
+        table.ajax.reload();
     }else{
         alert(data.message);
     }

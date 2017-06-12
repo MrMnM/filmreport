@@ -119,17 +119,12 @@ include './includes/inc_variables.php';
                         </div>
                         <!-- /.panel-body -->
                     </div>
-                    <!-- /.panel -->
-                    <!-- /.panel -->
-                    <!-- /.panel .chat-panel -->
                 </div>
                 <!-- /.col-lg-4 -->
             </div>
-
             <!-- /.row -->
         </div>
         <!-- /#page-wrapper -->
-
     </div>
     <!-- /#wrapper -->
 
@@ -151,7 +146,7 @@ include './includes/inc_variables.php';
     $curY = date("Y");
     $curM = date("n");
     ?>
-
+<!--TODO Ajax!-->
     <script type="text/javascript" src="./h_linechart.php?y=<?echo $curY.'&m='.$curM.'"';?>></script>
 </body>
 </html>

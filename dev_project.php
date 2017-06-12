@@ -191,11 +191,10 @@ if (!empty($json)){
                                             </tbody>
                                         </table>
                                     </div>
-
+<!--
                                     <input type="hidden" id="projectId" value="<? echo $p_id;?>">
                                     <input type="hidden" id="startDate" value="<? echo $date;?>">
-                                    <input type="hidden" id="basePay"value="<? echo $pay;?>">
-
+-->
                                 </div><!--panel-body-->
                             </div><!--panel-->
                         </div><!--col-lg-6-->
@@ -262,57 +261,68 @@ if (!empty($json)){
                     <p></p>
                     <div class="row">
                         <div class="col-lg-12">
-                                <form action="#">
-                                    <datalist id="work">
-                                        <option value="Dreh">Dreh</option>
-                                        <option value="Laden">Laden</option>
-                                        <option value="Vorbereitung">Vorbereitung</option>
-                                        <option value="Reisetag">Reisetag</option>
-                                    </datalist>
-                                    <table width="100%" class="table table-striped table-bordered table-hover" id="workhours" name="wh">
-                                        <tr>
-                                            <th width="150px">Datum</th>
-                                            <th width="150px">Was</th>
-                                            <th colspan="4" width="350px">Arbeitszeit</th>
-                                            <th width="80px">Basis</th>
-                                            <th colspan="8">Zuschlaege</th>
-                                            <th colspan="2" width="10%">Spesen</th>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td colspan="4"></td>
-                                            <td><font size=-2>bis 9h Tag</font></td>
-                                            <td colspan="7">Uebersstunden</td>
-                                            <td>Nacht</td>
-                                            <td colspan="2"></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td>Beginn</td>
-                                            <td>Ende</td>
-                                            <td>Pausen</td>
-                                            <td width="60px">in h</td>
-                                            <td></td>
-                                            <td><font size=-2>10</font></td>
-                                            <td><font size=-2>11</font></td>
-                                            <td><font size=-2>12</font></td>
-                                            <td><font size=-2>13</font></td>
-                                            <td><font size=-2>14</font></td>
-                                            <td><font size=-2>15</font></td>
-                                            <td><font size=-2>16+</font></td>
-                                            <td><font size=-2></font></td>
-                                            <td>Essen</td>
-                                            <td>Auto</td>
-                                        </tr>
-                                    </table>
-                                </form>
 
-                                <div id="editButtons">
-                                    <button type="button" class="add-row btn btn-success btn-circle"><i class="fa fa-plus"></i></button>
-                                    <button type="button" class="remove-row btn btn-danger btn-circle"><i class="fa fa-minus"></i></button>
-                                </div>
+                            <div class="list-group list-group-root">
+
+                            <div class="list-group-item">
+                              <a class="caret-link" href="#item-1" data-toggle="collapse">
+                                <i class="glyphicon glyphicon-chevron-right"></i></a>
+                                <span style="margin-left: 10px;">DATUM HIER</span>
+                                <span style="margin-left: 10px;">Dreh</span>
+                                <span style="margin-left: 10%;">06:34</span>
+                                <span style="margin-left: 5px;">-</span>
+                                <span style="margin-left: 5px;">17:21</span>
+                                <span style="margin-left: 10%;">Y</span>
+                                <span style="margin-left: 10px;">250</span>
+                                <span class="pull-right  small"><em><span class="fa fa-times"></span></em></span>
+                            </div>
+                            <div class="list-group collapse" id="item-1">
+                                  <div class="list-group-item">Item 2.1<span class="pull-right  small"><em><span class="fa fa-pencil" style="margin-right:15px;"></span><span class="fa fa-times"></span></em></span></div>
+                                  <div class="list-group-item">Item 2.1<span class="pull-right  small"><em><span class="fa fa-pencil" style="margin-right:15px;"></span><span class="fa fa-times"></span></em></span></div>
+                                  <div class="list-group-item">Item 2.1<span class="pull-right  small"><em><span class="fa fa-pencil" style="margin-right:15px;"></span><span class="fa fa-times"></span></em></span></div>
+                                  <div class="list-group-item">Item 2.1<span class="pull-right  small"><em><span class="fa fa-pencil" style="margin-right:15px;"></span><span class="fa fa-times"></span></em></span></div>
+                            </div>
+
+                            <div class="list-group-item">
+                                <i class="glyphicon glyphicon-chevron-right" style="visibility:hidden;"></i>
+                                <span style="margin-left: 10px;">DATUM HIER</span>
+                                <span style="margin-left: 10px;">Dreh</span>
+                                <span style="margin-left: 10%;">06:34</span>
+                                <span style="margin-left: 5px;">-</span>
+                                <span style="margin-left: 5px;">17:21</span>
+                                <span style="margin-left: 10%;">Y</span>
+                                <span style="margin-left: 10px;">250</span>
+                                <span class="pull-right  small"><em><span class="fa fa-times"></span></em></span>
+                            </div>
+
+                            <div class="list-group-item">
+                              <a href="#item-2" class="caret-link" data-toggle="collapse">
+                                <i class="glyphicon glyphicon-chevron-right"></i></a>
+                                <span style="margin-left: 10px;">DATUM HIER</span>
+                                <span style="margin-left: 10px;">Dreh</span>
+                                <span style="margin-left: 10%;">06:34</span>
+                                <span style="margin-left: 5px;">-</span>
+                                <span style="margin-left: 5px;">17:21</span>
+                                <span style="margin-left: 10%;">Y</span>
+                                <span style="margin-left: 10px;">250</span>
+                                <span class="pull-right  small"><em><span class="fa fa-times"></span></em></span>
+                            </div>
+                            <div class="list-group collapse" id="item-2">
+                                  <div class="list-group-item">Item 2.1<span class="pull-right  small"><em><span class="fa fa-pencil" style="margin-right:15px;"></span><span class="fa fa-times"></span></em></span></div>
+                                  <div class="list-group-item">Item 2.1<span class="pull-right  small"><em><span class="fa fa-pencil" style="margin-right:15px;"></span><span class="fa fa-times"></span></em></span></div>
+                                  <div class="list-group-item">Item 2.1<span class="pull-right  small"><em><span class="fa fa-pencil" style="margin-right:15px;"></span><span class="fa fa-times"></span></em></span></div>
+                                  <div class="list-group-item">Item 2.1<span class="pull-right  small"><em><span class="fa fa-pencil" style="margin-right:15px;"></span><span class="fa fa-times"></span></em></span></div>
+                            </div>
+
+
+
+                            </div>
+
+                            <div class="pull-right editButtons">
+                                <button type="button" class="remove-row btn btn-danger btn-circle"><i class="fa fa-minus"></i></button>
+                                <button type="button" class="add-row btn btn-success btn-circle"><i class="fa fa-plus"></i></button>
+                            </div>
+
 
                         </div><!-- /.col-lg-12 -->
                     </div><!--row-->
@@ -415,6 +425,14 @@ if (!empty($json)){
 <script src="./js/project.js"></script>
 <!--on ready-->
 <script>
+
+$('.caret-link').on('click', function() {
+    $('.glyphicon', this)
+    .toggleClass('glyphicon-chevron-right')
+    .toggleClass('glyphicon-chevron-down');
+});
+
+
 $(document).ready(function() {
     if (loadElement.length == 0){
         var rowElement = new Array();

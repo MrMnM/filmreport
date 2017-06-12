@@ -464,4 +464,34 @@ input {
     border: none;
 }
 
+.list-group.list-group-root {
+  padding: 0;
+  overflow: hidden;
+}
+
+.list-group.list-group-root .list-group {
+  margin-bottom: 0;
+}
+
+.list-group.list-group-root .list-group-item {
+  border-radius: 0;
+  border-width: 1px 1px 1px 1px;
+}
+
+.list-group.list-group-root > .list-group-item:first-child {
+  border-top-width: 1px;
+}
+
+.list-group.list-group-root > .list-group > .list-group-item {
+  margin-left: 45px;
+  border-bottom-width: 1px;
+}
+.list-group.list-group-root > .list-group > .list-group-item:last-child {
+  border-bottom-width: 1px;
+}
+
+.list-group-item .glyphicon {
+  margin-right: 5px;
+}
+
 /* end .squaredFour */

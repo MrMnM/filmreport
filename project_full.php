@@ -97,7 +97,7 @@ if (!empty($_GET["id"])) {
             $c_address2= $row["address_2"];
         }
     }
-    $company = $company."\n</br>".$c_address1."\n</br>".$c_address2;
+    $company = $company."&#13;&#10;".$c_address1."&#13;&#10;".$c_address2;
 
     $sql = "SELECT mail, tel, name, address_1, address_2, ahv, dateob, konto, bvg FROM `users` WHERE u_id='$u_id';";
     $result = $conn->query($sql);
@@ -115,7 +115,7 @@ if (!empty($_GET["id"])) {
             $u_address2= $row["address_2"];
         }
     }
-    $u_address = $u_address1."\n</br>".$u_address2;
+    $u_address = $u_address1."&#13;&#10;".$u_address2;
 }
 
 if (!empty($json)){
@@ -169,33 +169,26 @@ if (!empty($json)){
                                     </div><!--pull-right-->
                                 </div><!--panel-heading-->
                                 <div class="panel-body">
-                                    <div class="table-responsive">
-                                        <table class="table table-hover">
-                                            <tbody>
-                                                <tr>
-                                                    <td width=150px><strong>Projektname:</strong></td>
-                                                    <td><? echo $name;?></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><strong>Arbeit als:</strong></td>
-                                                    <td><? echo $job;?></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><strong>Tagesgage:</strong></td>
-                                                    <td><? echo $pay;?></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><strong>Produktionsfirma:</strong></td>
-                                                    <td><? echo $company;?></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-
-                                    <input type="hidden" id="projectId" value="<? echo $p_id;?>">
-                                    <input type="hidden" id="startDate" value="<? echo $date;?>">
-                                    <input type="hidden" id="basePay"value="<? echo $pay;?>">
-
+                                    <form role="form">
+                                        <input type="hidden" id="projectId" value="<? echo $p_id;?>">
+                                        <input type="hidden" id="startDate" value="<? echo $date;?>">
+                                        <div class="form-group input-group">
+                                            <span class="input-group-addon">Projektname</span>
+                                            <input type="text" class="form-control" value="<? echo $name;?>" disabled>
+                                        </div>
+                                        <div class="form-group input-group">
+                                            <span class="input-group-addon">Arbeit als:</span>
+                                            <input type="text" class="form-control" value="<? echo $job;?>"disabled>
+                                        </div>
+                                        <div class="form-group input-group">
+                                            <span class="input-group-addon">Tagesgage</span>
+                                            <input type="number" class="form-control" id="basePay" name="basePay" value="<? echo $pay;?>" disabled>
+                                        </div>
+                                        <div class="form-group input-group">
+                                            <span class="input-group-addon">Produktionsfirma</span>
+                                            <textarea class="form-control" rows="3" disabled><? echo $company;?></textarea>
+                                        </div>
+                                    </form>
                                 </div><!--panel-body-->
                             </div><!--panel-->
                         </div><!--col-lg-6-->
@@ -213,44 +206,40 @@ if (!empty($json)){
                                     </div>
                                 </div><!--panel-heading-->
                                 <div class="panel-body">
-                                    <div class="table-responsive">
-                                        <table class="table table-hover">
-                                            <tbody>
-                                                <tr>
-                                                    <td width=150px><strong>Name:</strong></td>
-                                                    <td><? echo $u_name;?></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><strong>Addresse:</strong></td>
-                                                    <td><? echo $u_address;?></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><strong>Telefon:</strong></td>
-                                                    <td><? echo $u_tel;?></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><strong>E-Mail:</strong></td>
-                                                    <td><? echo $u_mail;?></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><strong>AHV#:</strong></td>
-                                                    <td><? echo $u_ahv;?></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><strong>Geburtsdatum:</strong></td>
-                                                    <td><? echo $u_dob;?></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><strong>Konto:</strong></td>
-                                                    <td><? echo $u_konto;?></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><strong>BVG:</strong></td>
-                                                    <td><? echo $u_bvg;?></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                    <form role="form">
+                                        <div class="form-group input-group">
+                                            <span class="input-group-addon">Name</span>
+                                            <input type="text" class="form-control" value="<? echo $u_name;?>" disabled>
+                                        </div>
+                                        <div class="form-group input-group">
+                                            <span class="input-group-addon">Addresse</span>
+                                            <textarea class="form-control" rows="2" disabled><? echo $u_address;?></textarea>
+                                        </div>
+                                        <div class="form-group input-group">
+                                            <span class="input-group-addon">Telefon</span>
+                                            <input type="tel" class="form-control" value="<? echo $u_tel;?>" disabled>
+                                        </div>
+                                        <div class="form-group input-group">
+                                            <span class="input-group-addon">Email</span>
+                                            <input type="mail" class="form-control" value="<? echo $u_mail;?>" disabled>
+                                        </div>
+                                        <div class="form-group input-group">
+                                            <span class="input-group-addon">AHV</span>
+                                            <input type="text" class="form-control" value="<? echo $u_ahv;?>" disabled>
+                                        </div>
+                                        <div class="form-group input-group">
+                                            <span class="input-group-addon">Geburtsdatum</span>
+                                            <input type="date" class="form-control" value="<? echo $u_dob;?>" disabled>
+                                        </div>
+                                        <div class="form-group input-group">
+                                            <span class="input-group-addon">Konto</span>
+                                            <input type="text" class="form-control" value="<? echo $u_konto;?>" disabled>
+                                        </div>
+                                        <div class="form-group input-group">
+                                            <span class="input-group-addon">BVG</span>
+                                            <input type="text" class="form-control" value="<? echo $u_bvg;?>" disabled>
+                                        </div>
+                                    </form>
                                 </div><!--panel-body-->
                             </div><!--panel-->
                         </div><!--col.lg-6-->
