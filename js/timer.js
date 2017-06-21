@@ -1,25 +1,21 @@
 // MAIN
 var mode = 9;
-var counter = null;
 var t = {};
 t.id = null;
 t.name = null;
 t.data = new Array();
 
-
-$(document).ready(function() {
-    $('#newTimerForm').ajaxForm({
-        dataType:  'json',
-        success:  newCreated
-    });
-});
-
-jQuery('#addTimer').click(function(event){
-
-});
+function SetActive(id,name) {
+    t.id     = id;
+    t.name = name;
+    $("#activetimer").show();
+    $("#selector").hide();
+    $("#projectTitle").html(t.name);
+    console.log(t);
+}
 
 jQuery('#shoot').click(function(event){
-    mode=0;
+    t.mode=0;
     event.preventDefault();
     var time = new Date();
     startStamp = time;
@@ -31,7 +27,7 @@ jQuery('#shoot').click(function(event){
 });
 
 jQuery('#load').click(function(event){
-    mode=1;
+    t.mode=1;
     event.preventDefault();
     var time = new Date();
         startStamp = time;
@@ -43,7 +39,7 @@ jQuery('#load').click(function(event){
 });
 
 jQuery('#drive').click(function(event){
-    mode=2;
+    t.mode=2;
     event.preventDefault();
     var time = new Date();
         startStamp = time;
@@ -55,7 +51,7 @@ jQuery('#drive').click(function(event){
 });
 
 jQuery('#pause').click(function(event){
-    mode=3;
+    t.mode=3;
     event.preventDefault();
     var time = new Date();
         startStamp = time;
@@ -67,7 +63,7 @@ jQuery('#pause').click(function(event){
 });
 
 jQuery('#stop').click(function(event){
-    mode=9;
+    t.mode=9;
     event.preventDefault();
     var time = new Date();
     var dat = "st_"+time;
@@ -77,31 +73,28 @@ jQuery('#stop').click(function(event){
         updateDisplay();
 });
 
-setInterval( function(){
-if (mode!=9) {
-        updateTimer();
-}
-    updateDisplay();
-}, 1000);
+$('#deleteTimer').click(function(){
+    alert('perform action here');
+});
 
 
 function updateDisplay()
 {
-switch (mode) {
+switch (t.mode) {
     case 0:
-    $("#timer").html('<i class="fa fa-video-camera"></i> '+counter);
+    $("#timerCount").html('<i class="fa fa-video-camera"></i> '+updateTimer());
     break;
     case 1:
-    $("#timer").html('<i class="fa fa-truck"></i> '+counter);
+    $("#timerCount").html('<i class="fa fa-truck"></i> '+updateTimer());
     break;
     case 2:
-    $("#timer").html('<i class="fa fa-car"></i> '+counter);
+    $("#timerCount").html('<i class="fa fa-car"></i> '+updateTimer());
     break;
     case 3:
-    $("#timer").html('<i class="fa fa-pause"></i> '+counter);
+    $("#timerCount").html('<i class="fa fa-pause"></i> '+updateTimer());
     break;
     default:
-    $("#timer").html('');
+    $("#timerCount").html('');
 }
 }
 
@@ -117,14 +110,15 @@ function updateTimer() {
     diff = diff-(m*60);
     var s = diff;
     counter =  pad(h)+':'+pad(m)+':'+pad(s);
+    console.log(counter);
+    return counter;
 }
 
 function saveTimer(){
-    var data = JSON.stringify(t);
-    $.ajax({
-        url: 'h_save_timer.php',
+/*    $.ajax({
+        url: 'h_timer.php',
         dataType: 'json',
-        data : {'id':projectId, 'data':data},
+        data : {'action':'save','id':projectId, 'data':data},
         type: 'POST',
         success: function(data){
             if (data.message=="SUCCESS:") {
@@ -134,13 +128,12 @@ function saveTimer(){
             }
         }
     });
+    */
 }
 
 function newCreated(data) {
     if (data.message=="SUCCESS") {
-        $('#modalContent').html('<div class="alert alert-success">Account wurde erstellt. Bitte den Link im Best&auml;tigungsemail klicken um die Registrierung abzuschliessen.</div>');
-        $('#submitbutton').hide();
-        $('#closebutton').show();
+        $('#newTimerModal').modal('hide');
     }else{
         alert(data.message);
     }

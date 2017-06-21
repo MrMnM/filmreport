@@ -45,23 +45,13 @@ include './includes/inc_variables.php';
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                Timer
+
+                        <div class="panel panel-default" id="activetimer" style="display:none;">
+                            <div class="panel-heading" id="projectTitle">
                             </div>
                             <!-- /.panel-heading -->
                             <div class="panel-body">
                                 <form>
-                                    <div class="form-group input-group">
-                                        <span class="input-group-addon">Projekt</span>
-                                        <select class="form-control"  name="company" id="companylist" required>
-                                            <option>TEst</option>
-                                        </select>
-                                        <span class="input-group-btn">
-                                            <button class="btn btn-default" id="addTimer" type="button" data-toggle="modal" data-target="#newTimer"><i class="fa fa-plus"></i>
-                                            </button>
-                                        </span>
-                                    </div>
                                     <div class="row">
                                         <div class="col-sm-4">
                                             <div class="btn-group">
@@ -82,7 +72,7 @@ include './includes/inc_variables.php';
                                                 <button type="button" class="btn btn-danger btn-lg" id="stop"><i class="fa fa-stop"></i></button>
                                             </div>
 
-                                            <div class="col-sm-8 huge" id="timer">
+                                            <div class="col-sm-8 huge" id="timerCount">
                                             </div>
                                         </form>
                                     </div>
@@ -90,6 +80,21 @@ include './includes/inc_variables.php';
                                 <!-- /.panel-body -->
                             </div>
                             <!-- /.panel -->
+
+                            <div class="panel panel-default" id="selector">
+                                <div class="panel-heading">
+                                    <i class="fa fa-bell fa-fw"></i> Timers
+                                </div>
+                                <!-- /.panel-heading -->
+                                <div class="panel-body">
+                                    <div class="list-group" id="timers">
+                                    </div>
+
+                                    <button class="btn btn-default btn-block" data-toggle="modal" data-target="#newTimerModal"><i class="fa fa-plus fa-fw"></i> Neuen Timer hinzufügen</button>
+                                    <!-- /.list-group -->
+                                </div>
+                                <!-- /.panel-body -->
+                            </div>
 
                         </div>
                         <!-- /.col-lg-12 -->
@@ -99,7 +104,7 @@ include './includes/inc_variables.php';
                 <!-- /.container-fluid -->
 
                 <!-- Modal -->
-                <div class="modal fade" id="newTimer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal fade" id="newTimerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -107,7 +112,8 @@ include './includes/inc_variables.php';
                                 <h4 class="modal-title" id="myModalLabel">Neuen Timer erstellen</h4>
                             </div>
                             <div class="modal-body modalContent" name="modalContent" id="modalContent">
-                                <form role="form" action="h_new_timer.php" method="post" id="newTimerForm">
+                                <form role="form" action="h_timer.php" method="post" id="newTimerForm">
+                                    <input type="hidden" name="action" value="new">
                                     <div class="form-group input-group">
                                         <span class="input-group-addon">Name</span>
                                         <input type="text" name="name" class="form-control" placeholder="Testtimer" required>
@@ -127,13 +133,8 @@ include './includes/inc_variables.php';
                 </div>
                 <!-- /.modal -->
             </div>
-
-
-
-
             </div>
             <!-- /#page-wrapper -->
-
         </div>
         <!-- /#wrapper -->
 
@@ -143,13 +144,29 @@ include './includes/inc_variables.php';
         <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
         <!-- Metis Menu Plugin JavaScript -->
         <script src="https://cdn.jsdelivr.net/jquery.metismenu/1.1.3/metisMenu.min.js" integrity="sha256-OrCnS705nv33ycm/+2ifCnVfxxMdWvBMg5PUX1Fjpps=" crossorigin="anonymous"></script>
-
         <!-- Custom Theme JavaScript -->
         <script src="./js/sb-admin-2.js"></script>
         <!--ajax-form-->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.1/jquery.form.min.js" integrity="sha384-tIwI8+qJdZBtYYCKwRkjxBGQVZS3gGozr3CtI+5JF/oL1JmPEHzCEnIKbDbLTCer" crossorigin="anonymous"></script>
         <script src="./js/timer.js"></script>
+<script>
+$(document).ready(function() {
+    $('#newTimerForm').ajaxForm({
+        dataType:  'json',
+        success:  newCreated
+    });
 
+    $.post( "h_timer.php", { action: "gettimers"})
+    .done(function( data ) {
+        $( "#timers" ).html( data );
+    });
+
+    setInterval(function(){
+        updateDisplay();
+    }, 1000);
+
+});
+</script>
 
     </body>
     </html>

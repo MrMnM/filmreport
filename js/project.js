@@ -129,9 +129,9 @@ function addRow(){
         <td><input type="text" name="work`+rowCounter+`" size=10 list="work"></td>
         <td><input type="time" name="star`+rowCounter+`" min=0 value="00:00"></td>
         <td><input type="time" name="ende`+rowCounter+`" min=0 value="00:00"></td>
-        <td><input type="number" name="brea`+rowCounter+`" min=0 max=99 value=0></td>
+        <td><input type="number" name="brea`+rowCounter+`" min=0 Math.max=99 value=0></td>
         <td id="wtim`+rowCounter+`">0</td>
-        <td><input type="number" id="base`+rowCounter+`" name="base`+rowCounter+`" min=0 max=2></td>
+        <td><input type="number" id="base`+rowCounter+`" name="base`+rowCounter+`" min=0 Math.max=2></td>
         <td id="tent`+rowCounter+`"></td>
         <td id="elev`+rowCounter+`"></td>
         <td id="twel`+rowCounter+`"></td>
@@ -159,9 +159,9 @@ function loadRow(currentRow){
         <td><input type="text" name="work`+currentRow+`" size=10 list="work" value="`+rowElement[currentRow].work+`"></td>
         <td><input type="time" name="star`+currentRow+`" min=0 value="`+rowElement[currentRow].start+`"></td>
         <td><input type="time" name="ende`+currentRow+`" min=0 value="`+rowElement[currentRow].end+`"></td>
-        <td><input type="number" name="brea`+currentRow+`" min=0 max=99 value="`+rowElement[currentRow].break+`"></td>
+        <td><input type="number" name="brea`+currentRow+`" min=0 Math.max=99 value="`+rowElement[currentRow].break+`"></td>
         <td id="wtim`+currentRow+`">0</td>
-        <td><input type="number" id="base`+currentRow+`" name="base`+currentRow+`" min=0 max=2 value="`+rowElement[currentRow].base+`"></td>
+        <td><input type="number" id="base`+currentRow+`" name="base`+currentRow+`" min=0 Math.max=2 value="`+rowElement[currentRow].base+`"></td>
         <td id="tent`+currentRow+`"></td>
         <td id="elev`+currentRow+`"></td>
         <td id="twel`+currentRow+`"></td>
@@ -343,6 +343,14 @@ function addTimes(t0, t1){
     return timeFromMins(timeToMins(t0) + timeToMins(t1));
 }
 
+function gtT(t0,t1){
+    return timeToMins(t0) > timeToMins(t1);
+}
+
+function ltT(t0,t1){
+    return timeToMins(t0) < timeToMins(t1);
+}
+
 function roundToTwo(num) {
     return +(Math.round(num + "e+2")  + "e-2");
 }
@@ -509,24 +517,38 @@ function Row(idNr) {
         if (hour==16) {obj.sixt=ret; }
         return ret;
     };
+
     obj.getNightHours = function() {
         var ret = 0;
         //console.log(obj);
-        if (obj.start != null && obj.end != null) {
+/*        if (obj.start != null && obj.end != null) {
             var start = obj.start.split(":",1);
             var end = obj.end.split(":",1);
-            if ((parseInt(start[0]) > 23) || (parseInt(end[0]) < 6)) {
-                console.log(start[0]);
-                console.log(end[0]);
-                var toSix = subTimes("06:00", obj.end)
-                var toTwel = subTimes("24:00", obj.start)
-                console.log(toSix);
-                console.log(toTwel);
-                ret = addTimes(toSix, toTwel);
-            }
+            if(parseInt(end[0]) <= 6){var toSix = subTimes("06:00",obj.end)}else{var toSix = "00:00"}
+            if(parseInt(start[0]) >= 23){var toTwel = subTimes("24:00", obj.start)}else{var toTwel = "00:00"}
+            console.log('tosix'+toSix);
+            console.log('totwel'+toTwel);
+            ret = addTimes(toSix, toTwel);
+*/
+
+five = timeToMins("05:00");
+elev = timeToMins("23:00");
+start = timeToMins(obj.start);
+end = timeToMins(obj.end);
+
+ret = (Math.max(0,Math.min(five+(elev>five),end+(start>end))-Math.max(elev,start))
++Math.max(0,(Math.min(five,end+(start>end))-start)*(elev>five))
++Math.max(0,Math.min(five+(elev>five),end+0)-elev)*(start>end))*24;
+
+console.log('RET:'+ret);
+
         }
         return ret;
+
     };
+
+
+
 
     return obj;
 }

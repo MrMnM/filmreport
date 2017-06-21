@@ -42,8 +42,8 @@ include './includes/inc_variables.php';
             <div class="alert alert-warning" id="saveWarning" style="display:none">
                 <div class="spinner"></div>
             <span class="savetext">Nicht gespeicherte &Auml;nderungen.</span>
-                <button type="button" class="btn btn-warning saveButton" id="saveButton"><span class="glyphicon glyphicon-save"> Speichern</span></button>
-                <button type="button" class="btn btn-warning disabled" id="saveButtonDisabled" style="display:none"><span class="glyphicon glyphicon-save"> Speichern</span</button>
+                <button type="button" class="btn btn-warning saveButton" id="saveButton"><span class="fa fa-save"> Speichern</span></button>
+                <button type="button" class="btn btn-warning disabled" id="saveButtonDisabled" style="display:none"><span class="fa fa-save"> Speichern</span</button>
             </div>
             <div class="alert alert-success" id="saveInfo" style="display:none">
                 Gespeichert.
@@ -134,7 +134,7 @@ if (!empty($json)){
 <!-- MAINCONTENT -->
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h4 id="title"></h4>
+            <h4 id="title">Laden...</h4>
             <div style="float:right; top:-10px;">
                 <button type="button" class="btn btn-default refreshButton"><i class="fa fa-refresh"></i></button>
                 <button type="button" class="btn btn-default" onclick="window.open('view.php?id=<?echo $p_id;?>')"><i class="fa fa-eye"></i></button>
@@ -164,7 +164,7 @@ if (!empty($json)){
                                     <div class="pull-right">
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#updateProjectModal">
-                                                <span class="glyphicon glyphicon-pencil"></span>Bearbeiten
+                                                <span class="fa fa-pencil"></span>Bearbeiten
                                             </button>
                                         </div><!--btn-group-->
                                     </div><!--pull-right-->
@@ -175,19 +175,19 @@ if (!empty($json)){
                                             <tbody>
                                                 <tr>
                                                     <td width=150px><strong>Projektname:</strong></td>
-                                                    <td id="projectName"></td>
+                                                    <td id="projectName">laden..</td>
                                                 </tr>
                                                 <tr>
                                                     <td><strong>Arbeit als:</strong></td>
-                                                    <td id="projectJob"></td>
+                                                    <td id="projectJob">Laden...</td>
                                                 </tr>
                                                 <tr>
                                                     <td><strong>Tagesgage:</strong></td>
-                                                    <td id=projectPay></td>
+                                                    <td id=projectPay>Laden...</td>
                                                 </tr>
                                                 <tr>
                                                     <td><strong>Produktionsfirma:</strong></td>
-                                                    <td><div id=projectCompany></div></td>
+                                                    <td id=projectCompany>Laden...</td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -208,7 +208,7 @@ if (!empty($json)){
                                     <div class="pull-right">
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-default btn-xs">
-                                                <span class="glyphicon glyphicon-pencil"></span>Bearbeiten
+                                                <span class="fa fa-pencil"></span>Bearbeiten
                                             </button>
                                         </div>
                                     </div>
@@ -419,44 +419,7 @@ if (!empty($json)){
                         <input type="text" name="name" class="form-control" value="<? echo $name;?>" required="">
                     </div>
                     <datalist id="jobs">
-                        <option value="ProduktionsleiterIn">ProduktionsleiterIn</option>
-                        <option value="Produktions-AssistentIn">Produktions-AssistentIn</option>
-                        <option value="Produktions-SekretärIn">Produktions-SekretärIn</option>
-                        <option value="AufnahmeleiterIn">AufnahmeleiterIn</option>
-                        <option value="Set-AufnahmeleiterIn">Set-AufnahmeleiterIn</option>
-                        <option value="Aufnahmeleiter-AssistentIn">Aufnahmeleiter-AssistentIn</option>
-                        <option value="Regie-AssistentIn">Regie-AssistentIn</option>
-                        <option value="2. RegieassistentIn">2. RegieassistentIn</option>
-                        <option value="Continuity">Continuity</option>
-                        <option value="Chef-Kameramann">Chef-Kameramann</option>
-                        <option value="SchwenkerIn">SchwenkerIn</option>
-                        <option value="Kamera-Assistent">Kamera-Assistent</option>
-                        <option value="2. Kamera-AssistentIn">2. Kamera-AssistentIn</option>
-                        <option value="DIT">DIT</option>
-                        <option value="Video-TechnikerIn">Video-TechnikerIn</option>
-                        <option value="Chef-BeleuchterIn">Chef-BeleuchterIn</option>
-                        <option value="BeleuchterIn">BeleuchterIn</option>
-                        <option value="Key Grip">Key Grip</option>
-                        <option value="Grip">Grip</option>
-                        <option value="TonmeisterIn">TonmeisterIn</option>
-                        <option value="TonoperateurIn">TonoperateurIn</option>
-                        <option value="Perche">Perche</option>
-                        <option value="Ausstattungsleitung">Ausstattungsleitung</option>
-                        <option value="AusstatterIn">AusstatterIn</option>
-                        <option value="AusstattungsassistentIn">AusstattungsassistentIn</option>
-                        <option value="RequisiteurIn">RequisiteurIn</option>
-                        <option value="Decorbau">Decorbau</option>
-                        <option value="KostümbildnerIn">KostümbildnerIn</option>
-                        <option value="Kostüm AssistentIn">Kostüm AssistentIn</option>
-                        <option value="Garderobe">Garderobe</option>
-                        <option value="Chef-MaskenbildnerIn">Chef-MaskenbildnerIn</option>
-                        <option value="MaskenbildnerIn">MaskenbildnerIn</option>
-                        <option value="Maskenbildner-Assistentin">Maskenbildner-Assistentin</option>
-                        <option value="Hair-StylistIn">Hair-StylistIn</option>
-                        <option value="Chef-Editor">Chef-Editor</option>
-                        <option value="Editor">Editor</option>
-                        <option value="Ton-Editor">Ton-Editor</option>
-                        <option value="Editor-AssistentIn">Editor-AssistentIn</option>
+                    <?include('./includes/joblist.html');?>
                     </datalist>
                     <div class="form-group input-group">
                         <span class="input-group-addon">Arbeit als:</span>
@@ -526,6 +489,8 @@ $(document).ready(function() {
     Save();
 }
 }, 15000);
+
+$('#companylist').html('').load("./h_load_companies.php");
 
     $('#updateProject').ajaxForm({
             dataType:  'json',

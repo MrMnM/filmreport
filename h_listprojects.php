@@ -30,7 +30,6 @@ if ($conn->connect_error) {
 echo '{'.PHP_EOL;
 echo '"data": ['.PHP_EOL;
 
-
 $sql = "SELECT project_id, p_start, p_name, p_company, tot_hours, tot_money FROM `projects` WHERE user_id='$u_id';";
 $result = $conn->query($sql);
 if ($result->num_rows > 0) {
@@ -43,13 +42,16 @@ if ($result->num_rows > 0) {
         foreach($companies as $arr){
             if ($arr[0] == $row["p_company"]) {
                 echo '"'.$arr[1].'",'.PHP_EOL;
+            }elseif ( $row["p_company"]=='timer'){
+                echo '"TIMER",'.PHP_EOL;
+                break;
             }
         }
         echo '"'.$row["tot_hours"].'",'.PHP_EOL;
         echo '"'.$row["tot_money"].'",'.PHP_EOL;
         echo '"'.$row["project_id"].'"'.PHP_EOL;
         if ($counter == $rowCount) {
-            echo ']'.PHP_EOL
+            echo ']'.PHP_EOL;
         }else{
             echo '],'.PHP_EOL;
         }
