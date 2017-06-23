@@ -14,38 +14,6 @@ jQuery('button.saveButton').click(function(event){
     updateSaveStatus(saved);
 });
 
-function Save() {
-    var rows = JSON.stringify(rowElement);
-    var additional = JSON.stringify(addInfo);
-    var projectId =  $("#projectId").val();
-    var comment = $("#comment").val();;
-    $("#saveButton").hide();
-    $("#saveButtonDisabled").show();
-
-    $.ajax({
-        url: 'h_project.php',
-        dataType: 'json',
-        data : {'action':'save','id':projectId, 'data':rows, 'add':additional, 'comment':comment},
-        type: 'POST',
-        success: function(data){
-            if (data.message=="SUCCESS:") {
-                saved = true;
-                $("#saveButton").show();
-                $("#saveButtonDisabled").hide();
-                updateSaveStatus();
-            }else{
-                saved = false;
-                $("#saveButton").show();
-                $("#saveButtonDisabled").hide();
-                updateSaveStatus();
-            }
-        }
-    });
-}
-
-$("#saveButton").show();
-$("#saveButtonDisabled").hide();
-
 
 jQuery('button.add-row').click(function(event){
     event.preventDefault();
@@ -54,8 +22,6 @@ jQuery('button.add-row').click(function(event){
     updateBottom();
     updateSaveStatus();
 });
-
-
 jQuery('button.remove-row').click(function(event){
     event.preventDefault();
     saved = false;
@@ -67,7 +33,6 @@ jQuery('button.remove-row').click(function(event){
     updateBottom();
     updateSaveStatus();
 });
-
 
 jQuery('button.refreshButton').click(function(event){
     saved=false;
@@ -177,6 +142,39 @@ function loadRow(currentRow){
         //rowElement[rowCounter].date = formatDate(currentDate);
         //rowCounter++;
         //saved = false;
+}
+
+function Save() {
+    var rows = JSON.stringify(rowElement);
+    var additional = JSON.stringify(addInfo);
+    var projectId =  $("#projectId").val();
+    var comment = $("#comment").val();;
+    $("#saveButton").hide();
+    $("#saveButtonDisabled").show();
+
+    $.ajax({
+        url: 'h_project.php',
+        dataType: 'json',
+        data : {'action':'save','id':projectId, 'data':rows, 'add':additional, 'comment':comment},
+        type: 'POST',
+        success: function(data){
+            if (data.message=="SUCCESS:") {
+                saved = true;
+                $("#saveButton").show();
+                $("#saveButtonDisabled").hide();
+                updateSaveStatus();
+            }else{
+                saved = false;
+                $("#saveButton").show();
+                $("#saveButtonDisabled").hide();
+                updateSaveStatus();
+            }
+        }
+    });
+
+    $("#saveButton").show();
+    $("#saveButtonDisabled").hide();
+
 }
 
 function updateRow(row){
@@ -343,14 +341,6 @@ function addTimes(t0, t1){
     return timeFromMins(timeToMins(t0) + timeToMins(t1));
 }
 
-function gtT(t0,t1){
-    return timeToMins(t0) > timeToMins(t1);
-}
-
-function ltT(t0,t1){
-    return timeToMins(t0) < timeToMins(t1);
-}
-
 function roundToTwo(num) {
     return +(Math.round(num + "e+2")  + "e-2");
 }
@@ -408,22 +398,21 @@ function updateProjectInfo(){
 }
 
 
-
 //-------------------------------------------------------------------------------
 //OBJECTS -----------------------------------------------------------------------
 function Row(idNr) {
     var obj = {};
     obj.id = idNr;
     obj.date = null;
-    obj.start = null;
-    obj.end = null;
+    obj.start = '00:00';
+    obj.end = '00:00';
     obj.work = '';
-    obj.break = 0;
+    obj.break = '00:00';
     obj.base = null;
     obj.manualBase = false;
     obj.car= 0;
     obj.lunch = false;
-    obj.workhours = 0;
+    obj.workhours = '00:00';
     obj.tent=0;
     obj.elev=0;
     obj.twel=0;
@@ -445,20 +434,18 @@ function Row(idNr) {
     }
     obj.getWorkHours = function() {
         var ret;
-        if (obj.start && obj.end){
-            if (obj.end<obj.start) {
-                var diff1 = subTimes('23:59',obj.start);
-                var diff2 = subTimes(obj.end,'00:00');
-                var diff = addTimes(addTimes(diff1,diff2),timeFromMins(1));
-            }else{
-                var diff = subTimes(obj.end,obj.start);
-            }
-            var breakTime = timeFromMins(obj.break);
-            diff = subTimes(diff, breakTime);
-            ret= diff;
-        } else {
-            ret= 0;
-        }
+        var brk = obj.break;
+        var pause=[];
+        pause[0] = brk.split(':')[0];
+        pause[1] = brk.split(':')[1];
+        var difference = moment.utc(moment(obj.end,"HH:mm").diff(moment(obj.start,"HH:mm"))).format("HH:mm");
+        // create duration object duration
+        var duration = moment.duration(difference);
+        // subtract the break time
+        duration.subtract(pause[0] + ':00', 'hours');
+        duration.subtract('00:' + pause[1], 'minutes');
+        // format a string result
+        var ret = moment.utc(+duration).format('H:mm');
         obj.workhours=ret;
         return ret;
     };
@@ -521,37 +508,9 @@ function Row(idNr) {
     obj.getNightHours = function() {
         var ret = 0;
         //console.log(obj);
-/*        if (obj.start != null && obj.end != null) {
-            var start = obj.start.split(":",1);
-            var end = obj.end.split(":",1);
-            if(parseInt(end[0]) <= 6){var toSix = subTimes("06:00",obj.end)}else{var toSix = "00:00"}
-            if(parseInt(start[0]) >= 23){var toTwel = subTimes("24:00", obj.start)}else{var toTwel = "00:00"}
-            console.log('tosix'+toSix);
-            console.log('totwel'+toTwel);
-            ret = addTimes(toSix, toTwel);
-*/
-
-five = timeToMins("05:00");
-elev = timeToMins("23:00");
-start = timeToMins(obj.start);
-end = timeToMins(obj.end);
-
-ret = (Math.max(0,Math.min(five+(elev>five),end+(start>end))-Math.max(elev,start))
-+Math.max(0,(Math.min(five,end+(start>end))-start)*(elev>five))
-+Math.max(0,Math.min(five+(elev>five),end+0)-elev)*(start>end))*24;
-
-console.log('RET:'+ret);
-
-        }
-        return ret;
-
     };
-
-
-
-
     return obj;
-}
+};
 
 function Project() {
     var obj = {};

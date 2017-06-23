@@ -486,6 +486,11 @@ input {
   margin-left: 45px;
   border-bottom-width: 1px;
 }
+
+.list-group-item {
+  border-bottom-width: 1px;
+}
+
 .list-group.list-group-root > .list-group > .list-group-item:last-child {
   border-bottom-width: 1px;
 }
