@@ -253,7 +253,7 @@ function updateBottom(){
     var total150 = roundToTwo(hours150 * getRate(150));
     var total200 = roundToTwo(hours200 * getRate(200));
     var total250 = roundToTwo(hours250 * getRate(250));
-    var total25 = 0;
+    var total25 = roundToTwo(hours25 * getRate(25));
     var totalLunch = lunches*32;
     var totalCar = roundToTwo(totalKilometers * 0.7);
     var totalDay = roundToTwo(totalBase*basePay);
@@ -397,6 +397,7 @@ function Row(idNr) {
     obj.four=0;
     obj.fift=0;
     obj.sixt=0;
+    obj.night=0;
     obj.loadFromJSON = function(json){
         obj.id=json.id;
         obj.date =json.date;
@@ -475,7 +476,7 @@ function Row(idNr) {
         return ret;
     };
 
-    obj.getNightHours = function() { 
+    obj.getNightHours = function() {
         let hours=0;
         let nightStart = moment("23:00","HH:mm");
         let nightEnd = moment("05:00","HH:mm").add(1, 'd');
@@ -491,12 +492,13 @@ function Row(idNr) {
             let difference = moment.utc(moment(obj.end,"HH:mm").diff(moment(obj.start,"HH:mm"))).format("HH:mm");
             let duration = moment.duration(difference);
             duration.subtract(differ[0].length("minutes"),'m');
-            return moment.utc(+duration).format('H:mm');
+            obj.night = roundToTwo(moment.utc(+duration).format('m')/60);
         }else{
             let difference = moment.utc(moment(obj.end,"HH:mm").diff(moment(obj.start,"HH:mm"))).format("HH:mm");
             let duration = moment.duration(difference);
-            return moment.utc(+duration).format('H:mm');
+            obj.night = roundToTwo(moment.utc(+duration).format('m')/60);;
         }
+        return obj.night
     };
 
     return obj;

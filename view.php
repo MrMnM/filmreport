@@ -300,7 +300,7 @@ $allhours2 = new DateTime('2000-01-01 00:00:00');
 				$all150= $all150 + $arr['twel'] + $arr['thir'];
 				$all200= $all200 + $arr['four'] + $arr['fift'];
 				$all250+=$arr['sixt'];
-				$all25+=0;
+				$all25+=$arr['night'];
 				$allfood+=$arr['lunch'];
 				$allcar+=$arr['car'];
 //---------------------------------------------------------------------------------
