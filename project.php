@@ -467,14 +467,15 @@ if (!empty($json)){
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.1/jquery.form.min.js" integrity="sha384-tIwI8+qJdZBtYYCKwRkjxBGQVZS3gGozr3CtI+5JF/oL1JmPEHzCEnIKbDbLTCer" crossorigin="anonymous"></script>
 <!-- moment-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js" integrity="sha256-1hjUhpc44NwiNg8OwMu2QzJXhD8kcj+sJA3aCQZoUjg=" crossorigin="anonymous"></script>
-<script>
-    moment().format();
-</script>
+<script src="https://cdn.jsdelivr.net/twix.js/1.1.5/twix.min.js" integrity="sha256-Z5xIjmw1PVu7XqFyvf5j+V5qCsVhw1ehFMB7PmeA9E8=" crossorigin="anonymous"></script>
 <!-- Custom Theme JavaScript -->
 <script src="./js/sb-admin-2.js"></script>
 <!-- Custom Functions JavaScript -->
 <script src="./js/project.js"></script>
 <!--on ready-->
+<script>
+    moment().format();
+</script>
 <script>
 $(document).ready(function() {
     if (loadElement.length == 0){

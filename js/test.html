@@ -1,0 +1,46 @@
+<script src="moment.min.js"></script>
+<script>
+var start = "23:42";
+var end="06:18";
+
+getWorkHours = function() {
+    var brk = "00:00";
+    var pause=[];
+    pause[0] = brk.split(':')[0];
+    pause[1] = brk.split(':')[1];
+    var difference = moment.utc(moment(end,"HH:mm").diff(moment(start,"HH:mm"))).format("HH:mm");
+    //var difference = moment.utc(moment(obj.end,"HH:mm").diff(moment(obj.start,"HH:mm")));
+    var duration = moment.duration(difference);
+    duration.subtract(pause[0] + ':00', 'hours');
+    duration.subtract('00:' + pause[1], 'minutes');
+    return moment.utc(+duration).format('H:mm');
+
+};
+
+getNightHours = function(s,e) { //TODO HiER WEITERARBEITEN
+    var nightHours = moment.duration(0);
+    var nightStart = moment.utc(moment("23:00", "HH:mm"));
+    var nightEnd = moment.utc(moment("05:00", "HH:mm"));
+    var start = moment.utc(moment(s, "HH:mm"));
+    var end = moment.utc(moment(e, "HH:mm"));
+    var workhours = moment.duration(getWorkHours());
+    var startToNightS = start.diff(nightStart, 'minutes');
+    var nEndToEnd = nightEnd.diff(end, 'minutes');
+    if (startToNightS > 0) {
+        nightHours = moment.duration(workhours.subtract(startToNightS, 'minutes'));
+    } else if (true) {
+
+    }
+    if (nEndToEnd > 0) {
+        nightHours = moment.duration(workhours.subtract(nEndToEnd, 'minutes'));
+    } else {
+
+    }
+    var retH = nightHours.hours();
+    var retM = nightHours.minutes();
+    var ret = moment.utc(+nightHours).format('H:mm');
+    return ret;
+};
+console.log("WH- "+getWorkHours());
+console.log("NH- "+getNightHours(start,end));
+</script>

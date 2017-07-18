@@ -8,13 +8,13 @@ var startDate = new Date($("#startDate").val());
 var us_id = null;
 var p_id = null;
 
+//   BUTTONS
+//-----------------------------------------------------------------------------
 jQuery('button.saveButton').click(function(event){
     event.preventDefault();
     Save();
     updateSaveStatus(saved);
 });
-
-
 jQuery('button.add-row').click(function(event){
     event.preventDefault();
     saved = false;
@@ -33,7 +33,6 @@ jQuery('button.remove-row').click(function(event){
     updateBottom();
     updateSaveStatus();
 });
-
 jQuery('button.refreshButton').click(function(event){
     saved=false;
     for (var i = 0; i < rowElement.length; i++) {
@@ -43,6 +42,7 @@ jQuery('button.refreshButton').click(function(event){
     updateSaveStatus();
 });
 
+// changed elements ------------------------------------------------------------
 $( "#workhours" ).change(function() {
     saved = false;
     var currentField = event.target.name.substring(0, 4);
@@ -70,14 +70,13 @@ $( "#workhours" ).change(function() {
     updateBottom();
     updateSaveStatus();
 });
-
 $( "#comment" ).change(function() {
     saved = false;
     updateSaveStatus();
 });
 
-//-------------------------------------------------------------------------------
-//HELPERS -----------------------------------------------------------------------
+//HELPERS
+//------------------------------------------------------------------------------
 function addRow(){
     //event.preventDefault();
     var currentDate = startDate;
@@ -115,7 +114,6 @@ function addRow(){
     updateSaveStatus();
     rowCounter++;
 }
-
 function loadRow(currentRow){
     //rowElement.push(new Row(rowCounter));
     var newRow = jQuery(`
@@ -124,7 +122,7 @@ function loadRow(currentRow){
         <td><input type="text" name="work`+currentRow+`" size=10 list="work" value="`+rowElement[currentRow].work+`"></td>
         <td><input type="time" name="star`+currentRow+`" min=0 value="`+rowElement[currentRow].start+`"></td>
         <td><input type="time" name="ende`+currentRow+`" min=0 value="`+rowElement[currentRow].end+`"></td>
-        <td><input type="number" name="brea`+currentRow+`" min=0 Math.max=99 value="`+rowElement[currentRow].break+`"></td>
+        <td><input type="time" name="brea`+currentRow+`" min=0 value="`+rowElement[currentRow].break+`"></td>
         <td id="wtim`+currentRow+`">0</td>
         <td><input type="number" id="base`+currentRow+`" name="base`+currentRow+`" min=0 Math.max=2 value="`+rowElement[currentRow].base+`"></td>
         <td id="tent`+currentRow+`"></td>
@@ -143,7 +141,6 @@ function loadRow(currentRow){
         //rowCounter++;
         //saved = false;
 }
-
 function Save() {
     var rows = JSON.stringify(rowElement);
     var additional = JSON.stringify(addInfo);
@@ -176,7 +173,6 @@ function Save() {
     $("#saveButtonDisabled").hide();
 
 }
-
 function updateRow(row){
     $('#wtim'+row).html(rowElement[row].getWorkHours());
 
@@ -204,15 +200,11 @@ function updateRow(row){
     $('#nigh'+row).html(rowElement[row].getNightHours());
     $('#base'+row).val(rowElement[row].getBase());
 }
-
 function updateBottom(){
     var totalKilometers = 0;
     for(index = 0; index < rowElement.length; ++index){
         totalKilometers += parseInt(rowElement[index].car);
     }
-
-
-
         var totalWorkHours = 0;
         for(index = 0; index < rowElement.length; ++index){
             if (rowCounter > 0 && $('#wtim'+index).html()>"00:00"){
@@ -304,7 +296,6 @@ function updateBottom(){
     addInfo.tothour = minsToHours(totalWorkHours);
     addInfo.totmoney= roundToTwo(totalDay+totalOvertime+totalAdditional);
 }
-
 function formatDate(d = new Date) {
     let month = String(d.getMonth() + 1);
     let day = String(d.getDate());
@@ -313,42 +304,34 @@ function formatDate(d = new Date) {
     if (day.length < 2) day = '0' + day;
     return `${year}-${month}-${day}`;
 }
-
 function timeToMins(time) {
     var b = time.split(':');
     return b[0]*60 + +b[1];
 }
-
 function timeFromMins(mins) {
     function z(n){return (n<10? '0':'') + n;}
     var h = (mins/60 |0) % 24;
     var m = mins % 60;
     return z(h) + ':' + z(m);
 }
-
 function minsToHours(mins){
     function z(n){return (n<10? '0':'') + n;}
     var h = (mins/60 |0);
     var m = mins % 60;
     return z(h) + ':' + z(m);
 }
-
 function subTimes(t0, t1) {
     return timeFromMins(timeToMins(t0) - timeToMins(t1));
 }
-
 function addTimes(t0, t1){
     return timeFromMins(timeToMins(t0) + timeToMins(t1));
 }
-
 function roundToTwo(num) {
     return +(Math.round(num + "e+2")  + "e-2");
 }
-
 function getRate(num){
     return roundToTwo(basePay/9*num/100)
 }
-
 function updateSaveStatus() {
     if (saved) {
         $("#saveInfo").show();
@@ -360,15 +343,6 @@ function updateSaveStatus() {
         $("#saveWarning").show();
     }
 }
-
-function updateAll(){
-    for (var i = 0; i < rowElement.length; i++) {
-        loadRow(i);
-        updateRow(i);
-    }
-    updateBottom();
-}
-
 function loadJSON(data){
     rowElement = new Array();
     for (var i = 0; i < data.length; i++) {
@@ -376,7 +350,6 @@ function loadJSON(data){
         rowElement[i].loadFromJSON(data[i]);
     }
 }
-
 function updateSuccess(data){
     if (data.message=="SUCCESS:") {
         updateProjectInfo()
@@ -385,7 +358,6 @@ function updateSuccess(data){
         alert(data.message);
     }
 }
-
 function updateProjectInfo(){
     $.post( "h_project.php", { action: "getinfo", us_id: us_id, p_id: p_id }).done(function( data ) {
     data = jQuery.parseJSON(data);
@@ -396,9 +368,14 @@ function updateProjectInfo(){
     $( "#projectCompany" ).html( data.company );
 });
 }
+function updateAll(){
+    for (var i = 0; i < rowElement.length; i++) {
+        loadRow(i);
+        updateRow(i);
+    }
+    updateBottom();
+}
 
-
-//-------------------------------------------------------------------------------
 //OBJECTS -----------------------------------------------------------------------
 function Row(idNr) {
     var obj = {};
@@ -408,7 +385,7 @@ function Row(idNr) {
     obj.end = '00:00';
     obj.work = '';
     obj.break = '00:00';
-    obj.base = null;
+    obj.base = 0.0;
     obj.manualBase = false;
     obj.car= 0;
     obj.lunch = false;
@@ -433,25 +410,20 @@ function Row(idNr) {
         obj.lunch =json.lunch;
     }
     obj.getWorkHours = function() {
-        var ret;
         var brk = obj.break;
         var pause=[];
         pause[0] = brk.split(':')[0];
         pause[1] = brk.split(':')[1];
         var difference = moment.utc(moment(obj.end,"HH:mm").diff(moment(obj.start,"HH:mm"))).format("HH:mm");
-        // create duration object duration
         var duration = moment.duration(difference);
-        // subtract the break time
         duration.subtract(pause[0] + ':00', 'hours');
         duration.subtract('00:' + pause[1], 'minutes');
-        // format a string result
-        var ret = moment.utc(+duration).format('H:mm');
-        obj.workhours=ret;
-        return ret;
+        obj.workhours = moment.utc(+duration).format('H:mm');
+        return obj.workhours;
     };
     obj.getBase = function() {
-        if(obj.work != null){
-            if (obj.manualBase == false || obj.base == null){
+        if(obj.work != null && obj.work != ''){
+            if (obj.manualBase == false){
                 switch(obj.work){
                     case "Dreh":
                     obj.base = 1.0;
@@ -470,9 +442,8 @@ function Row(idNr) {
                 }
                 return obj.base;
             }
-
         }else{
-            return false;
+            return 0;
         }
     };
     obj.getOvertime = function(hour) {
@@ -485,33 +456,51 @@ function Row(idNr) {
                     var mins = timeToMins(subTimes(workhours,currentHour));
                     ret= roundToTwo(mins/60);
                 } else{
-                    ret= 1;
+                    ret=1;
                 }
             } else {
                 var mins = timeToMins(subTimes(workhours,currentHour));
                 ret= roundToTwo(mins/60);
-
             }
         } else {
             ret= 0;
         }
-        if (hour==10) {obj.tent=ret; }
-        if (hour==11) {obj.elev=ret; }
-        if (hour==12) {obj.twel=ret; }
-        if (hour==13) {obj.thir=ret; }
-        if (hour==14) {obj.four=ret; }
-        if (hour==15) {obj.fift=ret; }
-        if (hour==16) {obj.sixt=ret; }
+        if (hour==10) {obj.tent=ret;}
+        if (hour==11) {obj.elev=ret;}
+        if (hour==12) {obj.twel=ret;}
+        if (hour==13) {obj.thir=ret;}
+        if (hour==14) {obj.four=ret;}
+        if (hour==15) {obj.fift=ret;}
+        if (hour==16) {obj.sixt=ret;}
         return ret;
     };
 
-    obj.getNightHours = function() {
-        var ret = 0;
-        //console.log(obj);
+    obj.getNightHours = function() { 
+        let hours=0;
+        let nightStart = moment("23:00","HH:mm");
+        let nightEnd = moment("05:00","HH:mm").add(1, 'd');
+        let start = moment(obj.start,"HH:mm");
+        let end = moment(obj.end,"HH:mm");
+        if(timeToMins(obj.start)>timeToMins(obj.end)){
+            end.add(1,'d');
+        }
+        let nighttime = nightStart.twix(nightEnd);
+        let worktime = start.twix(end);
+        let differ = worktime.difference(nighttime);
+        if (differ.length) {
+            let difference = moment.utc(moment(obj.end,"HH:mm").diff(moment(obj.start,"HH:mm"))).format("HH:mm");
+            let duration = moment.duration(difference);
+            duration.subtract(differ[0].length("minutes"),'m');
+            return moment.utc(+duration).format('H:mm');
+        }else{
+            let difference = moment.utc(moment(obj.end,"HH:mm").diff(moment(obj.start,"HH:mm"))).format("HH:mm");
+            let duration = moment.duration(difference);
+            return moment.utc(+duration).format('H:mm');
+        }
     };
+
     return obj;
 };
-
 function Project() {
     var obj = {};
     obj.name=null;
