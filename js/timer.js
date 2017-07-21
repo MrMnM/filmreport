@@ -1,4 +1,5 @@
 // MAIN
+var clickedDel = false;
 var mode = 9;
 var t = {};
 t.id = null;
@@ -6,6 +7,9 @@ t.name = null;
 t.data = new Array();
 
 function SetActive(id,name) {
+    if (clickedDel==true) {
+    return;
+    }
     t.id     = id;
     t.name = name;
     $("#activetimer").show();
@@ -131,9 +135,32 @@ function saveTimer(){
     */
 }
 
+function deleteTimer(id){
+    clickedDel = true;
+    $.ajax({
+        url: 'h_timer.php',
+        dataType: 'json',
+        data : {'action':'delete','id':id},
+        type: 'POST',
+        success: function(data){
+            if (data.message=="SUCCESS") {
+                $.post( "h_timer.php", { action: "gettimers"})
+                .done(function( data ) {
+                    $( "#timers" ).html( data );
+                });
+                clickedDel = false;
+            }else{
+                clickedDel = false;
+            }
+        }
+    });
+}
+
 function newCreated(data) {
     if (data.message=="SUCCESS") {
         $('#newTimerModal').modal('hide');
+        SetActive(data.id,data.name)
+
     }else{
         alert(data.message);
     }

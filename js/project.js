@@ -368,6 +368,16 @@ function updateProjectInfo(){
     $( "#projectCompany" ).html( data.company );
 });
 }
+function updatePersonalInfo(){
+    $.post( "h_user.php", { action: "getinfo", us_id: us_id, p_id: p_id }).done(function( data ) {
+    data = jQuery.parseJSON(data);
+    $( "#projectName" ).html( data.name );
+    $( "#title" ).html( data.name );
+    $( "#projectJob" ).html( data.job );
+    $( "#projectPay" ).html( data.pay );
+    $( "#projectCompany" ).html( data.company );
+});
+}
 function updateAll(){
     for (var i = 0; i < rowElement.length; i++) {
         loadRow(i);

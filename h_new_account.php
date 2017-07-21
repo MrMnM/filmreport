@@ -39,11 +39,7 @@ if (!empty($_POST["mail"]) && !empty($_POST["pw"]) && !empty($_POST["pw2"])) {
         $headers = 'From: webmaster@filmreport.com' . "\r\n" .
             'Reply-To: webmaster@filmreport.com' . "\r\n" .
             'X-Mailer: PHP/' . phpversion();
-
         mail($to, $subject, $message, $headers);
-
-
-
         echo '{ "message": "SUCCESS" }';
     } else {
         echo '{ "message": "SQL Fehler" }';

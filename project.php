@@ -11,16 +11,13 @@ include './includes/inc_variables.php';
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-
     <title>Projektabrechnung</title>
-
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
     <!-- MetisMenu CSS -->
@@ -29,7 +26,6 @@ include './includes/inc_variables.php';
     <link href="./css/main.css" rel="stylesheet">
     <!--Fontawsome-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
-
 </head>
 
 <body>
@@ -40,7 +36,7 @@ include './includes/inc_variables.php';
         <div class="col-lg-12">
             <p></p>
             <div class="alert alert-warning" id="saveWarning" style="display:none">
-                <div class="spinner"></div>
+                <div class="project-spinner"></div>
             <span class="savetext">Nicht gespeicherte &Auml;nderungen.</span>
                 <button type="button" class="btn btn-warning saveButton" id="saveButton"><span class="fa fa-save"> Speichern</span></button>
                 <button type="button" class="btn btn-warning disabled" id="saveButtonDisabled" style="display:none"><span class="fa fa-save"> Speichern</span</button>
@@ -175,19 +171,19 @@ if (!empty($json)){
                                             <tbody>
                                                 <tr>
                                                     <td width=150px><strong>Projektname:</strong></td>
-                                                    <td id="projectName">laden..</td>
+                                                    <td id="projectName"><div class="loading-spinner-left"></div></td>
                                                 </tr>
                                                 <tr>
                                                     <td><strong>Arbeit als:</strong></td>
-                                                    <td id="projectJob">Laden...</td>
+                                                    <td id="projectJob"></td>
                                                 </tr>
                                                 <tr>
                                                     <td><strong>Tagesgage:</strong></td>
-                                                    <td id=projectPay>Laden...</td>
+                                                    <td id=projectPay></td>
                                                 </tr>
                                                 <tr>
                                                     <td><strong>Produktionsfirma:</strong></td>
-                                                    <td id=projectCompany>Laden...</td>
+                                                    <td id=projectCompany></td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -207,7 +203,7 @@ if (!empty($json)){
                                     <i class="fa fa-user fa-fw"></i> Persönliche Informationen
                                     <div class="pull-right">
                                         <div class="btn-group">
-                                            <button type="button" class="btn btn-default btn-xs">
+                                            <button type="button" class="btn btn-default btn-xs" onclick="window.location.href='./user.php'">
                                                 <span class="fa fa-pencil"></span>Bearbeiten
                                             </button>
                                         </div>
@@ -450,10 +446,6 @@ if (!empty($json)){
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
-
-
-
-
 </div><!--pagewrapper-->
 </div><!-- /#wrapper -->
 
@@ -489,6 +481,7 @@ $(document).ready(function() {
     p_id = "<?echo $p_id;?>";
 
     updateProjectInfo();
+    updatePersonalInfo();
 
     setInterval(function() {
         if(!saved){

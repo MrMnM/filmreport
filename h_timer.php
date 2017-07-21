@@ -58,16 +58,15 @@ if($action){
 $conn->close();
 
 
-
-
 function NewTimer($u_id, $conn){
     $name= mysqli_real_escape_string($conn,$_POST["name"]);
     $now = date(DATE_ATOM, time());
+    $timer_id = substr(md5($name.$now),0,5);
     if ($project_id = NewProject($u_id,$name,$now,$conn)){
-        $sql = "INSERT INTO active_timers (project_id,user_id,name,creation)
-        VALUES ('$project_id', '$u_id','$name','$now')";
+        $sql = "INSERT INTO active_timers (timer_id,project_id,user_id,name,creation)
+        VALUES ('$timer_id','$project_id', '$u_id','$name','$now')";
         if ($conn->query($sql) === TRUE) {
-            echo '{ "message": "SUCCESS",  "name":"'.$name.'"}';
+            echo '{ "message": "SUCCESS",  "name":"'.$name.'", "id":"'.$timer_id.'"}';
         } else {
             die('{ "message": "Error: ' . $sql . $conn->error.'}');
         }
@@ -90,41 +89,28 @@ function NewProject($u_id, $name, $date, $conn){
 }
 
 function GetTimers($u_id, $conn){
-    $sql = "SELECT id, name, creation FROM `active_timers` WHERE user_id='$u_id';";
+    $sql = "SELECT timer_id, name, creation FROM `active_timers` WHERE user_id='$u_id';";
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {
         $counter = 1;
         $rowCount = mysqli_num_rows($result);
         while($row = $result->fetch_assoc()) {
-            echo '<a href="#" onclick="SetActive('.$row["id"].',\''.$row["name"].'\')" class="list-group-item success">'.PHP_EOL;
+            echo '<a href="#" onclick="SetActive(\''.$row["timer_id"].'\',\''.$row["name"].'\')" class="list-group-item success">'.PHP_EOL;
             echo '<i class="fa fa-hourglass-half fa-fw"></i> '.$row["name"].PHP_EOL;
-            echo '<span class="pull-right small"><em class="text-muted">'.$row["creation"].'</em><i class="fa fa-fw fa-times" id="deleteTimer"></i>'.PHP_EOL;
+            echo '<span class="pull-right small"><em class="text-muted">'.$row["creation"].'</em>&nbsp;&nbsp;<button class="btn btn-outline btn-danger btn-xs" onClick="deleteTimer(\''.$row["timer_id"].'\')"><i class="fa fa-fw fa-times" id="deleteTimer"></i></button>'.PHP_EOL;
             echo '</span></a>';
         }
     }
 }
 
 function SaveTimer($u_id, $conn){
-    $sql = "SELECT id, name, creation FROM `active_timers` WHERE user_id='$u_id';";
-    $result = $conn->query($sql);
-    if ($result->num_rows > 0) {
-        $counter = 1;
-        $rowCount = mysqli_num_rows($result);
-        while($row = $result->fetch_assoc()) {
-            echo '<a href="#" onclick="SetActive('.$row["id"].',\''.$row["name"].'\')" class="list-group-item success">'.PHP_EOL;
-            echo '<i class="fa fa-hourglass-half fa-fw"></i> '.$row["name"].PHP_EOL;
-            echo '<span class="pull-right small"><em class="text-muted">'.$row["creation"].'</em></a><a href=""#"" id="delete"><i class="fa fa-fw fa-times"></i></a>",'.PHP_EOL;
-            echo '</span>';
-        }
-    }
 }
 
 function DeleteTimer($u_id, $conn){
     $id = mysqli_real_escape_string($conn,$_POST["id"]);
-    $sql = "DELETE FROM active_timers WHERE id='$id' AND user_id='$u_id'";
-
+    $sql = "DELETE FROM active_timers WHERE timer_id='$id' AND user_id='$u_id'";
     if ($conn->query($sql) === TRUE) {
-        echo '{ "message": "SUCCESS",  "timer_id":"'.$id.'"}';
+        die('{ "message": "SUCCESS",  "timer_id":"'.$id.'"}');
     } else {
         die('{ "message": "Error: ' . $sql . $conn->error.'}');
     }

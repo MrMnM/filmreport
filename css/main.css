@@ -500,7 +500,7 @@ input {
 }
 
 
-.spinner {
+.project-spinner {
   position: absolute;
   width: 2rem;
   height: 2rem;
@@ -510,11 +510,38 @@ input {
   animation: spin 1s linear infinite;
   z-index: 9999;
 }
+
+
+/*TODO Move together into 1*/
+.loading-spinner-center {
+  position: absolute;
+  margin-left: 50%;
+  width: 2rem;
+  height: 2rem;
+  border: 0.25rem solid #504e4e;
+  border-bottom: 0.25rem solid rgba(0,0,0,0);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  z-index: 9999;
+}
+
+.loading-spinner-left {
+  position: absolute;
+  margin-left: 1rem;
+  width: 2rem;
+  height: 2rem;
+  border: 0.25rem solid #504e4e;
+  border-bottom: 0.25rem solid rgba(0,0,0,0);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  z-index: 9999;
+}
+
 .savetext{
     margin-left: 3rem;
 }
 
-.spinner--hidden {
+.project-spinner--hidden {
   display: none;
 }
 
@@ -523,4 +550,3 @@ input {
     transform: rotate(360deg);
   }
 }
-/* end .squaredFour */

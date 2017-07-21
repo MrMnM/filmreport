@@ -37,118 +37,114 @@ include './includes/inc_variables.php';
 </head>
 
 <body>
-    <div id="wrapper">
-        <? include './includes/inc_top.php';?>
-
-        <div id="page-wrapper">
-            <p></br></p>
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-lg-12">
-
-                        <div class="panel panel-default" id="activetimer" style="display:none;">
-                            <div class="panel-heading" id="projectTitle">
-                            </div>
-                            <!-- /.panel-heading -->
-                            <div class="panel-body">
-                                <form>
-                                    <div class="row">
-                                        <div class="col-sm-4">
-                                            <div class="btn-group">
-                                                <button type="button" class="btn btn-success btn-lg dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                                    <i class="fa fa-play"></i>
-                                                    <!--<span class="caret"></span>-->
-                                                </button>
-                                                <ul class="dropdown-menu" role="menu">
-                                                    <li><a href="#" id="shoot"><i class="fa fa-video-camera"></i> Dreh</a>
-                                                    </li>
-                                                    <li><a href="#" id="load"><i class="fa fa-truck"></i> Laden</a>
-                                                    </li>
-                                                    <li><a href="#" id="drive"><i class="fa fa-car"></i> Reise</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                                <button type="button" class="btn btn-warning btn-lg" id="pause"><i class="fa fa-pause"></i></button>
-                                                <button type="button" class="btn btn-danger btn-lg" id="stop"><i class="fa fa-stop"></i></button>
-                                            </div>
-
-                                            <div class="col-sm-8 huge" id="timerCount">
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                                <!-- /.panel-body -->
-                            </div>
-                            <!-- /.panel -->
-
-                            <div class="panel panel-default" id="selector">
-                                <div class="panel-heading">
-                                    <i class="fa fa-bell fa-fw"></i> Timers
-                                </div>
-                                <!-- /.panel-heading -->
-                                <div class="panel-body">
-                                    <div class="list-group" id="timers">
-                                    </div>
-
-                                    <button class="btn btn-default btn-block" data-toggle="modal" data-target="#newTimerModal"><i class="fa fa-plus fa-fw"></i> Neuen Timer hinzufügen</button>
-                                    <!-- /.list-group -->
-                                </div>
-                                <!-- /.panel-body -->
-                            </div>
-
-                        </div>
-                        <!-- /.col-lg-12 -->
+<div id="wrapper">
+<? include './includes/inc_top.php';?>
+<div id="page-wrapper">
+    <p></br></p>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default" id="activetimer" style="display:none;">
+                    <div class="panel-heading" id="projectTitle">
                     </div>
-                    <!-- /.row -->
-                </div>
-                <!-- /.container-fluid -->
-
-                <!-- Modal -->
-                <div class="modal fade" id="newTimerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                <h4 class="modal-title" id="myModalLabel">Neuen Timer erstellen</h4>
-                            </div>
-                            <div class="modal-body modalContent" name="modalContent" id="modalContent">
-                                <form role="form" action="h_timer.php" method="post" id="newTimerForm">
-                                    <input type="hidden" name="action" value="new">
-                                    <div class="form-group input-group">
-                                        <span class="input-group-addon">Name</span>
-                                        <input type="text" name="name" class="form-control" placeholder="Testtimer" required>
+                    <!-- /.panel-heading -->
+                    <div class="panel-body">
+                        <form>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-success btn-lg dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                            <i class="fa fa-play"></i>
+                                            <!--<span class="caret"></span>-->
+                                        </button>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="#" id="shoot"><i class="fa fa-video-camera"></i> Dreh</a>
+                                            </li>
+                                            <li><a href="#" id="load"><i class="fa fa-truck"></i> Laden</a>
+                                            </li>
+                                            <li><a href="#" id="drive"><i class="fa fa-car"></i> Reise</a>
+                                            </li>
+                                        </ul>
                                     </div>
-                                </div>
+                                        <button type="button" class="btn btn-warning btn-lg" id="pause"><i class="fa fa-pause"></i></button>
+                                        <button type="button" class="btn btn-danger btn-lg" id="stop"><i class="fa fa-stop"></i></button>
+                                    </div>
 
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
-                                    <button type="submit" class="btn btn-primary" onclick="" id="submitbutton" name="submitbutton">Erstellen</button>
-                                    <button type="submit" class="btn btn-primary" data-dismiss="modal" id="closebutton" name="closebutton" style="display:none">OK</button>
-                                </div>
-                            </form>
+                                    <div class="col-sm-8 huge" id="timerCount">
+                                    </div>
+                                </form>
+                            </div>
                         </div>
-                        <!-- /.modal-content -->
+                        <!-- /.panel-body -->
                     </div>
-                    <!-- /.modal-dialog -->
+                    <!-- /.panel -->
+
+                    <div class="panel panel-default" id="selector">
+                        <div class="panel-heading">
+                            <i class="fa fa-bell fa-fw"></i> Timers
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div class="list-group" id="timers">
+                                <a href="#" class="list-group-item success"><div class="loading-spinner-center"></div>&nbsp;</a>
+                            </div>
+                            <button class="btn btn-default btn-block" data-toggle="modal" data-target="#newTimerModal"><i class="fa fa-plus fa-fw"></i> Neuen Timer hinzufügen</button>
+                            <!-- /.list-group -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
                 </div>
-                <!-- /.modal -->
+                <!-- /.col-lg-12 -->
             </div>
-            </div>
-            <!-- /#page-wrapper -->
+            <!-- /.row -->
         </div>
-        <!-- /#wrapper -->
+        <!-- /.container-fluid -->
 
-        <!-- jQuery -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script>
-        <!-- Bootstrap Core JavaScript -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
-        <!-- Metis Menu Plugin JavaScript -->
-        <script src="https://cdn.jsdelivr.net/jquery.metismenu/1.1.3/metisMenu.min.js" integrity="sha256-OrCnS705nv33ycm/+2ifCnVfxxMdWvBMg5PUX1Fjpps=" crossorigin="anonymous"></script>
-        <!-- Custom Theme JavaScript -->
-        <script src="./js/sb-admin-2.js"></script>
-        <!--ajax-form-->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.1/jquery.form.min.js" integrity="sha384-tIwI8+qJdZBtYYCKwRkjxBGQVZS3gGozr3CtI+5JF/oL1JmPEHzCEnIKbDbLTCer" crossorigin="anonymous"></script>
-        <script src="./js/timer.js"></script>
+        <!-- Modal -->
+        <div class="modal fade" id="newTimerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">Neuen Timer erstellen</h4>
+                    </div>
+                    <div class="modal-body modalContent" name="modalContent" id="modalContent">
+                        <form role="form" action="h_timer.php" method="post" id="newTimerForm">
+                            <input type="hidden" name="action" value="new">
+                            <div class="form-group input-group">
+                                <span class="input-group-addon">Name</span>
+                                <input type="text" name="name" class="form-control" placeholder="Testtimer" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
+                            <button type="submit" class="btn btn-primary" onclick="" id="submitbutton" name="submitbutton">Erstellen</button>
+                            <button type="submit" class="btn btn-primary" data-dismiss="modal" id="closebutton" name="closebutton" style="display:none">OK</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+
+    </div>
+</div>
+<!-- /#page-wrapper -->
+</div>
+<!-- /#wrapper -->
+<!-- jQuery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script>
+<!-- Bootstrap Core JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<!-- Metis Menu Plugin JavaScript -->
+<script src="https://cdn.jsdelivr.net/jquery.metismenu/1.1.3/metisMenu.min.js" integrity="sha256-OrCnS705nv33ycm/+2ifCnVfxxMdWvBMg5PUX1Fjpps=" crossorigin="anonymous"></script>
+<!-- Custom Theme JavaScript -->
+<script src="./js/sb-admin-2.js"></script>
+<!--ajax-form-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.1/jquery.form.min.js" integrity="sha384-tIwI8+qJdZBtYYCKwRkjxBGQVZS3gGozr3CtI+5JF/oL1JmPEHzCEnIKbDbLTCer" crossorigin="anonymous"></script>
+<script src="./js/timer.js"></script>
 <script>
 $(document).ready(function() {
     $('#newTimerForm').ajaxForm({
