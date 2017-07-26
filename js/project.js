@@ -93,17 +93,17 @@ function addRow(){
         <td><input type="text" name="work`+rowCounter+`" size=10 list="work"></td>
         <td><input type="time" name="star`+rowCounter+`" min=0 value="00:00"></td>
         <td><input type="time" name="ende`+rowCounter+`" min=0 value="00:00"></td>
-        <td><input type="number" name="brea`+rowCounter+`" min=0 Math.max=99 value=0></td>
+        <td><input type="time" name="brea`+rowCounter+`" min=0  value="00:00"></td>
         <td id="wtim`+rowCounter+`">0</td>
         <td><input type="number" id="base`+rowCounter+`" name="base`+rowCounter+`" min=0 Math.max=2></td>
-        <td id="tent`+rowCounter+`"></td>
-        <td id="elev`+rowCounter+`"></td>
-        <td id="twel`+rowCounter+`"></td>
-        <td id="thir`+rowCounter+`"></td>
-        <td id="four`+rowCounter+`"></td>
-        <td id="fift`+rowCounter+`"></td>
-        <td id="sixt`+rowCounter+`"></td>
-        <td id="nigh`+rowCounter+`"></td>
+        <td id="tent`+rowCounter+`">0</td>
+        <td id="elev`+rowCounter+`">0</td>
+        <td id="twel`+rowCounter+`">0</td>
+        <td id="thir`+rowCounter+`">0</td>
+        <td id="four`+rowCounter+`">0</td>
+        <td id="fift`+rowCounter+`">0</td>
+        <td id="sixt`+rowCounter+`">0</td>
+        <td id="nigh`+rowCounter+`">0</td>
         <td><input type="checkbox" name="lunc`+rowCounter+`"></td>
         <td><input type="number" name="cark`+rowCounter+`" min=0 value=0></td>
         </tr>`);
@@ -125,14 +125,14 @@ function loadRow(currentRow){
         <td><input type="time" name="brea`+currentRow+`" min=0 value="`+rowElement[currentRow].break+`"></td>
         <td id="wtim`+currentRow+`">0</td>
         <td><input type="number" id="base`+currentRow+`" name="base`+currentRow+`" min=0 Math.max=2 value="`+rowElement[currentRow].base+`"></td>
-        <td id="tent`+currentRow+`"></td>
-        <td id="elev`+currentRow+`"></td>
-        <td id="twel`+currentRow+`"></td>
-        <td id="thir`+currentRow+`"></td>
-        <td id="four`+currentRow+`"></td>
-        <td id="fift`+currentRow+`"></td>
-        <td id="sixt`+currentRow+`"></td>
-        <td id="nigh`+currentRow+`"></td>
+        <td id="tent`+currentRow+`">0</td>
+        <td id="elev`+currentRow+`">0</td>
+        <td id="twel`+currentRow+`">0</td>
+        <td id="thir`+currentRow+`">0</td>
+        <td id="four`+currentRow+`">0</td>
+        <td id="fift`+currentRow+`">0</td>
+        <td id="sixt`+currentRow+`">0</td>
+        <td id="nigh`+currentRow+`">0</td>
         <td><input type="checkbox" name="lunc`+currentRow+`" value="`+rowElement[currentRow].lunch+`"></td>
         <td><input type="number" name="cark`+currentRow+`" min=0 value="`+rowElement[currentRow].car+`"></td>
         </tr>`);
@@ -178,25 +178,25 @@ function updateRow(row){
 
     if (rowElement[row].getOvertime(10)>0) {
         $('#tent'+row).html(rowElement[row].getOvertime(10));
-    }else{ $('#tent'+row).html('&nbsp;');}
+    }else{ $('#tent'+row).html('0');}
     if (rowElement[row].getOvertime(11)>0) {
         $('#elev'+row).html(rowElement[row].getOvertime(11));
-    }else{ $('#elev'+row).html('&nbsp;');}
+    }else{ $('#elev'+row).html('0');}
     if (rowElement[row].getOvertime(12)>0) {
         $('#twel'+row).html(rowElement[row].getOvertime(12));
-    }else{ $('#twel'+row).html('&nbsp;');}
+    }else{ $('#twel'+row).html('0');}
     if (rowElement[row].getOvertime(13)>0) {
         $('#thir'+row).html(rowElement[row].getOvertime(13));
-    }else{ $('#thir'+row).html('&nbsp;');}
+    }else{ $('#thir'+row).html('0');}
     if (rowElement[row].getOvertime(14)>0) {
         $('#four'+row).html(rowElement[row].getOvertime(14));
-    }else{ $('#four'+row).html('&nbsp;');}
+    }else{ $('#four'+row).html('0');}
     if (rowElement[row].getOvertime(15)>0) {
         $('#fift'+row).html(rowElement[row].getOvertime(15));
-    }else{ $('#fift'+row).html('&nbsp;');}
+    }else{ $('#fift'+row).html('0');}
     if (rowElement[row].getOvertime(16)>0) {
         $('#sixt'+row).html(rowElement[row].getOvertime(16));
-    }else{ $('#sixt'+row).html('&nbsp;');}
+    }else{ $('#sixt'+row).html('0');}
     $('#nigh'+row).html(rowElement[row].getNightHours());
     $('#base'+row).val(rowElement[row].getBase());
 }
@@ -230,6 +230,8 @@ function updateBottom(){
         hours125 += parseFloat(rowElement[index].getOvertime(10));
         hours125 += parseFloat(rowElement[index].getOvertime(11));
     }
+
+                console.log(rowElement[0].getOvertime(10));
     var hours150 = 0;
     for(index = 0; index < rowElement.length; ++index){
         hours150 += parseFloat(rowElement[index].getOvertime(12));
@@ -368,6 +370,7 @@ function updateProjectInfo(){
     $( "#projectCompany" ).html( data.company );
 });
 }
+/*
 function updatePersonalInfo(){
     $.post( "h_user.php", { action: "getinfo", us_id: us_id, p_id: p_id }).done(function( data ) {
     data = jQuery.parseJSON(data);
@@ -378,6 +381,7 @@ function updatePersonalInfo(){
     $( "#projectCompany" ).html( data.company );
 });
 }
+*/
 function updateAll(){
     for (var i = 0; i < rowElement.length; i++) {
         loadRow(i);
@@ -421,6 +425,10 @@ function Row(idNr) {
         obj.lunch =json.lunch;
     }
     obj.getWorkHours = function() {
+        if (obj.base==0.6) {
+            obj.workhours="05:00";
+            return obj.workhours;
+        }
         var brk = obj.break;
         var pause=[];
         pause[0] = brk.split(':')[0];
@@ -458,7 +466,7 @@ function Row(idNr) {
         }
     };
     obj.getOvertime = function(hour) {
-        var ret;
+        var ret=0;
         var workhours = obj.getWorkHours()
         var currentHour = timeFromMins((hour-1)*60);
         if (workhours > currentHour){
@@ -471,10 +479,12 @@ function Row(idNr) {
                 }
             } else {
                 var mins = timeToMins(subTimes(workhours,currentHour));
+                if (isNaN(mins) ||typeof ret == 'undefined') {
+                    ret=0;
+                }else{
                 ret= roundToTwo(mins/60);
             }
-        } else {
-            ret= 0;
+            }
         }
         if (hour==10) {obj.tent=ret;}
         if (hour==11) {obj.elev=ret;}

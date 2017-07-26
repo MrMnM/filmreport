@@ -41,9 +41,11 @@ if (!empty($_GET["id"])) {
 					$u_name = $row["name"];
 					$u_address1 =  $row["address_1"];
 					$u_address2 =  $row["address_2"];
-					$u_ahv =  encrypt($row["ahv"],'d');
+					//$u_ahv =  encrypt($row["ahv"],'d');
+                    $u_ahv =  "Encrypted";
 					$u_dob =   DateTime::createFromFormat('Y-m-d', $row["dateob"]);
-					$u_konto = encrypt($row["konto"],'d');
+					//$u_konto = encrypt($row["konto"],'d');
+                    $u_konto = "Encrypted";
 					$u_bvg =  $row["bvg"];
 					$u_mail = $row["mail"];
                     $u_tel = $row["tel"];
@@ -333,7 +335,8 @@ $allhours2 = new DateTime('2000-01-01 00:00:00');
 				}else{?>style='background:#FFF2E5'><?} echo $arr['fift'];?></td>
 				<td class="brightorange" colspan="2" <? if ($arr['sixt']>0) {echo '>';
 				}else{?>style='background:#FFF2E5'><?} echo $arr['sixt'];?></td>
-				<td class="brightorange" colspan="2" style='background:#FFF2E5'>0</td>
+				<td class="brightorange" colspan="2 "<? if ($arr['night']>0) {echo '>';
+				}else{?>style='background:#FFF2E5'><?} echo $arr['night'];?></td>
 				<td></td>
 				<?
 				if ( $arr['lunch']>0) {echo '<td class="darkgreen">'.$arr["lunch"].'</td>';

@@ -130,7 +130,7 @@ if (!empty($json)){
 <!-- MAINCONTENT -->
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h4 id="title">Laden...</h4>
+            <h4 id="title"><div class="loading-spinner-left"></div>&nbsp;</h4>
             <div style="float:right; top:-10px;">
                 <button type="button" class="btn btn-default refreshButton"><i class="fa fa-refresh"></i></button>
                 <button type="button" class="btn btn-default" onclick="window.open('view.php?id=<?echo $p_id;?>')"><i class="fa fa-eye"></i></button>
@@ -171,7 +171,7 @@ if (!empty($json)){
                                             <tbody>
                                                 <tr>
                                                     <td width=150px><strong>Projektname:</strong></td>
-                                                    <td id="projectName"><div class="loading-spinner-left"></div></td>
+                                                    <td id="projectName"></td>
                                                 </tr>
                                                 <tr>
                                                     <td><strong>Arbeit als:</strong></td>
@@ -481,7 +481,7 @@ $(document).ready(function() {
     p_id = "<?echo $p_id;?>";
 
     updateProjectInfo();
-    updatePersonalInfo();
+    //updatePersonalInfo();
 
     setInterval(function() {
         if(!saved){
