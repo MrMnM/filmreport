@@ -370,18 +370,21 @@ function updateProjectInfo(){
     $( "#projectCompany" ).html( data.company );
 });
 }
-/*
+
 function updatePersonalInfo(){
-    $.post( "h_user.php", { action: "getinfo", us_id: us_id, p_id: p_id }).done(function( data ) {
+    $.post( "h_user.php", { action: "get", us_id}).done(function( data ) {
     data = jQuery.parseJSON(data);
-    $( "#projectName" ).html( data.name );
-    $( "#title" ).html( data.name );
-    $( "#projectJob" ).html( data.job );
-    $( "#projectPay" ).html( data.pay );
-    $( "#projectCompany" ).html( data.company );
+    $( "#userName" ).html( data.name );
+    $( "#userAddress" ).html( data.address1+'<br>'+data.address2 );
+    $( "#userTel" ).html( data.tel );
+    $( "#userMail" ).html( data.mail );
+    $( "#userAHV" ).html( data.ahv );
+    $( "#userDob" ).html( data.dob );
+    $( "#userKonto" ).html( data.konto );
+    $( "#userBVG" ).html( data.bvg );
 });
 }
-*/
+
 function updateAll(){
     for (var i = 0; i < rowElement.length; i++) {
         loadRow(i);

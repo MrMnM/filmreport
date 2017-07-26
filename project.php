@@ -95,24 +95,6 @@ if (!empty($_GET["id"])) {
         }
     }
     $company = $company."\n</br>".$c_address1."\n</br>".$c_address2;
-
-    $sql = "SELECT mail, tel, name, address_1, address_2, ahv, dateob, konto, bvg FROM `users` WHERE u_id='$u_id';";
-    $result = $conn->query($sql);
-
-    if ($result->num_rows > 0) {
-        while($row = $result->fetch_assoc()) {
-            $u_name = $row["name"];
-            $u_tel = $row["tel"];
-            $u_mail = $row["mail"];
-            $u_ahv = encrypt($row["ahv"],'d');
-            $u_dob = $row["dateob"];
-            $u_konto = encrypt($row["konto"],'d');
-            $u_bvg = $row["bvg"];
-            $u_address1= $row["address_1"];
-            $u_address2= $row["address_2"];
-        }
-    }
-    $u_address = $u_address1."\n</br>".$u_address2;
 }
 
 if (!empty($json)){
@@ -215,35 +197,35 @@ if (!empty($json)){
                                             <tbody>
                                                 <tr>
                                                     <td width=150px><strong>Name:</strong></td>
-                                                    <td><? echo $u_name;?></td>
+                                                    <td id="userName"></td>
                                                 </tr>
                                                 <tr>
                                                     <td><strong>Addresse:</strong></td>
-                                                    <td><? echo $u_address;?></td>
+                                                    <td id="userAddress"></td>
                                                 </tr>
                                                 <tr>
                                                     <td><strong>Telefon:</strong></td>
-                                                    <td><? echo $u_tel;?></td>
+                                                    <td id="userTel"></td>
                                                 </tr>
                                                 <tr>
                                                     <td><strong>E-Mail:</strong></td>
-                                                    <td><? echo $u_mail;?></td>
+                                                    <td id="userMail"></td>
                                                 </tr>
                                                 <tr>
                                                     <td><strong>AHV#:</strong></td>
-                                                    <td><? echo $u_ahv;?></td>
+                                                    <td id="userAHV"></td>
                                                 </tr>
                                                 <tr>
                                                     <td><strong>Geburtsdatum:</strong></td>
-                                                    <td><? echo $u_dob;?></td>
+                                                    <td id="userDob"></td>
                                                 </tr>
                                                 <tr>
                                                     <td><strong>Konto:</strong></td>
-                                                    <td><? echo $u_konto;?></td>
+                                                    <td id="userKonto"></td>
                                                 </tr>
                                                 <tr>
                                                     <td><strong>BVG:</strong></td>
-                                                    <td><? echo $u_bvg;?></td>
+                                                    <td id="userBVG"></td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -481,7 +463,7 @@ $(document).ready(function() {
     p_id = "<?echo $p_id;?>";
 
     updateProjectInfo();
-    //updatePersonalInfo();
+    updatePersonalInfo();
 
     setInterval(function() {
         if(!saved){
@@ -490,17 +472,11 @@ $(document).ready(function() {
 }, 15000);
 
 $('#companylist').html('').load("./h_load_companies.php");
-
-    $('#updateProject').ajaxForm({
-            dataType:  'json',
-            success: updateSuccess
-        });
-
-
-
+$('#updateProject').ajaxForm({
+        dataType:  'json',
+        success: updateSuccess
+    });
 });
-
-
 </script>
 </body>
 </html>

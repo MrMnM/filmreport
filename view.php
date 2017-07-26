@@ -84,21 +84,23 @@ if (!empty($_GET["id"])) {
 <body>
 	<div align="center" id="main">
 		<table border="0" cellpadding="0" cellspacing="0" class="f10">
-			<col class="f10" width="23">
-			<col class="f10" width="49">
-			<col class="f10" width="122">
-			<col class="f10" width="26">
-			<col class="f10" span="4" width="46">
-			<col class="f10" width="31">
-			<col class="f10" width="66">
-			<col class="f10" width="23">
-			<col class="f10" span="6" width="32">
-			<col class="f10" width="17">
-			<col class="f10" width="29">
-			<col class="f10" width="17">
-			<col class="f10" width="29">
-			<col class="f10" width="21">
-			<col class="f10" span="2" width="46">
+			<col class="f10" >
+			<col class="f10" >
+			<col class="f10" >
+			<col class="f10" width="30">
+			<col class="f10" span="4" >
+			<col class="f10" width="30">
+            <col class="f10">
+            <col class="f10" width="30">
+            <col class="f10" span="4">
+			<col class="f10" >
+			<col class="f10" >
+			<col class="f10" >
+			<col class="f10" >
+			<col class="f10" >
+			<col class="f10" >
+			<col class="f10" width="30">
+			<col class="f10" span="2">
 
 			<tr>
 				<td class="f14" colspan="4" height="26" width="194">ARBEITSRAPPORT</td>
@@ -117,9 +119,7 @@ if (!empty($_GET["id"])) {
 			</tr>
 			<tr>
 				<td class="blue" colspan="3" height="18"><? echo $u_name;?></td>
-				<td class="xl1"></td>
-				<td class="xl1"></td>
-				<td class="xl1"></td>
+				<td class="xl1" colspan="3"></td>
 				<td class="xl1" colspan="4">Abrechnung nach AAB SSFV 2007</td>
 				<td class="xl1"></td>
 				<td class="xl1" colspan="3">Datum [von/bis] :</td>
@@ -151,10 +151,7 @@ if (!empty($_GET["id"])) {
 				<td class="xl1" colspan="2">Geb. Datum:</td>
 				<td class="blue" colspan="4"><? echo $u_dob;?></td>
 				<td class="xl1"></td>
-				<td class="f10"></td>
-				<td class="f10"></td>
-				<td class="f10"></td>
-				<td class="f10"></td>
+				<td class="f10" colspan="4"></td>
 				<td class="blue" colspan="9"><? echo $c_address1;?></td>
 			</tr>
 			<tr>
@@ -167,10 +164,7 @@ if (!empty($_GET["id"])) {
 				<td class="xl1"></td>
 				<td class="blue" colspan="4"><? echo $u_konto;?></td>
 				<td class="xl1"></td>
-				<td class="f10"></td>
-				<td class="f10"></td>
-				<td class="f10"></td>
-				<td class="f10"></td>
+				<td class="f10" colspan="4"></td>
 				<td class="blue" colspan="9"><? echo $c_address2;?></td>
 			</tr>
 			<tr>
@@ -218,12 +212,7 @@ if (!empty($_GET["id"])) {
 				<td class="wingdings" rowspan="4">u</td>
 				<td class="xl9521306">(bis 9h/Tag)<font class="f9"><sup>1</sup></font></td>
 				<td class="wingdings" rowspan="4">u</td>
-				<td class="td972" colspan="3">&Uuml;berstunden<font class="f9"><sup>2</sup></font> <font class="f6h">(9h +)</font></td>
-				<td class="td972"></td>
-				<td class="td972"></td>
-				<td class="td972"></td>
-				<td class="td972"></td>
-				<td class="td972"></td>
+				<td class="td972" colspan="8">&Uuml;berstunden<font class="f9"><sup>2</sup></font> <font class="f6h">(9h +)</font></td>
 				<td class="td972">Nacht</td>
 				<td class="td972"></td>
 				<td class="wingdings" rowspan="4">u</td>
@@ -231,9 +220,7 @@ if (!empty($_GET["id"])) {
 				<td class="xl10021306"></td>
 			</tr>
 			<tr>
-				<td class="td102" height="12"></td>
-				<td class="td102"></td>
-				<td class="td102"></td>
+				<td class="td102" height="12" colspan="3"></td>
 				<td class="td111 vbottom"></td>
 				<td class="td111"></td>
 				<td class="xl10521306"></td>
@@ -245,7 +232,7 @@ if (!empty($_GET["id"])) {
 				<td class="td173" rowspan="3">13.te</td>
 				<td class="td173" rowspan="3">14.te</td>
 				<td class="td173" rowspan="3">15.te</td>
-				<td class="td173" colspan="2" rowspan="3" width="46">ab<br>
+				<td class="td173" colspan="2" rowspan="3">ab<br>
 				16.te</td>
 				<td class="td128" colspan="2">23:00</td>
 				<td class="td127"></td>
@@ -267,10 +254,7 @@ if (!empty($_GET["id"])) {
 				<td height="12" ></td>
 				<td></td>
 				<td class="td102"></td>
-				<td class="td111"></td>
-				<td class="td111"></td>
-				<td class="td111"></td>
-				<td class="td111"></td>
+				<td class="td111" colspan="4"></td>
 				<td class="brightyellow"></td>
 				<td class="td128" colspan="2">05:00</td>
 				<td class="td127"></td>
@@ -306,6 +290,7 @@ $allhours2 = new DateTime('2000-01-01 00:00:00');
 				$allfood+=$arr['lunch'];
 				$allcar+=$arr['car'];
 //---------------------------------------------------------------------------------
+// TODO Add NBSP when 0 (optically nicer)
 	?>
 			<tr>
 				<td class="td186 td187" colspan="2" height="30"><?
@@ -313,7 +298,8 @@ $allhours2 = new DateTime('2000-01-01 00:00:00');
 				$date = $date->format('d/m/Y');
 				echo $date;
 				?></td>
-				<td class="td186 td187" colspan="2"><? echo $arr['work'];?></td>
+				<td class="td186 td187"><? echo $arr['work'];?></td>
+                <td></td>
 				<td class="td186"  ><? echo $arr['start'];?></td>
 				<td class="td186" ><? echo $arr['end'];?></td>
 				<td class="td186"  ><? echo $arr['break'];?></td>
@@ -322,7 +308,7 @@ $allhours2 = new DateTime('2000-01-01 00:00:00');
 				<td class="darkyellow bold"><? echo $arr['base'];?></td>
 				<td></td>
 				<td class="brightorange" <? if ($arr['tent']>0) {echo '>';
-				}else{?>style='background:#FFF2E5'><?} echo $arr['tent'];?></td>
+				}else{?>style='background:#FFF2E5'><?} if ($arr['tent']>0){echo $arr['tent'];}?></td>
 				<td class="brightorange" <? if ($arr['elev']>0) {echo '>';
 				}else{?>style='background:#FFF2E5'><?} echo $arr['elev'];?></td>
 				<td class="brightorange" <? if ($arr['twel']>0) {echo '>';
@@ -358,16 +344,15 @@ $allhours2 = new DateTime('2000-01-01 00:00:00');
 				<td></td>
 				<td></td>
 				<td class="xl1" colspan="3">Total Arbeitszeit in h:</td>
-				<td class="xl12421306"><?
+				<td class="xl12421306">
+            <?
 				$interval = $allhours1->diff($allhours2);
 				$d=$interval->d;
 				$h=$interval->h;
 				$m= $interval->i;
-
 				echo $d*24+$h.':'.$m;
-
-
-				?></td>
+			?>
+                </td>
 				<td class="xl12521306"></td>
 				<td class="brightyellow">Anz. Tage</td>
 				<td></td>
@@ -383,14 +368,9 @@ $allhours2 = new DateTime('2000-01-01 00:00:00');
 				<td class="xl1" height="2"></td>
 			</tr>
 			<tr class="xl1" >
-				<td class="xl1" colspan="2" height="17" >Bemerkungen:</td>
-				<td class="xl1"></td>
-				<td class="xl1"></td>
-				<td class="xl1"></td>
-				<td class="xl1"></td>
-				<td class="xl1"></td>
-				<td class="xl1"></td>
-				<td class="xl1"></td>
+				<td class="xl1" colspan="7" height="17" >Bemerkungen:</td>
+                <td></td>
+                <td></td>
 				<td class="darkyellow"><?echo $allbase;?></td>
 				<td class="xl1"></td>
 				<td class="darkorange" colspan="2"><?echo $all125;?></td>
@@ -479,21 +459,18 @@ $allhours2 = new DateTime('2000-01-01 00:00:00');
 				<td class="f10" height="10" ></td>
 			</tr>
 			<tr>
-				<td class="f6" ></td>
-				<td class="f6" colspan="5">1 F&uuml;r Laden, Ausladen oder Vorbereitung bis 5 h pro Tag: Pauschal 0.6 Tag</td>
+				<td class="f6" colspan="6">1 F&uuml;r Laden, Ausladen oder Vorbereitung bis 5 h pro Tag: Pauschal 0.6 Tag</td>
 				<td class="xl11521306"></td>
 				<td class="xl1"></td>
 				<td class="f10"></td>
 				<td class="xl16221306" colspan="5">p <font class="f6h">Grundlohn exkl. 8.33% Ferienzulage</font></td>
 			</tr>
 			<tr>
+				<td class="f6" colspan="6">2 &Uuml;berstunden: Bei mehr als 9 h pro Tag auf der Basis von 1/9 Tag.</td>
 				<td class="f6"></td>
-				<td class="f6" colspan="5">2 &Uuml;berstunden: Bei mehr als 9 h pro Tag auf der Basis von 1/9 Tag.</td>
-				<td class="f6" style='width:35pt' width="46"></td>
 			</tr>
 			<tr>
-				<td class="f6"></td>
-				<td class="f6" colspan="5">3 Nachtstunden: Arbeitszeit zwischen 23 und 5 Uhr abz&uuml;glich Pausen.</td>
+				<td class="f6" colspan="6">3 Nachtstunden: Arbeitszeit zwischen 23 und 5 Uhr abz&uuml;glich Pausen.</td>
 				<td class="xl11521306"></td>
 				<td class="f10"></td>
 				<td class="f10"></td>
@@ -501,14 +478,10 @@ $allhours2 = new DateTime('2000-01-01 00:00:00');
 				<td class="f10"></td>
 			</tr>
 			<tr>
-				<td class="f6" ></td>
-				<td class="f6" colspan="5">4 Spesenregelung gem&auml;ss AAB SSFV 2007</td>
-				<td class="f10"></td>
-				<td class="f10"></td>
-				<td class="f10"></td>
+				<td class="f6" colspan="6">4 Spesenregelung gem&auml;ss AAB SSFV 2007</td>
+				<td class="f10" colspan="3"></td>
 				<td class="xl16521306" colspan="13">Zahlbar innert 30 Tagen nach Erhalt. Betrag auf obenstehendes Konto &uuml;berweisen. Danke.</td>
-				<td class="f10"></td>
-				<td class="f10"></td>
+				<td class="f10" colspan="2"></td>
 			</tr>
 		</table>
 	</div>

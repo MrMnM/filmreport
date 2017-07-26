@@ -26,46 +26,114 @@ include './includes/inc_variables.php';
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
 
 <body>
-    <div id="wrapper">
+<div id="wrapper">
 <? include('./includes/inc_top.php');?>
-
-        <div id="page-wrapper">
-<p></br></p>
-            <!-- /.row -->
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                        <i class="fa fa-user fa-fw"></i> Persönliche Informationen
-                        </div>
-                        <!--panel heading-->
-                        <div class="panel-body">
-                        </div>
-                        <!-- /.panel-body -->
-                    </div>
-                    <!-- /.panel -->
-                    <!-- /.panel -->
-                    <!-- /.panel -->
-                </div>
-                <!-- /.col-lg-8 -->
-            </div>
-            <!-- /.row -->
-        </div>
-        <!-- /#page-wrapper -->
-    </div>
-    <!-- /#wrapper -->
-
+<div id="page-wrapper">
+    <p></br></p>
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-user fa-fw"></i> Persönliche Informationen
+                </div><!--panel heading-->
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <form role="form">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <tbody>
+                                            <tr class="name">
+                                                <td width="150px"><strong>Name:</strong></td>
+                                                <td class="name"></td>
+                                            </tr>
+                                            <tr class="address">
+                                                <td><strong>Addresse:</strong></td>
+                                                <td class="address"></td>
+                                            </tr>
+                                            <tr class="phone">
+                                                <td><strong>Telefon:</strong></td>
+                                                <td class="phone"></td>
+                                            </tr>
+                                            <tr class="ahv">
+                                                <td><strong>AHV#:</strong></td>
+                                                <td class="ahv"></td>
+                                            </tr>
+                                            <tr class="dob">
+                                                <td><strong>Geburtsdatum:</strong></td>
+                                                <td class=dob></td>
+                                            </tr>
+                                            <tr class="konto">
+                                                <td><strong>Konto:</strong></td>
+                                                <td class="konto"></td>
+                                            </tr>
+                                            <tr class="bvg">
+                                                <td><strong>BVG:</strong></td>
+                                                <td class="bvg"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div><!--tableresponsive-->
+                                <div class="pull-right">
+                                    <div class="btn-group">
+                                        <button type="submit" class="btn btn-default disabled">Speichern</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div><!--col lg12-->
+                    </div><!--row-->
+                </div><!--panelbody-->
+            </div><!--panel-->
+        </div><!--col6--->
+        <div class="col-lg-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-lock fa-fw"></i> Passwort
+                </div><!--panel heading-->
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <form role="form">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <tbody>
+                                            <tr class="mail">
+                                                <td width="150px"><strong>E-Mail:</strong></td>
+                                                <td class="mail"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="pull-right">
+                                    <div class="btn-group">
+                                        <button type="submit" class="btn btn-default disabled">Speichern</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div><!--col12-->
+                    </div><!--row-->
+                </div><!--panelbody-->
+            </div><!--panel-->
+        </div><!--col6-->
+    </div><!--row-->
+</div><!-- /#page-wrapper -->
+</div><!-- /#wrapper -->
 <!-- jQuery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script>
 <!-- Bootstrap Core JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<!-- Metis Menu Plugin JavaScript -->
+<script src="https://cdn.jsdelivr.net/jquery.metismenu/1.1.3/metisMenu.min.js" integrity="sha256-OrCnS705nv33ycm/+2ifCnVfxxMdWvBMg5PUX1Fjpps=" crossorigin="anonymous"></script>
 <!-- Custom Theme JavaScript -->
 <script src="./js/sb-admin-2.js"></script>
+<!-- Custom Functions JavaScript -->
+<script>var us_id = "<? echo $u_id;?>";</script>
+<script src="./js/user.js"></script>
 </body>
 </html>
