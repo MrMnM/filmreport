@@ -6,6 +6,13 @@ error_reporting( E_ALL | E_STRICT );
 include './includes/inc_dbconnect.php';
 include './includes/inc_variables.php';
 
+$conn = new mysqli($servername, $username, $password, $dbname);
+if ($conn->connect_error) {
+    die('{ "message": "ERROR: '.$conn->connect_error.'"}');
+}
+
+$validated = FALSE;
+
 if(!empty($_GET["v"])){
     $val = mysqli_real_escape_string($conn, $_GET["v"]);
     $sql = "SELECT active, u_id FROM `users` WHERE active='$val';";
@@ -16,7 +23,7 @@ if(!empty($_GET["v"])){
         }
         $sql = "UPDATE users SET active = 'yes' WHERE u_id = '$u_id'";
         if ($conn->query($sql) === TRUE) {
-            die('<script type="text/javascript" language="JavaScript">window.location.href="./login.php";</script>');
+            $validated = TRUE;
         } else {
             die('{ "message": "ERROR: ' . $sql . $conn->error.'}');
         }
@@ -61,9 +68,19 @@ if(!empty($_GET["v"])){
                 <i class="fa fa-user fa-fw"></i><b> Neues Konto erstellen</b>
             </div>
             <div class="panel-body">
-                <div class="alert alert-danger alert-dismissable">
+
+<? if ($validated==TRUE) {?>
+    <div id="success" class="alert alert-success">
+        <p>Account wurde erfolreich Validiert</p>
+        <a href=".\login.php">ZUM LOGIN</a>
+    </div>
+<?}else{?>
+                <div id="error" class="alert alert-danger alert-dismissable" style="display: none;">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                    Benutzername und/oder Passwort stimmen nicht &uuml;berein.
+                    <p id="errorcontent">Benutzername und/oder Passwort stimmen nicht &uuml;berein.</p>
+                </div>
+                <div id="success" class="alert alert-success" style="display: none;">
+                    <p>Account wurde erfolreich erstellt, eine E-Mail wurde an die angegebene Addresse versendet.</p>
                 </div>
                 <form role="form" method="post" action="h_user.php" id="createAccount">
                     <input type="hidden" name="action" value="new">
@@ -97,6 +114,7 @@ if(!empty($_GET["v"])){
                         <button type="submit" class="btn btn-lg btn-success btn-block">Erstellen</button>
                     </fieldset>
                 </form>
+                <?}?>
             </div>
         </div>
         <p align="right"><font size="-1" color="#888888"><? echo $VERSION; ?></font></p>
@@ -121,11 +139,16 @@ $('#createAccount').ajaxForm({
     });
 });
 
+$("[data-toggle=popover]").popover()
+
 function updateSuccess(data){
-    if (data.message=="SUCCESS:") {
-        //TODO HIDE INFO AND SHOW CREATED
+    if (data.message=="SUCCESS") {
+        $('#success').show()
+        $('#createAccount').hide()
+        $('#error').hide()
     }else{
-        //WORK ON ERROR
+        $('#error').show()
+        $('#error').find("p").html(data.message)
     }
 }
 </script>

@@ -6,7 +6,9 @@ error_reporting(E_ALL);
 //ignore_user_abort();
 include './includes/inc_encrypt.php';
 include './includes/inc_dbconnect.php';
-include './includes/inc_sessionhandler_ajax.php';
+if ($_POST['action']!='new') {
+    include './includes/inc_sessionhandler_ajax.php';
+}
 
 $action = (isset($_POST['action']) AND $_POST['action']!="") ? $_POST['action'] : null;
 
@@ -73,24 +75,26 @@ function NewUser($conn){
         }else{
             $uid = md5($mail);
             $name = $_POST["name"];
-            $active = substr(md5(microtime()),0,5); //TODO Timeout
+            $active = substr(md5(microtime()),1,6); //TODO Timeout
             $pw= $_POST["pw"];
             $pwhash = mysqli_real_escape_string($conn, password_hash($pw, PASSWORD_DEFAULT));
 
             // $sql = "UPDATE users SET tel = '$tel', name='$name',address_1='$address1', address_2='$address2', ahv='$ahv', dateob='$dateob' , bvg='$bvg' , konto='$konto' WHERE u_id = '$u_id'";
-            $sql = "INSERT INTO users (name,u_id,active,mail,pw,tel,address_1,address_2,ahv,dateob,bvg,konto) VALUES ('$name','$uid','$active', '$mail','$pwhash','','','','','','','','')";
+            $sql = "INSERT INTO users (name,u_id,active,mail,pw,tel,address_1,address_2,ahv,dateob,bvg,konto) VALUES ('$name','$uid','$active','$mail','$pwhash','','','','','','','')";
             if ($conn->query($sql) === TRUE) {
-                $to      = $mail;
+                $to = $mail;
                 $subject = 'Filmabrechnungsgenerator';
-                $message = 'Hallo, bitte bestaetige deine Email Addresse mit folgendem Link: http://www.xibrix.ch/filmreport/new_account.php?v='.$active;
+                $message = 'Hallo, bitte bestaetige deine Email Addresse mit folgendem Link: <a href="http://www.xibrix.ch/DEV_filmreport/new_account.php?v&#61;'.$active.'">http://www.xibrix.ch/DEV_filmreport/new_account.php?v&#61;'.$active.'</a>';
                 $message = wordwrap($message, 70, "\r\n");
                 $headers = 'From: webmaster@filmreport.com' . "\r\n" .
                 'Reply-To: webmaster@filmreport.com' . "\r\n" .
-                'X-Mailer: PHP/' . phpversion();
+                'X-Mailer: PHP/' . phpversion().
+                'MIME-Version: 1.0' . "\ r\n" .
+                ' Content-type: text/html; charset=iso-8859-1' . "\ r\n";;
                 mail($to, $subject, $message, $headers);
                 echo '{ "message": "SUCCESS" }';
             } else {
-                echo '{ "message": "SQL Fehler" }';
+                die('{ "message": "ERROR: '.$conn->connect_error.'"}');
             }
         }
     }else{
