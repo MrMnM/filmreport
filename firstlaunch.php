@@ -1,4 +1,5 @@
 <?
+//TODO REMOVE
 include './includes/inc_encrypt.php';
 
 ini_set('display_errors', 1);

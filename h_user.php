@@ -18,11 +18,7 @@ if ($conn->connect_error) {
 if($action){
     switch ($_POST["action"]){
         case 'new':
-        if (!empty($u_id) && !empty($_POST["name"]) && !empty($_POST["date"]) && !empty($_POST["work"]) && !empty($_POST["pay"]) && !empty($_POST["company"])) {
-            //NewProject($u_id, $conn);
-        }else{
-            die('{ "message": "ERROR: Fehlerhafte Daten"}');
-        }
+            NewUser($conn);
         break;
         case 'update':
         if (!empty($u_id) && !empty($_POST["us_id"])) {
@@ -62,6 +58,44 @@ function GetUser($u_id, $conn){
     //TODO more elegantly
     $arr = array('name' => $u_name, 'tel' => $u_tel, 'mail' => $u_mail, 'ahv' => $u_ahv, 'dob' => $u_dob, 'konto' => $u_konto,'bvg'=> $u_bvg,'address1'=>$u_address1 ,'address2'=>$u_address2);
     echo json_encode($arr);
+}
+
+function NewUser($conn){
+    if (!empty($_POST["name"]) && !empty($_POST["mail"]) && !empty($_POST["pw"]) && !empty($_POST["pw2"])) {
+        if($_POST["pw"]!=$_POST["pw2"]){
+            die('{ "message": "Passwort stimmt nicht &uuml;eberein" }');
+        }
+        $mail = mysqli_real_escape_string($conn, $_POST["mail"]);
+        $sql = "SELECT mail FROM `users` WHERE mail='$mail';";
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0) {
+            die('{ "message": "Zu dieser Email gibt es bereits einen Account" }');
+        }else{
+            $uid = md5($mail);
+            $name = $_POST["name"];
+            $active = substr(md5(microtime()),0,5); //TODO Timeout
+            $pw= $_POST["pw"];
+            $pwhash = mysqli_real_escape_string($conn, password_hash($pw, PASSWORD_DEFAULT));
+
+            // $sql = "UPDATE users SET tel = '$tel', name='$name',address_1='$address1', address_2='$address2', ahv='$ahv', dateob='$dateob' , bvg='$bvg' , konto='$konto' WHERE u_id = '$u_id'";
+            $sql = "INSERT INTO users (name,u_id,active,mail,pw,tel,address_1,address_2,ahv,dateob,bvg,konto) VALUES ('$name','$uid','$active', '$mail','$pwhash','','','','','','','','')";
+            if ($conn->query($sql) === TRUE) {
+                $to      = $mail;
+                $subject = 'Filmabrechnungsgenerator';
+                $message = 'Hallo, bitte bestaetige deine Email Addresse mit folgendem Link: http://www.xibrix.ch/filmreport/new_account.php?v='.$active;
+                $message = wordwrap($message, 70, "\r\n");
+                $headers = 'From: webmaster@filmreport.com' . "\r\n" .
+                'Reply-To: webmaster@filmreport.com' . "\r\n" .
+                'X-Mailer: PHP/' . phpversion();
+                mail($to, $subject, $message, $headers);
+                echo '{ "message": "SUCCESS" }';
+            } else {
+                echo '{ "message": "SQL Fehler" }';
+            }
+        }
+    }else{
+        die('{ "message": "Falsch aufgerufen" }');
+    }
 }
 
 
