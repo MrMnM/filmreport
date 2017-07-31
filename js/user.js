@@ -18,14 +18,15 @@ $( "tr.address" )
     u.address2=$('#address2').val();
     $( this ).find('.address').html(u.address1+'<br>'+u.address2);
 });
-$( "tr.phone" )
+$( "tr.tel" )
 .mouseenter(function() {
-    $( this ).find('.phone').html( '<input type="text" id="phone" value="'+u.tel+'">');
+    $( this ).find('.tel').html( '<input type="text" id="tel" value="'+u.tel+'">');
 })
 .mouseleave(function() {
-    u.phone = $('#phone').val();
-    $( this ).find('.phone').html(u.tel);
+    u.tel = $('#tel').val();
+    $( this ).find('.tel').html(u.tel);
 });
+/*
 $( "tr.mail" )
 .mouseenter(function() {
     $( this ).find('.mail').html( '<input type="mail" id="mail" value="'+u.mail+'">');
@@ -34,6 +35,7 @@ $( "tr.mail" )
     u.mail=$('#mail').val();
     $( this ).find('.mail').html(u.mail);
 });
+*/
 $( "tr.ahv" )
 .mouseenter(function() {
     $( this ).find('.ahv').html( '<input type="text" id="ahv" value="'+u.ahv+'">');
@@ -67,16 +69,33 @@ $( "tr.bvg" )
     $( this ).find('.bvg').html(u.bvg);
 });
 
+jQuery('#saveInfo').click(function(event){
+    $.ajax({
+        url: 'h_user.php',
+        dataType: 'json',
+        data : {'action':'update','us_id':us_id, 'name':u.name, 'tel':u.tel, 'address1':u.address1, 'address2':u.address2,'ahv':u.ahv,'dob':u.dob, 'konto':u.konto,'bvg':u.bvg,},
+        type: 'POST',
+        success: function(data){
+            if (data.message=="SUCCESS") {
+                alert('SUCCESS');
+            }else{
+                alert('ERROR');
+            }
+        }
+    });
+});
+
 function LoadUser(){
     $.post( "h_user.php", { action: "get", us_id}).done(function( data ) {
     ret = jQuery.parseJSON(data);
+    console.log(ret);
     u = ret;
     Redraw();
 });
 }
 
 function Redraw(){
-    $('td.phone').html(u.tel);
+    $('td.tel').html(u.tel);
     $('td.name').html(u.name);
     $('td.mail').html(u.mail);
     $('td.ahv').html(u.ahv);
@@ -89,14 +108,15 @@ function Redraw(){
 
 function User() {
     var obj = {};
-    obj.name=null;
-    obj.address1=null;
-    obj.address2=null;
-    obj.tel=null;
-    obj.mail=null;
-    obj.ahv=null;
-    obj.dob=null;
-    obj.konto=null;
-    obj.bvg=null;
+    obj.action="update";
+    obj.name=" ";
+    obj.address1=" ";
+    obj.address2=" ";
+    obj.tel=" ";
+    obj.mail=" ";
+    obj.ahv=" ";
+    obj.dob=" ";
+    obj.konto=" ";
+    obj.bvg=" ";
     return obj;
 }

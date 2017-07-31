@@ -8,98 +8,131 @@ t.data = new Array();
 
 function SetActive(id,name) {
     if (clickedDel==true) {
-    return;
+        return;
+    }else{
+        t.id     = id;
+        t.name = name;
+        $("#activetimer").show();
+        $("#selector").hide();
+        $("#projectTitle").html(t.name);
+        $('#stop').prop('disabled', true);
+        $('#pause').prop('disabled', true);
+        //console.log(t);
     }
-    t.id     = id;
-    t.name = name;
-    $("#activetimer").show();
-    $("#selector").hide();
-    $("#projectTitle").html(t.name);
-    console.log(t);
+}
+
+function  LoadTimer(id){
+    $.ajax({
+        url: 'h_timer.php',
+        dataType: 'json',
+        data : {'action':'load','id':id},
+        type: 'POST',
+        success: function(data){
+        }
+    });
 }
 
 jQuery('#shoot').click(function(event){
+    $('#stop').prop('disabled', false);
+    $('#pause').prop('disabled', false);
+    $('#load').show();
+    $('#shoot').hide();
+    $('#drive').show();
     t.mode=0;
     event.preventDefault();
     var time = new Date();
     startStamp = time;
     var dat = "sh_"+time;
     t.data.push(dat);
-        console.log(t);
-        saveTimer();
-        updateDisplay();
+    //console.log(t);
+    saveTimer('shoot', time);
+    updateDisplay();
 });
 
 jQuery('#load').click(function(event){
+    $('#stop').prop('disabled', false);
+    $('#pause').prop('disabled', false);
+    $('#load').hide();
+    $('#shoot').show();
+    $('#drive').show();
     t.mode=1;
     event.preventDefault();
     var time = new Date();
-        startStamp = time;
+    startStamp = time;
     var dat = "lo_"+time;
     t.data.push(dat);
-        console.log(t);
-        saveTimer();
-        updateDisplay();
+    //console.log(t);
+    saveTimer('load',time);
+    updateDisplay();
 });
 
 jQuery('#drive').click(function(event){
+    $('#stop').prop('disabled', false);
+    $('#pause').prop('disabled', false);
+    $('#load').show();
+    $('#shoot').show();
+    $('#drive').hide();
     t.mode=2;
     event.preventDefault();
     var time = new Date();
-        startStamp = time;
+    startStamp = time;
     var dat = "dr_"+time;
     t.data.push(dat);
-        console.log(t);
-        saveTimer();
-        updateDisplay();
+    console.log(t);
+    saveTimer('drive',time);
+    updateDisplay();
 });
 
 jQuery('#pause').click(function(event){
+    $('#pause').prop('disabled', true);
+    $('#load').show();
+    $('#shoot').show();
+    $('#drive').show();
     t.mode=3;
     event.preventDefault();
     var time = new Date();
-        startStamp = time;
+    startStamp = time;
     var dat = "pa_"+time;
     t.data.push(dat);
-        console.log(t);
-        saveTimer();
-        updateDisplay();
+    //console.log(t);
+    saveTimer('pause',time);
+    updateDisplay();
 });
 
 jQuery('#stop').click(function(event){
+    $('#stop').prop('disabled', true);
+    $('#pause').prop('disabled', true);
+    $('#load').show();
+    $('#shoot').show();
+    $('#drive').show();
     t.mode=9;
     event.preventDefault();
     var time = new Date();
     var dat = "st_"+time;
     t.data.push(dat);
-        console.log(t);
-        saveTimer();
-        updateDisplay();
+    //console.log(t);
+    saveTimer('stop',time);
+    updateDisplay();
 });
-
-$('#deleteTimer').click(function(){
-    alert('perform action here');
-});
-
 
 function updateDisplay()
 {
-switch (t.mode) {
-    case 0:
-    $("#timerCount").html('<i class="fa fa-video-camera"></i> '+updateTimer());
-    break;
-    case 1:
-    $("#timerCount").html('<i class="fa fa-truck"></i> '+updateTimer());
-    break;
-    case 2:
-    $("#timerCount").html('<i class="fa fa-car"></i> '+updateTimer());
-    break;
-    case 3:
-    $("#timerCount").html('<i class="fa fa-pause"></i> '+updateTimer());
-    break;
-    default:
-    $("#timerCount").html('');
-}
+    switch (t.mode) {
+        case 0:
+        $("#timerCount").html('<i class="fa fa-video-camera"></i> '+updateTimer());
+        break;
+        case 1:
+        $("#timerCount").html('<i class="fa fa-truck"></i> '+updateTimer());
+        break;
+        case 2:
+        $("#timerCount").html('<i class="fa fa-car"></i> '+updateTimer());
+        break;
+        case 3:
+        $("#timerCount").html('<i class="fa fa-pause"></i> '+updateTimer());
+        break;
+        default:
+        $("#timerCount").html('');
+    }
 }
 
 function updateTimer() {
@@ -114,25 +147,24 @@ function updateTimer() {
     diff = diff-(m*60);
     var s = diff;
     counter =  pad(h)+':'+pad(m)+':'+pad(s);
-    console.log(counter);
+    //console.log(counter);
     return counter;
 }
 
-function saveTimer(){
-/*    $.ajax({
+function saveTimer(act,time){
+    $.ajax({
         url: 'h_timer.php',
         dataType: 'json',
-        data : {'action':'save','id':projectId, 'data':data},
+        data : {'action':'update','id':t.id, 'a':act, 't':time},
         type: 'POST',
         success: function(data){
-            if (data.message=="SUCCESS:") {
-                saved = true;
+            if (data.message=="SUCCESS") {
+                console.log("good");
             }else{
-                saved = false;
+                console.log("error");
             }
         }
     });
-    */
 }
 
 function deleteTimer(id){
@@ -160,7 +192,6 @@ function newCreated(data) {
     if (data.message=="SUCCESS") {
         $('#newTimerModal').modal('hide');
         SetActive(data.id,data.name)
-
     }else{
         alert(data.message);
     }

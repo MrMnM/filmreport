@@ -6,11 +6,11 @@ error_reporting(E_ALL);
 //ignore_user_abort();
 include './includes/inc_encrypt.php';
 include './includes/inc_dbconnect.php';
-if ($_POST['action']!='new') {
+$action = (isset($_POST['action']) AND $_POST['action']!="") ? $_POST['action'] : null;
+
+if ($action!='new') {
     include './includes/inc_sessionhandler_ajax.php';
 }
-
-$action = (isset($_POST['action']) AND $_POST['action']!="") ? $_POST['action'] : null;
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
@@ -78,9 +78,10 @@ function NewUser($conn){
             $active = substr(md5(microtime()),1,6); //TODO Timeout
             $pw= $_POST["pw"];
             $pwhash = mysqli_real_escape_string($conn, password_hash($pw, PASSWORD_DEFAULT));
+            $date = date("Y-m-d");
 
             // $sql = "UPDATE users SET tel = '$tel', name='$name',address_1='$address1', address_2='$address2', ahv='$ahv', dateob='$dateob' , bvg='$bvg' , konto='$konto' WHERE u_id = '$u_id'";
-            $sql = "INSERT INTO users (name,u_id,active,mail,pw,tel,address_1,address_2,ahv,dateob,bvg,konto) VALUES ('$name','$uid','$active','$mail','$pwhash','','','','','','','')";
+            $sql = "INSERT INTO users (name,u_id,active,mail,pw,tel,address_1,address_2,ahv,dateob,bvg,konto) VALUES ('$name','$uid','$active','$mail','$pwhash','','','','','$date','','')";
             if ($conn->query($sql) === TRUE) {
                 $to = $mail;
                 $subject = 'Filmabrechnungsgenerator';
@@ -150,7 +151,7 @@ function UpdateInfo($u_id, $conn){
             die('{ "message":"'. $sql .' ' . $conn->error.'"}');
         }
     }
-    if (!empty($_POST["dateob"])) {
+    if (!empty($_POST["dob"])) {
         $cur=mysqli_real_escape_string($conn,$_POST["dob"]);
         $sql = "UPDATE users SET  dateob='$cur' WHERE u_id = '$u_id'";
         if ($conn->query($sql) === TRUE) {
@@ -174,5 +175,5 @@ function UpdateInfo($u_id, $conn){
             die('{ "message":"'. $sql .' ' . $conn->error.'"}');
         }
     }
-    $conn->close();
+    die('{ "message":"SUCCESS"}');
 }

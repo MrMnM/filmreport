@@ -45,8 +45,6 @@ include './includes/inc_variables.php';
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-12">
-                            <form role="form">
-                                <div class="table-responsive">
                                     <table class="table table-hover">
                                         <tbody>
                                             <tr class="name">
@@ -57,9 +55,9 @@ include './includes/inc_variables.php';
                                                 <td><strong>Addresse:</strong></td>
                                                 <td class="address"></td>
                                             </tr>
-                                            <tr class="phone">
+                                            <tr class="tel">
                                                 <td><strong>Telefon:</strong></td>
-                                                <td class="phone"></td>
+                                                <td class="tel"></td>
                                             </tr>
                                             <tr class="ahv">
                                                 <td><strong>AHV#:</strong></td>
@@ -78,14 +76,12 @@ include './includes/inc_variables.php';
                                                 <td class="bvg"></td>
                                             </tr>
                                         </tbody>
-                                    </table>
-                                </div><!--tableresponsive-->
+                                    </table><!--tableresponsive-->
                                 <div class="pull-right">
                                     <div class="btn-group">
-                                        <button type="submit" class="btn btn-default disabled">Speichern</button>
+                                        <button class="btn btn-default" id="saveInfo">Speichern</button>
                                     </div>
                                 </div>
-                            </form>
                         </div><!--col lg12-->
                     </div><!--row-->
                 </div><!--panelbody-->
@@ -100,7 +96,6 @@ include './includes/inc_variables.php';
                     <div class="row">
                         <div class="col-lg-12">
                             <form role="form">
-                                <div class="table-responsive">
                                     <table class="table table-hover">
                                         <tbody>
                                             <tr class="mail">
@@ -109,7 +104,6 @@ include './includes/inc_variables.php';
                                             </tr>
                                         </tbody>
                                     </table>
-                                </div>
                                 <div class="pull-right">
                                     <div class="btn-group">
                                         <button type="submit" class="btn btn-default disabled">Speichern</button>

@@ -33,8 +33,8 @@ if($action){
         }
         break;
         case 'update':
-        if (!empty($u_id) && !empty($_POST["us_id"]) && !empty($_POST["p_id"])) {
-            UpdateTimer($u_id, $conn);
+        if (!empty($_POST["a"]) && !empty($_POST["id"])) {
+            UpdateTimer( $conn);
         }else{
             die('{ "message": "ERROR: Fehlerhafte Daten"}');
         }
@@ -42,6 +42,13 @@ if($action){
         case 'gettimers':
         if (!empty($u_id)) {
             GetTimers($u_id, $conn);
+        }else{
+            die('{ "message": "ERROR: Fehlerhafte Daten"}');
+        }
+        break;
+        case 'load':
+        if (!empty($_POST["id"])) {
+            LoadTimer($conn);
         }else{
             die('{ "message": "ERROR: Fehlerhafte Daten"}');
         }
@@ -103,14 +110,54 @@ function GetTimers($u_id, $conn){
     }
 }
 
-function SaveTimer($u_id, $conn){
+function LoadTimer($conn){
+    $timer =array();
+    $timer_id= mysqli_real_escape_string($conn,$_POST["id"]);
+    $sql = "SELECT action, t_time  FROM `e_timers` WHERE timer_id='$timer_id' ORDER BY id ASC;";
+    $result = $conn->query($sql);
+    if (!$result) {
+        die('{ "message": "Error: ' . $sql . $conn->error.'}');
+    }else{
+        $rowCount = mysqli_num_rows($result);
+        while($row = $result->fetch_assoc()) {
+            $timer[] = $row;
+        }
+    }
+    echo json_encode($timer);
+}
+
+
+function UpdateTimer($conn){
+    $success=0;
+    $t_id= mysqli_real_escape_string($conn,$_POST["id"]);
+    $act= mysqli_real_escape_string($conn,$_POST["a"]);
+    $time= mysqli_real_escape_string($conn,$_POST["t"]);
+    $sql = "INSERT INTO e_timers (timer_id,action,t_time)
+    VALUES ('$t_id', '$act', '$time')";
+    if ($conn->query($sql) === TRUE) {
+        $success = $success+1;
+    } else {
+        die('{ "message": "Error: ' . $sql . $conn->error.'}');
+    }
+    $sql = "UPDATE `active_timers` SET nr_entries = nr_entries + 1 WHERE timer_id ='$t_id'";
+    if ($conn->query($sql) === TRUE) {
+        $success = $success+1;
+    } else {
+        die('{ "message": "Error: ' . $sql . $conn->error.'}');
+    }
+    if ($success==2) {
+        die('{ "message": "SUCCESS"}');
+    }else{
+        die('{ "message": "Error:"}');
+    }
+
 }
 
 function DeleteTimer($u_id, $conn){
     $id = mysqli_real_escape_string($conn,$_POST["id"]);
     $sql = "DELETE FROM active_timers WHERE timer_id='$id' AND user_id='$u_id'";
     if ($conn->query($sql) === TRUE) {
-        die('{ "message": "SUCCESS",  "timer_id":"'.$id.'"}');
+        die('{ "message": "SUCCESS"}');
     } else {
         die('{ "message": "Error: ' . $sql . $conn->error.'}');
     }

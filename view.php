@@ -24,8 +24,8 @@ if (!empty($_GET["id"])) {
                     $p_company = $row["p_company"];
                     $p_job = $row["p_job"];
                     $p_pay = $row["p_gage"];
-					$sdate = DateTime::createFromFormat('Y-m-d',$row["p_start"]);
-					$edate = DateTime::createFromFormat('Y-m-d',$row["p_end"]);
+					$i_sdate = DateTime::createFromFormat('Y-m-d',$row["p_start"]);
+					$i_edate = DateTime::createFromFormat('Y-m-d',$row["p_end"]);
                     $p_json = $row["p_json"];
 					$user = $row["user_id"];
                     $comment = $row["p_comment"];
@@ -52,8 +52,8 @@ if (!empty($_GET["id"])) {
 				}
 			}
 
-			$sdate = $sdate->format('d/m/Y');
-			$edate = $edate->format('d/m/Y');
+			$sdate = $i_sdate->format('d/m/Y');
+			$edate = $i_edate->format('d/m/Y');
 			$u_dob = $u_dob->format('d/m/Y');
 
 			$sql = "SELECT name, address_1, address_2 FROM `companies` WHERE company_id='$p_company';";
@@ -71,15 +71,19 @@ if (!empty($_GET["id"])) {
 				die('<font color="red"><b>Das Projekt ist noch leer, bitte Stunden hinzuf&uuml;gen</b></font>');
 			}
 			$dat = json_decode($p_json, true);
+            $title= $i_sdate->format('ymd').'_'.$p_name;
+            $title= str_replace(" ", "_", $title);
         }else{
 			die ('ERROR, PLEASE SPECIFY PROJECT');
 		}
         ?>
 <html>
 <head>
+    <!--TODO glyphicons printable & Centered-->
 	<meta content="text/html" http-equiv="Content-Type">
-	<link href="./css/view_style.css" rel="stylesheet">
-	<title></title>
+    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+	--><link href="./css/view_style.css" rel="stylesheet">
+	<title><? echo $title; ?></title>
 </head>
 <body>
 	<div align="center" id="main">
@@ -204,18 +208,18 @@ if (!empty($_GET["id"])) {
 				<td class="xl1" height="19"></td>
 				<td class="xl1"></td>
 				<td class="xl1"></td>
-				<td class="wingdings" rowspan="4">u</td>
+				<td rowspan="4" align="centered">&#9654;</td>
 				<td class="td111 vbottom"></td>
 				<td class="td111"></td>
 				<td class="xl9321306"></td>
 				<td class="td111"></td>
-				<td class="wingdings" rowspan="4">u</td>
+				<td rowspan="4" align="centered">&#9654;</td>
 				<td class="xl9521306">(bis 9h/Tag)<font class="f9"><sup>1</sup></font></td>
-				<td class="wingdings" rowspan="4">u</td>
+				<td  rowspan="4" align="centered">&#9654;</td>
 				<td class="td972" colspan="8">&Uuml;berstunden<font class="f9"><sup>2</sup></font> <font class="f6h">(9h +)</font></td>
 				<td class="td972">Nacht</td>
 				<td class="td972"></td>
-				<td class="wingdings" rowspan="4">u</td>
+				<td rowspan="4" align="centered">&#9654;</td>
 				<td class="xl10021306"></td>
 				<td class="xl10021306"></td>
 			</tr>
@@ -423,10 +427,8 @@ $allhours2 = new DateTime('2000-01-01 00:00:00');
 				<td class="brightgreen"><? echo  round($allcar*0.7, 2);?></td>
 			</tr>
 			<tr>
-				<!--<td class="f7 vbottom" colspan="7" height="17" >$COMMENTS</td>-->
 			</tr>
 			<tr>
-				<!--<td class="f7 vbottom" colspan="7" height="17" >$COMMENTS</td>-->
 				<td></td>
 				<td class="xl1">Total</td>
 				<td class="totals">Grundlohn</td>
@@ -436,14 +438,13 @@ $allhours2 = new DateTime('2000-01-01 00:00:00');
 				<td class="totals" colspan="2">Spesen</td>
 			</tr>
 			<tr>
-				<!--<td class="f7 vbottom" colspan="7" height="17" >$COMMENTS</td>-->
 				<td></td>
 				<td></td>
-				<td class="wingdings">q</td>
+				<td align= "center">&#9660;</td>
 				<td></td>
-				<td class="wingdings" colspan="10">q</td>
+				<td align= "center" colspan="10">&#9660;</td>
 				<td></td>
-				<td class="wingdings" colspan="2">q</td>
+				<td colspan="2" align= "center">&#9660;</td>
 			</tr>
 			<tr>
 				<td class="f7 vbottom" colspan="7" height="17" ></td>
