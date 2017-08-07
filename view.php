@@ -405,8 +405,9 @@ $allhours2 = new DateTime('2000-01-01 00:00:00');
 				<td class="brightgreen">0.70</td>
 			</tr>
 			<tr>
-				<td class="f7" colspan="7" rowspan="4" height="17" ><? echo $comment; ?></td>
-				<td></td>
+				<td class="f7" colspan="3" rowspan="4" height="17" ><? echo $comment; ?></td>
+                <td class="f7" colspan="4" rowspan="4" height="17" ></td>
+                <td></td>
 				<td class="xl1"><sub>CHF</sub></td>
 				<td class="brightyellow"><? echo  round($allbase*$p_pay);?></td>
 				<td class="td7"></td>

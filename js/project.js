@@ -95,7 +95,7 @@ function addRow(){
         <td><input type="time" name="ende`+rowCounter+`" min=0 value="00:00"></td>
         <td><input type="time" name="brea`+rowCounter+`" min=0  value="00:00"></td>
         <td id="wtim`+rowCounter+`">0</td>
-        <td><input type="number" id="base`+rowCounter+`" name="base`+rowCounter+`" min=0 Math.max=2></td>
+        <td><input type="number" id="base`+rowCounter+`" name="base`+rowCounter+`" min=0 step="0.1"></td>
         <td id="tent`+rowCounter+`">0</td>
         <td id="elev`+rowCounter+`">0</td>
         <td id="twel`+rowCounter+`">0</td>
@@ -124,7 +124,7 @@ function loadRow(currentRow){
         <td><input type="time" name="ende`+currentRow+`" min=0 value="`+rowElement[currentRow].end+`"></td>
         <td><input type="time" name="brea`+currentRow+`" min=0 value="`+rowElement[currentRow].break+`"></td>
         <td id="wtim`+currentRow+`">0</td>
-        <td><input type="number" id="base`+currentRow+`" name="base`+currentRow+`" min=0 Math.max=2 value="`+rowElement[currentRow].base+`"></td>
+        <td><input type="number" id="base`+currentRow+`" name="base`+currentRow+`" min=0 step="0.1" value="`+rowElement[currentRow].base+`"></td>
         <td id="tent`+currentRow+`">0</td>
         <td id="elev`+currentRow+`">0</td>
         <td id="twel`+currentRow+`">0</td>
@@ -431,6 +431,9 @@ function Row(idNr) {
         if (obj.base==0.6) {
             obj.workhours="05:00";
             return obj.workhours;
+        }else if (obj.base!=1) {
+            obj.workhours="05:00";
+            return obj.workhours;
         }
         var brk = obj.break;
         var pause=[];
@@ -444,7 +447,6 @@ function Row(idNr) {
         return obj.workhours;
     };
     obj.getBase = function() {
-        if(obj.work != null && obj.work != ''){
             if (obj.manualBase == false){
                 switch(obj.work){
                     case "Dreh":
@@ -462,11 +464,8 @@ function Row(idNr) {
                     default:
                     obj.base = 0.6;
                 }
-                return obj.base;
             }
-        }else{
-            return 0;
-        }
+        return obj.base;
     };
     obj.getOvertime = function(hour) {
         var ret=0;

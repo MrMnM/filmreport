@@ -241,7 +241,7 @@ if (!empty($json)){
                     <p></p>
                     <div class="row">
                         <div class="col-lg-12">
-                                <form action="#">
+                                <form action="#" width="100%">
                                     <datalist id="work">
                                         <option value="Dreh">Dreh</option>
                                         <option value="Laden">Laden</option>

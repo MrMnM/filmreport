@@ -38,7 +38,7 @@ $( "tr.mail" )
 */
 $( "tr.ahv" )
 .mouseenter(function() {
-    $( this ).find('.ahv').html( '<input type="text" id="ahv" value="'+u.ahv+'">');
+    $( this ).find('.ahv').html( '<input type="text" id="ahv" pattern="756\.\d{4}\.\d{4}\.\d{2}" value="'+u.ahv+'">');
 })
 .mouseleave(function() {
     u.ahv=$('#ahv').val();

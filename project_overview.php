@@ -216,13 +216,18 @@ $(document).ready(function() {
         "autoWidth": false,
 "columns" : [
     { width : '5em' },
-    { width : '15em' },
+    { width : '12em' },
     { width : '50px' },
     { width : '20px' },
     { width : '20px' },
-    { width : '10px' }
+    { width : '20px' }
 ],
         "columnDefs": [ {
+            "targets": 1,
+            "render": function ( data, type, row) {
+                    return '<a href="project.php?id='+row[5]+'"><b>'+row[1]+'</b></a>';
+                    }
+        },{
             "targets": 5,
             "data": 5,
             "searchable": false,
