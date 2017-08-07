@@ -1,5 +1,3 @@
-
-
 function newCreated(data) {
     if (data.message=="SUCCESS") {
         window.location.href = "./project.php?id="+data.project_id;

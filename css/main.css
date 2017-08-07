@@ -193,7 +193,6 @@ top: -7px;
 
 table {
     table-layout: fixed;
-    font-size: -1;
 }
 
 #editButtons{
@@ -202,34 +201,29 @@ table {
     align: right;
 }
 
-table.dataTable thead .sorting,
-table.dataTable thead .sorting_asc,
-table.dataTable thead .sorting_desc,
-table.dataTable thead .sorting_asc_disabled,
-table.dataTable thead .sorting_desc_disabled {
-    background: transparent;
-    font-size: -1;
+
+table.datatable td {
+    max-width: 70px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
-table.dataTable thead .sorting_asc:after {
-    content: "\f0de";
-    float: right;
-    font-family: fontawesome;
+table.datatable th {
+  overflow: hidden; /* this is what fixes the expansion */
+  text-overflow: ellipsis; /* not supported in all browsers, but I accepted the tradeoff */
+  white-space: nowrap;
 }
-table.dataTable thead .sorting_desc:after {
-    content: "\f0dd";
-    float: right;
-    font-family: fontawesome;
+
+table.dataTable tbody td {
+    word-break: break-word;
+    vertical-align: top;
 }
-table.dataTable thead .sorting:after {
-    content: "\f0dc";
-    float: right;
-    font-family: fontawesome;
-    color: rgba(50, 50, 50, 0.5);
-}
+
+
 .btn-circle {
-    width: 30px;
-    height: 30px;
-    padding: 6px 0;
+    width: 25px;
+    height: 25px;
+    padding: 1px;
     border-radius: 15px;
     text-align: center;
     font-size: 12px;

@@ -1,5 +1,4 @@
 <?
-//header("content-type: application/x-javascript");
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting( E_ALL | E_STRICT );
@@ -45,18 +44,10 @@ if ($result->num_rows > 0) {
                 }
         }
     }
-}
-
-//Write out Months
-echo '[{';
-for ($i=0; $i < $s_month; $i++) {
-    $m = sprintf("%02d", ($i+1));
-    echo '"period": "'.$s_year.'-'.$m.'",';
-    echo '"Pay":'. $totalMoney[$i];
-    if ($i<($s_month-1)) {
-        echo '}, {';
-    }else{
-        echo '}]';
+    $total = 0;
+    foreach ($totalMoney as $value) {
+        $total = $total+$value;
     }
+    echo '{ "mean_month":"'.round($total/$s_month).'" }';
+
 }
-?>

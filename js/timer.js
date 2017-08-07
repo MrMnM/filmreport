@@ -8,17 +8,17 @@ t.data = new Array();
 
 function SetActive(id,name) {
     if (clickedDel==true) {
-        return;
-    }else{
-        t.id     = id;
-        t.name = name;
-        $("#activetimer").show();
-        $("#selector").hide();
-        $("#projectTitle").html(t.name);
-        $('#stop').prop('disabled', true);
-        $('#pause').prop('disabled', true);
-        //console.log(t);
-    }
+    return;
+}else{
+    t.id     = id;
+    t.name = name;
+    $("#activetimer").show();
+    $("#selector").hide();
+    $("#projectTitle").html(t.name);
+    $('#stop').prop('disabled', true);
+    $('#pause').prop('disabled', true);
+    //console.log(t);
+}
 }
 
 function  LoadTimer(id){
@@ -44,9 +44,9 @@ jQuery('#shoot').click(function(event){
     startStamp = time;
     var dat = "sh_"+time;
     t.data.push(dat);
-    //console.log(t);
-    saveTimer('shoot', time);
-    updateDisplay();
+        //console.log(t);
+        saveTimer('shoot', time);
+        updateDisplay();
 });
 
 jQuery('#load').click(function(event){
@@ -58,12 +58,12 @@ jQuery('#load').click(function(event){
     t.mode=1;
     event.preventDefault();
     var time = new Date();
-    startStamp = time;
+        startStamp = time;
     var dat = "lo_"+time;
     t.data.push(dat);
-    //console.log(t);
-    saveTimer('load',time);
-    updateDisplay();
+        //console.log(t);
+        saveTimer('load',time);
+        updateDisplay();
 });
 
 jQuery('#drive').click(function(event){
@@ -75,12 +75,12 @@ jQuery('#drive').click(function(event){
     t.mode=2;
     event.preventDefault();
     var time = new Date();
-    startStamp = time;
+        startStamp = time;
     var dat = "dr_"+time;
     t.data.push(dat);
-    console.log(t);
-    saveTimer('drive',time);
-    updateDisplay();
+        console.log(t);
+        saveTimer('drive',time);
+        updateDisplay();
 });
 
 jQuery('#pause').click(function(event){
@@ -91,12 +91,12 @@ jQuery('#pause').click(function(event){
     t.mode=3;
     event.preventDefault();
     var time = new Date();
-    startStamp = time;
+        startStamp = time;
     var dat = "pa_"+time;
     t.data.push(dat);
-    //console.log(t);
-    saveTimer('pause',time);
-    updateDisplay();
+        //console.log(t);
+        saveTimer('pause',time);
+        updateDisplay();
 });
 
 jQuery('#stop').click(function(event){
@@ -110,29 +110,29 @@ jQuery('#stop').click(function(event){
     var time = new Date();
     var dat = "st_"+time;
     t.data.push(dat);
-    //console.log(t);
-    saveTimer('stop',time);
-    updateDisplay();
+        //console.log(t);
+        saveTimer('stop',time);
+        updateDisplay();
 });
 
 function updateDisplay()
 {
-    switch (t.mode) {
-        case 0:
-        $("#timerCount").html('<i class="fa fa-video-camera"></i> '+updateTimer());
-        break;
-        case 1:
-        $("#timerCount").html('<i class="fa fa-truck"></i> '+updateTimer());
-        break;
-        case 2:
-        $("#timerCount").html('<i class="fa fa-car"></i> '+updateTimer());
-        break;
-        case 3:
-        $("#timerCount").html('<i class="fa fa-pause"></i> '+updateTimer());
-        break;
-        default:
-        $("#timerCount").html('');
-    }
+switch (t.mode) {
+    case 0:
+    $("#timerCount").html('<i class="fa fa-video-camera"></i> '+updateTimer());
+    break;
+    case 1:
+    $("#timerCount").html('<i class="fa fa-truck"></i> '+updateTimer());
+    break;
+    case 2:
+    $("#timerCount").html('<i class="fa fa-car"></i> '+updateTimer());
+    break;
+    case 3:
+    $("#timerCount").html('<i class="fa fa-pause"></i> '+updateTimer());
+    break;
+    default:
+    $("#timerCount").html('');
+}
 }
 
 function updateTimer() {
@@ -179,8 +179,8 @@ function deleteTimer(id){
                 $.post( "h_timer.php", { action: "gettimers"})
                 .done(function( data ) {
                     $( "#timers" ).html( data );
+                    clickedDel = false;
                 });
-                clickedDel = false;
             }else{
                 clickedDel = false;
             }

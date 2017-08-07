@@ -1,6 +1,7 @@
 <?
 
-//TODO
+//TODO Macheen das es ohne login klappt
+include './includes/inc_sessionhandler_default.php';
 include './includes/inc_variables.php';
 ?>
 

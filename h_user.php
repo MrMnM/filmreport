@@ -83,20 +83,19 @@ function NewUser($conn){
             // $sql = "UPDATE users SET tel = '$tel', name='$name',address_1='$address1', address_2='$address2', ahv='$ahv', dateob='$dateob' , bvg='$bvg' , konto='$konto' WHERE u_id = '$u_id'";
             $sql = "INSERT INTO users (name,u_id,active,mail,pw,tel,address_1,address_2,ahv,dateob,bvg,konto) VALUES ('$name','$uid','$active','$mail','$pwhash','','','','','$date','','')";
             if ($conn->query($sql) === TRUE) {
-                $to = $mail;
                 $subject = 'Filmabrechnungsgenerator';
-                $message = 'Hallo, bitte bestaetige deine Email Addresse mit folgendem Link: <a href="http://www.xibrix.ch/DEV_filmreport/new_account.php?v&#61;'.$active.'">http://www.xibrix.ch/DEV_filmreport/new_account.php?v&#61;'.$active.'</a>';
+                $message = 'Hallo, bitte bestaetige deine Email Addresse mit folgendem Link: http://www.xibrix.ch/DEV_filmreport/new_account.php?v='.$active;
                 $message = wordwrap($message, 70, "\r\n");
                 $headers = 'From: webmaster@filmreport.com' . "\r\n" .
-                'Reply-To: webmaster@filmreport.com' . "\r\n" .
-                'X-Mailer: PHP/' . phpversion().
-                'MIME-Version: 1.0' . "\ r\n" .
-                ' Content-type: text/html; charset=iso-8859-1' . "\ r\n";;
-                mail($to, $subject, $message, $headers);
-                echo '{ "message": "SUCCESS" }';
-            } else {
-                die('{ "message": "ERROR: '.$conn->connect_error.'"}');
-            }
+                           'Reply-To: webmaster@filmreport.com' . "\r\n" .
+                           'X-Mailer: PHP/' . phpversion(). "\r\n" .
+                           'MIME-Version: 1.0' . "\r\n" .
+                           'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+mail($mail, $subject, $message, $headers);
+                    echo '{ "message": "SUCCESS" }';
+                } else {
+                    die('{ "message": "ERROR: '.$conn->connect_error.'"}');
+                }
         }
     }else{
         die('{ "message": "Falsch aufgerufen" }');

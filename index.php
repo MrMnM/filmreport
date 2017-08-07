@@ -71,7 +71,7 @@ include './includes/inc_variables.php';
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
-                            <div id="morris-area-chart"></div>
+                            <div id="stats"></div>
                         </div>
                         <!-- /.panel-body -->
                     </div>
@@ -88,18 +88,11 @@ include './includes/inc_variables.php';
                                                     <div class="huge">&oslash; Monat:</div>
                                                 </div>
                                                 <div class="col-xs-6 text-right">
-                                                    <div class="huge">MON</div>
+                                                    <div class="huge" id="monthlyMean"></div>
                                                     <div></div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <a href="#">
-                                            <div class="panel-footer">
-                                                <span class="pull-left">View Details</span>
-                                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                                <div class="clearfix"></div>
-                                            </div>
-                                        </a>
                                     </div>
                                 </div>
                 <!-- /.col-lg-4 -->
@@ -121,14 +114,18 @@ include './includes/inc_variables.php';
 <!-- Raphael JavaScript -->
 <script src="https://cdn.jsdelivr.net/raphael/2.2.7/raphael.js" integrity="sha256-MPXjTSEImVJI1834JAHubdK7Lts1VTUPJmCQ9zKAjyA=" crossorigin="anonymous"></script>
 
+<?
+$curY = date("Y");
+$curM = date("n");
+?>
+<script>
+var y = <?echo $curY;?>;
+var m = <?echo $curM;?>;
+</script>
+
 <!-- Custom Theme JavaScript -->
 <script src="./js/sb-admin-2.js"></script>
+<script src="./js/index.js"></script>
 
-    <?
-    $curY = date("Y");
-    $curM = date("n");
-    ?>
-<!--TODO Ajax!-->
-    <script type="text/javascript" src="./h_linechart.php?y=<?echo $curY.'&m='.$curM.'"';?>></script>
 </body>
 </html>

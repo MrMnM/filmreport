@@ -25,16 +25,16 @@ include './includes/inc_variables.php';
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/jquery.metismenu/1.1.3/metisMenu.min.css" integrity="sha256-4NxXT7KyZtupE4YdYLDGnR5B8P0JWjNBpF8mQBzYtrM=" crossorigin="anonymous">
     <!-- Custom Fonts -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
-    <!-- DataTables CSS -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css"/>
     <!-- DataTables Responsive CSS -->
-    <!--<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.15/r-2.1.1/datatables.min.css"/>
-    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap.min.css"/>-->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.15/r-2.1.1/datatables.min.css"/>
 
 
     <!-- Custom CSS -->
     <link href="./css/main.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
 </head>
 
 <body>
@@ -56,8 +56,8 @@ include './includes/inc_variables.php';
                     </div>
                 </div><!-- /.panel-heading -->
                 <div class="panel-body">
-                    <div class="dataTables_wrapper dt-bootstrap">
-                        <table class="table table-striped dt-responsive nowrap" id="projectTable" cellspacing="0" style="width:98% !important; table-layout:fixed">
+                    <div class="container-fluid">
+                        <table class="table table-striped table-condensed nowrap" id="projectTable" cellspacing="0" width="100%" style="overflow:hidden;">
                             <thead>
                                 <tr>
                                     <th>Datum</th>
@@ -69,7 +69,7 @@ include './includes/inc_variables.php';
                                 </tr>
                             </thead>
                         </table>
-                    </div><!--table-responsive-->
+                    </div>
                 </div><!-- /.panel-body -->
             </div><!-- Panel -->
 
@@ -196,7 +196,10 @@ include './includes/inc_variables.php';
 <!-- Metis Menu Plugin JavaScript -->
 <script src="https://cdn.jsdelivr.net/jquery.metismenu/1.1.3/metisMenu.min.js" integrity="sha256-OrCnS705nv33ycm/+2ifCnVfxxMdWvBMg5PUX1Fjpps=" crossorigin="anonymous"></script>
 <!-- DataTables JavaScript -->
-<script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.15/r-2.1.1/datatables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.1.1/js/dataTables.responsive.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.1.1/js/responsive.bootstrap.min.js"></script>
 <!-- JqueryForms -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.1/jquery.form.min.js" integrity="sha384-tIwI8+qJdZBtYYCKwRkjxBGQVZS3gGozr3CtI+5JF/oL1JmPEHzCEnIKbDbLTCer" crossorigin="anonymous"></script>
 <!-- Custom Theme JavaScript -->
@@ -209,7 +212,16 @@ $(document).ready(function() {
     table = $('#projectTable').DataTable({
         "ajax": 'h_listprojects.php',
         "pagingType": "numbers",
-        "lengthChange": false,
+        "order": [[ 0, "desc" ]],
+        "autoWidth": false,
+"columns" : [
+    { width : '5em' },
+    { width : '15em' },
+    { width : '50px' },
+    { width : '20px' },
+    { width : '20px' },
+    { width : '10px' }
+],
         "columnDefs": [ {
             "targets": 5,
             "data": 5,
@@ -220,8 +232,16 @@ $(document).ready(function() {
                     <button type="button" class="btn btn-default btn-circle" onclick="window.location.href=\'project.php?id='+data+'\'"><i class="fa fa-pencil"></i></button>\
                     <button type="button" class="btn btn-danger btn-circle" data-toggle="modal" data-target="#deleteProjectModal" onclick="setDelete(\''+data+'\',\''+row[1]+'\')"><i class="fa fa-times"></i></button>';
                     }
-            } ]
+            } ],
+            responsive: {
+    details: {
+        display: $.fn.dataTable.Responsive.display.childRowImmediate,
+        type: ''
+    }
+}
     });
+
+    new $.fn.dataTable.Responsive( table );
 
     $('#newProject').ajaxForm({
             dataType:  'json',
