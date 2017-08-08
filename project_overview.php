@@ -57,7 +57,7 @@ include './includes/inc_variables.php';
                 </div><!-- /.panel-heading -->
                 <div class="panel-body">
                     <div class="container-fluid">
-                        <table class="table table-striped table-condensed nowrap" id="projectTable" cellspacing="0" width="100%" style="overflow:hidden;">
+                        <table class="table table-striped table-condensed nowrap" id="projectTable" cellspacing="0" width="100%">
                             <thead>
                                 <tr>
                                     <th>Datum</th>
@@ -203,6 +203,7 @@ include './includes/inc_variables.php';
 <!-- JqueryForms -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.1/jquery.form.min.js" integrity="sha384-tIwI8+qJdZBtYYCKwRkjxBGQVZS3gGozr3CtI+5JF/oL1JmPEHzCEnIKbDbLTCer" crossorigin="anonymous"></script>
 <!-- Custom Theme JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js" integrity="sha256-vIL0pZJsOKSz76KKVCyLxzkOT00vXs+Qz4fYRVMoDhw=" crossorigin="anonymous"></script>
 <script src="./js/sb-admin-2.js"></script>
 <script src="./js/project_overview.js"></script>
 <!-- onload -->
@@ -220,7 +221,7 @@ $(document).ready(function() {
     { width : '50px' },
     { width : '20px' },
     { width : '20px' },
-    { width : '20px' }
+    { width : '30px' }
 ],
         "columnDefs": [ {
             "targets": 1,
@@ -235,6 +236,8 @@ $(document).ready(function() {
             "render": function ( data, type, row) {
                     return '<button type="button" class="btn btn-default btn-circle"  onclick="window.open(\'view.php?id='+data+'\')"><i class="fa fa-eye"></i></button>\
                     <button type="button" class="btn btn-default btn-circle" onclick="window.location.href=\'project.php?id='+data+'\'"><i class="fa fa-pencil"></i></button>\
+                    <div class="btn-group"><button type="button" class="btn btn-default btn-circle dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-download">\
+                    </i></button><ul class="dropdown-menu pull-right" role="menu"><li><a href="h_download.php?t=xlsx&id='+data+'"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Excel</a></li><li><a href="h_download.php?t=pdf&id='+data+'"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> PDF</a></li></ul></div>\
                     <button type="button" class="btn btn-danger btn-circle" data-toggle="modal" data-target="#deleteProjectModal" onclick="setDelete(\''+data+'\',\''+row[1]+'\')"><i class="fa fa-times"></i></button>';
                     }
             } ],

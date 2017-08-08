@@ -71,8 +71,11 @@ if (!empty($_GET["id"])) {
 				die('<font color="red"><b>Das Projekt ist noch leer, bitte Stunden hinzuf&uuml;gen</b></font>');
 			}
 			$dat = json_decode($p_json, true);
+
+
             $title= $i_sdate->format('ymd').'_'.$p_name;
             $title= str_replace(" ", "_", $title);
+
         }else{
 			die ('ERROR, PLEASE SPECIFY PROJECT');
 		}
@@ -208,18 +211,18 @@ if (!empty($_GET["id"])) {
 				<td class="xl1" height="19"></td>
 				<td class="xl1"></td>
 				<td class="xl1"></td>
-				<td rowspan="4" align="centered">&#9654;</td>
+				<td rowspan="4" align="centered">&#9656;</td>
 				<td class="td111 vbottom"></td>
 				<td class="td111"></td>
 				<td class="xl9321306"></td>
 				<td class="td111"></td>
-				<td rowspan="4" align="centered">&#9654;</td>
+				<td rowspan="4" align="centered">&#9656;</td>
 				<td class="xl9521306">(bis 9h/Tag)<font class="f9"><sup>1</sup></font></td>
-				<td  rowspan="4" align="centered">&#9654;</td>
+				<td  rowspan="4" align="centered">&#9656;</td>
 				<td class="td972" colspan="8">&Uuml;berstunden<font class="f9"><sup>2</sup></font> <font class="f6h">(9h +)</font></td>
 				<td class="td972">Nacht</td>
 				<td class="td972"></td>
-				<td rowspan="4" align="centered">&#9654;</td>
+				<td rowspan="4" align="centered">&#9656;</td>
 				<td class="xl10021306"></td>
 				<td class="xl10021306"></td>
 			</tr>
@@ -405,9 +408,8 @@ $allhours2 = new DateTime('2000-01-01 00:00:00');
 				<td class="brightgreen">0.70</td>
 			</tr>
 			<tr>
-				<td class="f7" colspan="3" rowspan="4" height="17" ><? echo $comment; ?></td>
-                <td class="f7" colspan="4" rowspan="4" height="17" ></td>
-                <td></td>
+				<td class="f7" colspan="7" rowspan="4" height="17" ><? echo $comment; ?></td>
+				<td></td>
 				<td class="xl1"><sub>CHF</sub></td>
 				<td class="brightyellow"><? echo  round($allbase*$p_pay);?></td>
 				<td class="td7"></td>
@@ -441,11 +443,11 @@ $allhours2 = new DateTime('2000-01-01 00:00:00');
 			<tr>
 				<td></td>
 				<td></td>
-				<td align= "center">&#9660;</td>
+				<td align= "center">&#9662;</td>
 				<td></td>
-				<td align= "center" colspan="10">&#9660;</td>
+				<td align= "center" colspan="10">	&#9662;</td>
 				<td></td>
-				<td colspan="2" align= "center">&#9660;</td>
+				<td colspan="2" align= "center"><span class="glyphicon glyphicon-triangle-bottom"></span></td>
 			</tr>
 			<tr>
 				<td class="f7 vbottom" colspan="7" height="17" ></td>
