@@ -80,10 +80,8 @@ if (!empty($_GET["id"])&&!empty($_GET["t"])) {
 
 
 date_default_timezone_set('Europe/Berlin');
-
 /** PHPExcel_IOFactory */
 require_once './includes/Classes/PHPExcel/IOFactory.php';
-
 //echo date('H:i:s') . " Load from Excel5 template\n";
 $objReader = PHPExcel_IOFactory::createReader('Excel2007');
 $objPHPExcel = $objReader->load("template_rapport.xlsx");
@@ -144,7 +142,6 @@ $objWorksheet->setCellValue('P6', $c_address2);
 $objWorksheet->setCellValue('P7', $p_job);
 
 $rowCounter = 17;
-
 $allbase=0;
 $all125=0;
 $all150=0;
@@ -259,7 +256,6 @@ foreach ($parts as $text) {
     $cur++;
 }
 
-
 //echo date('H:i:s') . " Write to Excel5 format\n";
 if ($type=="xlsx") {
     $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
@@ -267,11 +263,11 @@ if ($type=="xlsx") {
     header('Content-Disposition: attachment;filename="'.$title.'.xlsx"');
     header('Cache-Control: max-age=0');
     $objWriter->save('php://output');
+    //$objWriter->save('documents/'.$p_id.'.xlsx');
 }elseif ($type=="pdf") {
     $rendererName = PHPExcel_Settings::PDF_RENDERER_DOMPDF;
     $rendererLibrary = 'dompdf.php';
     $rendererLibraryPath = dirname(__FILE__) . '/includes/Classes/dompdf/';
-
     if (!PHPExcel_Settings::setPdfRenderer(
         $rendererName,
         $rendererLibraryPath
@@ -282,14 +278,11 @@ if ($type=="xlsx") {
             'at the top of this script as appropriate for your directory structure'
         );
     }
-
-
     header('Content-Type: application/pdf');
     header('Content-Disposition: attachment;filename="'.$title.'.pdf"');
     header('Cache-Control: max-age=0');
     $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'PDF');
     $objWriter->save('php://output');
-
 }
 
 exit;

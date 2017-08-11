@@ -85,11 +85,45 @@ if (!empty($_GET["id"])) {
     <!--TODO glyphicons printable & Centered-->
 	<meta content="text/html" http-equiv="Content-Type">
     <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
-	--><link href="./css/view_style.css" rel="stylesheet">
+	-->
+    <!-- Bootstrap Core CSS -->
+    <link media="screen" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+    <link href="./css/view_style.css" rel="stylesheet" media="screen">
+    <link href="./css/view_style.css" rel="stylesheet" media="print">
+    <!--<link href="./css/view_style.css" rel="stylesheet">-->
 	<title><? echo $title; ?></title>
 </head>
 <body>
-	<div align="center" id="main">
+<div id="wrapper">
+<div class="no-print">
+<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+    <div class="navbar-header">
+        <a class="navbar-brand" href="index.php">Abrechnungsgenerator</a>
+        <ul class="pagination" style="margin-left:20px;margin-top:8px;margin-bottom:4px;">
+        <li class="disabled"><a href="#">Aktion:</a></li>
+        <li><a href="javascript:window.print();">Drucken</a></li>
+        <li><a href="h_download.php?t=xlsx&id=<? echo $p_id;?>" target="_blank">Excel</a></li>
+        <li><a href="h_download.php?t=pdf&id=<? echo $p_id;?>" target="_blank">PDF</a></li>
+    </ul>
+    <ul class="pagination" style="margin-left:20px;margin-top:8px;margin-bottom:4px;">
+        <li class="active"><a href="#">Rapport</a></li>
+        <li><a href="#">Abrechnung</a></li>
+    </ul>
+
+
+
+    </div>
+            <!-- /.navbar-top-links -->
+</nav>
+</div>
+<div id="page-wrapper" >
+    <p></p>
+    <div class="row">
+        <div class="col-sm-1">
+        </div>
+    <div class="col-sm-10">
+
+	<div id="main">
 		<table border="0" cellpadding="0" cellspacing="0" class="f10">
 			<col class="f10" >
 			<col class="f10" >
@@ -489,5 +523,9 @@ $allhours2 = new DateTime('2000-01-01 00:00:00');
 			</tr>
 		</table>
 	</div>
+</div>
+</div>
+</div>
+</div>
 </body>
 </html>

@@ -46,6 +46,15 @@ if($action){
         die('{ "message": "ERROR: Fehlerhafte Daten"}');
     }
     break;
+
+    case 'finish':
+    if (!empty($u_id) && !empty($_POST["us_id"]) && !empty($_POST["p_id"])) {
+        FinishProject($u_id, $conn);
+    }else{
+        die('{ "message": "ERROR: Fehlerhafte Daten"}');
+    }
+    break;
+
     case 'getinfo':
     if (!empty($u_id) && !empty($_POST["us_id"]) && !empty($_POST["p_id"])) {
         GetProjectInfo($u_id, $conn);
@@ -110,6 +119,10 @@ function SaveProject($u_id, $conn){
    } else {
        die('{ "message": "ERROR: ' . $sql . $conn->error.'}');
    }
+}
+
+function FinishProject($u_id, $conn){
+//TODO
 }
 
 function UpdateProject($u_id, $conn){

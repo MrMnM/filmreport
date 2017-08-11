@@ -113,7 +113,7 @@ if (!empty($json)){
     <div class="panel panel-default">
         <div class="panel-heading">
             <h4 id="title"><div class="loading-spinner-left"></div>&nbsp;</h4>
-            <div style="float:right; top:-10px;">
+            <div style="float:right; margin-top:-37px;">
                 <button type="button" class="btn btn-default refreshButton"><i class="fa fa-refresh"></i></button>
                 <button type="button" class="btn btn-default" onclick="window.open('view.php?id=<?echo $p_id;?>')"><i class="fa fa-eye"></i></button>
             </div>
@@ -121,8 +121,8 @@ if (!empty($json)){
 
         <div class="panel-body">
         <!-- Nav tabs-->
-            <ul class="nav nav-tabs">
-                <li class="active"><a href="#project" data-toggle="tab" aria-expanded="true">Projektinfos</a>
+            <ul class="nav nav-pills">
+                <li class="active"><a href="#project" data-toggle="tab" aria-expanded="true">Infos</a>
                 </li>
                 <li class=""><a href="#hours" data-toggle="tab" aria-expanded="false">Stunden</a>
                 </li>
@@ -142,17 +142,17 @@ if (!empty($json)){
                                     <div class="pull-right">
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#updateProjectModal">
-                                                <span class="fa fa-pencil"></span>Bearbeiten
+                                                <span class="fa fa-pencil"></span>
                                             </button>
                                         </div><!--btn-group-->
                                     </div><!--pull-right-->
                                 </div><!--panel-heading-->
                                 <div class="panel-body">
-                                    <div class="table-responsive">
+                                    <div class="table">
                                         <table class="table table-hover">
                                             <tbody>
                                                 <tr>
-                                                    <td width=150px><strong>Projektname:</strong></td>
+                                                    <td width=110px><strong>Projektname:</strong></td>
                                                     <td id="projectName"></td>
                                                 </tr>
                                                 <tr>
@@ -164,7 +164,7 @@ if (!empty($json)){
                                                     <td id=projectPay></td>
                                                 </tr>
                                                 <tr>
-                                                    <td><strong>Produktionsfirma:</strong></td>
+                                                    <td><strong>Produktion:</strong></td>
                                                     <td id=projectCompany></td>
                                                 </tr>
                                             </tbody>
@@ -186,17 +186,17 @@ if (!empty($json)){
                                     <div class="pull-right">
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-default btn-xs" onclick="window.location.href='./user.php'">
-                                                <span class="fa fa-pencil"></span>Bearbeiten
+                                                <span class="fa fa-pencil"></span>
                                             </button>
                                         </div>
                                     </div>
                                 </div><!--panel-heading-->
                                 <div class="panel-body">
-                                    <div class="table-responsive">
+                                    <div class="table">
                                         <table class="table table-hover">
                                             <tbody>
                                                 <tr>
-                                                    <td width=150px><strong>Name:</strong></td>
+                                                    <td width=110px><strong>Name:</strong></td>
                                                     <td id="userName"></td>
                                                 </tr>
                                                 <tr>

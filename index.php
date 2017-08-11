@@ -84,10 +84,10 @@ include './includes/inc_variables.php';
                                     <div class="panel panel-primary">
                                         <div class="panel-heading">
                                             <div class="row">
-                                                <div class="col-xs-6">
+                                                <div class="col-xs-8">
                                                     <div class="huge">&oslash; Monat:</div>
                                                 </div>
-                                                <div class="col-xs-6 text-right">
+                                                <div class="col-xs-4 text-right">
                                                     <div class="huge" id="monthlyMean"></div>
                                                     <div></div>
                                                 </div>
