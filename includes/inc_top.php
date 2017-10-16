@@ -65,9 +65,19 @@
                     <li>
                         <a href="index.php"><i class="fa fa-home fa-fw"></i> Dashboard</a>
                     </li>
-                    <li>
-                        <a href="project_overview.php"><i class="fa fa-table fa-fw"></i> Projects</a>
-                    </li>
+
+                    <li class="">
+                            <a href="#"><i  class="fa fa-table fa-fw"></i> Projects<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level collapse in" aria-expanded="true">
+                                <li>
+                                    <a href="project_overview.php"><i  class="fa fa-star fa-fw"></i> Aktiv</a>
+                                </li>
+                                <li>
+                                    <a href="project_archive.php"><i  class="fa fa-archive fa-fw"></i> Beendet</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
                     <li>
                         <a href="timer.php"><i class="fa fa-clock-o fa-fw"></i> Timer</a>
                     </li>

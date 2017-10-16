@@ -236,7 +236,7 @@ $(document).ready(function() {
 "columns" : [
     { width : '5em' },
     { width : '12em' },
-    { width : '50px' },
+    { width : '80px' },
     { width : '20px' },
     { width : '20px' },
     { width : '30px' }
