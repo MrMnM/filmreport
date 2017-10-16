@@ -42,7 +42,8 @@ include './includes/inc_variables.php';
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <i class="fa fa-bar-chart-o fa-fw"></i> Einnahmen
-                    <!--<div class="pull-right">
+                    <div class="pull-right">
+                                                <div class="btn-group">
                         <div class="btn-group">
                             <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
                                 Actions
@@ -60,7 +61,25 @@ include './includes/inc_variables.php';
                                 </li>
                             </ul>
                         </div>
-                    </div>-->
+                                                <div class="btn-group">
+                            <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                                Actions
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu pull-right" role="menu">
+                            <li><a href="#">eop</a>
+                                </li>
+                                <li><a href="#">Aewf</a>
+                                </li>
+                                <li><a href="#">Something else here</a>
+                                </li>
+                                <li class="divider"></li>
+                                <li><a href="#">Separated link</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
                 </div><!-- /.panel-heading -->
                 <div class="panel-body">
                     <div id="stats"></div>

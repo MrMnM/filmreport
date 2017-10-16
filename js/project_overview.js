@@ -1,6 +1,16 @@
 function newCreated(data) {
     if (data.message=="SUCCESS") {
-        window.location.href = "./project.php?id="+data.project_id;
+//        let urlData = "http://www.filmstunden.ch/shorten.php"
+//        $.ajax({
+//  url: urlData,
+//              crossDomain: true,
+//  data: { longurl : "http://www.xibrix.ch/filmreport/view.php?id="+data.project_id },
+//  success: function() {
+      window.location.href = "./project.php?id="+data.project_id;
+//  },
+//  dataType: 'json'
+//});
+
     }else{
     alert(data.message);
     }
@@ -28,8 +38,22 @@ function projDeleted(data) {
     }
 }
 
+function projFinished(data) {
+    if (data.message=="SUCCESS:") {
+        $('#finishProjectModal').modal('hide');
+        table.ajax.reload();
+    }else{
+        alert(data.message);
+    }
+}
+
+
 function setDelete(id,name){
     $('#toDelID').val(id);
-    $('#toDelName').html(name);
-    $('#delModalTitle').html("Projekt <strong>\""+name+"\"</strong> wirklich L&ouml;schen ?");
+    $('#delModalTitle').html("<strong>\""+name+"\"</strong> wirklich L&ouml;schen ?");
+}
+
+function setFinish(id,name){
+    $('#toFinID').val(id);
+    $('#finModalTitle').html(''+name);
 }

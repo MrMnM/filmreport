@@ -162,18 +162,41 @@ include './includes/inc_variables.php';
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h4 class="modal-title" id="delModalTitle">Projekt wirklich L&ouml;schen ?</h4>
+                            <h4 class="modal-title" id="delModalTitle">Projekt <strong id="toDelName"></strong> wirklich L&ouml;schen ?</h4>
                         </div>
                         <div class="modal-body">
                             <div class="alert alert-danger">Achtung, dadurch wird das Projekt <strong id="toDelName"></strong> endg&uuml;ltig gel&ouml;scht</div>
                             <form role="form" action="h_project.php" method="post" id="deleteProject">
                                 <input type="hidden" name="action" value="delete">
-                                    <input type="hidden" class="form-control" name="id" id="toDelID">
+                                    <input type="hidden" class="form-control" name="p_id" id="toDelID">
                                     <input type="hidden" class="form-control" id="toDelName" disabled>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
                                 <button type="submit" class="btn btn-danger">L&ouml;schen</button>
+                            </div>
+                        </form>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+
+            <div class="modal fade" id="finishProjectModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title" id="finModalTitle"></h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="alert alert-info">Achtung, dadurch wird das Projekt <strong id="toFinName"></strong> abgeschlossen und kann danach nicht mehr bearbeitet werden</div>
+                            <form role="form" action="h_project.php" method="post" id="finishProject">
+                                <input type="hidden" name="action" value="finish">
+                                    <input type="hidden" class="form-control" name="p_id" id="toFinID">
+                                    <input type="hidden" class="form-control" id="toFinName" disabled>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
+                                <button type="submit" class="btn btn-success">Abschliessen</button>
                             </div>
                         </form>
                     </div><!-- /.modal-content -->
@@ -206,7 +229,7 @@ include './includes/inc_variables.php';
 var table=null;
 $(document).ready(function() {
     table = $('#projectTable').DataTable({
-        "ajax": 'h_listprojects.php',
+        "ajax": 'h_listprojects.php?fin=0',
         "pagingType": "numbers",
         "order": [[ 0, "desc" ]],
         "autoWidth": false,
@@ -233,7 +256,8 @@ $(document).ready(function() {
                     <button type="button" class="btn btn-default btn-circle" onclick="window.location.href=\'project.php?id='+data+'\'"><i class="fa fa-pencil"></i></button>\
                     <div class="btn-group"><button type="button" class="btn btn-default btn-circle dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-download">\
                     </i></button><ul class="dropdown-menu pull-right" role="menu"><li><a href="h_download.php?t=xlsx&id='+data+'"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Excel</a></li><li><a href="h_download.php?t=pdf&id='+data+'"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> PDF</a></li></ul></div>\
-                    <button type="button" class="btn btn-danger btn-circle" data-toggle="modal" data-target="#deleteProjectModal" onclick="setDelete(\''+data+'\',\''+row[1]+'\')"><i class="fa fa-times"></i></button>';
+                    <button type="button" class="btn btn-danger btn-circle" data-toggle="modal" data-target="#deleteProjectModal" onclick="setDelete(\''+data+'\',\''+row[1]+'\')"><i class="fa fa-times"></i></button>\
+                    <button type="button" class="btn btn-success btn-circle" data-toggle="modal" data-target="#finishProjectModal" onclick="setFinish(\''+data+'\',\''+row[1]+'\')"><i class="fa fa-check"></i></button>';
                     }
             } ],
             responsive: {
@@ -250,6 +274,11 @@ $(document).ready(function() {
             dataType:  'json',
             success:  newCreated
         });
+    $('#finishProject').ajaxForm({
+            dataType:  'json',
+            success:  projFinished
+        });
+
     $('#deleteProject').ajaxForm({
             dataType:  'json',
             success:   projDeleted

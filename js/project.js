@@ -1,5 +1,5 @@
 // MAIN
-var addInfo = { "tothour" : "00:00", "totmoney"  : "0", "enddate"  : "0000-00-00" };
+var addInfo = { "tothour" : "00:00", "totmoney"  : "0", "enddate"  : "0000-00-00", "calcBase":"SSFV_DAY", "baseHours":9 };
 var rowCounter = loadElement.length;
 var rowElement = new Array();
 var saved = true;
@@ -418,6 +418,7 @@ function Row(idNr) {
     obj.sixt=0;
     obj.night=0;
     obj.loadFromJSON = function(json){
+        obj.info=json.info;
         obj.id=json.id;
         obj.date =json.date;
         obj.start = json.start;

@@ -122,13 +122,7 @@ if (!empty($_POST["pw"]) && !empty($_POST["mail"])) {
                     <div class="form-group">
                         <input class="form-control" placeholder="Password" name="pw" type="password" value="" required>
                     </div>
-                                        <!-- TODO reimplement
-                                        <div class="checkbox">
-                                        <label>
-                                        <input name="remember" type="checkbox" value="Remember Me">Remember Me
-                                    </label>
-                                </div>
-                            -->
+<!-- TODO implement remember me-->
                         <button type="submit" class="btn btn-lg btn-success btn-block">Login</button>
                     </fieldset>
                 </form>

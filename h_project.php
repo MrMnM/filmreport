@@ -26,7 +26,7 @@ if($action){
         }
       break;
     case 'delete':
-        if (!empty($_POST["id"]) && !empty($u_id)) {
+        if (!empty($_POST["p_id"]) && !empty($u_id)) {
             DeleteProject($u_id, $conn);
         }else{
             die('{ "message": "ERROR, PLEASE SUPPLY WITH CORRECT DATA" }');
@@ -48,7 +48,7 @@ if($action){
     break;
 
     case 'finish':
-    if (!empty($u_id) && !empty($_POST["us_id"]) && !empty($_POST["p_id"])) {
+    if (!empty($u_id)  && !empty($_POST["p_id"])) {
         FinishProject($u_id, $conn);
     }else{
         die('{ "message": "ERROR: Fehlerhafte Daten"}');
@@ -77,9 +77,11 @@ function NewProject($u_id, $conn){
     $p_company= mysqli_real_escape_string($conn,$_POST["company"]);
     $now = date(DATE_ATOM, time());
     $project_id = md5($p_name.$now);
+$url='http://www.filmstunden.ch/shorten.php?longurl=http://www.xibrix.ch/filmreport/view.php?id='.$project_id;
+    $short = file_get_contents($url);
 
-    $sql = "INSERT INTO projects (project_id,user_id,p_name,p_start,p_job,p_gage,p_company)
-    VALUES ('$project_id', '$u_id','$p_name','$p_startdate','$p_work','$p_pay','$p_company')";
+    $sql = "INSERT INTO projects (project_id,user_id,p_name,p_start,p_job,p_gage,p_company,ext_p_id)
+    VALUES ('$project_id', '$u_id','$p_name','$p_startdate','$p_work','$p_pay','$p_company','$short')";
 
     if ($conn->query($sql) === TRUE) {
         echo '{ "message": "SUCCESS",  "project_id":"'.$project_id.'"}';
@@ -105,6 +107,9 @@ function SaveProject($u_id, $conn){
     $tothours=mysqli_real_escape_string($conn,$add['tothour']);
     $totmoney=mysqli_real_escape_string($conn,$add['totmoney']);
     $enddate=mysqli_real_escape_string($conn,$add['enddate']);
+    $calcBase=mysqli_real_escape_string($conn,$add['calcBase']);
+    $baseHours =mysqli_real_escape_string($conn,$add['baseHours']);
+    $settings = json_encode(array('calcBase' => $calcBase, 'baseHours' => $baseHours));
     $p_id = mysqli_real_escape_string($conn,$_POST['id']);
     if (!empty($_POST["comment"])) {
          $comment = mysqli_real_escape_string($conn,$_POST['comment']);
@@ -112,7 +117,7 @@ function SaveProject($u_id, $conn){
         $comment = "";
     }
 
-   $sql = "UPDATE projects SET p_json = '$data', tot_hours='$tothours',tot_money='$totmoney', p_end='$enddate', p_comment='$comment' WHERE project_id = '$p_id'";
+   $sql = "UPDATE projects SET p_json = '$data', tot_hours='$tothours',tot_money='$totmoney', p_end='$enddate', p_comment='$comment', settings='$settings' WHERE project_id = '$p_id'";
 
    if ($conn->query($sql) === TRUE) {
        die('{ "message": "SUCCESS:"}');
@@ -122,7 +127,18 @@ function SaveProject($u_id, $conn){
 }
 
 function FinishProject($u_id, $conn){
-//TODO
+/*  TODO  $us_id = mysqli_real_escape_string($conn, $_POST["us_id"]);
+    if($u_id != $us_id){
+        die('{ "message": "ERROR: NOT LOGGED IN"}');
+    }
+*/
+    $p_id = mysqli_real_escape_string($conn, $_POST["p_id"]);
+    $sql = "UPDATE projects SET  p_finished=1 WHERE project_id = '$p_id'";
+    if ($conn->query($sql) === TRUE) {
+    } else {
+        die('{ "message":"'. $sql .' ' . $conn->error.'"}');
+    }
+        echo '{ "message": "SUCCESS:",  "project_id":"'.$p_id.'"}';
 }
 
 function UpdateProject($u_id, $conn){
