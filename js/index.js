@@ -1,7 +1,9 @@
 
-
-
 $(document).ready(function() {
+    var d = new Date();
+    var y = d.getFullYear();
+    var m = d.getMonth()+1;
+
     $.ajax({
         url: 'h_miscdata.php',
         dataType: 'json',
@@ -9,12 +11,10 @@ $(document).ready(function() {
         type: 'GET',
         success: function(data){
             $("#monthlyMean").html(data.mean_month);
-
-
         }
     });
 
-    $(function() {
+    $(function(){
         // Create a Bar Chart with Morris
         var chart = Morris.Line({
             // ID of the element in which to draw the chart.
@@ -27,7 +27,6 @@ $(document).ready(function() {
             hideHover: 'auto',
             resize: true
         });
-
         // Fire off an AJAX request to load the data
         $.ajax({
             type: "GET",

@@ -45,8 +45,8 @@ jQuery('button.refreshButton').click(function(event){
 // changed elements ------------------------------------------------------------
 $( "#workhours" ).change(function() {
     saved = false;
-    var currentField = event.target.name.substring(0, 4);
-    var currentNumber = event.target.name.substring(4);
+    let currentField = event.target.name.substring(0, 4);
+    let currentNumber = event.target.name.substring(4);
     if (currentField == "star") {
         rowElement[currentNumber].start = event.target.value;
     } else if (currentField == "ende") {

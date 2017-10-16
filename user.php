@@ -102,6 +102,18 @@ include './includes/inc_variables.php';
                                                 <td width="150px"><strong>E-Mail:</strong></td>
                                                 <td class="mail"></td>
                                             </tr>
+                                            <tr class="mail">
+                                                <td width="150px"><strong>Aktuelles Passwort:</strong></td>
+                                                <td class="curpw"></td>
+                                            </tr>
+                                            <tr class="mail">
+                                                <td width="150px"><strong>Neues Passwort:</strong></td>
+                                                <td class="newpw"></td>
+                                            </tr>
+                                            <tr class="mail">
+                                                <td width="150px"><strong>Wiederholen:</strong></td>
+                                                <td class="newpw2"></td>
+                                            </tr>
                                         </tbody>
                                     </table>
                                 <div class="pull-right">

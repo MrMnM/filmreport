@@ -1,0 +1,70 @@
+    // required field is missing
+    $response["success"] = 0;
+    $response["message"] = "Required field(s) is missing";
+ 
+    // echoing JSON response
+    echo json_encode($response);
+}
+
+
+session_name('mySessionName');
+sessionname setting
+
+// Store
+localStorage.setItem("lastname", "Smith");
+// Retrieve
+document.getElementById("result").innerHTML = localStorage.getItem("lastname");
+
+saveinlocalstorage/stayslong
+
+
+
+Setcookie
+<!DOCTYPE html>
+<?php
+$cookie_name = "user";
+$cookie_value = "John Doe";
+setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/"); // 86400 = 1 day
+?>
+<html>
+<body>
+
+<?php
+if(!isset($_COOKIE[$cookie_name])) {
+    echo "Cookie named '" . $cookie_name . "' is not set!";
+} else {
+    echo "Cookie '" . $cookie_name . "' is set!<br>";
+    echo "Value is: " . $_COOKIE[$cookie_name];
+}
+?>
+</body>
+</html>
+
+
+So to sum up:
+
+The better approach that I recommend is to store the cookie with three parts.
+
+function onLogin($user) {
+    $token = GenerateRandomToken(); // generate a token, should be 128 - 256 bit
+    storeTokenForUser($user, $token);
+    $cookie = $user . ':' . $token;
+    $mac = hash_hmac('sha256', $cookie, SECRET_KEY);
+    $cookie .= ':' . $mac;
+    setcookie('rememberme', $cookie);
+}
+Then, to validate:
+
+function rememberMe() {
+    $cookie = isset($_COOKIE['rememberme']) ? $_COOKIE['rememberme'] : '';
+    if ($cookie) {
+        list ($user, $token, $mac) = explode(':', $cookie);
+        if (!hash_equals(hash_hmac('sha256', $user . ':' . $token, SECRET_KEY), $mac)) {
+            return false;
+        }
+        $usertoken = fetchTokenByUserName($user);
+        if (hash_equals($usertoken, $token)) {
+            logUserIn($user);
+        }
+    }
+}
