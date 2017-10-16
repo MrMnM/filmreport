@@ -162,19 +162,14 @@ include './includes/inc_variables.php';
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h4 class="modal-title" id="myModalLabel">Projekt wirklich L&ouml;schen ?</h4>
+                            <h4 class="modal-title" id="delModalTitle">Projekt wirklich L&ouml;schen ?</h4>
                         </div>
                         <div class="modal-body">
+                            <div class="alert alert-danger">Achtung, dadurch wird das Projekt <strong id="toDelName"></strong> endg&uuml;ltig gel&ouml;scht</div>
                             <form role="form" action="h_project.php" method="post" id="deleteProject">
                                 <input type="hidden" name="action" value="delete">
-                                <div class="form-group input-group">
-                                    <span class="input-group-addon">Projekt ID:</span>
-                                    <input type="text" class="form-control" name="id" id="toDelID">
-                                </div>
-                                <div class="form-group input-group">
-                                    <span class="input-group-addon">Projekt Name:</span>
-                                    <input type="text" class="form-control" id="toDelName" disabled>
-                                </div>
+                                    <input type="hidden" class="form-control" name="id" id="toDelID">
+                                    <input type="hidden" class="form-control" id="toDelName" disabled>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>

@@ -8,7 +8,7 @@ function newCreated(data) {
 
 function companyCreated(data) {
     if (data.message=="SUCCESS") {
-        $('#newCompanyCreated').html('<div class="alert alert-success">Firma wurde erstellt... Bitte Warten.</div>');
+        //$('#newCompanyCreated').html('<div class="alert alert-success">Firma wurde erstellt... Bitte Warten.</div>');
         // TODO Automatically select new one
         $.when($('#companylist').html('').load("./load_companies.php")).then(function() {
             $('#newCompany').modal('hide');
@@ -30,5 +30,6 @@ function projDeleted(data) {
 
 function setDelete(id,name){
     $('#toDelID').val(id);
-    $('#toDelName').val(name);
+    $('#toDelName').html(name);
+    $('#delModalTitle').html("Projekt <strong>\""+name+"\"</strong> wirklich L&ouml;schen ?");
 }

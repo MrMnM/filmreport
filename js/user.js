@@ -77,7 +77,7 @@ jQuery('#saveInfo').click(function(event){
         type: 'POST',
         success: function(data){
             if (data.message=="SUCCESS") {
-                alert('SUCCESS');
+//TODO SUCCESS
             }else{
                 alert('ERROR');
             }
@@ -107,7 +107,7 @@ function Redraw(){
 }
 
 function User() {
-    var obj = {};
+    let obj = {};
     obj.action="update";
     obj.name=" ";
     obj.address1=" ";

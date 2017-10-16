@@ -13,7 +13,7 @@ var p_id = null;
 jQuery('button.saveButton').click(function(event){
     event.preventDefault();
     Save();
-    updateSaveStatus(saved);
+    updateSaveStatus();
 });
 jQuery('button.add-row').click(function(event){
     event.preventDefault();
@@ -79,15 +79,15 @@ $( "#comment" ).change(function() {
 //------------------------------------------------------------------------------
 function addRow(){
     //event.preventDefault();
-    var currentDate = startDate;
+    let currentDate = startDate;
     if (rowCounter > 0){
-        var currentCounter = rowCounter-1;
-        var inputDate = $('[name="date'+currentCounter+'"]').val();
+        let currentCounter = rowCounter-1;
+        let inputDate = $('[name="date'+currentCounter+'"]').val();
         currentDate = new Date(inputDate);
         currentDate.setDate(currentDate.getDate() + 1);
     }
     rowElement.push(new Row(rowCounter));
-    var newRow = jQuery(`
+    let newRow = jQuery(`
         <tr id="r`+rowCounter+`">
         <td><input type="date" id="date`+rowCounter+`" name="date`+rowCounter+`" value="`+formatDate(currentDate)+`"></td>
         <td><input type="text" name="work`+rowCounter+`" size=10 list="work"></td>
@@ -116,7 +116,7 @@ function addRow(){
 }
 function loadRow(currentRow){
     //rowElement.push(new Row(rowCounter));
-    var newRow = jQuery(`
+    let newRow = jQuery(`
         <tr id="r`+currentRow+`">
         <td><input type="date" id="date`+currentRow+`" name="date`+currentRow+`" value="`+rowElement[currentRow].date+`"></td>
         <td><input type="text" name="work`+currentRow+`" size=10 list="work" value="`+rowElement[currentRow].work+`"></td>
@@ -142,10 +142,10 @@ function loadRow(currentRow){
         //saved = false;
 }
 function Save() {
-    var rows = JSON.stringify(rowElement);
-    var additional = JSON.stringify(addInfo);
-    var projectId =  $("#projectId").val();
-    var comment = $("#comment").val();;
+    let rows = JSON.stringify(rowElement);
+    let additional = JSON.stringify(addInfo);
+    let projectId =  $("#projectId").val();
+    let comment = $("#comment").val();;
     $("#saveButton").hide();
     $("#saveButtonDisabled").show();
 
@@ -157,20 +157,18 @@ function Save() {
         success: function(data){
             if (data.message=="SUCCESS:") {
                 saved = true;
-                $("#saveButton").show();
-                $("#saveButtonDisabled").hide();
                 updateSaveStatus();
             }else{
                 saved = false;
-                $("#saveButton").show();
-                $("#saveButtonDisabled").hide();
                 updateSaveStatus();
             }
+        },
+        complete: function(){
+                $("#saveButton").show();
+                $("#saveButtonDisabled").hide();
         }
     });
 
-    $("#saveButton").show();
-    $("#saveButtonDisabled").hide();
 
 }
 function updateRow(row){
@@ -201,31 +199,32 @@ function updateRow(row){
     $('#base'+row).val(rowElement[row].getBase());
 }
 function updateBottom(){
-    var totalKilometers = 0;
+    let totalKilometers = 0;
     for(index = 0; index < rowElement.length; ++index){
         totalKilometers += parseInt(rowElement[index].car);
     }
-        var totalWorkHours = 0;
-        for(index = 0; index < rowElement.length; ++index){
-            if (rowCounter > 0 && $('#wtim'+index).html()>"00:00"){
-            var currentWorkHours = timeToMins(rowElement[index].getWorkHours());
-            totalWorkHours = totalWorkHours + currentWorkHours;
-        }
-        }
 
+    let totalWorkHours = 0;
+    for(index = 0; index < rowElement.length; ++index){
+        if (rowCounter > 0 && $('#wtim'+index).html()>"00:00"){
+        var currentWorkHours = timeToMins(rowElement[index].getWorkHours());
+        totalWorkHours = totalWorkHours + currentWorkHours;
+    }
+    }
 
-    var lunches = 0;
+    let lunches = 0;
     for(index = 0; index < rowElement.length; ++index){
         if (rowElement[index].lunch){
             lunches += 1;
         }
     }
 
-    var totalBase = 0;
+    let totalBase = 0;
     for(index = 0; index < rowElement.length; ++index){
         totalBase += parseFloat(rowElement[index].base);
     }
-    var hours125 = 0;
+
+    let hours125 = 0;
     for(index = 0; index < rowElement.length; ++index){
         hours125 += parseFloat(rowElement[index].getOvertime(10));
         hours125 += parseFloat(rowElement[index].getOvertime(11));
@@ -237,30 +236,33 @@ function updateBottom(){
         hours150 += parseFloat(rowElement[index].getOvertime(12));
         hours150 += parseFloat(rowElement[index].getOvertime(13));
     }
-    var hours200 = 0;
+
+    let hours200 = 0;
     for(index = 0; index < rowElement.length; ++index){
         hours200 += parseFloat(rowElement[index].getOvertime(14));
         hours200 += parseFloat(rowElement[index].getOvertime(15));
     }
-    var hours250 = 0;
+
+    let hours250 = 0;
     for(index = 0; index < rowElement.length; ++index){
         hours250 += parseFloat(rowElement[index].getOvertime(16));
     }
-    var hours25 = 0;
+
+    let hours25 = 0;
     for(index = 0; index < rowElement.length; ++index){
         hours25 += parseFloat(rowElement[index].getNightHours());
     }
 
-    var total125 = roundToTwo(hours125 * getRate(125));
-    var total150 = roundToTwo(hours150 * getRate(150));
-    var total200 = roundToTwo(hours200 * getRate(200));
-    var total250 = roundToTwo(hours250 * getRate(250));
-    var total25 = roundToTwo(hours25 * getRate(25));
-    var totalLunch = lunches*32;
-    var totalCar = roundToTwo(totalKilometers * 0.7);
-    var totalDay = roundToTwo(totalBase*basePay);
-    var totalAdditional = roundToTwo(totalLunch+totalCar);
-    var totalOvertime = roundToTwo(total25 + total125 + total150 + total200 +total250)
+    let total125 = roundToTwo(hours125 * getRate(125));
+    let total150 = roundToTwo(hours150 * getRate(150));
+    let total200 = roundToTwo(hours200 * getRate(200));
+    let total250 = roundToTwo(hours250 * getRate(250));
+    let total25 = roundToTwo(hours25 * getRate(25));
+    let totalLunch = lunches*32;
+    let totalCar = roundToTwo(totalKilometers * 0.7);
+    let totalDay = roundToTwo(totalBase*basePay);
+    let totalAdditional = roundToTwo(totalLunch+totalCar);
+    let totalOvertime = roundToTwo(total25 + total125 + total150 + total200 +total250)
 
     $('#payRateDay').html(basePay);
     $('#payRate125').html(getRate(125));
@@ -307,19 +309,19 @@ function formatDate(d = new Date) {
     return `${year}-${month}-${day}`;
 }
 function timeToMins(time) {
-    var b = time.split(':');
+    let b = time.split(':');
     return b[0]*60 + +b[1];
 }
 function timeFromMins(mins) {
     function z(n){return (n<10? '0':'') + n;}
-    var h = (mins/60 |0) % 24;
-    var m = mins % 60;
+    let h = (mins/60 |0) % 24;
+    let m = mins % 60;
     return z(h) + ':' + z(m);
 }
 function minsToHours(mins){
     function z(n){return (n<10? '0':'') + n;}
-    var h = (mins/60 |0);
-    var m = mins % 60;
+    let h = (mins/60 |0);
+    let m = mins % 60;
     return z(h) + ':' + z(m);
 }
 function subTimes(t0, t1) {
