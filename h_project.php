@@ -91,11 +91,10 @@ $url='http://www.filmstunden.ch/shorten.php?longurl=http://www.xibrix.ch/filmrep
 }
 
 function DeleteProject($u_id, $conn){
-    $id = mysqli_real_escape_string($conn,$_POST["id"]);
+    $id = mysqli_real_escape_string($conn,$_POST["p_id"]);
     $sql = "DELETE FROM projects WHERE project_id='$id' AND user_id='$u_id'";
-
     if ($conn->query($sql) === TRUE) {
-        echo '{ "message": "SUCCESS",  "project_id":"'.$id.'"}';
+        echo '{ "message": "SUCCESS:",  "project_id":"'.$id.'"}';
     } else {
         die('{ "message": "Error: ' . $sql . $conn->error.'}');
     }

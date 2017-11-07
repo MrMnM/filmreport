@@ -21,13 +21,13 @@ font-size:10pt;
 font-size:12pt;
 }
 
-.xl7021306 {
+.xl70 {
 background:#FF9;
 font-size:8pt;
 text-align:center;
 }
 
-.xl7221306,.xl7321306 {
+.xl7 {
 background:#FFC;
 font-size:8pt;
 }
@@ -36,44 +36,22 @@ font-size:8pt;
 border-top:.5pt solid gray;
 }
 
-.xl8421306 {
+.gray {
 background:gray;
 color:#FFF;
 font-size:8pt;
 text-align:center;
 }
 
-.xl9521306 {
+.xl195 {
 background:#FFFFE5;
 font-size:7pt;
 text-align:center;
 }
 
-.xl10021306 {
+.xl10 {
 background:#F2FFF2;
 font-size:9pt;
-}
-
-.xl12021306 {
-background:#CCE5FF;
-font-size:9pt;
-}
-
-.xl13121306 {
-background:#FFC;
-font-size:8pt;
-text-align:center;
-}
-
-.xl14621306 {
-font-size:7pt;
-background:#F2FFF2;
-text-align:right;
-}
-
-.xl14721306 {
-font-size:10pt;
-text-align:center;
 }
 
 .brightgreen {
@@ -81,11 +59,6 @@ background:#F2FFF2;
 font-size:7pt;
 border: .5px solid #fff;
 text-align: right;
-}
-
-.xl15421306 {
-color:#969696;
-font-size:10pt;
 }
 
 .bold{
@@ -123,17 +96,10 @@ font-family:"Wingdings 3";
 font-size:7pt;
 }
 
-.td173 {
+.f8orange {
 background:#FFF2E5;
 font-size:7pt;
 text-align:center;
-vertical-align:bottom;
-}
-
-.xl18121306 {
-background:#CCE5FF;
-color:#000;
-font-size:8pt;
 vertical-align:bottom;
 }
 
@@ -155,8 +121,6 @@ font-size:9pt;
 text-align:center;
 }
 
-
-
 .td202 {
 background:#FFF2E5;
 font-size:7pt;
@@ -171,20 +135,7 @@ text-align:center;
 vertical-align:middle;
 }
 
-.xl14521306 {
-font-size:7pt;
-text-align:right;
-vertical-align:bottom;
-}
-
-.xl8 {
-background:gray;
-color:#000;
-font-size:8pt;
-}
-
-
-.td111 {
+.bluetop {
 background:#E5F2FF;
 color:#000;
 font-size:8pt;
@@ -193,13 +144,6 @@ text-align:center;
 
 .vbottom {
 vertical-align:bottom;
-}
-
-.xl9321306,.xl10521306 {
-background:#E5F2FF;
-color:#000;
-font-size:9pt;
-text-align:center;
 }
 
 .brightyellow {
@@ -227,20 +171,7 @@ font-size:9pt;
 text-align:center;
 }
 
-.xl19721306,.xl18521306,.xl18921306 {
-background:#CCE5FF;
-color:#000;
-font-size:9pt;
-vertical-align:bottom;
-}
-
-.xl7821306,.xl7921306,.xl8521306,.xl8721306 {
-background:gray;
-color:#FFF;
-font-size:8pt;
-}
-
-.xl11521306,.xl13621306,.xl13821306 {
+.xl11,.xl13621306,.xl13821306 {
 font-size:9pt;
 vertical-align:bottom;
 }
@@ -263,12 +194,12 @@ text-align:center;
 border: .5px solid #fff;
 }
 
-.xl14121306,.xl14221306 {
+.xl14221306 {
 font-size:12pt;
 vertical-align:bottom;
 }
 
-.xl16521306,.xl15021306,.xl16321306 {
+.xl16,.xl15021306 {
 font-size:7pt;
 vertical-align:bottom;
 }
@@ -279,7 +210,7 @@ font-size:8pt;
 padding-left: 5px;
 }
 
-.td186,.xl12421306,.xl18721306 {
+.td186,.xl124,.xl18721306 {
 background:#CCE5FF;
 font-size:9pt;
 text-align:center;
@@ -313,30 +244,24 @@ text-align:center;
     border-color: black;
 }
 
-.xl16721306,.xl18421306,.xl7121306,.xl12921306 {
+.xl71 {
 font-size:8pt;
 text-align:center;
-vertical-align:bottom;
+vertical-align:center;
 }
 
 .xl1 {
 font-size:8pt;
 }
 
-.xl8021306,.xl15821306,.xl15921306 {
+.xl8021306,.xl15,.xl15 {
 font-size:8pt;
 }
 
-.td972,.xl19821306 {
+.td972,.xl19 {
 background:#FFF2E5;
 font-size:8pt;
 text-align:center;
-}
-
-.xl14321306,.xl14821306 {
-background:#FFFFE5;
-font-size:8pt;
-text-align:right;
 }
 
 @media print
@@ -346,3 +271,4 @@ text-align:right;
         display: none !important;
     }
 }
+wingdings

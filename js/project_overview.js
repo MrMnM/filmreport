@@ -30,7 +30,7 @@ function companyCreated(data) {
 }
 
 function projDeleted(data) {
-    if (data.message=="SUCCESS") {
+    if (data.message=="SUCCESS:") {
         $('#deleteProjectModal').modal('hide');
         table.ajax.reload();
     }else{

@@ -7,6 +7,11 @@ include './includes/inc_encrypt.php';
 include './includes/inc_dbconnect.php';
 include './includes/inc_variables.php';
 
+$type=1;
+if (!empty($_GET["t"])) {
+    $type=$_GET["t"];
+}
+
 if (!empty($_GET["id"])) {
             $p_id=$_GET["id"];
             $conn = new mysqli($servername, $username, $password, $dbname);
@@ -84,13 +89,9 @@ if (!empty($_GET["id"])) {
 <head>
     <!--TODO glyphicons printable & Centered-->
 	<meta content="text/html" http-equiv="Content-Type">
-    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
-	-->
-    <!-- Bootstrap Core CSS -->
-    <link media="screen" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+    <link media="screen" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"/>
     <link href="./css/view_style.css" rel="stylesheet" media="screen">
     <link href="./css/view_style.css" rel="stylesheet" media="print">
-    <!--<link href="./css/view_style.css" rel="stylesheet">-->
 	<title><? echo $title; ?></title>
 </head>
 <body>
@@ -100,20 +101,16 @@ if (!empty($_GET["id"])) {
     <div class="navbar-header">
         <a class="navbar-brand" href="index.php">Abrechnungsgenerator</a>
         <ul class="pagination" style="margin-left:20px;margin-top:8px;margin-bottom:4px;">
-        <li class="disabled"><a href="#">Aktion:</a></li>
-        <li><a href="javascript:window.print();">Drucken</a></li>
-        <li><a href="h_download.php?t=xlsx&id=<? echo $p_id;?>" target="_blank">Excel</a></li>
-        <li><a href="h_download.php?t=pdf&id=<? echo $p_id;?>" target="_blank">PDF</a></li>
-    </ul>
-    <ul class="pagination" style="margin-left:20px;margin-top:8px;margin-bottom:4px;">
-        <li class="active"><a href="#">Rapport</a></li>
-        <li><a href="#">Abrechnung</a></li>
-    </ul>
-
-
-
-    </div>
-            <!-- /.navbar-top-links -->
+            <li class="disabled"><a href="#">Aktion:</a></li>
+            <li><a href="javascript:window.print();">Drucken</a></li>
+            <li><a href="h_download.php?t=xlsx&id=<? echo $p_id;?>" target="_blank">Excel</a></li>
+            <li><a href="h_download.php?t=pdf&id=<? echo $p_id;?>" target="_blank">PDF</a></li>
+        </ul>
+        <ul class="pagination" style="margin-left:20px;margin-top:8px;margin-bottom:4px;">
+            <li class="active"><a href="#">Rapport</a></li>
+            <li><a href="#">Abrechnung</a></li>
+        </ul>
+    </div>            <!-- /.navbar-top-links -->
 </nav>
 </div>
 <div id="page-wrapper" >
@@ -146,9 +143,9 @@ if (!empty($_GET["id"])) {
 			<tr>
 				<td class="f14" colspan="4" height="26" width="194">ARBEITSRAPPORT</td>
 				<td class="xl1" colspan="2">Grundlohn:</td>
-				<td class="xl7021306 bold"><? echo $p_pay;?></td>
-				<td class="xl7121306">CHF</td>
-				<td class="xl7221306" colspan="2">(9h / Tag)</td>
+				<td class="xl70 bold"><? echo $p_pay;?></td>
+				<td class="xl71">CHF</td>
+				<td class="xl7" colspan="2">(9h / Tag)</td>
 				<td class="xl1"></td>
 				<td class="xl1" colspan="2">Produktion:</td>
 				<td class="f10"></td>
@@ -166,7 +163,7 @@ if (!empty($_GET["id"])) {
 				<td class="xl1" colspan="3">Datum [von/bis] :</td>
 				<td class="f10"></td>
 				<td class="td17" colspan="4"><? echo $sdate;?></td>
-				<td class="xl18421306" colspan="2">bis</td>
+				<td class="xl71" colspan="2">bis</td>
 				<td class="td17" colspan="3"><? echo $edate;?></td>
 			</tr>
 			<tr>
@@ -230,50 +227,50 @@ if (!empty($_GET["id"])) {
 				<td class="line" colspan="24" height="9"></td>
 			</tr>
 			<tr class="xl1">
-				<td class="xl8421306" colspan="2" height="20"> Datum</td>
-				<td class="xl8421306"> Was</td>
+				<td class="gray" colspan="2" height="20"> Datum</td>
+				<td class="gray"> Was</td>
 				<td></td>
-				<td class="xl8421306" colspan="4"> Arbeitszeit</td>
+				<td class="gray" colspan="4"> Arbeitszeit</td>
 				<td></td>
-				<td class="xl8421306"> Grundlohn</td>
+				<td class="gray"> Grundlohn</td>
 				<td></td>
-				<td class="xl8421306" colspan="10"> Zuschl&auml;ge (Nach AAB SSFV 2007)</td>
+				<td class="gray" colspan="10"> Zuschl&auml;ge (Nach AAB SSFV 2007)</td>
 				<td></td>
-				<td class="xl8421306" colspan="2"> Spesen<font class="xl1"><sup>4</sup></font></td>
+				<td class="gray" colspan="2"> Spesen<font class="xl1"><sup>4</sup></font></td>
 			</tr>
 			<tr>
 				<td class="xl1" height="19"></td>
 				<td class="xl1"></td>
 				<td class="xl1"></td>
 				<td rowspan="4" align="centered">&#9656;</td>
-				<td class="td111 vbottom"></td>
-				<td class="td111"></td>
-				<td class="xl9321306"></td>
-				<td class="td111"></td>
+				<td class="bluetop"></td>
+				<td class="bluetop"></td>
+				<td class="bluetop"></td>
+				<td class="bluetop"></td>
 				<td rowspan="4" align="centered">&#9656;</td>
-				<td class="xl9521306">(bis 9h/Tag)<font class="f9"><sup>1</sup></font></td>
+				<td class="xl195">(bis 9h/Tag)<font class="f9"><sup>1</sup></font></td>
 				<td  rowspan="4" align="centered">&#9656;</td>
 				<td class="td972" colspan="8">&Uuml;berstunden<font class="f9"><sup>2</sup></font> <font class="f6h">(9h +)</font></td>
 				<td class="td972">Nacht</td>
 				<td class="td972"></td>
 				<td rowspan="4" align="centered">&#9656;</td>
-				<td class="xl10021306"></td>
-				<td class="xl10021306"></td>
+				<td class="xl10"></td>
+				<td class="xl10"></td>
 			</tr>
 			<tr>
-				<td class="td102" height="12" colspan="3"></td>
-				<td class="td111 vbottom"></td>
-				<td class="td111"></td>
-				<td class="xl10521306"></td>
-				<td class="td111"></td>
+				<td height="12" colspan="3"></td>
+				<td class="bluetop vbottom"></td>
+				<td class="bluetop"></td>
+				<td class="bluetop"></td>
+				<td class="bluetop"></td>
 				<td class="brightyellow"></td>
-				<td class="td173" rowspan="3">10.te</td>
-				<td class="td173" rowspan="3">11.te</td>
-				<td class="td173" rowspan="3">12.te</td>
-				<td class="td173" rowspan="3">13.te</td>
-				<td class="td173" rowspan="3">14.te</td>
-				<td class="td173" rowspan="3">15.te</td>
-				<td class="td173" colspan="2" rowspan="3">ab<br>
+				<td class="f8orange" rowspan="3">10.te</td>
+				<td class="f8orange" rowspan="3">11.te</td>
+				<td class="f8orange" rowspan="3">12.te</td>
+				<td class="f8orange" rowspan="3">13.te</td>
+				<td class="f8orange" rowspan="3">14.te</td>
+				<td class="f8orange" rowspan="3">15.te</td>
+				<td class="f8orange" colspan="2" rowspan="3">ab<br>
 				16.te</td>
 				<td class="td128" colspan="2">23:00</td>
 				<td class="td127"></td>
@@ -282,10 +279,10 @@ if (!empty($_GET["id"])) {
 			<tr>
 				<td class="xl1" colspan="2" height="12" ></td>
 				<td class="xl1"></td>
-				<td class="td111">Beginn</td>
-				<td class="td111">Ende</td>
-				<td class="td111">Pausen</td>
-				<td class="td111">in h</td>
+				<td class="bluetop">Beginn</td>
+				<td class="bluetop">Ende</td>
+				<td class="bluetop">Pausen</td>
+				<td class="bluetop">in h</td>
 				<td class="brightyellow">Anz. Tage</td>
 				<td class="td128" colspan="2">bis</td>
 				<td class="td127">Essen</td>
@@ -295,7 +292,7 @@ if (!empty($_GET["id"])) {
 				<td height="12" ></td>
 				<td></td>
 				<td class="td102"></td>
-				<td class="td111" colspan="4"></td>
+				<td class="bluetop" colspan="4"></td>
 				<td class="brightyellow"></td>
 				<td class="td128" colspan="2">05:00</td>
 				<td class="td127"></td>
@@ -385,7 +382,7 @@ $allhours2 = new DateTime('2000-01-01 00:00:00');
 				<td></td>
 				<td></td>
 				<td class="xl1" colspan="3">Total Arbeitszeit in h:</td>
-				<td class="xl12421306">
+				<td class="xl124">
             <?
 				$interval = $allhours1->diff($allhours2);
 				$d=$interval->d;
@@ -394,14 +391,14 @@ $allhours2 = new DateTime('2000-01-01 00:00:00');
 				echo $d*24+$h.':'.$m;
 			?>
                 </td>
-				<td class="xl12521306"></td>
+				<td></td>
 				<td class="brightyellow">Anz. Tage</td>
 				<td></td>
-				<td class="xl19821306" colspan="2">125%</td>
-				<td class="xl19821306" colspan="2">150%</td>
-				<td class="xl19821306" colspan="2">200%</td>
-				<td class="xl19821306" colspan="2">250%</td>
-				<td class="xl19821306" colspan="2">25%</td>
+				<td class="xl19" colspan="2">125%</td>
+				<td class="xl19" colspan="2">150%</td>
+				<td class="xl19" colspan="2">200%</td>
+				<td class="xl19" colspan="2">250%</td>
+				<td class="xl19" colspan="2">25%</td>
 				<td></td>
 				<td class="f10 vbottom"></td>
 			</tr>
@@ -488,9 +485,9 @@ $allhours2 = new DateTime('2000-01-01 00:00:00');
 				<td></td>
 				<td class="xl14221306"><sub>CHF</sub></td>
 				<td class="pay base"><? echo  round($allbase*$p_pay);?></td>
-				<td class="xl15821306"></td>
+				<td class="xl15"></td>
 				<td class="pay overtime" colspan="10"><? echo  round($p125+$p150+$p200+$p250+$p25,2);?></td>
-				<td class="xl15921306"></td>
+				<td class="xl15"></td>
 				<td class="pay additional" colspan="2"><? echo  round(round($allfood*32, 2)+round($allcar*0.7, 2),2);?></td>
 			</tr>
 			<tr>
@@ -498,7 +495,7 @@ $allhours2 = new DateTime('2000-01-01 00:00:00');
 			</tr>
 			<tr>
 				<td class="f6" colspan="6">1 F&uuml;r Laden, Ausladen oder Vorbereitung bis 5 h pro Tag: Pauschal 0.6 Tag</td>
-				<td class="xl11521306"></td>
+				<td class="xl11"></td>
 				<td class="xl1"></td>
 				<td class="f10"></td>
 				<td class="xl16221306" colspan="5">p <font class="f6h">Grundlohn exkl. 8.33% Ferienzulage</font></td>
@@ -509,16 +506,16 @@ $allhours2 = new DateTime('2000-01-01 00:00:00');
 			</tr>
 			<tr>
 				<td class="f6" colspan="6">3 Nachtstunden: Arbeitszeit zwischen 23 und 5 Uhr abz&uuml;glich Pausen.</td>
-				<td class="xl11521306"></td>
+				<td class="xl11"></td>
 				<td class="f10"></td>
 				<td class="f10"></td>
-				<td class="xl16321306" colspan="14">Bitte auf der Lohnabrechnung die entsprechenden Zulagen, Abz&uuml;ge und Spesen kalkulieren.</td>
+				<td class="xl11" colspan="14">Bitte auf der Lohnabrechnung die entsprechenden Zulagen, Abz&uuml;ge und Spesen kalkulieren.</td>
 				<td class="f10"></td>
 			</tr>
 			<tr>
 				<td class="f6" colspan="6">4 Spesenregelung gem&auml;ss AAB SSFV 2007</td>
 				<td class="f10" colspan="3"></td>
-				<td class="xl16521306" colspan="13">Zahlbar innert 30 Tagen nach Erhalt. Betrag auf obenstehendes Konto &uuml;berweisen. Danke.</td>
+				<td class="xl11" colspan="13">Zahlbar innert 30 Tagen nach Erhalt. Betrag auf obenstehendes Konto &uuml;berweisen. Danke.</td>
 				<td class="f10" colspan="2"></td>
 			</tr>
 		</table>

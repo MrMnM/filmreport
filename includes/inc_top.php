@@ -70,10 +70,10 @@
                             <a href="#"><i  class="fa fa-table fa-fw"></i> Projects<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level collapse in" aria-expanded="true">
                                 <li>
-                                    <a href="project_overview.php"><i  class="fa fa-star fa-fw"></i> Aktiv</a>
+                                    <a href="project_overview.php?view=active"><i  class="fa fa-star fa-fw"></i> Aktiv</a>
                                 </li>
                                 <li>
-                                    <a href="project_archive.php"><i  class="fa fa-archive fa-fw"></i> Beendet</a>
+                                    <a href="project_overview.php?view=archive"><i  class="fa fa-archive fa-fw"></i> Beendet</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
