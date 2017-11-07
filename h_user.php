@@ -42,7 +42,7 @@ if($action){
 $conn->close();
 
 function GetUser($u_id, $conn){
-    $sql = "SELECT mail, tel, name, address_1, address_2, ahv, dateob, konto, bvg FROM `users` WHERE u_id='$u_id';";
+    $sql = "SELECT mail, tel, name, address_1, address_2, ahv, dateob, konto, bvg, type, affiliation FROM `users` WHERE u_id='$u_id';";
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {
         while($row = $result->fetch_assoc()) {
@@ -55,6 +55,7 @@ function GetUser($u_id, $conn){
             $u_bvg = $row["bvg"];
             $u_address1= $row["address_1"];
             $u_address2= $row["address_2"];
+            $type=$row["type"];
         }
     }
     //TODO more elegantly

@@ -1,4 +1,4 @@
-<?
+<?php
 include './includes/inc_dbconnect.php';
 $conn = new mysqli($servername, $username, $password, $dbname);
 // Check connection
@@ -10,11 +10,10 @@ $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
     $cnt = 0;
-    while($cmp = $result->fetch_assoc()) {
+    while ($cmp = $result->fetch_assoc()) {
         echo '<option value="'.$cmp["company_id"].'">'.$cmp["name"].'</option>';
         $companies[$cnt][0] = $cmp["company_id"];
         $companies[$cnt][1] = $cmp["name"];
         $cnt=$cnt+1;
     }
 }
-?>

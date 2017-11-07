@@ -1,8 +1,8 @@
-<?
+<?php
 header("content-type: application/x-javascript");
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
-error_reporting( E_ALL | E_STRICT );
+error_reporting(E_ALL | E_STRICT);
 
 
 include './includes/inc_sessionhandler_ajax.php';
@@ -17,7 +17,7 @@ $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
     $cnt = 0;
-    while($cmp = $result->fetch_assoc()) {
+    while ($cmp = $result->fetch_assoc()) {
         $companies[$cnt][0] = $cmp["company_id"];
         $companies[$cnt][1] = $cmp["name"];
         $cnt=$cnt+1;
@@ -37,14 +37,14 @@ if ($_GET["fin"]==1) {
     if ($result->num_rows > 0) {
         $rowCount = mysqli_num_rows($result);
         $counter = 1;
-        while($row = $result->fetch_assoc()) {
+        while ($row = $result->fetch_assoc()) {
             echo '['.PHP_EOL;
             echo '"'.$row["p_start"].'",'.PHP_EOL;
             echo '"'.$row["p_name"].'",'.PHP_EOL;
-            foreach($companies as $arr){
+            foreach ($companies as $arr) {
                 if ($arr[0] == $row["p_company"]) {
                     echo '"'.$arr[1].'",'.PHP_EOL;
-                }elseif ( $row["p_company"]=='timer'){
+                } elseif ($row["p_company"]=='timer') {
                     echo '"TIMER",'.PHP_EOL;
                     break;
                 }
@@ -56,17 +56,16 @@ if ($_GET["fin"]==1) {
             echo '"'.$row["ext_p_id"].'"'.PHP_EOL;
             if ($counter == $rowCount) {
                 echo ']'.PHP_EOL;
-            }else{
+            } else {
                 echo '],'.PHP_EOL;
             }
             $counter++;
-
         }
     }
 
     echo ']'.PHP_EOL;
     echo '}'.PHP_EOL;
-}else{
+} else {
     echo '{'.PHP_EOL;
     echo '"data": ['.PHP_EOL;
 
@@ -75,14 +74,14 @@ if ($_GET["fin"]==1) {
     if ($result->num_rows > 0) {
         $rowCount = mysqli_num_rows($result);
         $counter = 1;
-        while($row = $result->fetch_assoc()) {
+        while ($row = $result->fetch_assoc()) {
             echo '['.PHP_EOL;
             echo '"'.$row["p_start"].'",'.PHP_EOL;
             echo '"'.$row["p_name"].'",'.PHP_EOL;
-            foreach($companies as $arr){
+            foreach ($companies as $arr) {
                 if ($arr[0] == $row["p_company"]) {
                     echo '"'.$arr[1].'",'.PHP_EOL;
-                }elseif ( $row["p_company"]=='timer'){
+                } elseif ($row["p_company"]=='timer') {
                     echo '"TIMER",'.PHP_EOL;
                     break;
                 }
@@ -94,16 +93,13 @@ if ($_GET["fin"]==1) {
             echo '"'.$row["ext_p_id"].'"'.PHP_EOL;
             if ($counter == $rowCount) {
                 echo ']'.PHP_EOL;
-            }else{
+            } else {
                 echo '],'.PHP_EOL;
             }
             $counter++;
-
         }
     }
 
     echo ']'.PHP_EOL;
     echo '}'.PHP_EOL;
 }
-
-?>

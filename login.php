@@ -29,7 +29,7 @@ if (!empty($_POST["pw"]) && !empty($_POST["mail"])) {
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
     }
-    $sql = "SELECT pw, u_id, name, active FROM `users` WHERE mail='$mail';";
+    $sql = "SELECT pw, u_id, name, active, type, affiliation FROM `users` WHERE mail='$mail';";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
@@ -38,6 +38,8 @@ if (!empty($_POST["pw"]) && !empty($_POST["mail"])) {
             $hash = $row["pw"];
             $uid = $row["u_id"];
             $name = $row["name"];
+            $type =$row["type"];
+            $affiliation = $row["affiliation"];
             $active = $row["active"];
         }
     }    else{
@@ -57,8 +59,13 @@ if (!empty($_POST["pw"]) && !empty($_POST["mail"])) {
                 $_SESSION['running'] = 1;
                 $_SESSION['user'] = $uid;
                 $_SESSION['name'] = $name;
+                $_SESSION['type'] = $type;
                 //echo session_status();
+                if ($type=='producer') {
+                    header( 'Location: ./p_index.php') ;
+                }else{
                 header( 'Location: ./index.php') ;
+            }
             }
 
         } elseif (!$activated) {
@@ -76,8 +83,8 @@ if (!empty($_POST["pw"]) && !empty($_POST["mail"])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Filmabrechnungsgenerator</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
     <link href="./css/main.css" rel="stylesheet">
 </head>
 
@@ -132,8 +139,8 @@ if (!empty($_POST["pw"]) && !empty($_POST["mail"])) {
     </div>
 </div>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.1/jquery.form.min.js" integrity="sha384-tIwI8+qJdZBtYYCKwRkjxBGQVZS3gGozr3CtI+5JF/oL1JmPEHzCEnIKbDbLTCer" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.1/jquery.form.min.js"></script>
 </body>
 </html>

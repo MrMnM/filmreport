@@ -1,7 +1,7 @@
 <?
 include './includes/inc_sessionhandler_default.php';
 include './includes/inc_variables.php';
-if ($u_type=='producer') {header( 'Location: ./p_index.php') ;}
+if ($u_type!='producer') {header( 'Location: ./index.php') ;}
 ?>
 
 <!DOCTYPE html>
@@ -48,66 +48,13 @@ if ($u_type=='producer') {header( 'Location: ./p_index.php') ;}
         <div class="col-lg-8">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fa fa-bar-chart-o fa-fw"></i> Einnahmen
-                    <div class="pull-right">
-                        <div class="btn-group">
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                                Actions
-                                <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu pull-right" role="menu">
-                            <li><a href="#">Action</a>
-                                </li>
-                                <li><a href="#">Another action</a>
-                                </li>
-                                <li><a href="#">Something else here</a>
-                                </li>
-                                <li class="divider"></li>
-                                <li><a href="#">Separated link</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                                Actions
-                                <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu pull-right" role="menu">
-                            <li><a href="#">eop</a>
-                                </li>
-                                <li><a href="#">Aewf</a>
-                                </li>
-                                <li><a href="#">Something else here</a>
-                                </li>
-                                <li class="divider"></li>
-                                <li><a href="#">Separated link</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+                    <i class="fa fa-bar-chart-o fa-fw"></i> Aktuell Laufende Projekte
                 </div><!-- /.panel-heading -->
                 <div class="panel-body">
-                    <div id="stats"></div>
                 </div><!-- /.panel-body -->
             </div><!-- /.panel -->
         </div><!-- /.col-lg-8 -->
-        <div class="col-lg-4 col-md-6">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-xs-8">
-                            <div class="huge">&oslash; Monat:</div>
-                        </div>
-                        <div class="col-xs-4 text-right">
-                            <div class="huge" id="monthlyMean"></div>
-                            <div></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div><!-- /.col-lg-4 -->
+
     </div><!-- /.row -->
 </div><!-- /#page-wrapper -->
 </div><!-- /#wrapper -->

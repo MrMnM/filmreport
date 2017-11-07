@@ -1,7 +1,7 @@
-<?
+<?php
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
-error_reporting( E_ALL | E_STRICT );
+error_reporting(E_ALL | E_STRICT);
 
 include './includes/inc_dbconnect.php';
 include './includes/inc_variables.php';
@@ -11,23 +11,23 @@ if ($conn->connect_error) {
     die('{ "message": "ERROR: '.$conn->connect_error.'"}');
 }
 
-$validated = FALSE;
+$validated = false;
 
-if(!empty($_GET["v"])){
+if (!empty($_GET["v"])) {
     $val = mysqli_real_escape_string($conn, $_GET["v"]);
     $sql = "SELECT active, u_id FROM `users` WHERE active='$val';";
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {
-        while($row = $result->fetch_assoc()) {
+        while ($row = $result->fetch_assoc()) {
             $u_id = $row["u_id"];
         }
         $sql = "UPDATE users SET active = 'yes' WHERE u_id = '$u_id'";
-        if ($conn->query($sql) === TRUE) {
-            $validated = TRUE;
+        if ($conn->query($sql) === true) {
+            $validated = true;
         } else {
             die('{ "message": "ERROR: ' . $sql . $conn->error.'}');
         }
-    }else{
+    } else {
         die('{ "message": "Ung&uuml;ltiger Validierungsschl&uuml;ssel" }');
     }
 }
@@ -42,11 +42,8 @@ if(!empty($_GET["v"])){
     <meta name="author" content="">
     <title>Filmabrechnungsgenerator</title>
     <!-- Bootstrap Core CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
-    <!-- MetisMenu CSS -->
-    <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/jquery.metismenu/1.1.3/metisMenu.min.css" integrity="sha256-4NxXT7KyZtupE4YdYLDGnR5B8P0JWjNBpF8mQBzYtrM=" crossorigin="anonymous">-->
-    <!-- Custom Fonts -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
     <!-- Custom CSS -->
     <link href="./css/main.css" rel="stylesheet">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -69,12 +66,12 @@ if(!empty($_GET["v"])){
             </div>
             <div class="panel-body">
 
-<? if ($validated==TRUE) {?>
+<?php if ($validated==true) {?>
     <div id="success" class="alert alert-success">
         <p>Account wurde erfolreich Validiert</p>
         <a href=".\login.php">ZUM LOGIN</a>
     </div>
-<?}else{?>
+<?} else {?>
                 <div id="error" class="alert alert-danger alert-dismissable" style="display: none;">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                     <p id="errorcontent">Benutzername und/oder Passwort stimmen nicht &uuml;berein.</p>
@@ -105,11 +102,11 @@ if(!empty($_GET["v"])){
                         </div>
                         <div class="form-group">
                             <label>Passwort</label>
-                            <input class="form-control" type="password" name="pw" placeholder="&#0149&#0149&#0149&#0149&#0149&#0149" required>
+                            <input class="form-control" type="password" name="pw" placeholder="&#0149;&#0149;&#0149;&#0149;&#0149;&#0149;" required>
                         </div>
                         <div class="form-group">
                             <label>Passwort wiederholen</label>
-                            <input class="form-control" type="password" name="pw2" placeholder="&#0149&#0149&#0149&#0149&#0149&#0149" required>
+                            <input class="form-control" type="password" name="pw2" placeholder="&#0149;&#0149;&#0149;&#0149;&#0149;&#0149;" required>
                         </div>
                         <button type="submit" class="btn btn-lg btn-success btn-block">Erstellen</button>
                     </fieldset>
@@ -117,20 +114,14 @@ if(!empty($_GET["v"])){
                 <?}?>
             </div>
         </div>
-        <p align="right"><font size="-1" color="#888888"><? echo $VERSION; ?></font></p>
+        <p align="right"><font size="-1" color="#888888"><?php echo $VERSION; ?></font></p>
     </div>
 </div>
 </div>
 </body>
-<!-- jQuery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script>
-<!-- Bootstrap Core JavaScript -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
-<!-- Metis Menu Plugin JavaScript -->
-<!--<script src="https://cdn.jsdelivr.net/jquery.metismenu/1.1.3/metisMenu.min.js" integrity="sha256-OrCnS705nv33ycm/+2ifCnVfxxMdWvBMg5PUX1Fjpps=" crossorigin="anonymous"></script>-->
-<!-- Custom Theme JavaScript -->
-<!--<script src="./js/sb-admin-2.min.js"></script>-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.1/jquery.form.min.js" integrity="sha384-tIwI8+qJdZBtYYCKwRkjxBGQVZS3gGozr3CtI+5JF/oL1JmPEHzCEnIKbDbLTCer" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.1/jquery.form.min.js"></script>
 <script>
 $(document).ready(function() {
 $('#createAccount').ajaxForm({
@@ -152,5 +143,4 @@ function updateSuccess(data){
     }
 }
 </script>
-
 </html>

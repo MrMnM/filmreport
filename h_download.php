@@ -141,7 +141,7 @@ $objWorksheet->setCellValue('P5', $c_address1);
 $objWorksheet->setCellValue('P6', $c_address2);
 $objWorksheet->setCellValue('P7', $p_job);
 
-$rowCounter = 17;
+$rowCounter = 16;
 $allbase=0;
 $all125=0;
 $all150=0;
@@ -210,7 +210,7 @@ $m= $interval->i;
 $taz = $d*24+$h.':'.$m;
 $objWorksheet->setCellValue("H".$cur,$taz);
 
-$cur=$cur+2;
+$cur=$cur+1;
 $objWorksheet->setCellValue("J".$cur,$allbase);
 $objWorksheet->setCellValue("L".$cur,$all125);
 $objWorksheet->setCellValue("N".$cur,$all150);
@@ -219,7 +219,7 @@ $objWorksheet->setCellValue("R".$cur,$all250);
 $objWorksheet->setCellValue("T".$cur,$all25);
 $objWorksheet->setCellValue("W".$cur,$allfood);
 $objWorksheet->setCellValue("X".$cur,$allcar);
-$cur=$cur+2;
+$cur=$cur+1;
 $objWorksheet->setCellValue("J".$cur,$p_pay);
 $objWorksheet->setCellValue("L".$cur,round($p_pay/9*1.25, 2));
 $objWorksheet->setCellValue("N".$cur,round($p_pay/9*1.5, 2));
@@ -237,7 +237,7 @@ $objWorksheet->setCellValue("R".$cur,round($all250*$p_pay/9*2.5, 2));
 $objWorksheet->setCellValue("T".$cur,round($all25*$p_pay/9*0.25, 2));
 $objWorksheet->setCellValue("W".$cur,round($allfood*32, 2));
 $objWorksheet->setCellValue("X".$cur,round($allcar*0.7, 2));
-$cur=$cur+3;
+$cur=$cur+2;
 $p125=round($all125*$p_pay/9*1.25, 2);
 $p150=round($all150*$p_pay/9*1.5, 2);
 $p200=round($all200*$p_pay/9*2.0, 2);
@@ -250,7 +250,7 @@ $objWorksheet->setCellValue("W".$cur,round(round($allfood*32, 2)+round($allcar*0
 
 $comment = strlen($comment) > 300 ? substr($comment,0,297)."..." : $comment;
 $parts = str_split($comment, $split_length = 60);
-$cur=$rowCounter+5;
+$cur=$rowCounter+1;
 foreach ($parts as $text) {
     $objWorksheet->setCellValue("A".$cur,$text);
     $cur++;
@@ -286,12 +286,3 @@ if ($type=="xlsx") {
 }
 
 exit;
-
-
-
-
-// Echo memory peak usage
-//echo date('H:i:s') . " Peak memory usage: " . (memory_get_peak_usage(true) / 1024 / 1024) . " MB\r\n";
-
-// Echo done
-//echo date('H:i:s') . " Done writing file.\r\n";

@@ -1,7 +1,7 @@
-<?
+<?php
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
-error_reporting( E_ALL | E_STRICT );
+error_reporting(E_ALL | E_STRICT);
 
 include './includes/inc_sessionhandler_ajax.php';
 include './includes/inc_dbconnect.php';
@@ -10,12 +10,12 @@ if (!empty($_GET["y"])&&!empty($_GET["m"])) {
     $s_year=$_GET["y"];
     $s_month=$_GET["m"];
     if (!empty($_GET["m2"])) {
-            $e_month=$_GET["m2"];
-    }else {
+        $e_month=$_GET["m2"];
+    } else {
         $e_month=1;
     }
-// TODO Secify End and Start Month aso to Move in Graph
-}else{
+    // TODO Secify End and Start Month aso to Move in Graph
+} else {
     die('{ "message": "ERROR: KEINE DATEN ANGEGEBEN}');
 }
 
@@ -30,18 +30,18 @@ $result = $conn->query($sql);
 // Count Money
 $totalMoney = array_pad(array(0), 12, 0);
 if ($result->num_rows > 0) {
-    while($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch_assoc()) {
         $money = $row["tot_money"];
         $endmonth = $row["p_end"];
         $date = DateTime::createFromFormat('Y-m-d', $endmonth);
         $month = $date->format('n');
         $year = $date->format('Y');
         if ($year==$s_year) {
-                for ($mcount=0; $mcount<count($totalMoney) ; $mcount++) {
-                    if(($month-1)==$mcount){
-                        $totalMoney[$mcount]=$totalMoney[$mcount]+$money;
-                    }
+            for ($mcount=0; $mcount<count($totalMoney) ; $mcount++) {
+                if (($month-1)==$mcount) {
+                    $totalMoney[$mcount]=$totalMoney[$mcount]+$money;
                 }
+            }
         }
     }
 }
@@ -54,8 +54,7 @@ for ($i=0; $i < $s_month; $i++) {
     echo '"Pay":'. $totalMoney[$i];
     if ($i<($s_month-1)) {
         echo '}, {';
-    }else{
+    } else {
         echo '}]';
     }
 }
-?>

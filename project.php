@@ -30,7 +30,13 @@ include './includes/inc_variables.php';
 
 <body>
 <div id="wrapper">
-<? include('./includes/inc_top.php');?>
+    <?
+    if ($u_type == 'producer') {
+    include('./includes/inc_top_producer.php');
+    }else{
+    include('./includes/inc_top_freelancer.php');
+    }
+    ?>
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">

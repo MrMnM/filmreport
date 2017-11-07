@@ -6,5 +6,6 @@ if ($_SESSION["running"] != 1) {
 }else{
     $u_id= $_SESSION['user'];
     $u_name= $_SESSION['name'];
+    $u_type=$_SESSION['type'];
 }
 ?>

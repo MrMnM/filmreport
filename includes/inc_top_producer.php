@@ -7,7 +7,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="index.php">Abrechnungsgenerator <? echo $VERSION; ?></a>
+            <a class="navbar-brand" href="index.php">Abrechnungsgenerator <? echo $VERSION; ?>  - PRODUCER</a>
         </div>
         <!-- /.navbar-header -->
 
@@ -44,6 +44,8 @@
                     <i class="fa fa-user fa-fw"></i>&nbsp; <?echo $u_name;?>&nbsp;&nbsp; <i class="fa fa-caret-down"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-user">
+                    <li><a href=#><i>Kontotyp: Producer</i></a></li>
+                    <li class="divider"></li>
                     <li><a href="user.php"><i class="fa fa-user fa-fw"></i> Pers&ouml;nliche Informationen</a>
                     </li>
                     <!--<li><a href="#"><i class="fa fa-gear fa-fw"></i> Einstellungen</a>
@@ -63,24 +65,12 @@
                 <ul class="nav" id="side-menu">
 
                     <li>
-                        <a href="index.php"><i class="fa fa-home fa-fw"></i> Dashboard</a>
+                        <a href="p_index.php"><i class="fa fa-home fa-fw"></i> Dashboard</a>
+                    </li>
+                    <li>
+                        <a href="p_overview.php"><i  class="fa fa-table fa-fw"></i> Projects</a>
                     </li>
 
-                    <li class="">
-                            <a href="#"><i  class="fa fa-table fa-fw"></i> Projects<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level collapse in" aria-expanded="true">
-                                <li>
-                                    <a href="project_overview.php?view=active"><i  class="fa fa-star fa-fw"></i> Aktiv</a>
-                                </li>
-                                <li>
-                                    <a href="project_overview.php?view=archive"><i  class="fa fa-archive fa-fw"></i> Beendet</a>
-                                </li>
-                            </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
-                    <li>
-                        <a href="timer.php"><i class="fa fa-clock-o fa-fw"></i> Timer</a>
-                    </li>
                 </ul>
             </div>
             <!-- /.sidebar-collapse -->
