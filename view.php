@@ -46,11 +46,11 @@ if (!empty($_GET["id"])) {
 					$u_name = $row["name"];
 					$u_address1 =  $row["address_1"];
 					$u_address2 =  $row["address_2"];
-					//$u_ahv =  encrypt($row["ahv"],'d');
-                    $u_ahv =  "Encrypted";
+					$u_ahv =  encrypt($row["ahv"],'d');
+                    //$u_ahv =  "Encrypted";
 					$u_dob =   DateTime::createFromFormat('Y-m-d', $row["dateob"]);
-					//$u_konto = encrypt($row["konto"],'d');
-                    $u_konto = "Encrypted";
+					$u_konto = encrypt($row["konto"],'d');
+                    //$u_konto = "Encrypted";
 					$u_bvg =  $row["bvg"];
 					$u_mail = $row["mail"];
                     $u_tel = $row["tel"];

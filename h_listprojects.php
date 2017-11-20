@@ -32,7 +32,7 @@ if ($_GET["fin"]==1) {
     echo '{'.PHP_EOL;
     echo '"data": ['.PHP_EOL;
 
-    $sql = "SELECT project_id, p_start, p_name, p_company, tot_hours, tot_money, p_finished, ext_p_id  FROM `projects` WHERE user_id='$u_id' AND p_finished=1;";
+    $sql = "SELECT project_id, p_start, p_name, p_company, tot_hours, tot_money, p_finished, view_id  FROM `projects` WHERE user_id='$u_id' AND p_finished=1;";
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {
         $rowCount = mysqli_num_rows($result);
@@ -53,7 +53,7 @@ if ($_GET["fin"]==1) {
             echo '"'.$row["tot_money"].'",'.PHP_EOL;
             echo '"'.$row["project_id"].'",'.PHP_EOL;
             echo '"'.$row["p_finished"].'",'.PHP_EOL;
-            echo '"'.$row["ext_p_id"].'"'.PHP_EOL;
+            echo '"'.$row["view_id"].'"'.PHP_EOL;
             if ($counter == $rowCount) {
                 echo ']'.PHP_EOL;
             } else {
@@ -69,7 +69,7 @@ if ($_GET["fin"]==1) {
     echo '{'.PHP_EOL;
     echo '"data": ['.PHP_EOL;
 
-    $sql = "SELECT project_id, p_start, p_name, p_company, tot_hours, tot_money, p_finished, ext_p_id  FROM `projects` WHERE user_id='$u_id' AND p_finished=0;";
+    $sql = "SELECT project_id, p_start, p_name, p_company, tot_hours, tot_money, p_finished, view_id  FROM `projects` WHERE user_id='$u_id' AND p_finished=0;";
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {
         $rowCount = mysqli_num_rows($result);
@@ -90,7 +90,7 @@ if ($_GET["fin"]==1) {
             echo '"'.$row["tot_money"].'",'.PHP_EOL;
             echo '"'.$row["project_id"].'",'.PHP_EOL;
             echo '"'.$row["p_finished"].'",'.PHP_EOL;
-            echo '"'.$row["ext_p_id"].'"'.PHP_EOL;
+            echo '"'.$row["view_id"].'"'.PHP_EOL;
             if ($counter == $rowCount) {
                 echo ']'.PHP_EOL;
             } else {

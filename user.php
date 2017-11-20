@@ -143,7 +143,7 @@ include('./includes/inc_top_freelancer.php');
 <!-- Metis Menu Plugin JavaScript -->
 <script src="https://cdn.jsdelivr.net/jquery.metismenu/1.1.3/metisMenu.min.js" integrity="sha256-OrCnS705nv33ycm/+2ifCnVfxxMdWvBMg5PUX1Fjpps=" crossorigin="anonymous"></script>
 <!-- Custom Theme JavaScript -->
-<script src="./js/sb-admin-2.js"></script>
+<script src="./js/sidemenu.js"></script>
 <!-- Custom Functions JavaScript -->
 <script>var us_id = "<? echo $u_id;?>";</script>
 <script src="./js/user.js"></script>

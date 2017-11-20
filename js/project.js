@@ -1,28 +1,29 @@
-// MAIN
+import Row from "./Row.js"
+import {timeToMins, roundToTwo, getRate, minsToHours, formatDate} from "./timeHelpers.js"
+
 var addInfo = { "tothour" : "00:00", "totmoney"  : "0", "enddate"  : "0000-00-00", "calcBase":"SSFV_DAY", "baseHours":9 };
 var rowCounter = loadElement.length;
-var rowElement = new Array();
-var saved = true;
-var basePay = $("#basePay").val();
-var startDate = new Date($("#startDate").val());
-var us_id = null;
-var p_id = null;
+var rowElement = new Array()
+var saved = true
+const basePay = $("#basePay").val();
+const startDate = new Date($("#startDate").val());
+
 
 //   BUTTONS
 //-----------------------------------------------------------------------------
-jQuery('button.saveButton').click(function(event){
+$('#saveButton').click(function(event){
     event.preventDefault();
     Save();
     updateSaveStatus();
 });
-jQuery('button.add-row').click(function(event){
+$('#addRow').click(function(event){
     event.preventDefault();
     saved = false;
     addRow();
     updateBottom();
     updateSaveStatus();
 });
-jQuery('button.remove-row').click(function(event){
+$('#removeRow').click(function(event){
     event.preventDefault();
     saved = false;
     if (rowCounter != 0){
@@ -33,14 +34,13 @@ jQuery('button.remove-row').click(function(event){
     updateBottom();
     updateSaveStatus();
 });
-jQuery('button.refreshButton').click(function(event){
+$('#refresh').click(function(event){
     saved=false;
-    for (var i = 0; i < rowElement.length; i++) {
-        updateRow(i);
-    }
-    updateBottom();
+    updateAll();
     updateSaveStatus();
 });
+
+
 
 // changed elements ------------------------------------------------------------
 $( "#workhours" ).change(function() {
@@ -87,27 +87,27 @@ function addRow(){
         currentDate.setDate(currentDate.getDate() + 1);
     }
     rowElement.push(new Row(rowCounter));
-    let newRow = jQuery(`
-        <tr id="r`+rowCounter+`">
-        <td><input type="date" id="date`+rowCounter+`" name="date`+rowCounter+`" value="`+formatDate(currentDate)+`"></td>
-        <td><input type="text" name="work`+rowCounter+`" size=10 list="work"></td>
-        <td><input type="time" name="star`+rowCounter+`" min=0 value="00:00"></td>
-        <td><input type="time" name="ende`+rowCounter+`" min=0 value="00:00"></td>
-        <td><input type="time" name="brea`+rowCounter+`" min=0  value="00:00"></td>
-        <td id="wtim`+rowCounter+`">0</td>
-        <td><input type="number" id="base`+rowCounter+`" name="base`+rowCounter+`" min=0 step="0.1"></td>
-        <td id="tent`+rowCounter+`">0</td>
-        <td id="elev`+rowCounter+`">0</td>
-        <td id="twel`+rowCounter+`">0</td>
-        <td id="thir`+rowCounter+`">0</td>
-        <td id="four`+rowCounter+`">0</td>
-        <td id="fift`+rowCounter+`">0</td>
-        <td id="sixt`+rowCounter+`">0</td>
-        <td id="nigh`+rowCounter+`">0</td>
-        <td><input type="checkbox" name="lunc`+rowCounter+`"></td>
-        <td><input type="number" name="cark`+rowCounter+`" min=0 value=0></td>
+    const newRow = $(`
+        <tr id="r${rowCounter}">
+        <td><input type="date" id="date${rowCounter}" name="date${rowCounter}" value="${formatDate(currentDate)}"></td>
+        <td><input type="text" name="work${rowCounter}" size=10 list="work"></td>
+        <td><input type="time" name="star${rowCounter}" min=0 value="00:00"></td>
+        <td><input type="time" name="ende${rowCounter}" min=0 value="00:00"></td>
+        <td><input type="time" name="brea${rowCounter}" min=0  value="00:00"></td>
+        <td id="wtim${rowCounter}">0</td>
+        <td><input type="number" id="base${rowCounter}" name="base${rowCounter}" min=0 step="0.1"></td>
+        <td id="tent${rowCounter}">0</td>
+        <td id="elev${rowCounter}">0</td>
+        <td id="twel${rowCounter}">0</td>
+        <td id="thir${rowCounter}">0</td>
+        <td id="four${rowCounter}">0</td>
+        <td id="fift${rowCounter}">0</td>
+        <td id="sixt${rowCounter}">0</td>
+        <td id="nigh${rowCounter}">0</td>
+        <td><input type="checkbox" name="lunc${rowCounter}"></td>
+        <td><input type="number" name="cark${rowCounter}" min=0 value=0></td>
         </tr>`);
-    jQuery('#workhours').append(newRow);
+    $('#workhours').append(newRow);
     rowElement[rowCounter].date = formatDate(currentDate);
     saved = false;
     updateRow(rowCounter);
@@ -116,7 +116,7 @@ function addRow(){
 }
 function loadRow(currentRow){
     //rowElement.push(new Row(rowCounter));
-    let newRow = jQuery(`
+    let newRow = $(`
         <tr id="r`+currentRow+`">
         <td><input type="date" id="date`+currentRow+`" name="date`+currentRow+`" value="`+rowElement[currentRow].date+`"></td>
         <td><input type="text" name="work`+currentRow+`" size=10 list="work" value="`+rowElement[currentRow].work+`"></td>
@@ -136,10 +136,10 @@ function loadRow(currentRow){
         <td><input type="checkbox" name="lunc`+currentRow+`" value="`+rowElement[currentRow].lunch+`"></td>
         <td><input type="number" name="cark`+currentRow+`" min=0 value="`+rowElement[currentRow].car+`"></td>
         </tr>`);
-        jQuery('#workhours').append(newRow);
-        //rowElement[rowCounter].date = formatDate(currentDate);
-        //rowCounter++;
-        //saved = false;
+    $('#workhours').append(newRow);
+    //rowElement[rowCounter].date = formatDate(currentDate);
+    //rowCounter++;
+    //saved = false;
 }
 function Save() {
     let rows = JSON.stringify(rowElement);
@@ -200,57 +200,56 @@ function updateRow(row){
 }
 function updateBottom(){
     let totalKilometers = 0;
-    for(index = 0; index < rowElement.length; ++index){
-        totalKilometers += parseInt(rowElement[index].car);
+    for(let i = 0; i < rowElement.length; ++i){
+        totalKilometers += parseInt(rowElement[i].car);
     }
 
     let totalWorkHours = 0;
-    for(index = 0; index < rowElement.length; ++index){
-        if (rowCounter > 0 && $('#wtim'+index).html()>"00:00"){
-        var currentWorkHours = timeToMins(rowElement[index].getWorkHours());
+    for(let i = 0; i < rowElement.length; ++i){
+        if (rowCounter > 0 && $('#wtim'+i).html()>"00:00"){
+        var currentWorkHours = timeToMins(rowElement[i].getWorkHours());
         totalWorkHours = totalWorkHours + currentWorkHours;
     }
     }
 
     let lunches = 0;
-    for(index = 0; index < rowElement.length; ++index){
-        if (rowElement[index].lunch){
+    for(let i = 0; i < rowElement.length; ++i){
+        if (rowElement[i].lunch){
             lunches += 1;
         }
     }
 
     let totalBase = 0;
-    for(index = 0; index < rowElement.length; ++index){
-        totalBase += parseFloat(rowElement[index].base);
+    for(let i = 0; i < rowElement.length; ++i){
+        totalBase += parseFloat(rowElement[i].base);
     }
 
     let hours125 = 0;
-    for(index = 0; index < rowElement.length; ++index){
-        hours125 += parseFloat(rowElement[index].getOvertime(10));
-        hours125 += parseFloat(rowElement[index].getOvertime(11));
+    for(let i = 0; i < rowElement.length; ++i){
+        hours125 += parseFloat(rowElement[i].getOvertime(10));
+        hours125 += parseFloat(rowElement[i].getOvertime(11));
     }
 
-                console.log(rowElement[0].getOvertime(10));
     var hours150 = 0;
-    for(index = 0; index < rowElement.length; ++index){
-        hours150 += parseFloat(rowElement[index].getOvertime(12));
-        hours150 += parseFloat(rowElement[index].getOvertime(13));
+    for(let i = 0; i < rowElement.length; ++i){
+        hours150 += parseFloat(rowElement[i].getOvertime(12));
+        hours150 += parseFloat(rowElement[i].getOvertime(13));
     }
 
     let hours200 = 0;
-    for(index = 0; index < rowElement.length; ++index){
-        hours200 += parseFloat(rowElement[index].getOvertime(14));
-        hours200 += parseFloat(rowElement[index].getOvertime(15));
+    for(let i = 0; i < rowElement.length; ++i){
+        hours200 += parseFloat(rowElement[i].getOvertime(14));
+        hours200 += parseFloat(rowElement[i].getOvertime(15));
     }
 
     let hours250 = 0;
-    for(index = 0; index < rowElement.length; ++index){
-        hours250 += parseFloat(rowElement[index].getOvertime(16));
+    for(let i = 0; i < rowElement.length; ++i){
+        hours250 += parseFloat(rowElement[i].getOvertime(16));
     }
 
     let hours25 = 0;
-    for(index = 0; index < rowElement.length; ++index){
-        hours25 += parseFloat(rowElement[index].getNightHours());
+    for(let i = 0; i < rowElement.length; ++i){
+        hours25 += parseFloat(rowElement[i].getNightHours());
     }
 
     let total125 = roundToTwo(hours125 * getRate(125));
@@ -270,18 +269,15 @@ function updateBottom(){
     $('#payRate200').html(getRate(200));
     $('#payRate250').html(getRate(250));
     $('#payRate25').html(getRate(25));
-
     $('#totalKilometers').html(totalKilometers);
     $('#lunches').html(lunches);
     $('#totalWorkHours').html(minsToHours(totalWorkHours));
-
     $('#hoursDay').html(roundToTwo(totalBase));
     $('#hours125').html(roundToTwo(hours125));
     $('#hours150').html(roundToTwo(hours150));
     $('#hours200').html(roundToTwo(hours200));
     $('#hours250').html(roundToTwo(hours250));
     $('#hours25').html(roundToTwo(hours25));
-
     $('#totalDay').html(totalDay);
     $('#total125').html(total125);
     $('#total150').html(total150);
@@ -290,52 +286,15 @@ function updateBottom(){
     $('#total25').html(total25);
     $('#totalLunch').html(totalLunch);
     $('#totalCar').html(totalCar);
-
     $('#salaryBase').html(totalDay);
     $('#salaryOvertime').html(totalOvertime);
     $('#salaryAdditional').html(totalAdditional);
 
     addInfo.enddate = rowElement[rowElement.length-1].date;
-    //console.log(addInfo.enddate);
     addInfo.tothour = minsToHours(totalWorkHours);
     addInfo.totmoney= roundToTwo(totalDay+totalOvertime+totalAdditional);
 }
-function formatDate(d = new Date) {
-    let month = String(d.getMonth() + 1);
-    let day = String(d.getDate());
-    const year = String(d.getFullYear());
-    if (month.length < 2) month = '0' + month;
-    if (day.length < 2) day = '0' + day;
-    return `${year}-${month}-${day}`;
-}
-function timeToMins(time) {
-    let b = time.split(':');
-    return b[0]*60 + +b[1];
-}
-function timeFromMins(mins) {
-    function z(n){return (n<10? '0':'') + n;}
-    let h = (mins/60 |0) % 24;
-    let m = mins % 60;
-    return z(h) + ':' + z(m);
-}
-function minsToHours(mins){
-    function z(n){return (n<10? '0':'') + n;}
-    let h = (mins/60 |0);
-    let m = mins % 60;
-    return z(h) + ':' + z(m);
-}
-function subTimes(t0, t1) {
-    return timeFromMins(timeToMins(t0) - timeToMins(t1));
-}
-function addTimes(t0, t1){
-    return timeFromMins(timeToMins(t0) + timeToMins(t1));
-}
-function roundToTwo(num) {
-    return +(Math.round(num + "e+2")  + "e-2");
-}
-function getRate(num){
-    return roundToTwo(basePay/9*num/100)
-}
+
 function updateSaveStatus() {
     if (saved) {
         $("#saveInfo").show();
@@ -347,6 +306,7 @@ function updateSaveStatus() {
         $("#saveWarning").show();
     }
 }
+
 function loadJSON(data){
     rowElement = new Array();
     for (var i = 0; i < data.length; i++) {
@@ -354,17 +314,19 @@ function loadJSON(data){
         rowElement[i].loadFromJSON(data[i]);
     }
 }
+
 function updateSuccess(data){
     if (data.message=="SUCCESS:") {
-        updateProjectInfo()
+        loadProjectInfo()
         $('#updateProjectModal').modal('hide');
     }else{
         alert(data.message);
     }
 }
-function updateProjectInfo(){
+
+function loadProjectInfo(){
     $.post( "h_project.php", { action: "getinfo", us_id: us_id, p_id: p_id }).done(function( data ) {
-    data = jQuery.parseJSON(data);
+    data = JSON.parse(data);
     $( "#projectName" ).html( data.name );
     $( "#title" ).html( data.name );
     $( "#projectJob" ).html( data.job );
@@ -373,9 +335,9 @@ function updateProjectInfo(){
 });
 }
 
-function updatePersonalInfo(){
+function loadPersonalInfo(){
     $.post( "h_user.php", { action: "get", us_id}).done(function( data ) {
-    data = jQuery.parseJSON(data);
+    data = JSON.parse(data);
     $( "#userName" ).html( data.name );
     $( "#userAddress" ).html( data.address1+'<br>'+data.address2 );
     $( "#userTel" ).html( data.tel );
@@ -395,144 +357,36 @@ function updateAll(){
     updateBottom();
 }
 
-//OBJECTS -----------------------------------------------------------------------
-function Row(idNr) {
-    var obj = {};
-    obj.id = idNr;
-    obj.date = null;
-    obj.start = '00:00';
-    obj.end = '00:00';
-    obj.work = '';
-    obj.break = '00:00';
-    obj.base = 0.0;
-    obj.manualBase = false;
-    obj.car= 0;
-    obj.lunch = false;
-    obj.workhours = '00:00';
-    obj.tent=0;
-    obj.elev=0;
-    obj.twel=0;
-    obj.thir=0;
-    obj.four=0;
-    obj.fift=0;
-    obj.sixt=0;
-    obj.night=0;
-    obj.loadFromJSON = function(json){
-        obj.info=json.info;
-        obj.id=json.id;
-        obj.date =json.date;
-        obj.start = json.start;
-        obj.end = json.end;
-        obj.work =json.work;
-        obj.break =json.break;
-        obj.base =json.base;
-        obj.manualBase =json.manualBase;
-        obj.car= json.car;
-        obj.lunch =json.lunch;
+$(function() {
+    if (loadElement.length == 0){
+        rowElement = new Array();
+    }else{
+        loadJSON(loadElement);
+        updateAll();
     }
-    obj.getWorkHours = function() {
-        if (obj.base==0.6) {
-            obj.workhours="05:00";
-            return obj.workhours;
-        }else if (obj.base!=1) {
-            obj.workhours="05:00";
-            return obj.workhours;
-        }
-        var brk = obj.break;
-        var pause=[];
-        pause[0] = brk.split(':')[0];
-        pause[1] = brk.split(':')[1];
-        var difference = moment.utc(moment(obj.end,"HH:mm").diff(moment(obj.start,"HH:mm"))).format("HH:mm");
-        var duration = moment.duration(difference);
-        duration.subtract(pause[0] + ':00', 'hours');
-        duration.subtract('00:' + pause[1], 'minutes');
-        obj.workhours = moment.utc(+duration).format('H:mm');
-        return obj.workhours;
-    };
-    obj.getBase = function() {
-            if (obj.manualBase == false){
-                switch(obj.work){
-                    case "Dreh":
-                    obj.base = 1.0;
-                    break;
-                    case "Laden":
-                    obj.base = 0.6;
-                    break;
-                    case "Vorbereitung":
-                    obj.base = 0.6;
-                    break;
-                    case "Reisetag":
-                    obj.base = 0.6;
-                    break;
-                    default:
-                    obj.base = 0.6;
-                }
-            }
-        return obj.base;
-    };
-    obj.getOvertime = function(hour) {
-        var ret=0;
-        var workhours = obj.getWorkHours()
-        var currentHour = timeFromMins((hour-1)*60);
-        if (workhours > currentHour){
-            if(subTimes(workhours,currentHour) > "01:00"){
-                if (workhours>"16:00" && currentHour == "15:00"){
-                    var mins = timeToMins(subTimes(workhours,currentHour));
-                    ret= roundToTwo(mins/60);
-                } else{
-                    ret=1;
-                }
-            } else {
-                var mins = timeToMins(subTimes(workhours,currentHour));
-                if (isNaN(mins) ||typeof ret == 'undefined') {
-                    ret=0;
-                }else{
-                ret= roundToTwo(mins/60);
-            }
-            }
-        }
-        if (hour==10) {obj.tent=ret;}
-        if (hour==11) {obj.elev=ret;}
-        if (hour==12) {obj.twel=ret;}
-        if (hour==13) {obj.thir=ret;}
-        if (hour==14) {obj.four=ret;}
-        if (hour==15) {obj.fift=ret;}
-        if (hour==16) {obj.sixt=ret;}
-        return ret;
-    };
 
-    obj.getNightHours = function() {
-        let hours=0;
-        let nightStart = moment("23:00","HH:mm");
-        let nightEnd = moment("05:00","HH:mm").add(1, 'd');
-        let start = moment(obj.start,"HH:mm");
-        let end = moment(obj.end,"HH:mm");
-        if(timeToMins(obj.start)>timeToMins(obj.end)){
-            end.add(1,'d');
-        }
-        let nighttime = nightStart.twix(nightEnd);
-        let worktime = start.twix(end);
-        let differ = worktime.difference(nighttime);
-        if (differ.length) {
-            let difference = moment.utc(moment(obj.end,"HH:mm").diff(moment(obj.start,"HH:mm"))).format("HH:mm");
-            let duration = moment.duration(difference);
-            duration.subtract(differ[0].length("minutes"),'m');
-            obj.night = roundToTwo(moment.utc(+duration).format('m')/60);
-        }else{
-            let difference = moment.utc(moment(obj.end,"HH:mm").diff(moment(obj.start,"HH:mm"))).format("HH:mm");
-            let duration = moment.duration(difference);
-            obj.night = roundToTwo(moment.utc(+duration).format('m')/60);;
-        }
-        return obj.night
-    };
+    loadProjectInfo();
+    loadPersonalInfo();
 
-    return obj;
-};
+    setInterval(function() {
+        if(!saved){
+    Save();
+}
+}, 15000);
+$('#companylist').html('').load("./h_load_companies.php");
+$('#updateProject').ajaxForm({
+        dataType:  'json',
+        success: updateSuccess
+    });
+});
+
+//OBJECTS -----------------------------------------------------------------------
+
 function Project() {
     var obj = {};
-    obj.name=null;
-    obj.work=null;
-    obj.pay=null;
-    obj.company=null;
+    this.name=null;
+    this.work=null;
+    this.pay=null;
+    this.company=null;
     return obj;
 }

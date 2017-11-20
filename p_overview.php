@@ -34,44 +34,53 @@ if ($u_type!='producer') {header( 'Location: ./index.php') ;}
 </head>
 
 <body>
-<div id="wrapper">
-    <?
+    <div id="wrapper">
+        <?
     if ($u_type == 'producer') {
     include('./includes/inc_top_producer.php');
     }else{
     include('./includes/inc_top_freelancer.php');
     }
     ?>
-<div id="page-wrapper">
-<p></br></p>
-    <div class="row">
-        <div class="col-lg-8">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <i class="fa fa-bar-chart-o fa-fw"></i> Aktuell Laufende Projekte
-                </div><!-- /.panel-heading -->
-                <div class="panel-body">
-                </div><!-- /.panel-body -->
-            </div><!-- /.panel -->
-        </div><!-- /.col-lg-8 -->
+            <div id="page-wrapper">
+                <p>
+                    </br>
+                </p>
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <i class="fa fa-bar-chart-o fa-fw"></i> Aktuell Laufende Projekte
+                            </div>
+                            <!-- /.panel-heading -->
+                            <div class="panel-body">
+                            </div>
+                            <!-- /.panel-body -->
+                        </div>
+                        <!-- /.panel -->
+                    </div>
+                    <!-- /.col-lg-8 -->
 
-    </div><!-- /.row -->
-</div><!-- /#page-wrapper -->
-</div><!-- /#wrapper -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /#page-wrapper -->
+    </div>
+    <!-- /#wrapper -->
 
-<!-- jQuery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-<!-- Bootstrap Core JavaScript -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<!-- Metis Menu Plugin JavaScript -->
-<script src="https://cdn.jsdelivr.net/jquery.metismenu/1.1.3/metisMenu.min.js"></script>
-<!-- Morris Charts JavaScript -->
-<script src="https://cdn.jsdelivr.net/morris.js/0.5.1/morris.min.js"></script>
-<!-- Raphael JavaScript -->
-<script src="https://cdn.jsdelivr.net/raphael/2.2.7/raphael.js"></script>
+    <!-- jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="https://cdn.jsdelivr.net/jquery.metismenu/1.1.3/metisMenu.min.js"></script>
+    <!-- Morris Charts JavaScript -->
+    <script src="https://cdn.jsdelivr.net/morris.js/0.5.1/morris.min.js"></script>
+    <!-- Raphael JavaScript -->
+    <script src="https://cdn.jsdelivr.net/raphael/2.2.7/raphael.js"></script>
 
-<script src="./js/sb-admin-2.js"></script>
-<script src="./js/index.js"></script>
+    <script src="./js/sidemenu.js"></script>
+    <script src="./js/index.js"></script>
 
 </body>
 </html>

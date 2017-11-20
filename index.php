@@ -93,6 +93,25 @@ if ($u_type=='producer') {header( 'Location: ./p_index.php') ;}
                 </div><!-- /.panel-body -->
             </div><!-- /.panel -->
         </div><!-- /.col-lg-8 -->
+
+
+
+        <div class="col-lg-4 col-md-6">
+                    <div class="panel panel-green">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-tasks fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge" id="activeProjects"></div>
+                                    <div>Aktive Projekte</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--col lg4-->
         <div class="col-lg-4 col-md-6">
             <div class="panel panel-primary">
                 <div class="panel-heading">
@@ -108,6 +127,7 @@ if ($u_type=='producer') {header( 'Location: ./p_index.php') ;}
                 </div>
             </div>
         </div><!-- /.col-lg-4 -->
+
     </div><!-- /.row -->
 </div><!-- /#page-wrapper -->
 </div><!-- /#wrapper -->
@@ -123,7 +143,7 @@ if ($u_type=='producer') {header( 'Location: ./p_index.php') ;}
 <!-- Raphael JavaScript -->
 <script src="https://cdn.jsdelivr.net/raphael/2.2.7/raphael.js"></script>
 
-<script src="./js/sb-admin-2.js"></script>
+<script src="./js/sidemenu.js"></script>
 <script src="./js/index.js"></script>
 
 </body>

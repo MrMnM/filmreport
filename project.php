@@ -2,7 +2,6 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting( E_ALL | E_STRICT );
-
 include './includes/inc_sessionhandler_default.php';
 include './includes/inc_dbconnect.php';
 include './includes/inc_encrypt.php';
@@ -18,13 +17,9 @@ include './includes/inc_variables.php';
     <meta name="description" content="">
     <meta name="author" content="">
     <title>Projektabrechnung</title>
-    <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
-    <!-- MetisMenu CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/jquery.metismenu/1.1.3/metisMenu.min.css" integrity="sha256-4NxXT7KyZtupE4YdYLDGnR5B8P0JWjNBpF8mQBzYtrM=" crossorigin="anonymous">
-    <!-- Custom CSS -->
     <link href="./css/main.css" rel="stylesheet">
-    <!--Fontawsome-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
 </head>
 
@@ -44,7 +39,7 @@ include './includes/inc_variables.php';
             <div class="alert alert-warning" id="saveWarning" style="display:none">
                 <div class="project-spinner"></div>
             <span class="savetext">Nicht gespeicherte &Auml;nderungen.</span>
-                <button type="button" class="btn btn-warning saveButton" id="saveButton"><span class="fa fa-save"> Speichern</span></button>
+                <button type="button" id="saveButton" class="btn btn-warning saveButton"><span class="fa fa-save"> Speichern</span></button>
                 <button type="button" class="btn btn-warning disabled" id="saveButtonDisabled" style="display:none"><span class="fa fa-save"> Speichern</span</button>
             </div>
             <div class="alert alert-success" id="saveInfo" style="display:none">
@@ -103,24 +98,24 @@ if (!empty($_GET["id"])) {
     $company = $company."\n</br>".$c_address1."\n</br>".$c_address2;
 }
 
-if (!empty($json)){
-    echo '<script>';
-    echo 'loadElement = JSON.parse(\''.$json.'\');';
-    echo 'console.log(loadElement);';
-    echo '</script>';
-}else{
-    echo '<script>';
-    echo 'var loadElement = new Array()';
-    echo '</script>';
-}
-?>
+//TODO Get Rid of this Shit
+if (!empty($json)){?>
+    <script>
+    var loadElement = JSON.parse('<?echo $json?>')
+    </script>
+
+<?}else{?>
+    <script>
+    var loadElement = new Array()
+    </script>
+<?}?>
 
 <!-- MAINCONTENT -->
     <div class="panel panel-default">
         <div class="panel-heading">
             <h4 id="title"><div class="loading-spinner-left"></div>&nbsp;</h4>
             <div style="float:right; margin-top:-37px;">
-                <button type="button" class="btn btn-default refreshButton"><i class="fa fa-refresh"></i></button>
+                <button type="button" id="refresh" class="btn btn-default refreshButton"><i class="fa fa-refresh"></i></button>
                 <button type="button" class="btn btn-default" onclick="window.open('view.php?id=<?echo $p_id;?>')"><i class="fa fa-eye"></i></button>
             </div>
         </div>
@@ -128,19 +123,15 @@ if (!empty($json)){
         <div class="panel-body">
         <!-- Nav tabs-->
             <ul class="nav nav-pills">
-                <li class="active"><a href="#project" data-toggle="tab" aria-expanded="true">Infos</a>
-                </li>
-                <li class=""><a href="#hours" data-toggle="tab" aria-expanded="false">Stunden</a>
-                </li>
-                <li class=""><a href="#notes" data-toggle="tab" aria-expanded="false">Bemerkungen</a>
-                </li>
+                <li class="active"><a href="#project" data-toggle="tab" aria-expanded="true">Infos</a></li>
+                <li class=""><a href="#hours" data-toggle="tab" aria-expanded="false">Stunden</a></li>
+                <li class=""><a href="#notes" data-toggle="tab" aria-expanded="false">Bemerkungen</a></li>
             </ul>
 
             <div class="tab-content">
                 <div class="tab-pane fade in active" id="project">
                     <p></p>
                     <div class="row">
-
                         <div class="col-lg-6">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
@@ -176,15 +167,12 @@ if (!empty($json)){
                                             </tbody>
                                         </table>
                                     </div>
-
                                     <input type="hidden" id="projectId" value="<? echo $p_id;?>">
                                     <input type="hidden" id="startDate" value="<? echo $date;?>">
                                     <input type="hidden" id="basePay"value="<? echo $pay;?>">
-
                                 </div><!--panel-body-->
                             </div><!--panel-->
                         </div><!--col-lg-6-->
-
                         <div class="col-lg-6">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
@@ -295,8 +283,8 @@ if (!empty($json)){
                                 </form>
 
                                 <div id="editButtons">
-                                    <button type="button" class="add-row btn btn-success btn-circle"><i class="fa fa-plus"></i></button>
-                                    <button type="button" class="remove-row btn btn-danger btn-circle"><i class="fa fa-minus"></i></button>
+                                    <button type="button" id="addRow" class="btn btn-success btn-circle"><i class="fa fa-plus"></i></button>
+                                    <button type="button" id="removeRow" class="btn btn-danger btn-circle"><i class="fa fa-minus"></i></button>
                                 </div>
 
                         </div><!-- /.col-lg-12 -->
@@ -403,7 +391,7 @@ if (!empty($json)){
                         <input type="text" name="name" class="form-control" value="<? echo $name;?>" required="">
                     </div>
                     <datalist id="jobs">
-                    <?include('./includes/joblist.html');?>
+                    <?include('./includes/inc_joblist.html');?>
                     </datalist>
                     <div class="form-group input-group">
                         <span class="input-group-addon">Arbeit als:</span>
@@ -433,56 +421,25 @@ if (!empty($json)){
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
-
 </div><!--pagewrapper-->
 </div><!-- /#wrapper -->
 
 <!-- jQuery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script>
-<!-- Bootstrap Core JavaScript -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
-<!-- Metis Menu Plugin JavaScript -->
-<script src="https://cdn.jsdelivr.net/jquery.metismenu/1.1.3/metisMenu.min.js" integrity="sha256-OrCnS705nv33ycm/+2ifCnVfxxMdWvBMg5PUX1Fjpps=" crossorigin="anonymous"></script>
-<!-- JqueryForms -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.1/jquery.form.min.js" integrity="sha384-tIwI8+qJdZBtYYCKwRkjxBGQVZS3gGozr3CtI+5JF/oL1JmPEHzCEnIKbDbLTCer" crossorigin="anonymous"></script>
-<!-- moment-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js" integrity="sha256-1hjUhpc44NwiNg8OwMu2QzJXhD8kcj+sJA3aCQZoUjg=" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/twix.js/1.1.5/twix.min.js" integrity="sha256-Z5xIjmw1PVu7XqFyvf5j+V5qCsVhw1ehFMB7PmeA9E8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.metismenu/1.1.3/metisMenu.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.1/jquery.form.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/twix.js/1.1.5/twix.min.js"></script>
 <!-- Custom Theme JavaScript -->
-<script src="./js/sb-admin-2.js"></script>
+<script src="./js/sidemenu.js"></script>
 <!-- Custom Functions JavaScript -->
-<script src="./js/project.js"></script>
+<script type="module" src="./js/project.js"></script>
 <!--on ready-->
 <script>
     moment().format();
-</script>
-<script>
-$(document).ready(function() {
-    if (loadElement.length == 0){
-        var rowElement = new Array();
-    }else{
-        loadJSON(loadElement);
-        updateAll();
-    }
-
-    us_id = "<? echo $u_id;?>";
-    p_id = "<?echo $p_id;?>";
-
-    updateProjectInfo();
-    updatePersonalInfo();
-
-    setInterval(function() {
-        if(!saved){
-    Save();
-}
-}, 15000);
-
-$('#companylist').html('').load("./h_load_companies.php");
-$('#updateProject').ajaxForm({
-        dataType:  'json',
-        success: updateSuccess
-    });
-});
+    const us_id = "<? echo $u_id;?>";
+    const p_id = "<?echo $p_id;?>";
 </script>
 </body>
 </html>

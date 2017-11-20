@@ -24,11 +24,12 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
-$sql = "SELECT tot_money, p_end FROM `projects` WHERE user_id='$u_id';";
+$sql = "SELECT tot_money, p_end FROM `projects` WHERE user_id='$u_id'";
 $result = $conn->query($sql);
 
 // Count Money
 $totalMoney = array_pad(array(0), 12, 0);
+$active=0;
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         $money = $row["tot_money"];
@@ -48,5 +49,16 @@ if ($result->num_rows > 0) {
     foreach ($totalMoney as $value) {
         $total = $total+$value;
     }
-    echo '{ "mean_month":"'.round($total/$s_month).'" }';
 }
+
+$sql = "SELECT COUNT(*) AS active FROM projects WHERE user_id='$u_id' AND p_finished=0";
+$result = $conn->query($sql);
+$data=$result->fetch_assoc();
+$active= $data['active'];
+
+
+
+
+
+
+echo '{ "mean_month":"'.round($total/$s_month).'","active_projects":'.$active.' }';

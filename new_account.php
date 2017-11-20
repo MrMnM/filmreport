@@ -46,6 +46,7 @@ if (!empty($_GET["v"])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
     <!-- Custom CSS -->
     <link href="./css/main.css" rel="stylesheet">
+    <link href="./../css/main.css" rel="stylesheet">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -69,7 +70,7 @@ if (!empty($_GET["v"])) {
 <?php if ($validated==true) {?>
     <div id="success" class="alert alert-success">
         <p>Account wurde erfolreich Validiert</p>
-        <a href=".\login.php">ZUM LOGIN</a>
+        <a href=".\..\login.php">ZUM LOGIN</a>
     </div>
 <?} else {?>
                 <div id="error" class="alert alert-danger alert-dismissable" style="display: none;">
@@ -77,7 +78,7 @@ if (!empty($_GET["v"])) {
                     <p id="errorcontent">Benutzername und/oder Passwort stimmen nicht &uuml;berein.</p>
                 </div>
                 <div id="success" class="alert alert-success" style="display: none;">
-                    <p>Account wurde erfolreich erstellt, eine E-Mail wurde an die angegebene Addresse versendet.</p>
+                    <p>Account wurde erfolreich erstellt, eine E-Mail wurde an die angegebene Addresse versendet. Es kann einige Minuten dauern, bis das Mail tatsächlich ankommt, bitte etwas Geduld</p>
                 </div>
                 <form role="form" method="post" action="h_user.php" id="createAccount">
                     <input type="hidden" name="action" value="new">

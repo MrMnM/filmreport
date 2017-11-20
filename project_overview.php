@@ -101,7 +101,7 @@ include './includes/inc_variables.php';
                                     <input type="date" name="date" class="form-control" placeholder="500" required>
                                 </div>
                                 <datalist id="jobs">
-                                <?include('./includes/joblist.html');?>
+                                <?include('./includes/inc_joblist.html');?>
                                 </datalist>
                                 <div class="form-group input-group">
                                     <span class="input-group-addon">Arbeit als:</span>
@@ -219,85 +219,17 @@ include './includes/inc_variables.php';
 <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.1.1/js/responsive.bootstrap.min.js"></script>
 <!-- JqueryForms -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.1/jquery.form.min.js"></script>
-<!-- Custom Theme JavaScript -->
-<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>-->
-<script src="./js/sb-admin-2.js"></script>
-<script src="./js/project_overview.js"></script>
-<!-- onload -->
-
-<?
+<script src="./js/sidemenu.js"></script>
+<script type="module" src="./js/project_overview.js"></script>
+<script>
+<?php
 $finished = "0";
  if ($_GET['view']=='archive') {
-     $finished = "1";
+     echo 'const fin=1;';
+ }else{
+     echo 'const fin=0;';
  }
-
 ?>
-
-<script>
-
-var table=null;
-$(document).ready(function() {
-    table = $('#projectTable').DataTable({
-        "ajax": 'h_listprojects.php?fin=<?echo $finished?>',
-        "pagingType": "numbers",
-        "order": [[ 0, "desc" ]],
-        "autoWidth": false,
-"columns" : [
-    { width : '5em' },
-    { width : '12em' },
-    { width : '80px' },
-    { width : '20px' },
-    { width : '20px' },
-    { width : '30px' }
-],
-        "columnDefs": [ {
-            "targets": 1,
-            "render": function ( data, type, row) {
-                    return '<a href="project.php?id='+row[5]+'"><b>'+row[1]+'</b></a>';
-                    }
-        },{
-            "targets": 5,
-            "data": 5,
-            "searchable": false,
-            "sortable":false,
-            "render": function ( data, type, row) {
-                    return '<button type="button" class="btn btn-default btn-circle"  onclick="window.open(\'view.php?id='+data+'\')"><i class="fa fa-eye"></i></button>\
-                    <button type="button" class="btn btn-default btn-circle" onclick="window.location.href=\'project.php?id='+data+'\'"><i class="fa fa-pencil"></i></button>\
-                    <div class="btn-group"><button type="button" class="btn btn-default btn-circle dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-download">\
-                    </i></button><ul class="dropdown-menu pull-right" role="menu"><li><a href="h_download.php?t=xlsx&id='+data+'"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Excel</a></li><li><a href="h_download.php?t=pdf&id='+data+'"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> PDF</a></li></ul></div>\
-                    <button type="button" class="btn btn-danger btn-circle" data-toggle="modal" data-target="#deleteProjectModal" onclick="setDelete(\''+data+'\',\''+row[1]+'\')"><i class="fa fa-times"></i></button>\
-                    <button type="button" class="btn btn-success btn-circle" data-toggle="modal" data-target="#finishProjectModal" onclick="setFinish(\''+data+'\',\''+row[1]+'\')"><i class="fa fa-check"></i></button>';
-                    }
-            } ],
-            responsive: {
-    details: {
-        display: $.fn.dataTable.Responsive.display.childRowImmediate,
-        type: ''
-    }
-}
-    });
-
-    new $.fn.dataTable.Responsive( table );
-
-    $('#newProject').ajaxForm({
-        dataType:  'json',
-        success:  newCreated
-    });
-    $('#finishProject').ajaxForm({
-        dataType:  'json',
-        success:  projFinished
-    });
-    $('#deleteProject').ajaxForm({
-        dataType:  'json',
-        success:   projDeleted
-    });
-    $('#newProdcomp').ajaxForm({
-        dataType:  'json',
-        success:   companyCreated
-    });
-    //TODO cache etc
-    $('#companylist').html('').load("./h_load_companies.php");
-});
 </script>
 </body>
 </html>

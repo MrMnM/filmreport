@@ -1,7 +1,9 @@
-<?
+<?php
 include './includes/inc_sessionhandler_default.php';
 include './includes/inc_variables.php';
-if ($u_type!='producer') {header( 'Location: ./index.php') ;}
+if ($u_type!='producer') {
+    header('Location: ./index.php') ;
+}
 ?>
 
 <!DOCTYPE html>
@@ -36,11 +38,11 @@ if ($u_type!='producer') {header( 'Location: ./index.php') ;}
 
 <body>
     <div id="wrapper">
-    <?
+    <?php
     if ($u_type == 'producer') {
-    include('./includes/inc_top_producer.php');
-    }else{
-    include('./includes/inc_top_freelancer.php');
+        include('./includes/inc_top_producer.php');
+    } else {
+        include('./includes/inc_top_freelancer.php');
     }
     ?>
             <div id="page-wrapper">
@@ -88,7 +90,7 @@ if ($u_type!='producer') {header( 'Location: ./index.php') ;}
 <!-- Raphael JavaScript -->
 <script src="https://cdn.jsdelivr.net/raphael/2.2.7/raphael.js"></script>
 
-<script src="./js/sb-admin-2.js"></script>
+<script src="./js/sidemenu.js"></script>
 <script src="./js/index.js"></script>
 
 </body>

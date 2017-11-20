@@ -77,8 +77,8 @@ function NewProject($u_id, $conn)
     $url='http://www.filmstunden.ch/shorten.php?longurl=http://www.xibrix.ch/filmreport/view.php?id='.$project_id;
     $short = file_get_contents($url);
 
-    $sql = "INSERT INTO projects (project_id,user_id,p_name,p_start,p_job,p_gage,p_company,ext_p_id)
-    VALUES ('$project_id', '$u_id','$p_name','$p_startdate','$p_work','$p_pay','$p_company','$short')";
+    $sql = "INSERT INTO projects (c_date,project_id,user_id,p_name,p_start,p_job,p_gage,p_company,view_id)
+    VALUES (NOW(), '$project_id', '$u_id','$p_name','$p_startdate','$p_work','$p_pay','$p_company','$short')";
 
     if ($conn->query($sql) === true) {
         echo '{ "message": "SUCCESS",  "project_id":"'.$project_id.'"}';
