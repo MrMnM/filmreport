@@ -34,11 +34,7 @@ include './includes/inc_variables.php';
 <body>
 <div id="wrapper">
     <?
-    if ($u_type == 'producer') {
-    include('./includes/inc_top_producer.php');
-    }else{
-    include('./includes/inc_top_freelancer.php');
-    }
+        include('./includes/inc_top.php');
     ?>
 <div id="page-wrapper">
     <p></br></p>
@@ -219,7 +215,6 @@ include './includes/inc_variables.php';
 <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.1.1/js/responsive.bootstrap.min.js"></script>
 <!-- JqueryForms -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.1/jquery.form.min.js"></script>
-<script src="./js/sidemenu.js"></script>
 <script type="module" src="./js/project_overview.js"></script>
 <script>
 <?php

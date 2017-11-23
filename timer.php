@@ -142,34 +142,11 @@ include './includes/inc_variables.php';
 </div>
 <!-- /#wrapper -->
 <!-- jQuery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script>
-<!-- Bootstrap Core JavaScript -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
-<!-- Metis Menu Plugin JavaScript -->
-<script src="https://cdn.jsdelivr.net/jquery.metismenu/1.1.3/metisMenu.min.js" integrity="sha256-OrCnS705nv33ycm/+2ifCnVfxxMdWvBMg5PUX1Fjpps=" crossorigin="anonymous"></script>
-<!-- Custom Theme JavaScript -->
-<script src="./js/sidemenu.js"></script>
-<!--ajax-form-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.1/jquery.form.min.js" integrity="sha384-tIwI8+qJdZBtYYCKwRkjxBGQVZS3gGozr3CtI+5JF/oL1JmPEHzCEnIKbDbLTCer" crossorigin="anonymous"></script>
-<script src="./js/timer.js"></script>
-<script>
-$(document).ready(function() {
-    $('#newTimerForm').ajaxForm({
-        dataType:  'json',
-        success:  newCreated
-    });
-
-    $.post( "h_timer.php", { action: "gettimers"})
-    .done(function( data ) {
-        $( "#timers" ).html( data );
-    });
-
-    setInterval(function(){
-        updateDisplay();
-    }, 1000);
-
-});
-</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.metismenu/1.1.3/metisMenu.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.1/jquery.form.min.js"></script>
+<script type="module" src="./js/timer.js"></script>
 
     </body>
     </html>

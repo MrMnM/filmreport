@@ -1,5 +1,7 @@
 import Row from "./Row.js"
 import {timeToMins, roundToTwo, getRate, minsToHours, formatDate} from "./timeHelpers.js"
+import {activateSideMenu} from  "./sidemenu.js";
+
 
 var addInfo = { "tothour" : "00:00", "totmoney"  : "0", "enddate"  : "0000-00-00", "calcBase":"SSFV_DAY", "baseHours":9 };
 var rowCounter = loadElement.length;
@@ -358,6 +360,7 @@ function updateAll(){
 }
 
 $(function() {
+        activateSideMenu();
     if (loadElement.length == 0){
         rowElement = new Array();
     }else{

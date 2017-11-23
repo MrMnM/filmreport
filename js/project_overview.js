@@ -1,4 +1,5 @@
 import {renderTools, renderTitle} from  "./dataTableRender.js";
+import {activateSideMenu} from  "./sidemenu.js";
 
 function newCreated(data) {
     if (data.message == "SUCCESS") {
@@ -37,18 +38,20 @@ function projFinished(data) {
     }
 }
 
-function setDelete(id, name) {
+window.setDelete = function(id, name) {
     $('#toDelID').val(id);
     $('#delModalTitle').html("<strong>\"" + name + "\"</strong> wirklich L&ouml;schen ?");
 }
 
-function setFinish(id, name) {
+window.setFinish = function(id, name) {
+    console.log(id,name);
     $('#toFinID').val(id);
     $('#finModalTitle').html('' + name);
 }
 
 $(function() {
-    const table = $('#projectTable').DataTable({
+        activateSideMenu();
+    window.table = $('#projectTable').DataTable({
         "ajax": 'h_listprojects.php?fin=' + fin,
         "pagingType": "numbers",
         "order": [

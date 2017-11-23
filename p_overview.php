@@ -1,7 +1,7 @@
 <?
 include './includes/inc_sessionhandler_default.php';
 include './includes/inc_variables.php';
-if ($u_type!='producer') {header( 'Location: ./index.php') ;}
+//if ($u_type!='producer') {header( 'Location: ./index.php') ;}
 ?>
 
 <!DOCTYPE html>
@@ -35,13 +35,7 @@ if ($u_type!='producer') {header( 'Location: ./index.php') ;}
 
 <body>
     <div id="wrapper">
-        <?
-    if ($u_type == 'producer') {
-    include('./includes/inc_top_producer.php');
-    }else{
-    include('./includes/inc_top_freelancer.php');
-    }
-    ?>
+                <?include('./includes/inc_top.php');?>
             <div id="page-wrapper">
                 <p>
                     </br>
@@ -76,11 +70,9 @@ if ($u_type!='producer') {header( 'Location: ./index.php') ;}
     <script src="https://cdn.jsdelivr.net/jquery.metismenu/1.1.3/metisMenu.min.js"></script>
     <!-- Morris Charts JavaScript -->
     <script src="https://cdn.jsdelivr.net/morris.js/0.5.1/morris.min.js"></script>
-    <!-- Raphael JavaScript -->
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/raphael/2.2.7/raphael.js"></script>
-
-    <script src="./js/sidemenu.js"></script>
-    <script src="./js/index.js"></script>
+    <script type = "module" src="./js/index.js"></script>
 
 </body>
 </html>

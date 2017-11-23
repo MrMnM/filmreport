@@ -23,7 +23,7 @@ export function renderTools(data, type, row, fin) {
     </button>
     `
     let archive=`
-    <button type="button" class="btn btn-default btn-circle" onclick="window.open('view.php?id='${data}')">
+    <button type="button" class="btn btn-default btn-circle" onclick="window.open('view.php?id=${data}')">
         <i class="fa fa-eye"></i>
     </button>
     <div class="btn-group">

@@ -108,7 +108,7 @@ if (!empty($_GET["id"])) {
         </ul>
         <ul class="pagination" style="margin-left:20px;margin-top:8px;margin-bottom:4px;">
             <li class="active"><a href="#">Rapport</a></li>
-            <li><a href="#">Abrechnung</a></li>
+            <li><a href="#" onclick="alert('Noch nicht implementiert')">Abrechnung</a></li>
         </ul>
     </div>            <!-- /.navbar-top-links -->
 </nav>

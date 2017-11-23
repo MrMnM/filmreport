@@ -61,11 +61,7 @@ if (!empty($_POST["pw"]) && !empty($_POST["mail"])) {
                 $_SESSION['name'] = $name;
                 $_SESSION['type'] = $type;
                 //echo session_status();
-                if ($type=='producer') {
-                    header( 'Location: ./p_index.php') ;
-                }else{
-                header( 'Location: ./index.php') ;
-            }
+                header( 'Location: ./index.php') ;    
             }
 
         } elseif (!$activated) {

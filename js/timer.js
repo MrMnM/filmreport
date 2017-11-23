@@ -1,4 +1,6 @@
 // MAIN
+import {activateSideMenu} from  "./sidemenu.js";
+
 var clickedDel = false;
 var mode = 9;
 var t = {};
@@ -196,5 +198,24 @@ function newCreated(data) {
         alert(data.message);
     }
 }
+
+$(document).ready(function() {
+    alert('Noch nicht implementiert!')
+    activateSideMenu()
+    $('#newTimerForm').ajaxForm({
+        dataType:  'json',
+        success:  newCreated
+    });
+
+    $.post( "h_timer.php", { action: "gettimers"})
+    .done(function( data ) {
+        $( "#timers" ).html( data );
+    });
+
+    setInterval(function(){
+        updateDisplay();
+    }, 1000);
+
+});
 
 function pad ( val ) { return val > 9 ? val : "0" + val; }

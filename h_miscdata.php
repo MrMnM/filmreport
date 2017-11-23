@@ -49,8 +49,11 @@ if ($result->num_rows > 0) {
     foreach ($totalMoney as $value) {
         $total = $total+$value;
     }
+}else{
+    $total=0;
 }
 
+$active=0;
 $sql = "SELECT COUNT(*) AS active FROM projects WHERE user_id='$u_id' AND p_finished=0";
 $result = $conn->query($sql);
 $data=$result->fetch_assoc();

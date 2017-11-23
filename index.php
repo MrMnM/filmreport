@@ -1,7 +1,6 @@
 <?
 include './includes/inc_sessionhandler_default.php';
 include './includes/inc_variables.php';
-if ($u_type=='producer') {header( 'Location: ./p_index.php') ;}
 ?>
 
 <!DOCTYPE html>
@@ -24,6 +23,8 @@ if ($u_type=='producer') {header( 'Location: ./p_index.php') ;}
     <!-- Custom Fonts -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
     <!-- Custom CSS -->
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+
     <link href="./css/main.css" rel="stylesheet">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -36,15 +37,13 @@ if ($u_type=='producer') {header( 'Location: ./p_index.php') ;}
 <body>
 <div id="wrapper">
     <?
-    if ($u_type == 'producer') {
-    include('./includes/inc_top_producer.php');
-    }else{
-    include('./includes/inc_top_freelancer.php');
-    }
+    include('./includes/inc_top.php');
+
     ?>
 <div id="page-wrapper">
 <p></br></p>
-    <div class="row">
+
+    <div class="row freelance" style="display:none;">
         <div class="col-lg-8">
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -53,35 +52,25 @@ if ($u_type=='producer') {header( 'Location: ./p_index.php') ;}
                         <div class="btn-group">
                         <div class="btn-group">
                             <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                                Actions
-                                <span class="caret"></span>
+                                Von
                             </button>
-                            <ul class="dropdown-menu pull-right" role="menu">
-                            <li><a href="#">Action</a>
-                                </li>
-                                <li><a href="#">Another action</a>
-                                </li>
-                                <li><a href="#">Something else here</a>
-                                </li>
-                                <li class="divider"></li>
-                                <li><a href="#">Separated link</a>
+                            <ul class="dropdown-menu pull-right nopad" role="menu">
+                                <li>
+                                    <button type="button" id="fromDateEarly" class="btn btn-default btn-xs "><i class="fa fa-chevron-left"></i></button>
+                                    <span id="fromDate">TEST</span>
+                                    <button type="button" id="fromDateLate" class="btn btn-default btn-xs pull-right"><i class="fa fa-chevron-right"></i></button>
                                 </li>
                             </ul>
                         </div>
                         <div class="btn-group">
                             <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                                Actions
-                                <span class="caret"></span>
+                                Bis
                             </button>
-                            <ul class="dropdown-menu pull-right" role="menu">
-                            <li><a href="#">eop</a>
-                                </li>
-                                <li><a href="#">Aewf</a>
-                                </li>
-                                <li><a href="#">Something else here</a>
-                                </li>
-                                <li class="divider"></li>
-                                <li><a href="#">Separated link</a>
+                            <ul class="dropdown-menu pull-right nopad" role="menu">
+                                <li>
+                                    <button type="button" id="toDateEarly" class="btn btn-default btn-xs "><i class="fa fa-chevron-left"></i></button>
+                                    <span id="toDate">TEST</span>
+                                    <button type="button" id="toDateLate" class="btn btn-default btn-xs pull-right"><i class="fa fa-chevron-right"></i></button>
                                 </li>
                             </ul>
                         </div>
@@ -129,6 +118,34 @@ if ($u_type=='producer') {header( 'Location: ./p_index.php') ;}
         </div><!-- /.col-lg-4 -->
 
     </div><!-- /.row -->
+
+
+
+
+    <div class="row producer" style="display:none;">
+        <div class="col-lg-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-bar-chart-o fa-fw"></i> Aktuell Laufende Projekte
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <div class="list-group">
+                        <a href="#" class="list-group-item">
+                        <i class="fa fa-comment fa-fw"></i> New Comment
+                        <span class="pull-right text-muted small"><em>4 minutes ago</em>
+                        </span>
+                    </a>
+                    </div>
+                    <a href="#" class="btn btn-default btn-block">Neues Projekt erstellen</a>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+        <!-- /.col-lg-8 -->
+
+    </div>
 </div><!-- /#page-wrapper -->
 </div><!-- /#wrapper -->
 
@@ -142,9 +159,8 @@ if ($u_type=='producer') {header( 'Location: ./p_index.php') ;}
 <script src="https://cdn.jsdelivr.net/morris.js/0.5.1/morris.min.js"></script>
 <!-- Raphael JavaScript -->
 <script src="https://cdn.jsdelivr.net/raphael/2.2.7/raphael.js"></script>
-
-<script src="./js/sidemenu.js"></script>
-<script src="./js/index.js"></script>
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+<script type="module" src="./js/index.js"></script>
 
 </body>
 </html>

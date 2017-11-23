@@ -7,11 +7,25 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-        <a class="navbar-brand" href="index.php">Abrechnungsgenerator <? echo $VERSION; ?> - FREELANCER</a>
+        <a class="navbar-brand" href="index.php">Filmstunden <? echo $VERSION; ?></a>
     </div>
     <!-- /.navbar-header -->
 
     <ul class="nav navbar-top-links navbar-right">
+        <?
+        if ($u_type=="producer") {
+            $type = "";
+        }else{
+            $type = "checked";
+        }
+        $disabled = "";
+
+if (basename($_SERVER['PHP_SELF'])=="index.php") {
+
+        ?>
+        <input id="switchType" type="checkbox" data-toggle="toggle" data-onstyle="default"  data-on="Freelancer" data-off="Produzent"  <?echo $type; echo $disabled?>>
+        <?}?>
+
         <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                     <i class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
@@ -44,7 +58,7 @@
                     <i class="fa fa-user fa-fw"></i>&nbsp; <?echo $u_name;?>&nbsp;&nbsp; <i class="fa fa-caret-down"></i>
                 </a>
             <ul class="dropdown-menu dropdown-user">
-                <li><a href=#><i>Kontotyp: Freelancer</i></a></li>
+                <li></li>
                 <li class="divider"></li>
 
                 <li><a href="user.php"><i class="fa fa-user fa-fw"></i> Pers&ouml;nliche Informationen</a>
@@ -57,19 +71,22 @@
             </ul>
             <!-- /.dropdown-user -->
         </li>
+
         <!-- /.dropdown -->
     </ul>
+
     <!-- /.navbar-top-links -->
 
     <div class="navbar-default sidebar" role="navigation">
         <div class="sidebar-nav navbar-collapse">
             <ul class="nav" id="side-menu">
 
-                <li>
+                <li class="">
                     <a href="index.php"><i class="fa fa-home fa-fw"></i> Dashboard</a>
                 </li>
 
-                <li class="">
+<!-- FREELANCER -->
+                <li class="freelance" style="display:none;" >
                     <a href="#"><i  class="fa fa-table fa-fw"></i> Projects<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level collapse in" aria-expanded="true">
                         <li>
@@ -81,9 +98,14 @@
                     </ul>
                     <!-- /.nav-second-level -->
                 </li>
-                <li>
+                <li  class="freelance" style="display:none;" >
                     <a href="timer.php"><i class="fa fa-clock-o fa-fw"></i> Timer</a>
                 </li>
+<!-- PRODUCER -->
+<li class="producer" style="display:none;" >
+    <a href="p_overview.php"><i  class="fa fa-table fa-fw"></i> Projects</a>
+</li>
+
             </ul>
         </div>
         <!-- /.sidebar-collapse -->

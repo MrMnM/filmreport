@@ -1,45 +1,43 @@
+import refreshStats from  "./linechart.js";
+import {activateSideMenu, switchTypes} from  "./sidemenu.js";
 const d = new Date()
-const y = d.getFullYear()
-const m = d.getMonth() + 1
-const chart = Morris.Line({
-    element: 'stats', //DOM element
-    data: [{
-        period: "2017-01",
-        Pay: 0
-    }],
-    xkey: 'period',
-    ykeys: ['Pay'],
-    labels: ['Einnahmen'],
-    pointSize: 3,
-    hideHover: 'auto',
-    resize: true
+var y = d.getFullYear()
+var m = d.getMonth() + 1
+var chart = null
+
+
+
+$('#switchType').change(function() {
+      switchTypes($(this).prop('checked'))
+})
+
+
+
+$('#fromDateEarly').click(function(event){
+console.log("fEarly");
 });
 
+$('#fromDateEarly').click(function(event){
+console.log("fEarly");
+});
+$('#fromDateLate').click(function(event){
+console.log("fLate");
+});
+$('#toDateEarly').click(function(event){
+m--
+chart = refreshStats(chart,y,m)
+});
+$('#toDateLate').click(function(event){
+m++
+chart = refreshStats(chart,y,m)
+});
+
+
+
+
 $(function() {
-    $.ajax({
-            url: 'h_miscdata.php',
-            type: 'GET',
-            dataType: 'json',
-            data: {
-                'y': y,
-                'm': m
-            },
-        })
-        .done(data => {
-            $("#monthlyMean").html(data.mean_month)
-            $("#activeProjects").html(data.active_projects)
-        })
-
-    $.ajax({
-            url: "h_linechart.php",
-            type: 'GET',
-            dataType: 'json',
-            data: {
-                'y': y,
-                'm': m
-            }
-        })
-        .done(data => {chart.setData(data)})
-        .fail(data => {console.error("linechart request failed")})
-
+activateSideMenu();
+refreshStats(chart,y,m)
+$('#switchType').bootstrapToggle();
+switchTypes($('#switchType').prop('checked'))
 });

@@ -25,13 +25,9 @@ include './includes/inc_variables.php';
 
 <body>
 <div id="wrapper">
-    <?
-    if ($u_type == 'producer') {
-    include('./includes/inc_top_producer.php');
-    }else{
-    include('./includes/inc_top_freelancer.php');
-    }
-    ?>
+<?
+    include('./includes/inc_top.php');
+?>
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">
@@ -373,7 +369,6 @@ if (!empty($json)){?>
         </div><!--panel-body-->
     </div><!--panel-->
 
-
     <div class="modal fade" id="updateProjectModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -401,7 +396,6 @@ if (!empty($json)){?>
                         <span class="input-group-addon">Tagesgage</span>
                         <input type="number" name="pay" class="form-control" value="<? echo $pay;?>" required>
                     </div>
-
                         <div class="form-group input-group">
                             <span class="input-group-addon">Produktionsfirma</span>
                             <select class="form-control"  name="company" id="companylist" value="<? echo $company;?>">
@@ -411,7 +405,6 @@ if (!empty($json)){?>
                                 </button>
                             </span>
                         </div>
-
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
@@ -430,10 +423,7 @@ if (!empty($json)){?>
 <script src="https://cdn.jsdelivr.net/jquery.metismenu/1.1.3/metisMenu.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.1/jquery.form.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
-<script src="https://cdn.jsdelivr.net/twix.js/1.1.5/twix.min.js"></script>
-<!-- Custom Theme JavaScript -->
-<script src="./js/sidemenu.js"></script>
-<!-- Custom Functions JavaScript -->
+<script src="https://cdn.jsdelivr.net/twix.js/1.1.5/twix.min.js"></script>  
 <script type="module" src="./js/project.js"></script>
 <!--on ready-->
 <script>
