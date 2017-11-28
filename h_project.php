@@ -4,66 +4,54 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL | E_STRICT);
 error_reporting(E_ALL);
 ini_set('display_errors', 'on');
-//ignore_user_abort();
 
 include './includes/inc_dbconnect.php';
 include './includes/inc_sessionhandler_ajax.php';
 
 $action = (isset($_POST['action']) and $_POST['action']!="") ? $_POST['action'] : null;
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-if ($conn->connect_error) {
-    die('{ "message": "ERROR: '.$conn->connect_error.'"}');
-}
-
 if ($action) {
+
+    $conn = new mysqli($servername, $username, $password, $dbname);
+    if ($conn->connect_error) {
+        die('{ "message": "ERROR: CONN FAILED: '.$conn->connect_error.'"}');
+    }
+
     switch ($_POST["action"]) {
     case 'new':
        if (!empty($u_id) && !empty($_POST["name"]) && !empty($_POST["date"]) && !empty($_POST["work"]) && !empty($_POST["pay"]) && !empty($_POST["company"])) {
            NewProject($u_id, $conn);
-       } else {
-           die('{ "message": "Error: Please supply correct data" }');
-       }
+       } else {die('{ "message": "ERROR: PLEASE SUPPLY CORRECT DATA" }');}
       break;
     case 'delete':
         if (!empty($_POST["p_id"]) && !empty($u_id)) {
             DeleteProject($u_id, $conn);
-        } else {
-            die('{ "message": "ERROR, PLEASE SUPPLY WITH CORRECT DATA" }');
-        }
-    break;
+        } else {die('{ "message": "ERROR: PLEASE SUPPLY CORRECT DATA" }');}
+        break;
     case 'save':
-    if (!empty($u_id) && !empty($_POST["data"])&& !empty($_POST["id"])&& !empty($_POST["add"])) {
-        SaveProject($u_id, $conn);
-    } else {
-        die('{ "message": "ERROR: Fehlerhafte Daten"}');
-    }
-    break;
+        if (!empty($u_id) && !empty($_POST["data"])&& !empty($_POST["id"])&& !empty($_POST["add"])) {
+            SaveProject($u_id, $conn);
+        } else {die('{ "message": "ERROR: PLEASE SUPPLY CORRECT DATA" }');}
+        break;
     case 'update':
-    if (!empty($u_id) && !empty($_POST["us_id"]) && !empty($_POST["p_id"])) {
-        UpdateProject($u_id, $conn);
-    } else {
-        die('{ "message": "ERROR: Fehlerhafte Daten"}');
-    }
-    break;
+        if (!empty($u_id) && !empty($_POST["us_id"]) && !empty($_POST["p_id"])) {
+            UpdateProject($u_id, $conn);
+        } else {die('{ "message": "ERROR: PLEASE SUPPLY CORRECT DATA" }');}
+        break;
     case 'finish':
-    if (!empty($u_id)  && !empty($_POST["p_id"])) {
-        FinishProject($u_id, $conn);
-    } else {
-        die('{ "message": "ERROR: Fehlerhafte Daten"}');
-    }
-    break;
+        if (!empty($u_id)  && !empty($_POST["p_id"])) {
+            FinishProject($u_id, $conn);
+        } else {die('{ "message": "ERROR: PLEASE SUPPLY CORRECT DATA" }');}
+        break;
     case 'getinfo':
-    if (!empty($u_id) && !empty($_POST["us_id"]) && !empty($_POST["p_id"])) {
-        GetProjectInfo($u_id, $conn);
-    } else {
-        die('{ "message": "ERROR: Fehlerhafte Daten"}');
-    }
-    break;
+        if (!empty($u_id) && !empty($_POST["us_id"]) && !empty($_POST["p_id"])) {
+            GetProjectInfo($u_id, $conn);
+        } else {die('{ "message": "ERROR: PLEASE SUPPLY CORRECT DATA" }');}
+        break;
   }
+  $conn->close();
 }
 
-$conn->close();
+
 
 function NewProject($u_id, $conn)
 {
@@ -83,7 +71,7 @@ function NewProject($u_id, $conn)
     if ($conn->query($sql) === true) {
         echo '{ "message": "SUCCESS",  "project_id":"'.$project_id.'"}';
     } else {
-        die('{ "message": "Error: ' . $sql . $conn->error.'}');
+        die('{ "message": "ERROR: CONN FAILED: '.$conn->connect_error.'"}');
     }
 }
 
@@ -92,9 +80,9 @@ function DeleteProject($u_id, $conn)
     $id = mysqli_real_escape_string($conn, $_POST["p_id"]);
     $sql = "DELETE FROM projects WHERE project_id='$id' AND user_id='$u_id'";
     if ($conn->query($sql) === true) {
-        echo '{ "message": "SUCCESS:",  "project_id":"'.$id.'"}';
+        echo '{ "message": "SUCCESS",  "project_id":"'.$id.'"}';
     } else {
-        die('{ "message": "Error: ' . $sql . $conn->error.'}');
+        die('{ "message": "ERROR: CONN FAILED: '.$conn->connect_error.'"}');
     }
 }
 
@@ -118,9 +106,9 @@ function SaveProject($u_id, $conn)
     $sql = "UPDATE projects SET p_json = '$data', tot_hours='$tothours',tot_money='$totmoney', p_end='$enddate', p_comment='$comment', settings='$settings' WHERE project_id = '$p_id'";
 
     if ($conn->query($sql) === true) {
-        die('{ "message": "SUCCESS:"}');
+        die('{ "message": "SUCCESS"}');
     } else {
-        die('{ "message": "ERROR: ' . $sql . $conn->error.'}');
+        die('{ "message": "ERROR: CONN FAILED: '.$conn->connect_error.'"}');
     }
 }
 
@@ -135,9 +123,9 @@ function FinishProject($u_id, $conn)
     $sql = "UPDATE projects SET  p_finished=1 WHERE project_id = '$p_id'";
     if ($conn->query($sql) === true) {
     } else {
-        die('{ "message":"'. $sql .' ' . $conn->error.'"}');
+        die('{ "message": "ERROR: CONN FAILED: '.$conn->connect_error.'"}');
     }
-    echo '{ "message": "SUCCESS:",  "project_id":"'.$p_id.'"}';
+    echo '{ "message": "SUCCESS",  "project_id":"'.$p_id.'"}';
 }
 
 function UpdateProject($u_id, $conn)
@@ -153,7 +141,7 @@ function UpdateProject($u_id, $conn)
         $sql = "UPDATE projects SET  p_name='$cur' WHERE project_id = '$p_id'";
         if ($conn->query($sql) === true) {
         } else {
-            die('{ "message":"'. $sql .' ' . $conn->error.'"}');
+            die('{ "message": "ERROR: CONN FAILED: '.$conn->connect_error.'"}');
         }
     }
     if (!empty($_POST["work"])) {
@@ -161,7 +149,7 @@ function UpdateProject($u_id, $conn)
         $sql = "UPDATE projects SET  p_job='$cur' WHERE project_id = '$p_id'";
         if ($conn->query($sql) === true) {
         } else {
-            die('{ "message":"'. $sql .' ' . $conn->error.'"}');
+            die('{ "message": "ERROR: CONN FAILED: '.$conn->connect_error.'"}');
         }
     }
     if (!empty($_POST["pay"])) {
@@ -169,7 +157,7 @@ function UpdateProject($u_id, $conn)
         $sql = "UPDATE projects SET  p_gage='$cur' WHERE project_id = '$p_id'";
         if ($conn->query($sql) === true) {
         } else {
-            die('{ "message":"'. $sql .' ' . $conn->error.'"}');
+            die('{ "message": "ERROR: CONN FAILED: '.$conn->connect_error.'"}');
         }
     }
     if (!empty($_POST["company"])) {
@@ -177,10 +165,10 @@ function UpdateProject($u_id, $conn)
         $sql = "UPDATE projects SET  p_company='$cur' WHERE project_id = '$p_id'";
         if ($conn->query($sql) === true) {
         } else {
-            die('{ "message":"'. $sql .' ' . $conn->error.'"}');
+            die('{ "message": "ERROR: CONN FAILED: '.$conn->connect_error.'"}');
         }
     }
-    echo '{ "message": "SUCCESS:",  "project_id":"'.$p_id.'"}';
+    echo '{ "message": "SUCCESS",  "project_id":"'.$p_id.'"}';
 }
 
 function GetProjectInfo($u_id, $conn)
@@ -219,6 +207,6 @@ function GetProjectInfo($u_id, $conn)
         echo '"company": "'.$company.'"';
         echo '}';
     } else {
-        die('{ "message":"ERROR"}');
+        die('{ "message":"ERROR GETTING PROJECT INFO"}');
     }
 }

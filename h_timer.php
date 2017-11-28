@@ -13,7 +13,7 @@ $action = (isset($_POST['action']) and $_POST['action']!="") ? $_POST['action'] 
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
-    die('{ "message": "ERROR: '.$conn->connect_error.'"}');
+    die('{ "message": "ERROR: CONN FAILED: '.$conn->connect_error.'"}');
 }
 
 if ($action) {
@@ -22,42 +22,42 @@ if ($action) {
         if (!empty($u_id) && !empty($_POST["name"])) {
             NewTimer($u_id, $conn);
         } else {
-            die('{ "message": "Error: Please supply correct data" }');
+            die('{ "message": "ERROR: PLEASE SUPPLY CORRECT DATA" }');
         }
         break;
         case 'delete':
         if (!empty($_POST["id"]) && !empty($u_id)) {
             DeleteTimer($u_id, $conn);
         } else {
-            die('{ "message": "ERROR, PLEASE SUPPLY WITH CORRECT DATA" }');
+            die('{ "message": "ERROR, PLEASE SUPPLY CORRECT DATA" }');
         }
         break;
         case 'update':
         if (!empty($_POST["a"]) && !empty($_POST["id"])) {
             UpdateTimer($conn);
         } else {
-            die('{ "message": "ERROR: Fehlerhafte Daten"}');
+            die('{ "message": "ERROR, PLEASE SUPPLY CORRECT DATA" }');
         }
         break;
         case 'gettimers':
         if (!empty($u_id)) {
             GetTimers($u_id, $conn);
         } else {
-            die('{ "message": "ERROR: Fehlerhafte Daten"}');
+            die('{ "message": "ERROR, PLEASE SUPPLY CORRECT DATA" }');
         }
         break;
         case 'load':
         if (!empty($_POST["id"])) {
             LoadTimer($conn);
         } else {
-            die('{ "message": "ERROR: Fehlerhafte Daten"}');
+            die('{ "message": "ERROR, PLEASE SUPPLY CORRECT DATA" }');
         }
         break;
         case 'save':
         if (!empty($u_id) && !empty($_POST["timer"]) && !empty($_POST["data"])) {
             SaveTimer($u_id, $conn);
         } else {
-            die('{ "message": "ERROR: Fehlerhafte Daten"}');
+            die('{ "message": "ERROR, PLEASE SUPPLY CORRECT DATA" }');
         }
         break;
     }
@@ -75,10 +75,10 @@ function NewTimer($u_id, $conn)
         if ($conn->query($sql) === true) {
             echo '{ "message": "SUCCESS",  "name":"'.$name.'", "id":"'.$timer_id.'"}';
         } else {
-            die('{ "message": "Error: ' . $sql . $conn->error.'}');
+            die('{ "message": "ERROR: CONN FAILED: '.$conn->connect_error.'"}');
         }
     } else {
-        die('{ "message": "Error: Projekt nicht erstellt"}');
+        die('{ "message": "ERROR: PROJECT COULDNT BE CREATED"}');
     }
 }
 
@@ -91,7 +91,7 @@ function NewProject($u_id, $name, $date, $conn)
     if ($conn->query($sql) === true) {
         return $project_id;
     } else {
-        die('{ "message": "Error: ' . $sql . $conn->error.'}');
+        die('{ "message": "ERROR: CONN FAILED: '.$conn->connect_error.'"}');
     }
 }
 
@@ -118,7 +118,7 @@ function LoadTimer($conn)
     $sql = "SELECT action, t_time  FROM `e_timers` WHERE timer_id='$timer_id' ORDER BY id ASC;";
     $result = $conn->query($sql);
     if (!$result) {
-        die('{ "message": "Error: ' . $sql . $conn->error.'}');
+        die('{ "message": "ERROR: ' . $sql . $conn->error.'}');
     } else {
         $rowCount = mysqli_num_rows($result);
         while ($row = $result->fetch_assoc()) {
@@ -139,18 +139,18 @@ function UpdateTimer($conn)
     if ($conn->query($sql) === true) {
         $success = $success+1;
     } else {
-        die('{ "message": "Error: ' . $sql . $conn->error.'}');
+        die('{ "message": "ERROR: ' . $sql . $conn->error.'}');
     }
     $sql = "UPDATE `active_timers` SET nr_entries = nr_entries + 1 WHERE timer_id ='$t_id'";
     if ($conn->query($sql) === true) {
         $success = $success+1;
     } else {
-        die('{ "message": "Error: ' . $sql . $conn->error.'}');
+        die('{ "message": "ERROR: ' . $sql . $conn->error.'}');
     }
     if ($success==2) {
         die('{ "message": "SUCCESS"}');
     } else {
-        die('{ "message": "Error:"}');
+        die('{ "message": "ERROR:"}');
     }
 }
 
@@ -161,6 +161,6 @@ function DeleteTimer($u_id, $conn)
     if ($conn->query($sql) === true) {
         die('{ "message": "SUCCESS"}');
     } else {
-        die('{ "message": "Error: ' . $sql . $conn->error.'}');
+        die('{ "message": "ERROR: ' . $sql . $conn->error.'}');
     }
 }

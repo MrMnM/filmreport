@@ -35,7 +35,7 @@ include './includes/inc_variables.php';
             <div class="alert alert-warning" id="saveWarning" style="display:none">
                 <div class="project-spinner"></div>
             <span class="savetext">Nicht gespeicherte &Auml;nderungen.</span>
-                <button type="button" id="saveButton" class="btn btn-warning saveButton"><span class="fa fa-save"> Speichern</span></button>
+                <button type="button" id="saveButton" class="btn btn-warning saveButton"><span class="fa fa-cloud-upload"> Speichern</span></button>
                 <button type="button" class="btn btn-warning disabled" id="saveButtonDisabled" style="display:none"><span class="fa fa-save"> Speichern</span</button>
             </div>
             <div class="alert alert-success" id="saveInfo" style="display:none">
@@ -99,7 +99,6 @@ if (!empty($json)){?>
     <script>
     var loadElement = JSON.parse('<?echo $json?>')
     </script>
-
 <?}else{?>
     <script>
     var loadElement = new Array()
@@ -240,21 +239,13 @@ if (!empty($json)){?>
                                     </datalist>
                                     <table width="100%" class="table table-striped table-bordered table-hover" id="workhours" name="wh">
                                         <tr>
-                                            <th width="150px">Datum</th>
-                                            <th width="150px">Was</th>
-                                            <th colspan="4" width="350px">Arbeitszeit</th>
-                                            <th width="80px">Basis</th>
-                                            <th colspan="8">Zuschlaege</th>
-                                            <th colspan="2" width="10%">Spesen</th>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td colspan="4"></td>
-                                            <td><font size=-2>bis 9h Tag</font></td>
-                                            <td colspan="7">Uebersstunden</td>
-                                            <td>Nacht</td>
-                                            <td colspan="2"></td>
+                                            <th width="135px">Datum</th>
+                                            <th width="120px">Was</th>
+                                            <th colspan="3" width="250px">Arbeitszeit</th>
+                                            <th class="largescreen"></th>
+                                            <th></th>
+                                            <th colspan="8" class="hidden-xs hidden-sm hidden-md">Zuschlaege</th>
+                                            <th colspan="2" width="110px">Spesen</th>
                                         </tr>
                                         <tr>
                                             <td></td>
@@ -262,17 +253,17 @@ if (!empty($json)){?>
                                             <td>Beginn</td>
                                             <td>Ende</td>
                                             <td>Pausen</td>
-                                            <td width="60px">in h</td>
+                                            <td width="60px" class="largescreen">in h</td>
                                             <td></td>
-                                            <td><font size=-2>10</font></td>
-                                            <td><font size=-2>11</font></td>
-                                            <td><font size=-2>12</font></td>
-                                            <td><font size=-2>13</font></td>
-                                            <td><font size=-2>14</font></td>
-                                            <td><font size=-2>15</font></td>
-                                            <td><font size=-2>16+</font></td>
-                                            <td><font size=-2></font></td>
-                                            <td>Essen</td>
+                                            <td class="hidden-xs hidden-sm hidden-md"><font size=-2>10</font></td>
+                                            <td class="hidden-xs hidden-sm hidden-md"><font size=-2>11</font></td>
+                                            <td class="hidden-xs hidden-sm hidden-md"><font size=-2>12</font></td>
+                                            <td class="hidden-xs hidden-sm hidden-md"><font size=-2>13</font></td>
+                                            <td class="hidden-xs hidden-sm hidden-md"><font size=-2>14</font></td>
+                                            <td class="hidden-xs hidden-sm hidden-md"><font size=-2>15</font></td>
+                                            <td class="hidden-xs hidden-sm hidden-md"><font size=-2>16+</font></td>
+                                            <td class="hidden-xs hidden-sm hidden-md"><font size=-2>Nacht</font></td>
+                                            <td width=20px>Essen</td>
                                             <td>Auto</td>
                                         </tr>
                                     </table>
@@ -285,7 +276,7 @@ if (!empty($json)){?>
 
                         </div><!-- /.col-lg-12 -->
                     </div><!--row-->
-                    <div class="row">
+                    <div class="row hidden-xs">
                         <div class="col-lg-12">
                             <p></p>
                             <table width="100%" class="table table-striped table-bordered table-hover" id="calcualtions">
@@ -396,14 +387,10 @@ if (!empty($json)){?>
                         <span class="input-group-addon">Tagesgage</span>
                         <input type="number" name="pay" class="form-control" value="<? echo $pay;?>" required>
                     </div>
-                        <div class="form-group input-group">
+                        <div class="form-group input-group companylist">
                             <span class="input-group-addon">Produktionsfirma</span>
-                            <select class="form-control"  name="company" id="companylist" value="<? echo $company;?>">
+                            <select class="form-control" name="company" id="companylist">
                             </select>
-                            <span class="input-group-btn">
-                                <button class="btn btn-default" type="button" data-toggle="modal" data-target="#newCompany"><i class="fa fa-plus"></i>
-                                </button>
-                            </span>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -423,13 +410,14 @@ if (!empty($json)){?>
 <script src="https://cdn.jsdelivr.net/jquery.metismenu/1.1.3/metisMenu.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.1/jquery.form.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
-<script src="https://cdn.jsdelivr.net/twix.js/1.1.5/twix.min.js"></script>  
+<script src="https://cdn.jsdelivr.net/twix.js/1.1.5/twix.min.js"></script>
 <script type="module" src="./js/project.js"></script>
 <!--on ready-->
 <script>
     moment().format();
-    const us_id = "<? echo $u_id;?>";
-    const p_id = "<?echo $p_id;?>";
+    var company="<?echo $company_id?>"
+    const us_id = "<? echo $u_id;?>"
+    const p_id = "<?echo $p_id;?>"
 </script>
 </body>
 </html>

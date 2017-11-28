@@ -140,6 +140,7 @@ function updateSuccess(data){
         $('#error').hide()
     }else{
         $('#error').show()
+        $('#success').hide()
         $('#error').find("p").html(data.message)
     }
 }

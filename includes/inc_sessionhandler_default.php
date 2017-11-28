@@ -1,4 +1,5 @@
 <?
+session_name('sessionID');
 session_start();
 if ($_SESSION["running"] != 1) {
     session_destroy();

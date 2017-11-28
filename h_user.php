@@ -59,8 +59,16 @@ function GetUser($u_id, $conn)
             $type=$row["type"];
         }
     }
-    //TODO more elegantly
-    $arr = array('name' => $u_name, 'tel' => $u_tel, 'mail' => $u_mail, 'ahv' => $u_ahv, 'dob' => $u_dob, 'konto' => $u_konto,'bvg'=> $u_bvg,'address1'=>$u_address1 ,'address2'=>$u_address2);
+    $arr = array(
+        'name' => $u_name,
+        'tel' => $u_tel,
+        'mail' => $u_mail,
+        'ahv' => $u_ahv,
+        'dob' => $u_dob,
+        'konto' => $u_konto,
+        'bvg'=> $u_bvg,
+        'address1'=>$u_address1 ,
+        'address2'=>$u_address2);
     echo json_encode($arr);
 }
 
@@ -78,7 +86,7 @@ function NewUser($conn)
         } else {
             $uid = md5($mail);
             $name = $_POST["name"];
-            $active = substr(md5(microtime()), 1, 6); //TODO Timeout
+            $active = substr(md5(microtime()), 1, 6); // TODO Timeout
             $pw= $_POST["pw"];
             $pwhash = mysqli_real_escape_string($conn, password_hash($pw, PASSWORD_DEFAULT));
             $date = date("Y-m-d");

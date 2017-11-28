@@ -1,7 +1,7 @@
 <?
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
-error_reporting( E_ALL | E_STRICT );
+//error_reporting( E_ALL | E_STRICT );
 
 include './includes/inc_dbconnect.php';
 include './includes/inc_variables.php';
@@ -12,6 +12,7 @@ $closedExisting = FALSE;
 $activated =TRUE;
 
 if (true){
+    session_name('sessionID');
     session_start();
     if (!empty($_SESSION['running']) && $_SESSION['running'] == 1){
         $closedExisting = TRUE;
@@ -61,7 +62,7 @@ if (!empty($_POST["pw"]) && !empty($_POST["mail"])) {
                 $_SESSION['name'] = $name;
                 $_SESSION['type'] = $type;
                 //echo session_status();
-                header( 'Location: ./index.php') ;    
+                header( 'Location: ./index.php') ;
             }
 
         } elseif (!$activated) {

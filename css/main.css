@@ -581,18 +581,8 @@ input {
     z-index: 9999;
 }
 
-/*TODO Move together into 1*/
-
-.loading-spinner-center {
-    position: absolute;
+.project-spinner .loading-spinner-center {
     margin-left: 50%;
-    width: 2rem;
-    height: 2rem;
-    border: 0.25rem solid #504e4e;
-    border-bottom: 0.25rem solid rgba(0, 0, 0, 0);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    z-index: 9999;
 }
 
 .loading-spinner-left {
@@ -618,5 +608,20 @@ input {
 @keyframes spin {
     to {
         transform: rotate(360deg);
+    }
+}
+
+.input-xs {
+    height: 22px;
+    padding: 2px 5px;
+    font-size: 12px;
+    line-height: 1.5;
+    /* If Placeholder of the input is moved up, rem/modify this. */
+    border-radius: 3px;
+}
+
+@media only screen and (max-width: 1200px) {
+    .largescreen {
+        display: none !important;
     }
 }

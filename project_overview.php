@@ -218,12 +218,22 @@ include './includes/inc_variables.php';
 <script type="module" src="./js/project_overview.js"></script>
 <script>
 <?php
-$finished = "0";
+if ( isset( $_GET['search'] ) && !empty( $_GET['search'] ) ){
+    echo 'const search="'.$_GET['search'].'"'.PHP_EOL;
+}else{
+    echo 'const search=null'.PHP_EOL;
+}
+
+if ( isset( $_GET['view'] ) && !empty( $_GET['view'] ) ){
  if ($_GET['view']=='archive') {
-     echo 'const fin=1;';
+     echo 'const fin=1'.PHP_EOL;
  }else{
-     echo 'const fin=0;';
- }
+     echo 'const fin=0'.PHP_EOL;
+}
+}else{
+    echo'const fin=2'.PHP_EOL;
+
+}
 ?>
 </script>
 </body>
