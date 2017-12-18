@@ -12,7 +12,7 @@ $closedExisting = FALSE;
 $activated =TRUE;
 
 if (true){
-    session_name('sessionID');
+    session_name('SESSID');
     session_start();
     if (!empty($_SESSION['running']) && $_SESSION['running'] == 1){
         $closedExisting = TRUE;

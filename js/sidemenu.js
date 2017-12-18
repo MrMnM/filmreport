@@ -1,26 +1,26 @@
 export function activateSideMenu(){
   $('#side-menu').metisMenu()
   $(window).bind('load resize', function() {
-    var topOffset = 50
-    var width = (this.window.innerWidth > 0) ? this.window.innerWidth : this.screen.width
+    let topOffset = 50
+    const width = (this.window.innerWidth > 0) ? this.window.innerWidth : this.screen.width
     if (width < 768) {
       $('div.navbar-collapse').addClass('collapse')
       topOffset = 100 // 2-row-menu
     } else {
       $('div.navbar-collapse').removeClass('collapse')
     }
-    var height = ((this.window.innerHeight > 0) ? this.window.innerHeight : this.screen.height) - 1
+    let height = ((this.window.innerHeight > 0) ? this.window.innerHeight : this.screen.height) - 1
     height = height - topOffset
     if (height < 1) height = 1
     if (height > topOffset) {
       $('#page-wrapper').css('min-height', (height) + 'px')
     }
   })
-  var url = window.location
+  let url = window.location
   let element = $('ul.nav a').filter(function() {
     return this.href == url
   }).addClass('active').parent().parent().addClass('in').parent()
-  let element = $('ul.nav a').filter(function() {
+  element = $('ul.nav a').filter(function() {
     return this.href == url
   }).addClass('active').parent()
 
@@ -30,7 +30,7 @@ export function activateSideMenu(){
 
   let freelancer = true
   if (sessionStorage.getItem('freelancer') === null) {
-    let freelancer = sessionStorage.setItem('freelancer', true)
+    freelancer = sessionStorage.setItem('freelancer', true)
   }
   switchTypes(freelancer)
 }

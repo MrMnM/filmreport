@@ -34,7 +34,6 @@ for ($mcount=0; $mcount<count($totalMoney) ; $mcount++) {
     $to = ['period'=>'2017-'.$m,'Pay'=>$totalMoney[$mcount]];
     array_push($o,$to);
 }
-
 return json_encode($o);
 }
 
@@ -80,9 +79,7 @@ if (!empty($_GET["t"])&&!empty($_GET["t"])) {
 }
 
 $conn = new mysqli($servername, $username, $password, $dbname);
-if ($conn->connect_error) {
-    die('{ "message": "ERROR: CONN FAILED:'. $conn->connect_error.'"}');
-}
+if ($conn->connect_error) {die('{ "message": "ERROR: CONN FAILED:'. $conn->connect_error.'"}');}
 
 if (!empty($_GET["s"])&&!empty($_GET["e"])&&$type=='l') {
     $start=mysqli_real_escape_string($conn, $_GET["s"]);

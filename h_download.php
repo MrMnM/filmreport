@@ -12,9 +12,8 @@ if (!empty($_GET["id"])&&!empty($_GET["t"])) {
     $type=$_GET["t"];
     $conn = new mysqli($servername, $username, $password, $dbname);
     // Check connection
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
+    if ($conn->connect_error) {die('{ "message": "ERROR: CONN FAILED:'. $conn->connect_error.'"}');}
+
     $sql = "SELECT user_id, p_name, p_company, p_job, p_gage, p_start, p_end, p_json, p_comment FROM `projects` WHERE project_id='$p_id';";
     $result = $conn->query($sql);
 

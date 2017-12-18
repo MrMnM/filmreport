@@ -10,14 +10,30 @@ function newCreated(data) {
   }
 }
 
-function companyCreated(data) {
-  if (data.message == 'SUCCESS') {
-    $('#companylist').html('').load('./h_load_companies.php', ()=>{
-      $('#newCompany').modal('hide')
-      $('#companylist').val(data.c_id)
+function companyCreated(cmp) {
+  $('#newCompany').modal('hide')
+  let date = new Date()
+  let ts = date.getTime()
+  if (cmp.message == 'SUCCESS') {
+    $.ajax({
+      url: 'h_company.php?_='+ts,
+      type: 'POST',
+      dataType: 'json',
+      data: {'action':'list','fields':['id','name']}
     })
+      .done(data => {
+        $('#companylist').html('')
+        data.forEach((c) =>{
+          $('#companylist').append($('<option>', {
+            value: c.id,
+            text: c.name
+          }))
+        })
+        $('#companylist').val(cmp.c_id)
+      })
+      .fail(() => { console.error('companies couldnt be loaded') })
   } else {
-    console.error(data.message)
+    console.error(cmp.message)
   }
 }
 
@@ -107,5 +123,21 @@ $(function() {
     dataType: 'json',
     success: companyCreated
   })
-  $('#companylist').load('./h_load_companies.php')
+  let date = new Date()
+  let ts = date.getTime()
+  $.ajax({
+    url: 'h_company.php?_='+ts,
+    type: 'POST',
+    dataType: 'json',
+    data: {'action':'list','fields':['id','name']}
+  })
+    .done(data => {
+      data.forEach((c) =>{
+        $('#companylist').append($('<option>', {
+          value: c.id,
+          text: c.name
+        }))
+      })
+    })
+    .fail(() => { console.error('companies couldnt be loaded') })
 })

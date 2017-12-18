@@ -12,9 +12,7 @@ $action = (isset($_POST['action']) and $_POST['action']!="") ? $_POST['action'] 
 if ($action) {
 
     $conn = new mysqli($servername, $username, $password, $dbname);
-    if ($conn->connect_error) {
-        die('{ "message": "ERROR: CONN FAILED: '.$conn->connect_error.'"}');
-    }
+    if ($conn->connect_error) {die('{ "message": "ERROR: CONN FAILED:'. $conn->connect_error.'"}');}
 
     switch ($_POST["action"]) {
     case 'new':
@@ -28,8 +26,13 @@ if ($action) {
         } else {die('{ "message": "ERROR: PLEASE SUPPLY CORRECT DATA" }');}
         break;
     case 'save':
-        if (!empty($u_id) && !empty($_POST["data"])&& !empty($_POST["id"])&& !empty($_POST["add"])) {
+        if (!empty($u_id) && !empty($_POST["data"])&& !empty($_POST["p_id"])&& !empty($_POST["add"])) {
             SaveProject($u_id, $conn);
+        } else {die('{ "message": "ERROR: PLEASE SUPPLY CORRECT DATA" }');}
+        break;
+    case 'load':
+        if (!empty($u_id) && !empty($_POST["p_id"])) {
+            LoadProject($u_id, $conn);
         } else {die('{ "message": "ERROR: PLEASE SUPPLY CORRECT DATA" }');}
         break;
     case 'update':
@@ -48,9 +51,7 @@ if ($action) {
         } else {die('{ "message": "ERROR: PLEASE SUPPLY CORRECT DATA" }');}
         break;
   }
-  $conn->close();
 }
-
 
 
 function NewProject($u_id, $conn)
@@ -66,7 +67,7 @@ function NewProject($u_id, $conn)
     $short = file_get_contents($url);
 
     $sql = "INSERT INTO projects (c_date,project_id,user_id,p_name,p_start,p_job,p_gage,p_company,view_id)
-    VALUES (NOW(), '$project_id', '$u_id','$p_name','$p_startdate','$p_work','$p_pay','$p_company','$short')";
+    VALUES ('$now', '$project_id', '$u_id','$p_name','$p_startdate','$p_work','$p_pay','$p_company','$short')";
 
     if ($conn->query($sql) === true) {
         echo '{ "message": "SUCCESS",  "project_id":"'.$project_id.'"}';
@@ -96,7 +97,7 @@ function SaveProject($u_id, $conn)
     $calcBase=mysqli_real_escape_string($conn, $add['calcBase']);
     $baseHours =mysqli_real_escape_string($conn, $add['baseHours']);
     $settings = json_encode(array('calcBase' => $calcBase, 'baseHours' => $baseHours));
-    $p_id = mysqli_real_escape_string($conn, $_POST['id']);
+    $p_id = mysqli_real_escape_string($conn, $_POST['p_id']);
     if (!empty($_POST["comment"])) {
         $comment = mysqli_real_escape_string($conn, $_POST['comment']);
     } else {
@@ -175,7 +176,6 @@ function GetProjectInfo($u_id, $conn)
 {
     if (!empty($_POST["p_id"])) {
         $p_id = mysqli_real_escape_string($conn, $_POST["p_id"]);
-
         //Get Projects
         $sql = "SELECT p_name, p_company, p_job, p_gage FROM `projects` WHERE project_id='$p_id';";
         $result = $conn->query($sql);
@@ -187,7 +187,6 @@ function GetProjectInfo($u_id, $conn)
                 $pay = mysqli_real_escape_string($conn, $row["p_gage"]);
             }
         }
-
         //Get companies
         $sql = "SELECT name, address_1, address_2 FROM `companies` WHERE company_id='$company_id';";
         $result = $conn->query($sql);
@@ -199,13 +198,31 @@ function GetProjectInfo($u_id, $conn)
             }
         }
         $company = $company."</br>".$c_address1."</br>".$c_address2;
+        $o = ["name"=>$name,
+              "job"=>$job,
+              "pay"=>$pay,
+              "company"=>$company];
+        echo json_encode($o);
+    } else {
+        die('{ "message":"ERROR GETTING PROJECT INFO"}');
+    }
+}
 
-        echo '{';
-        echo '"name": "'.$name.'",';
-        echo '"job": "'.$job.'",';
-        echo '"pay": "'.$pay.'",';
-        echo '"company": "'.$company.'"';
-        echo '}';
+function LoadProject($u_id, $conn)
+{
+    if (!empty($_POST["p_id"])) {
+          $p_id = mysqli_real_escape_string($conn, $_POST["p_id"]);
+          $sql = "SELECT p_json, p_comment FROM `projects` WHERE project_id='$p_id';";
+          $result = $conn->query($sql);
+          if ($result->num_rows > 0) {
+              while($row = $result->fetch_assoc()) {
+                  $json = $row["p_json"];
+                  $comment = $row["p_comment"];
+              }
+          }
+          $o = ["data"=>$json,
+                "comment"=>$comment];
+        echo json_encode($o);
     } else {
         die('{ "message":"ERROR GETTING PROJECT INFO"}');
     }

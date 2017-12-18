@@ -95,6 +95,7 @@ if (!empty($_GET["id"])) {
 }
 
 //TODO Get Rid of this Shit
+// JSON HERE ************************************************************************************************************************
 if (!empty($json)){?>
     <script>
     var loadElement = JSON.parse('<?echo $json?>')
@@ -106,23 +107,24 @@ if (!empty($json)){?>
 <?}?>
 
 <!-- MAINCONTENT -->
-    <div class="panel panel-default">
+    <div class="panel with-nav-tabs panel-default">
         <div class="panel-heading">
             <h4 id="title"><div class="loading-spinner-left"></div>&nbsp;</h4>
-            <div style="float:right; margin-top:-37px;">
+            <ul class="nav nav-tabs">
+                <li><div style="navtext">Infos</div></li>
+                <li class="active"><a href="#project" data-toggle="tab" aria-expanded="true">Infos</a></li>
+                <li><a href="#hours" data-toggle="tab" aria-expanded="false">Stunden</a></li>
+                <li><a href="#notes" data-toggle="tab" aria-expanded="false">Kommentare</a></li>
+            </ul>
+
+            <div style="float:right; margin-top:-50px;">
                 <button type="button" id="refresh" class="btn btn-default refreshButton"><i class="fa fa-refresh"></i></button>
                 <button type="button" class="btn btn-default" onclick="window.open('view.php?id=<?echo $p_id;?>')"><i class="fa fa-eye"></i></button>
             </div>
+
         </div>
 
         <div class="panel-body">
-        <!-- Nav tabs-->
-            <ul class="nav nav-pills">
-                <li class="active"><a href="#project" data-toggle="tab" aria-expanded="true">Infos</a></li>
-                <li class=""><a href="#hours" data-toggle="tab" aria-expanded="false">Stunden</a></li>
-                <li class=""><a href="#notes" data-toggle="tab" aria-expanded="false">Bemerkungen</a></li>
-            </ul>
-
             <div class="tab-content">
                 <div class="tab-pane fade in active" id="project">
                     <p></p>
@@ -163,7 +165,9 @@ if (!empty($json)){?>
                                         </table>
                                     </div>
                                     <input type="hidden" id="projectId" value="<? echo $p_id;?>">
-                                    <input type="hidden" id="startDate" value="<? echo $date;?>">
+                                    <input type="hidden" id="startDate" value="<?
+/* DATE HERE *******************************************************************************************************/
+                                    echo $date;?>">
                                     <input type="hidden" id="basePay"value="<? echo $pay;?>">
                                 </div><!--panel-body-->
                             </div><!--panel-->
@@ -344,16 +348,37 @@ if (!empty($json)){?>
                 <div class="tab-pane fade in" id="notes">
                     <p></p>
                     <div class="row">
-                        <div class="col-lg-12">
+                        <div class="col-lg-6">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
-                                    <i class="fa fa-briefcase fa-fw"></i> Bemerkungen
+                                    <i class="fa fa-comment-o fa-fw"></i> Bemerkungen
                                 </div>
                                 <div class="panel-body">
-                                    <textarea class="form-control" rows="3" width=100% id="comment"><? echo $comment;?></textarea>
+                                    <textarea class="form-control" rows="3" width=100% id="comment"><?
+/*COMMENT HERE **************************************************************************************************************/
+                                    echo $comment;?></textarea>
                                 </div>
                             </div>
                         </div><!--col-lg-12-->
+                        <div class="col-lg-6">
+                          <div class="panel panel-default">
+                            <div class="panel-heading">
+                              <i class="fa fa-comments fa-fw"></i> Kommentare
+                            </div>
+                            <div class="panel-body">
+                              <div class="message-wrap col-lg-12" id="comments">
+<!-- COMMENTS LOAD IN HERE ****************************************************************3-->
+                              </div>
+                              <div class="send-wrap ">
+                                <textarea class="form-control send-message" rows="3" placeholder="Antworten..." id="commentText"></textarea>
+                              </div>
+                              <div class="btn-panel">
+                                <a href="" class=" col-lg-4 text-right btn send-message-btn pull-right" role="button" id="submitComment"><i class="fa fa-plus"></i> Antworten</a>
+                              </div><!--btn-->
+                            </div><!--panelBody-->
+                          </div><!--panel-->
+                        </div><!--col-lg-6-->
+                      </div><!--col-lg-12-->
                     </div><!--row-->
                 </div><!--tab-pane-->
             </div><!--tab-content-->
@@ -374,18 +399,24 @@ if (!empty($json)){?>
                         <input type="hidden" name="p_id" value="<? echo $p_id;?>">
                     <div class="form-group input-group">
                         <span class="input-group-addon">Projektname</span>
-                        <input type="text" name="name" class="form-control" value="<? echo $name;?>" required="">
+                        <input type="text" name="name" class="form-control" value="<?
+                        /*NAME HERE *************************************************************************************************/
+                        echo $name;?>" required="">
                     </div>
                     <datalist id="jobs">
                     <?include('./includes/inc_joblist.html');?>
                     </datalist>
                     <div class="form-group input-group">
                         <span class="input-group-addon">Arbeit als:</span>
-                        <input type="text" list="jobs" class="form-control" name="work" value="<? echo $job;?>" required>
+                        <input type="text" list="jobs" class="form-control" name="work" value="<?
+/* JOB HERE ******************************************************************************************************************************************/
+                         echo $job;?>" required>
                     </div>
                     <div class="form-group input-group">
                         <span class="input-group-addon">Tagesgage</span>
-                        <input type="number" name="pay" class="form-control" value="<? echo $pay;?>" required>
+                        <input type="number" name="pay" class="form-control" value="<?
+/* PAY HERE *************************************************************************************************************************************************/
+                        echo $pay;?>" required>
                     </div>
                         <div class="form-group input-group companylist">
                             <span class="input-group-addon">Produktionsfirma</span>
@@ -411,11 +442,13 @@ if (!empty($json)){?>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.1/jquery.form.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
 <script src="https://cdn.jsdelivr.net/twix.js/1.1.5/twix.min.js"></script>
-<script type="module" src="./js/project.js"></script>
+<script type="module" src="./js/project_main.js"></script>
 <!--on ready-->
 <script>
     moment().format();
-    var company="<?echo $company_id?>"
+    var company="<?
+/* COMPANY HERE **********************************************************************************************************/
+    echo $company_id?>"
     const us_id = "<? echo $u_id;?>"
     const p_id = "<?echo $p_id;?>"
 </script>

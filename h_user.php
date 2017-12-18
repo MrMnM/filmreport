@@ -7,15 +7,12 @@ error_reporting(E_ALL);
 include './includes/inc_encrypt.php';
 include './includes/inc_dbconnect.php';
 $action = (isset($_POST['action']) and $_POST['action']!="") ? $_POST['action'] : null;
-
 if ($action!='new') {
-    include './includes/inc_sessionhandler_ajax.php';
+  include './includes/inc_sessionhandler_ajax.php';
 }
 
 $conn = new mysqli($servername, $username, $password, $dbname);
-if ($conn->connect_error) {
-    die('{ "message": "ERROR: '.$conn->connect_error.'"}');
-}
+if ($conn->connect_error) {die('{ "message": "ERROR: CONN FAILED:'. $conn->connect_error.'"}');}
 
 if ($action) {
     switch ($_POST["action"]) {
@@ -24,7 +21,7 @@ if ($action) {
         break;
         case 'update':
         if (!empty($u_id) && !empty($_POST["us_id"])) {
-            UpdateInfo($u_id, $conn);
+            UpdateUser($u_id, $conn);
         } else {
             die('{ "message": "ERROR: Fehlerhafte Daten"}');
         }
@@ -39,37 +36,55 @@ if ($action) {
     }
 }
 
-$conn->close();
-
 function GetUser($u_id, $conn)
 {
-    $sql = "SELECT mail, tel, name, address_1, address_2, ahv, dateob, konto, bvg, type, affiliation FROM `users` WHERE u_id='$u_id';";
-    $result = $conn->query($sql);
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            $u_name = $row["name"];
-            $u_tel = $row["tel"];
-            $u_mail = $row["mail"];
-            $u_ahv = encrypt($row["ahv"], 'd');
-            $u_dob = $row["dateob"];
-            $u_konto = encrypt($row["konto"], 'd');
-            $u_bvg = $row["bvg"];
-            $u_address1= $row["address_1"];
-            $u_address2= $row["address_2"];
-            $type=$row["type"];
-        }
+  $sql = "SELECT mail, tel, name, address_1, address_2, ahv, dateob, konto, bvg, type, affiliation FROM `users` WHERE u_id='$u_id';";
+  $result = $conn->query($sql);
+  if ($result->num_rows > 0) {
+      while ($row = $result->fetch_assoc()) {
+        $arr = [
+            'name' => $row["name"],
+            'tel' => $row["tel"],
+            'mail' => $row["mail"],
+            'ahv' => encrypt($row["ahv"], 'd'),
+            'dob' => $row["dateob"],
+            'konto' => encrypt($row["konto"], 'd'),
+            'bvg'=> $row["bvg"],
+            'address1'=>$row["address_1"],
+            'address2'=>$row["address_2"]];
+      }
+  }
+  echo json_encode($arr);
+}
+
+function update($conn, $post,$db,$encrypt)
+{
+  if (!empty($_POST[$post])) {
+    if($encrypt){
+      $cur= encrypt($_POST[$post], 'e');
+    }else{
+      $cur= mysqli_real_escape_string($conn, $_POST[$post]);
     }
-    $arr = array(
-        'name' => $u_name,
-        'tel' => $u_tel,
-        'mail' => $u_mail,
-        'ahv' => $u_ahv,
-        'dob' => $u_dob,
-        'konto' => $u_konto,
-        'bvg'=> $u_bvg,
-        'address1'=>$u_address1 ,
-        'address2'=>$u_address2);
-    echo json_encode($arr);
+      $sql = "UPDATE users SET '$db'='$cur' WHERE u_id = '$u_id'";
+      if ($conn->query($sql) !== true) {
+          die('{ "message":"ERROR:'. $sql .' ' . $conn->error.'"}');
+      }
+  }
+}
+
+function UpdateUser($u_id, $conn)
+{
+    $us_id = mysqli_real_escape_string($conn, $_POST["us_id"]);
+    if ($u_id != $us_id) {die('{ "message": "ERROR: NOT LOGGED IN"}');}
+    update($conn, "name", "name", FALSE);
+    update($conn, "tel", "tel", FALSE);
+    update($conn, "address1", "address_1", FALSE);
+    update($conn, "address2", "address_2", FALSE);
+    update($conn, "ahv", "ahv", TRUE);
+    update($conn, "dob", "dateob", FALSE);
+    update($conn, "konto", "konto", TRUE);
+    update($conn, "bvg", "bvg", FALSE);
+    die('{ "message":"SUCCESS"}');
 }
 
 function NewUser($conn)
@@ -87,6 +102,13 @@ function NewUser($conn)
             $uid = md5($mail);
             $name = $_POST["name"];
             $active = substr(md5(microtime()), 1, 6); // TODO Timeout
+            /*
+            Next to your resetkey column place a DATETIME column called, maybe, expires.
+            Then, whenever you insert a new reset key, also insert a value into expires:
+            INSERT INTO forgot (resetkey, expires) VALUES (whatever, NOW() + INTERVAL 48 HOUR)
+            Right before you read any reset key from the table, do this:
+            DELETE FROM forgot WHERE expires < NOW()
+            */
             $pw= $_POST["pw"];
             $pwhash = mysqli_real_escape_string($conn, password_hash($pw, PASSWORD_DEFAULT));
             $date = date("Y-m-d");
@@ -127,80 +149,4 @@ function NewUser($conn)
     } else {
         die('{ "message": "Falsch aufgerufen" }');
     }
-}
-
-
-
-function UpdateInfo($u_id, $conn)
-{
-    $us_id = mysqli_real_escape_string($conn, $_POST["us_id"]);
-    if ($u_id != $us_id) {
-        die('{ "message": "ERROR: NOT LOGGED IN"}');
-    }
-
-    if (!empty($_POST["name"])) {
-        $cur= mysqli_real_escape_string($conn, $_POST["name"]);
-        $sql = "UPDATE users SET  name='$cur' WHERE u_id = '$u_id'";
-        if ($conn->query($sql) === true) {
-        } else {
-            die('{ "message":"'. $sql .' ' . $conn->error.'"}');
-        }
-    }
-    if (!empty($_POST["tel"])) {
-        $cur= mysqli_real_escape_string($conn, $_POST["tel"]);
-        $sql = "UPDATE users SET  tel='$cur' WHERE u_id = '$u_id'";
-        if ($conn->query($sql) === true) {
-        } else {
-            die('{ "message":"'. $sql .' ' . $conn->error.'"}');
-        }
-    }
-    if (!empty($_POST["address1"])) {
-        $cur= mysqli_real_escape_string($conn, $_POST["address1"]);
-        $sql = "UPDATE users SET  address_1='$cur' WHERE u_id = '$u_id'";
-        if ($conn->query($sql) === true) {
-        } else {
-            die('{ "message":"'. $sql .' ' . $conn->error.'"}');
-        }
-    }
-    if (!empty($_POST["address2"])) {
-        $cur= mysqli_real_escape_string($conn, $_POST["address2"]);
-        $sql = "UPDATE users SET  address_2='$cur' WHERE u_id = '$u_id'";
-        if ($conn->query($sql) === true) {
-        } else {
-            die('{ "message":"'. $sql .' ' . $conn->error.'"}');
-        }
-    }
-    if (!empty($_POST["ahv"])) {
-        $cur= encrypt($_POST["ahv"], 'e');
-        $sql = "UPDATE users SET  ahv='$cur' WHERE u_id = '$u_id'";
-        if ($conn->query($sql) === true) {
-        } else {
-            die('{ "message":"'. $sql .' ' . $conn->error.'"}');
-        }
-    }
-    if (!empty($_POST["dob"])) {
-        $cur=mysqli_real_escape_string($conn, $_POST["dob"]);
-        $sql = "UPDATE users SET  dateob='$cur' WHERE u_id = '$u_id'";
-        if ($conn->query($sql) === true) {
-        } else {
-            die('{ "message":"'. $sql .' ' . $conn->error.'"}');
-        }
-    }
-    if (!empty($_POST["konto"])) {
-        $cur= encrypt($_POST["konto"], 'e');
-        $sql = "UPDATE users SET  konto='$cur' WHERE u_id = '$u_id'";
-        if ($conn->query($sql) === true) {
-        } else {
-            die('{ "message":"'. $sql .' ' . $conn->error.'"}');
-        }
-    }
-    if (!empty($_POST["bvg"])) {
-        $cur=mysqli_real_escape_string($conn, $_POST["bvg"]);
-        $sql = "UPDATE users SET  bvg='$cur' WHERE u_id = '$u_id'";
-        if ($conn->query($sql) === true) {
-        } else {
-            die('{ "message":"'. $sql .' ' . $conn->error.'"}');
-        }
-    }
-    die('{ "message":"SUCCESS"}');
 }

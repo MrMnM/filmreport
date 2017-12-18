@@ -1,5 +1,5 @@
 <?php
-header("content-type: application/x-javascript");
+header('Content-Type: application/json');
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL | E_STRICT);
@@ -8,135 +8,41 @@ include './includes/inc_sessionhandler_ajax.php';
 include './includes/inc_dbconnect.php';
 
 $conn = new mysqli($servername, $username, $password, $dbname);
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+if ($conn->connect_error) {die('{ "message": "ERROR: CONN FAILED:'. $conn->connect_error.'"}');}
+
+
 $sql = "SELECT company_id, name FROM `companies`";
 $result = $conn->query($sql);
-
 if ($result->num_rows > 0) {
-    $cnt = 0;
     while ($cmp = $result->fetch_assoc()) {
-        $companies[$cnt][0] = $cmp["company_id"];
-        $companies[$cnt][1] = $cmp["name"];
-        $cnt=$cnt+1;
+      $comp[$cmp["company_id"]] = $cmp["name"];
     }
-}
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
 }
 
 if ($_GET["fin"]==1) {
-    echo '{'.PHP_EOL;
-    echo '"data": ['.PHP_EOL;
-
     $sql = "SELECT project_id, p_start, p_name, p_company, tot_hours, tot_money, p_finished, view_id  FROM `projects` WHERE user_id='$u_id' AND p_finished=1;";
-    $result = $conn->query($sql);
-    if ($result->num_rows > 0) {
-        $rowCount = mysqli_num_rows($result);
-        $counter = 1;
-        while ($row = $result->fetch_assoc()) {
-            echo '['.PHP_EOL;
-            echo '"'.$row["p_start"].'",'.PHP_EOL;
-            echo '"'.$row["p_name"].'",'.PHP_EOL;
-            foreach ($companies as $arr) {
-                if ($arr[0] == $row["p_company"]) {
-                    echo '"'.$arr[1].'",'.PHP_EOL;
-                } elseif ($row["p_company"]=='timer') {
-                    echo '"TIMER",'.PHP_EOL;
-                    break;
-                }
-            }
-            echo '"'.$row["tot_hours"].'",'.PHP_EOL;
-            echo '"'.$row["tot_money"].'",'.PHP_EOL;
-            echo '"'.$row["project_id"].'",'.PHP_EOL;
-            echo '"'.$row["p_finished"].'",'.PHP_EOL;
-            echo '"'.$row["view_id"].'"'.PHP_EOL;
-            if ($counter == $rowCount) {
-                echo ']'.PHP_EOL;
-            } else {
-                echo '],'.PHP_EOL;
-            }
-            $counter++;
-        }
-    }
-
-    echo ']'.PHP_EOL;
-    echo '}'.PHP_EOL;
 } elseif ($_GET["fin"]==0)  {
-    echo '{'.PHP_EOL;
-    echo '"data": ['.PHP_EOL;
-
     $sql = "SELECT project_id, p_start, p_name, p_company, tot_hours, tot_money, p_finished, view_id  FROM `projects` WHERE user_id='$u_id' AND p_finished=0;";
-    $result = $conn->query($sql);
-    if ($result->num_rows > 0) {
-        $rowCount = mysqli_num_rows($result);
-        $counter = 1;
-        while ($row = $result->fetch_assoc()) {
-            echo '['.PHP_EOL;
-            echo '"'.$row["p_start"].'",'.PHP_EOL;
-            echo '"'.$row["p_name"].'",'.PHP_EOL;
-            foreach ($companies as $arr) {
-                if ($arr[0] == $row["p_company"]) {
-                    echo '"'.$arr[1].'",'.PHP_EOL;
-                } elseif ($row["p_company"]=='timer') {
-                    echo '"TIMER",'.PHP_EOL;
-                    break;
-                }
-            }
-            echo '"'.$row["tot_hours"].'",'.PHP_EOL;
-            echo '"'.$row["tot_money"].'",'.PHP_EOL;
-            echo '"'.$row["project_id"].'",'.PHP_EOL;
-            echo '"'.$row["p_finished"].'",'.PHP_EOL;
-            echo '"'.$row["view_id"].'"'.PHP_EOL;
-            if ($counter == $rowCount) {
-                echo ']'.PHP_EOL;
-            } else {
-                echo '],'.PHP_EOL;
-            }
-            $counter++;
-        }
-    }
-
-    echo ']'.PHP_EOL;
-    echo '}'.PHP_EOL;
 } elseif ($_GET["fin"]==2) {
-    echo '{'.PHP_EOL;
-    echo '"data": ['.PHP_EOL;
-
     $sql = "SELECT project_id, p_start, p_name, p_company, tot_hours, tot_money, p_finished, view_id  FROM `projects` WHERE user_id='$u_id';";
-    $result = $conn->query($sql);
-    if ($result->num_rows > 0) {
-        $rowCount = mysqli_num_rows($result);
-        $counter = 1;
-        while ($row = $result->fetch_assoc()) {
-            echo '['.PHP_EOL;
-            echo '"'.$row["p_start"].'",'.PHP_EOL;
-            echo '"'.$row["p_name"].'",'.PHP_EOL;
-            foreach ($companies as $arr) {
-                if ($arr[0] == $row["p_company"]) {
-                    echo '"'.$arr[1].'",'.PHP_EOL;
-                } elseif ($row["p_company"]=='timer') {
-                    echo '"TIMER",'.PHP_EOL;
-                    break;
-                }
-            }
-            echo '"'.$row["tot_hours"].'",'.PHP_EOL;
-            echo '"'.$row["tot_money"].'",'.PHP_EOL;
-            echo '"'.$row["project_id"].'",'.PHP_EOL;
-            echo '"'.$row["p_finished"].'",'.PHP_EOL;
-            echo '"'.$row["view_id"].'"'.PHP_EOL;
-            if ($counter == $rowCount) {
-                echo ']'.PHP_EOL;
-            } else {
-                echo '],'.PHP_EOL;
-            }
-            $counter++;
-        }
-    }
-
-    echo ']'.PHP_EOL;
-    echo '}'.PHP_EOL;
 }
-//TODO BETTER!!! lot of repetition
+
+$result = $conn->query($sql);
+$full=[];
+if ($result->num_rows > 0) {
+    $rowCount = mysqli_num_rows($result);
+    while ($row = $result->fetch_assoc()) {
+      $c=[$row["p_start"],
+          $row["p_name"],
+          $comp[$row["p_company"]],
+          $row["tot_hours"],
+          $row["tot_money"],
+          $row["project_id"],
+          $row["p_finished"],
+          $row["view_id"]
+        ];
+      array_push($full,$c);
+    }
+  }
+  $out=['data' => $full];
+  echo json_encode($out);

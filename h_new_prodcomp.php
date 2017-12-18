@@ -8,9 +8,7 @@ include './includes/inc_dbconnect.php';
 
 if (!empty($_POST["name"]) && !empty($_POST["address1"]) && !empty($_POST["address2"]) && !empty($_POST["phone"]) && !empty($_POST["mail"])) {
     $conn = new mysqli($servername, $username, $password, $dbname);
-    if ($conn->connect_error) {
-        die('{ "message": "Error: '.$conn->connect_error.'"}');
-    }
+    if ($conn->connect_error) {die('{ "message": "ERROR: CONN FAILED:'. $conn->connect_error.'"}');}
 
     $name=mysqli_real_escape_string($conn, $_POST["name"]);
     $address1=mysqli_real_escape_string($conn, $_POST["address1"]);

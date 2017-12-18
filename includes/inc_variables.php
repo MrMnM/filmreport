@@ -1,3 +1,3 @@
 <?
-$VERSION = "v 0.2.5 DEVELOPMENT";
+$VERSION = "v 0.2.8 DEV";
 ?>
