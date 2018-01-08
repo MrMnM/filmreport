@@ -71,10 +71,10 @@ include './includes/inc_variables.php';
                     <div class="row">
                         <div class="col-xs-8">
                             <div class="huge">&oslash; Monat:</div>
+                                                        <div id="dateRange"></div>
                         </div>
                         <div class="col-xs-4 text-right">
                             <div class="huge" id="monthlyMean"></div>
-                            <div></div>
                         </div>
                     </div>
                 </div>

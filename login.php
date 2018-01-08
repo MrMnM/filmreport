@@ -88,56 +88,54 @@ if (!empty($_POST["pw"]) && !empty($_POST["mail"])) {
 <body>
 <div class="container">
     <div class="row">
-        <div class="col-md-4 col-md-offset-4">
-            <div class="login-panel panel panel-default">
-                <div class="panel-heading">
-                    <b> Login</b>
-                    <div class="pull-right">
-                        <div class="btn-group">
-                            <a href=".\new_account.php" class="btn btn-outline btn-success btn-xs">
-                                <i class="fa fa-plus fa-fw"></i> Neues Konto
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="panel-body">
-                    <? if ($unknownUser || $invalidPassword) {?>
-                    <div class="alert alert-danger alert-dismissable">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                    Benutzername und/oder Passwort stimmen nicht &uuml;berein.
-                    </div>
-                    <?}elseif (!$activated) {?>
-                    <div class="alert alert-warning alert-dismissable">
-                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                        Die E-Mail Addresse wurde noch nicht best&auml;tigt.
-                    </div>
-                    <?}?>
-                    <? if ($closedExisting) {?>
-                    <div class="alert alert-success alert-dismissable">
-                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                        Erfolgreich ausgeloggt
-                        </div>
-                    <?}?>
-            <form role="form" method="post" action="<? echo $_SERVER['PHP_SELF']; ?>">
-                <fieldset>
-                    <div class="form-group">
-                        <input class="form-control" placeholder="E-mail" name="mail" type="email" autofocus required>
-                    </div>
-                    <div class="form-group">
-                        <input class="form-control" placeholder="Password" name="pw" type="password" value="" required>
-                    </div>
-<!-- TODO implement remember me-->
-                        <button type="submit" class="btn btn-lg btn-success btn-block">Login</button>
-                    </fieldset>
-                </form>
+      <div class="col-md-4 col-md-offset-4">
+        <div class="login-panel panel panel-default">
+          <div class="panel-heading">
+            <b> Login</b>
+            <div class="pull-right">
+              <div class="btn-group">
+                <a href="./new_account.php" class="btn btn-outline btn-success btn-xs">
+                <i class="fa fa-plus fa-fw"></i> Neues Konto</a>
+              </div>
             </div>
+          </div><!--heading-->
+          <div class="panel-body">
+            <? if ($unknownUser || $invalidPassword) {?>
+              <div class="alert alert-danger alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                Benutzername und/oder Passwort stimmen nicht &uuml;berein.
+              </div>
+            <?}elseif (!$activated) {?>
+              <div class="alert alert-warning alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                Die E-Mail Addresse wurde noch nicht best&auml;tigt.
+              </div>
+            <?}?>
+            <? if ($closedExisting) {?>
+              <div class="alert alert-success alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                Erfolgreich ausgeloggt
+              </div>
+            <?}?>
+            <form role="form" method="post" action="<? echo $_SERVER['PHP_SELF']; ?>">
+              <fieldset>
+                <div class="form-group">
+                  <input class="form-control" placeholder="E-mail" name="mail" type="email" autofocus required>
+                </div>
+                <div class="form-group">
+                  <input class="form-control" placeholder="Password" name="pw" type="password" value="" required>
+                </div>
+<!-- TODO implement remember me-->
+                <button type="submit" class="btn btn-lg btn-success btn-block">Login</button>
+              </fieldset>
+            </form>
+          </div><!--body-->
         </div>
         <p align="right"><font size="-1" color="#888888"><? echo $VERSION; ?></font></p>
-    </div>
-</div>
-</div>
+    </div><!--md-4-->
+  </div><!--row-->
+</div><!--container-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.1/jquery.form.min.js"></script>
 </body>
 </html>

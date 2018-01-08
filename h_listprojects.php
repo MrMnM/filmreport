@@ -18,13 +18,25 @@ if ($result->num_rows > 0) {
       $comp[$cmp["company_id"]] = $cmp["name"];
     }
 }
+ //TODO Join SQL
+
+$sql = "SELECT project_id,
+               p_start,
+               p_name,
+               p_company,
+               tot_hours,
+               tot_money,
+               p_finished,
+               view_id
+        FROM `projects`
+        WHERE user_id='$u_id'";
 
 if ($_GET["fin"]==1) {
-    $sql = "SELECT project_id, p_start, p_name, p_company, tot_hours, tot_money, p_finished, view_id  FROM `projects` WHERE user_id='$u_id' AND p_finished=1;";
+    $sql += " AND p_finished=1;";
 } elseif ($_GET["fin"]==0)  {
-    $sql = "SELECT project_id, p_start, p_name, p_company, tot_hours, tot_money, p_finished, view_id  FROM `projects` WHERE user_id='$u_id' AND p_finished=0;";
+    $sql += " AND p_finished=0;";
 } elseif ($_GET["fin"]==2) {
-    $sql = "SELECT project_id, p_start, p_name, p_company, tot_hours, tot_money, p_finished, view_id  FROM `projects` WHERE user_id='$u_id';";
+    $sql += ";";
 }
 
 $result = $conn->query($sql);

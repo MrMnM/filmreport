@@ -369,10 +369,11 @@ if (!empty($json)){?>
                               <div class="message-wrap col-lg-12" id="comments">
 <!-- COMMENTS LOAD IN HERE ****************************************************************3-->
                               </div>
-                              <div class="send-wrap ">
+                              <div class="send-wrap hideSend">
+                                                              <br>
                                 <textarea class="form-control send-message" rows="3" placeholder="Antworten..." id="commentText"></textarea>
                               </div>
-                              <div class="btn-panel">
+                              <div class="btn-panel hideSend">
                                 <a href="" class=" col-lg-4 text-right btn send-message-btn pull-right" role="button" id="submitComment"><i class="fa fa-plus"></i> Antworten</a>
                               </div><!--btn-->
                             </div><!--panelBody-->

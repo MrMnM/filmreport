@@ -4,7 +4,7 @@ include './includes/inc_dbconnect.php';
 $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {die('{ "message": "ERROR: CONN FAILED:'. $conn->connect_error.'"}');}
 
-$sql = "SELECT company_id, name FROM `companies` ORDER BY `name` ASC"; //TODO fix sorting by id, possibly in js?
+$sql = "SELECT company_id, name FROM `companies` ORDER BY `name` ASC";
 $result = $conn->query($sql);
 $full=[];
 if ($result->num_rows > 0) {

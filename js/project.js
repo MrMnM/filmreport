@@ -78,7 +78,7 @@ export default class Project {
     p=p.then((data) => {
       let i=0
       for (let v of data) {
-        this.comments[i]=new Comment(v.id, this.id, v.date, v.from, v.to, v.text)
+        this.comments[i]=new Comment(v.id, this.id, v.date, v.from, v.text)
         i++
       }
     })

@@ -33,6 +33,7 @@ export default function refreshStats(chart,start,end){
   })
     .done(data => {
       $('#monthlyMean').html(data.mean_month)
+      $('#dateRange').html(start+' bis '+end)
       $('#activeProjects').html(data.active_projects)
       chart.options.goals = [data.mean_month]
       chart.redraw()

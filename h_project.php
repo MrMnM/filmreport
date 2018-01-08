@@ -94,8 +94,10 @@ function SaveProject($u_id, $conn)
     $tothours=mysqli_real_escape_string($conn, $add['tothour']);
     $totmoney=mysqli_real_escape_string($conn, $add['totmoney']);
     $enddate=mysqli_real_escape_string($conn, $add['enddate']);
-    $calcBase=mysqli_real_escape_string($conn, $add['calcBase']);
-    $baseHours =mysqli_real_escape_string($conn, $add['baseHours']);
+    //$calcBase=mysqli_real_escape_string($conn, $add['calcBase']);
+    $calcBase=0;
+    $baseHours=0;
+    //$baseHours =mysqli_real_escape_string($conn, $add['baseHours']);
     $settings = json_encode(array('calcBase' => $calcBase, 'baseHours' => $baseHours));
     $p_id = mysqli_real_escape_string($conn, $_POST['p_id']);
     if (!empty($_POST["comment"])) {
@@ -104,7 +106,14 @@ function SaveProject($u_id, $conn)
         $comment = "";
     }
 
-    $sql = "UPDATE projects SET p_json = '$data', tot_hours='$tothours',tot_money='$totmoney', p_end='$enddate', p_comment='$comment', settings='$settings' WHERE project_id = '$p_id'";
+    $sql = "UPDATE projects
+            SET p_json = '$data',
+                tot_hours='$tothours',
+                tot_money='$totmoney',
+                p_end='$enddate',
+                p_comment='$comment',
+                settings='$settings'
+            WHERE project_id = '$p_id'";
 
     if ($conn->query($sql) === true) {
         die('{ "message": "SUCCESS"}');
@@ -188,7 +197,11 @@ function GetProjectInfo($u_id, $conn)
             }
         }
         //Get companies
-        $sql = "SELECT name, address_1, address_2 FROM `companies` WHERE company_id='$company_id';";
+        $sql = "SELECT name,
+                       address_1,
+                       address_2
+                FROM `companies`
+                WHERE company_id='$company_id';";
         $result = $conn->query($sql);
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {

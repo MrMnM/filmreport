@@ -21,7 +21,7 @@ if ($action) {
        } else {die('{ "message": "ERROR: PLEASE SUPPLY CORRECT DATA" }');}
       break;
     case 'add':
-      if (!empty($u_id) && !empty($_POST["p_id"])&& !empty($_POST["to_id"])&& !empty($_POST["text"])){
+      if (!empty($u_id) && !empty($_POST["p_id"])&& !empty($_POST["text"])){
            NewComment($conn, $u_id);
        } else {die('{ "message": "ERROR: PLEASE SUPPLY CORRECT DATA" }');}
       break;
@@ -31,7 +31,16 @@ if ($action) {
 function LoadComments($conn, $u_id)
 { //TODO Add right fields here
   $id = mysqli_real_escape_string($conn, $_POST["p_id"]);
-  $sql = "SELECT * FROM `comments` WHERE `project`='$id'";
+  $sql = "SELECT comments.id,
+                 comments.time,
+                 users.name,
+                 comments.project,
+                 comments.seen,
+                 comments.text
+          FROM `comments`
+          INNER JOIN `users` ON comments.from = users.u_id
+        -- TODO here  INNER JOIN `users` ON comments.to = users.u_id
+          WHERE `project`='$id'";
   $result = $conn->query($sql);
     $full=[];
     if ($result->num_rows > 0) {
@@ -39,8 +48,7 @@ function LoadComments($conn, $u_id)
       while ($row = $result->fetch_assoc()) {
         $c=['id'=>$row["id"],
             'date'=>$row["time"],
-            'from'=>$row["from"],
-            'to'=>$row["to"],
+            'from'=>$row["name"],
             'text'=>$row["text"]
         ];
       array_push($full,$c);
@@ -53,10 +61,9 @@ function LoadComments($conn, $u_id)
 function NewComment($conn, $u_id)
 { //TODO Continue Here
   $p_id = mysqli_real_escape_string($conn, $_POST["p_id"]);
-  $to = mysqli_real_escape_string($conn, $_POST["to_id"]);
   $text = mysqli_real_escape_string($conn, $_POST["text"]);
-  $sql = "INSERT INTO `comments` (`to`,`from`,`project`,`seen`,`text`)
-  VALUES ('$to','$u_id','$p_id',0,'$text')";
+  $sql = "INSERT INTO `comments` (`from`,`project`,`seen`,`text`)
+  VALUES ('$u_id','$p_id',0,'$text')";
 
   if ($conn->query($sql) === true) {
       die('{ "message": "SUCCESS"}');

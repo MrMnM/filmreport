@@ -7,13 +7,13 @@ header('Content-Type: application/json');
 include './includes/inc_sessionhandler_ajax.php';
 include './includes/inc_dbconnect.php';
 
+
 function linechart($result,$start,$end){
 $d1 = new DateTime($start);
 $d2 = new DateTime($end);
 $interval = $d2->diff($d1);
 $monthsDifference = $interval->format('%m')+1;
 $endmonth = $d2->format('m');
-
 $totalMoney = array_pad(array(0), $monthsDifference, 0);
 $o=[];
 if ($result->num_rows > 0) {
@@ -33,6 +33,51 @@ for ($mcount=0; $mcount<count($totalMoney) ; $mcount++) {
     $m = sprintf("%02d", ($mcount+1));
     $to = ['period'=>'2017-'.$m,'Pay'=>$totalMoney[$mcount]];
     array_push($o,$to);
+}
+return json_encode($o);
+}
+
+function linechart_new($result,$start,$end){
+$start = new DateTime($start);
+$end = new DateTime($end);
+$allDates=[];
+
+$i=0;
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+      $allDates[$i][0]=new DateTime($row["p_end"]);
+      $allDates[$i][1]=$row["tot_money"];
+      $i++;
+    }
+}
+
+if(count($allDates)==0){
+  $allDates[$i][0]=$end;
+  $allDates[$i][1]=0;
+}
+
+
+$monthsDifference = ($end->diff($start)->m + ($end->diff($start)->y*12))+1;
+$out = array_pad(array([0,0]), $monthsDifference, [0,0]);
+
+$j=0;
+while ($start < $end) {
+  for ($i=0; $i<count($allDates) ; $i++) {
+    if ($allDates[$i][0]->format('Y-m')==$start->format('Y-m')) {
+      $out[$j][0]+=$allDates[$i][1];
+      $out[$j][1]=$start->format('Y-m');
+    }else{
+      $out[$j][1]=$start->format('Y-m');
+    }
+  }
+  $start->modify('+1 month');
+  $j++;
+}
+
+$o=[];
+foreach($out as $v){
+  $to = ['period'=>$v[1],'Pay'=>$v[0]];
+  array_push($o,$to);
 }
 return json_encode($o);
 }
@@ -90,7 +135,7 @@ if (!empty($_GET["s"])&&!empty($_GET["e"])&&$type=='l') {
         $result = $conn->query($sql);
 
     //echo json_encode($result);
-    echo linechart($result,$start,$end);
+    echo linechart_new($result,$start,$end);
 
 } elseif ($type=='d'){
     $sql = "SELECT tot_money, p_company FROM `projects` WHERE user_id='$u_id' ORDER BY p_company;";

@@ -19,11 +19,9 @@ if (!empty($_GET["s"])&&!empty($_GET["e"])) {
     die('{ "message": "ERROR: KEINE DATEN ANGEGEBEN}');
 }
 
-$d1 = new DateTime($start);
-$d2 = new DateTime($end);
-$interval = $d2->diff($d1);
-$monthsDifference = $interval->format('%m')+1;
-
+$start = new DateTime($start);
+$end = new DateTime($end);
+$monthsDifference =($end->diff($start)->m + ($end->diff($start)->y*12))+1;
 
 $total =0;
 $active=0;

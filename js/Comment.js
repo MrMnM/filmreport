@@ -1,10 +1,9 @@
 export default class Comment {
-  constructor(id,p_id,date,from,to,text){
+  constructor(id,p_id,date,from,text){
     this.id = id
     this.p_id = p_id
     this.date = moment(date).add(1,'hours').fromNow()
     this.from =from
-    this.to=to
     this.text=text
   }
 

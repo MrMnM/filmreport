@@ -29,10 +29,10 @@ if (!empty($_GET["id"])) {
                     $p_company = $row["p_company"];
                     $p_job = $row["p_job"];
                     $p_pay = $row["p_gage"];
-					$i_sdate = DateTime::createFromFormat('Y-m-d',$row["p_start"]);
-					$i_edate = DateTime::createFromFormat('Y-m-d',$row["p_end"]);
+                    $i_sdate = DateTime::createFromFormat('Y-m-d',$row["p_start"]);
+                    $i_edate = DateTime::createFromFormat('Y-m-d',$row["p_end"]);
                     $p_json = $row["p_json"];
-					$user = $row["user_id"];
+                    $user = $row["user_id"];
                     $comment = $row["p_comment"];
                 }
             }
@@ -47,10 +47,10 @@ if (!empty($_GET["id"])) {
 					$u_address1 =  $row["address_1"];
 					$u_address2 =  $row["address_2"];
 					$u_ahv =  encrypt($row["ahv"],'d');
-                    //$u_ahv =  "Encrypted";
+          //$u_ahv =  "Encrypted";
 					$u_dob =   DateTime::createFromFormat('Y-m-d', $row["dateob"]);
 					$u_konto = encrypt($row["konto"],'d');
-                    //$u_konto = "Encrypted";
+          //$u_konto = "Encrypted";
 					$u_bvg =  $row["bvg"];
 					$u_mail = $row["mail"];
                     $u_tel = $row["tel"];
@@ -76,15 +76,14 @@ if (!empty($_GET["id"])) {
 				die('<font color="red"><b>Das Projekt ist noch leer, bitte Stunden hinzuf&uuml;gen</b></font>');
 			}
 			$dat = json_decode($p_json, true);
-
-
             $title= $i_sdate->format('ymd').'_'.$p_name;
             $title= str_replace(" ", "_", $title);
 
         }else{
 			die ('ERROR, PLEASE SPECIFY PROJECT');
 		}
-        ?>
+ ?>
+
 <html>
 <head>
     <!--TODO glyphicons printable & Centered-->
@@ -92,7 +91,7 @@ if (!empty($_GET["id"])) {
     <link media="screen" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"/>
     <link href="./css/view_style.css" rel="stylesheet" media="screen">
     <link href="./css/view_style.css" rel="stylesheet" media="print">
-	<title><? echo $title; ?></title>
+	<title><?= $title; ?></title>
 </head>
 <body>
 <div id="wrapper">
@@ -103,8 +102,8 @@ if (!empty($_GET["id"])) {
         <ul class="pagination" style="margin-left:20px;margin-top:8px;margin-bottom:4px;">
             <li class="disabled"><a href="#">Aktion:</a></li>
             <li><a href="javascript:window.print();">Drucken</a></li>
-            <li><a href="h_download.php?t=xlsx&id=<? echo $p_id;?>" target="_blank">Excel</a></li>
-            <li><a href="h_download.php?t=pdf&id=<? echo $p_id;?>" target="_blank">PDF</a></li>
+            <li><a href="h_download.php?t=xlsx&id=<?= $p_id ?>" target="_blank">Excel</a></li>
+            <li><a href="h_download.php?t=pdf&id=<?= $p_id ?>" target="_blank">PDF</a></li>
         </ul>
         <ul class="pagination" style="margin-left:20px;margin-top:8px;margin-bottom:4px;">
             <li class="active"><a href="#">Rapport</a></li>
@@ -143,82 +142,82 @@ if (!empty($_GET["id"])) {
 			<tr>
 				<td class="f14" colspan="4" height="26" width="194">ARBEITSRAPPORT</td>
 				<td class="xl1" colspan="2">Grundlohn:</td>
-				<td class="xl70 bold"><? echo $p_pay;?></td>
+				<td class="xl70 bold"><?= $p_pay;?></td>
 				<td class="xl71">CHF</td>
 				<td class="xl7" colspan="2">(9h / Tag)</td>
 				<td class="xl1"></td>
 				<td class="xl1" colspan="2">Produktion:</td>
 				<td class="f10"></td>
 				<td class="f10"></td>
-				<td class="td17 bold" colspan="9"><? echo $p_name;?></td>
+				<td class="td17 bold" colspan="9"><?= $p_name;?></td>
 			</tr>
 			<tr>
 				<td height="2"></td>
 			</tr>
 			<tr>
-				<td class="blue" colspan="3" height="18"><? echo $u_name;?></td>
+				<td class="blue" colspan="3" height="18"><?= $u_name?></td>
 				<td class="xl1" colspan="3"></td>
 				<td class="xl1" colspan="4">Abrechnung nach AAB SSFV 2007</td>
 				<td class="xl1"></td>
 				<td class="xl1" colspan="3">Datum [von/bis] :</td>
 				<td class="f10"></td>
-				<td class="td17" colspan="4"><? echo $sdate;?></td>
+				<td class="td17" colspan="4"><?= $sdate?></td>
 				<td class="xl71" colspan="2">bis</td>
-				<td class="td17" colspan="3"><? echo $edate;?></td>
+				<td class="td17" colspan="3"><?= $edate?></td>
 			</tr>
 			<tr>
 				<td height="2"></td>
 			</tr>
 			<tr>
-				<td class="blue" colspan="3" height="18"><? echo $u_address1;?></td>
+				<td class="blue" colspan="3" height="18"><?= $u_address1 ?></td>
 				<td class="xl1"></td>
 				<td class="xl1">AHV-Nr.:</td>
 				<td class="xl1"></td>
-				<td class="blue" colspan="4"><? echo $u_ahv;?></td>
+				<td class="blue" colspan="4"><?= $u_ahv ?></td>
 				<td class="xl1"></td>
 				<td class="xl1" colspan="3">Produktionsfirma:</td>
 				<td class="f10"></td>
-				<td class="blue" colspan="9"><? echo $c_name;?></td>
+				<td class="blue" colspan="9"><?= $c_name ?></td>
 			</tr>
 			<tr>
 				<td height="2"></td>
 			</tr>
 			<tr>
-				<td class="blue" colspan="3" height="18"><? echo $u_address2;?></td>
+				<td class="blue" colspan="3" height="18"><?= $u_address2 ?></td>
 				<td class="xl1"></td>
 				<td class="xl1" colspan="2">Geb. Datum:</td>
-				<td class="blue" colspan="4"><? echo $u_dob;?></td>
+				<td class="blue" colspan="4"><?= $u_dob ?></td>
 				<td class="xl1"></td>
 				<td class="f10" colspan="4"></td>
-				<td class="blue" colspan="9"><? echo $c_address1;?></td>
+				<td class="blue" colspan="9"><?= $c_address1 ?></td>
 			</tr>
 			<tr>
 				<td height="2"></td>
 			</tr>
 			<tr>
-				<td class="blue" colspan="3" height="18"><? echo $u_tel;?></td>
+				<td class="blue" colspan="3" height="18"><?= $u_tel ?></td>
 				<td class="xl1"></td>
 				<td class="xl1">Konto:</td>
 				<td class="xl1"></td>
-				<td class="blue" colspan="4"><? echo $u_konto;?></td>
+				<td class="blue" colspan="4"><?= $u_konto ?></td>
 				<td class="xl1"></td>
 				<td class="f10" colspan="4"></td>
-				<td class="blue" colspan="9"><? echo $c_address2;?></td>
+				<td class="blue" colspan="9"><?= $c_address2 ?></td>
 			</tr>
 			<tr>
 				<td height="2"></td>
 			</tr>
 			<tr>
-				<td class="blue" colspan="3" height="18"><? echo $u_mail;?></td>
+				<td class="blue" colspan="3" height="18"><?= $u_mail ?></td>
 				<td class="xl1"></td>
 				<td class="xl1">BV:</td>
 				<td class="xl1"></td>
-				<td class="blue" colspan="4"><? echo $u_bvg;?></td>
+				<td class="blue" colspan="4"><?= $u_bvg ?></td>
 				<td class="xl1"></td>
 				<td class="xl1" colspan="2">Arbeit als:</td>
 				<td class="f10"></td>
 				<td class="f10"></td>
-				<td class="blue" colspan="9"><? echo $p_job;?></td>
+				<td class="blue" colspan="9"><?= $p_job ?></td>
 			</tr>
 			<tr>
 				<td height="9"></td>
@@ -336,37 +335,42 @@ $allhours2 = new DateTime('2000-01-01 00:00:00');
 				$date = $date->format('d/m/Y');
 				echo $date;
 				?></td>
-				<td class="td186 td187"><? echo $arr['work'];?></td>
+				<td class="td186 td187"><?= $arr['work'];?></td>
                 <td></td>
-				<td class="td186"  ><? echo $arr['start'];?></td>
-				<td class="td186" ><? echo $arr['end'];?></td>
-				<td class="td186"  ><? echo $arr['break'];?></td>
-				<td class="td186" ><? echo $arr['workhours'];?></td>
+				<td class="td186"  ><?= $arr['start'];?></td>
+				<td class="td186" ><?= $arr['end'];?></td>
+				<td class="td186"  ><?= $arr['break'];?></td>
+				<td class="td186" ><?= $arr['workhours'];?></td>
 				<td></td>
-				<td class="darkyellow bold"><? echo $arr['base'];?></td>
+				<td class="darkyellow bold"><?= $arr['base'];?></td>
 				<td></td>
 				<td class="brightorange" <? if ($arr['tent']>0) {echo '>';
 				}else{?>style='background:#FFF2E5'><?} if ($arr['tent']>0){echo $arr['tent'];}?></td>
 				<td class="brightorange" <? if ($arr['elev']>0) {echo '>';
-				}else{?>style='background:#FFF2E5'><?} echo $arr['elev'];?></td>
+				}else{?>style='background:#FFF2E5'><?} if ($arr['elev']>0){echo $arr['elev'];}?></td>
 				<td class="brightorange" <? if ($arr['twel']>0) {echo '>';
-				}else{?>style='background:#FFF2E5'><?} echo $arr['twel'];?></td>
+				}else{?>style='background:#FFF2E5'><?} if ($arr['twel']>0){echo $arr['twel'];}?></td>
 				<td class="brightorange" <? if ($arr['thir']>0) {echo '>';
-				}else{?>style='background:#FFF2E5'><?} echo $arr['thir'];?></td>
+				}else{?>style='background:#FFF2E5'><?} if ($arr['thir']>0){echo $arr['thir'];}?></td>
 				<td class="brightorange" <? if ($arr['four']>0) {echo '>';
-				}else{?>style='background:#FFF2E5'><?} echo $arr['four'];?></td>
+				}else{?>style='background:#FFF2E5'><?} if ($arr['four']>0){echo $arr['four'];}?></td>
 				<td class="brightorange" <? if ($arr['fift']>0) {echo '>';
-				}else{?>style='background:#FFF2E5'><?} echo $arr['fift'];?></td>
+				}else{?>style='background:#FFF2E5'><?} if ($arr['fift']>0){echo $arr['fift'];}?></td>
 				<td class="brightorange" colspan="2" <? if ($arr['sixt']>0) {echo '>';
-				}else{?>style='background:#FFF2E5'><?} echo $arr['sixt'];?></td>
+				}else{?>style='background:#FFF2E5'><?} if ($arr['sixt']>0){echo $arr['sixt'];}?></td>
 				<td class="brightorange" colspan="2 "<? if ($arr['night']>0) {echo '>';
-				}else{?>style='background:#FFF2E5'><?} echo $arr['night'];?></td>
+				}else{?>style='background:#FFF2E5'><?} if ($arr['night']>0){echo $arr['night'];}?></td>
 				<td></td>
 				<?
-				if ( $arr['lunch']>0) {echo '<td class="darkgreen">'.$arr["lunch"].'</td>';
-				}else{echo '<td class="brightgreen"></td>';}
-				if ( $arr['car']>0) {echo '<td class="darkgreen">'.$arr["car"].'</td>';
-				}else{echo '<td class="brightgreen"></td>';}
+				if ( $arr['lunch']>0) {
+          echo '<td class="darkgreen">'.$arr["lunch"].'</td>';
+        }else{
+          echo '<td class="brightgreen"></td>';}
+
+				if ( $arr['car']>0) {
+          echo '<td class="darkgreen">'.$arr["car"].'</td>';
+				}else{
+          echo '<td class="brightgreen"></td>';}
 				?>
 			</tr>
 			<tr class="f10">
@@ -383,14 +387,14 @@ $allhours2 = new DateTime('2000-01-01 00:00:00');
 				<td></td>
 				<td class="xl1" colspan="3">Total Arbeitszeit in h:</td>
 				<td class="xl124">
-            <?
+        <?
 				$interval = $allhours1->diff($allhours2);
 				$d=$interval->d;
 				$h=$interval->h;
 				$m= $interval->i;
 				echo $d*24+$h.':'.$m;
-			?>
-                </td>
+        ?>
+        </td>
 				<td></td>
 				<td class="brightyellow">Anz. Tage</td>
 				<td></td>
@@ -411,14 +415,14 @@ $allhours2 = new DateTime('2000-01-01 00:00:00');
                 <td></td>
 				<td class="darkyellow"><?echo $allbase;?></td>
 				<td class="xl1"></td>
-				<td class="darkorange" colspan="2"><?echo $all125;?></td>
-				<td class="darkorange" colspan="2"><?echo $all150;?></td>
-				<td class="darkorange" colspan="2"><?echo $all200;?></td>
-				<td class="darkorange" colspan="2"><?echo $all250;?></td>
-				<td class="darkorange" colspan="2"><?echo $all25;?></td>
+				<td class="darkorange" colspan="2"><?= $all125 ?></td>
+				<td class="darkorange" colspan="2"><?= $all150 ?></td>
+				<td class="darkorange" colspan="2"><?= $all200 ?></td>
+				<td class="darkorange" colspan="2"><?= $all250 ?></td>
+				<td class="darkorange" colspan="2"><?= $all25 ?></td>
 				<td class="xl1"></td>
-				<td class="darkgreen"><?echo $allfood;?></td>
-				<td class="darkgreen"><?echo $allcar;?></td>
+				<td class="darkgreen"><?= $allfood ?></td>
+				<td class="darkgreen"><?= $allcar ?></td>
 			</tr>
 			<tr class="f10">
 				<td class="xl1" height="2"></td>
@@ -427,22 +431,22 @@ $allhours2 = new DateTime('2000-01-01 00:00:00');
 				<td class="f7 vbottom" colspan="7" height="17" >Berechung nach SSFV</td>
 				<td></td>
 				<td class="xl1"><sub>&agrave; CHF</sub></td>
-				<td class="brightyellow"><? echo $p_pay;?></td>
+				<td class="brightyellow"><?= $p_pay;?></td>
 				<td class="f7"></td>
-				<td class="td202" colspan="2"> <? echo  round($p_pay/9*1.25, 2);?></td>
-				<td class="td202" colspan="2"> <? echo  round($p_pay/9*1.5, 2);?></td>
-				<td class="td202" colspan="2"> <? echo  round($p_pay/9*2.0, 2);?></td>
-				<td class="td202" colspan="2"> <? echo  round($p_pay/9*2.5, 2);?></td>
-				<td class="td202" colspan="2"> <? echo  round($p_pay/9*0.25, 2);?></td>
+				<td class="td202" colspan="2"> <?=  round($p_pay/9*1.25, 2);?></td>
+				<td class="td202" colspan="2"> <?=  round($p_pay/9*1.5, 2);?></td>
+				<td class="td202" colspan="2"> <?=  round($p_pay/9*2.0, 2);?></td>
+				<td class="td202" colspan="2"> <?=  round($p_pay/9*2.5, 2);?></td>
+				<td class="td202" colspan="2"> <?=  round($p_pay/9*0.25, 2);?></td>
 				<td></td>
 				<td class="brightgreen">32.00</td>
 				<td class="brightgreen">0.70</td>
 			</tr>
 			<tr>
-				<td class="f7" colspan="7" rowspan="4" height="17" ><? echo $comment; ?></td>
+				<td class="f7" colspan="7" rowspan="4" height="17" ><?= $comment; ?></td>
 				<td></td>
 				<td class="xl1"><sub>CHF</sub></td>
-				<td class="brightyellow"><? echo  round($allbase*$p_pay);?></td>
+				<td class="brightyellow"><?=  round($allbase*$p_pay);?></td>
 				<td class="td7"></td>
 				<?
 				$p125=round($all125*$p_pay/9*1.25, 2);
@@ -451,14 +455,14 @@ $allhours2 = new DateTime('2000-01-01 00:00:00');
 				$p250=round($all250*$p_pay/9*2.5, 2);
 				$p25=round($all25*$p_pay/9*0.25, 2);
 				?>
-				<td class="td202" colspan="2"><? echo $p125;?></td>
-				<td class="td202" colspan="2"><? echo $p150;?></td>
-				<td class="td202" colspan="2"><? echo $p200;?></td>
-				<td class="td202" colspan="2"><? echo $p250;?></td>
-				<td class="td202" colspan="2"><? echo $p25;?></td>
+				<td class="td202" colspan="2"><?= $p125;?></td>
+				<td class="td202" colspan="2"><?= $p150;?></td>
+				<td class="td202" colspan="2"><?= $p200;?></td>
+				<td class="td202" colspan="2"><?= $p250;?></td>
+				<td class="td202" colspan="2"><?= $p25;?></td>
 				<td></td>
-				<td class="brightgreen"><? echo  round($allfood*32, 2);?></td>
-				<td class="brightgreen"><? echo  round($allcar*0.7, 2);?></td>
+				<td class="brightgreen"><?=  round($allfood*32, 2);?></td>
+				<td class="brightgreen"><?=  round($allcar*0.7, 2);?></td>
 			</tr>
 			<tr>
 			</tr>
@@ -484,11 +488,11 @@ $allhours2 = new DateTime('2000-01-01 00:00:00');
 				<td class="f7 vbottom" colspan="7" height="17" ></td>
 				<td></td>
 				<td class="xl14221306"><sub>CHF</sub></td>
-				<td class="pay base"><? echo  round($allbase*$p_pay);?></td>
+				<td class="pay base"><?=  round($allbase*$p_pay);?></td>
 				<td class="xl15"></td>
-				<td class="pay overtime" colspan="10"><? echo  round($p125+$p150+$p200+$p250+$p25,2);?></td>
+				<td class="pay overtime" colspan="10"><?=  round($p125+$p150+$p200+$p250+$p25,2);?></td>
 				<td class="xl15"></td>
-				<td class="pay additional" colspan="2"><? echo  round(round($allfood*32, 2)+round($allcar*0.7, 2),2);?></td>
+				<td class="pay additional" colspan="2"><?=  round(round($allfood*32, 2)+round($allcar*0.7, 2),2);?></td>
 			</tr>
 			<tr>
 				<td class="f10" height="10" ></td>

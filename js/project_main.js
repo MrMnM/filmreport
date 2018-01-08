@@ -377,6 +377,7 @@ function updateAll(){
 }
 
 function addComment(text){
+  $('.hideSend').hide()
   $.ajax({
     url: 'h_comments.php',
     dataType: 'json',
@@ -385,9 +386,11 @@ function addComment(text){
   })
     .done(()=>{
       loadChats()
+      $('.hideSend').show()
     })
     .fail(()=>{
       alert('Fehler')
+      $('.hideSend').show()
     })
 }
 
