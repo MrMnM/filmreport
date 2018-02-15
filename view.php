@@ -89,6 +89,7 @@ if (!empty($_GET["id"])) {
     <!--TODO glyphicons printable & Centered-->
 	<meta content="text/html" http-equiv="Content-Type">
     <link media="screen" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
     <link href="./css/view_style.css" rel="stylesheet" media="screen">
     <link href="./css/view_style.css" rel="stylesheet" media="print">
 	<title><?= $title; ?></title>
@@ -96,21 +97,56 @@ if (!empty($_GET["id"])) {
 <body>
 <div id="wrapper">
 <div class="no-print">
-<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
-    <div class="navbar-header">
+  <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+    <div class="container-fluid">
+      <div class="navbar-header">
         <a class="navbar-brand" href="index.php">Abrechnungsgenerator</a>
-        <ul class="pagination" style="margin-left:20px;margin-top:8px;margin-bottom:4px;">
-            <li class="disabled"><a href="#">Aktion:</a></li>
-            <li><a href="javascript:window.print();">Drucken</a></li>
-            <li><a href="h_download.php?t=xlsx&id=<?= $p_id ?>" target="_blank">Excel</a></li>
-            <li><a href="h_download.php?t=pdf&id=<?= $p_id ?>" target="_blank">PDF</a></li>
+      </div>            <!-- /.navbar-top-links -->
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#">Rapport</a></li>
+        <li><a href="#" onclick="alert('Noch nicht implementiert')">Abrechnung</a></li>
+      </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                  <i class="fa fa-comments fa-fw"></i> <i class="fa fa-caret-down"></i>
+              </a>
+              <ul class="dropdown-menu dropdown-comments">
+                <ul id="comments"></ul>
+                <li></br></li>
+                <li>
+                    <textarea style="border: none" class="col-lg-2 form-control send-message" rows="1" placeholder="Antworten..." id="commentText"></textarea>
+                    <a href="" class=" btn send-message-btn pull-right" role="button" id="submitComment"><i class="fa fa-plus"></i> Antworten</a>
+                </li>
+              </ul>
+              <!-- /.dropdown-messages -->
+
+
+          <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-cog" aria-hidden="true"></i> <i class="fa fa-caret-down" aria-hidden="true"></i></a>
+              <ul class="dropdown-menu dropdown-user">
+                <li>
+                  <a href="javascript:window.print();">
+                    <i class="fa fa-print" aria-hidden="true"></i> Drucken
+                  </a>
+                </li>
+                <li class="divider"></li>
+                  <h6 class="dropdown-header">Download:</h6>
+                <li>
+                  <a href="h_download.php?t=xlsx&id=<?= $p_id ?>" target="_blank">
+                    <i class="fa fa-file-excel-o" aria-hidden="true"></i> Excel
+                  </a>
+                </li>
+                <li>
+                  <a href="h_download.php?t=pdf&id=<?= $p_id ?>" target="_blank">
+                    <i class="fa fa-file-pdf-o" aria-hidden="true"></i> PDF
+                  </a>
+                </li>
+              </ul>
+            </li>
         </ul>
-        <ul class="pagination" style="margin-left:20px;margin-top:8px;margin-bottom:4px;">
-            <li class="active"><a href="#">Rapport</a></li>
-            <li><a href="#" onclick="alert('Noch nicht implementiert')">Abrechnung</a></li>
-        </ul>
-    </div>            <!-- /.navbar-top-links -->
-</nav>
+      </div>
+    </nav>
 </div>
 <div id="page-wrapper" >
     <p></p>
@@ -482,7 +518,7 @@ $allhours2 = new DateTime('2000-01-01 00:00:00');
 				<td></td>
 				<td align= "center" colspan="10">	&#9662;</td>
 				<td></td>
-				<td colspan="2" align= "center"><span class="glyphicon glyphicon-triangle-bottom"></span></td>
+				<td colspan="2" align= "center">	&#9662;</td>
 			</tr>
 			<tr>
 				<td class="f7 vbottom" colspan="7" height="17" ></td>
@@ -528,5 +564,15 @@ $allhours2 = new DateTime('2000-01-01 00:00:00');
 </div>
 </div>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+
+<script type="module" src="./js/view.js"></script>
+<script>
+const us_id = "guest"
+const p_id = "<?echo $p_id;?>"
+</script>
+
 </body>
 </html>

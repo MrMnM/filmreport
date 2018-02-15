@@ -83,7 +83,16 @@ body {
   min-width: 0;
 }
 
-.navbar-top-links .dropdown-messages {
+.navbar-top-links .dropdown-comments {
+  width: 500px;
+  min-width: 500;
+}
+
+.dropdown-comments {
+  min-width: 500px !important;
+}
+
+.navbar-top-links .dropdown-messages, .navbar-top-links .dropdown-comments {
   margin-left: 5px;
 }
 
@@ -148,7 +157,7 @@ body {
     width: 150px;
     margin-top: 51px;
   }
-  .navbar-top-links .dropdown-messages, .navbar-top-links .dropdown-tasks, .navbar-top-links .dropdown-alerts {
+  .navbar-top-links .dropdown-messages, .navbar-top-links .dropdown-tasks, .navbar-top-links .dropdown-alerts, .navbar-top-links .dropdown-comments {
     margin-left: auto;
   }
 }

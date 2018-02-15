@@ -125,15 +125,10 @@ include './includes/inc_variables.php';
 </div><!-- /#page-wrapper -->
 </div><!-- /#wrapper -->
 
-<!-- jQuery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-<!-- Bootstrap Core JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<!-- Metis Menu Plugin JavaScript -->
 <script src="https://cdn.jsdelivr.net/jquery.metismenu/1.1.3/metisMenu.min.js"></script>
-<!-- Morris Charts JavaScript -->
 <script src="https://cdn.jsdelivr.net/morris.js/0.5.1/morris.min.js"></script>
-<!-- Raphael JavaScript -->
 <script src="https://cdn.jsdelivr.net/raphael/2.2.7/raphael.js"></script>
 <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>

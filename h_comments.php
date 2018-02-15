@@ -7,7 +7,15 @@ ini_set('display_errors', 'on');
 
 
 include './includes/inc_dbconnect.php';
-include './includes/inc_sessionhandler_ajax.php';
+//include './includes/inc_sessionhandler_ajax.php';
+
+session_name('SESSID');
+session_start();
+if (!isset($_SESSION["running"]) || ($_SESSION["running"] != 1)) {
+$u_id="guest";
+} else {
+$u_id= $_SESSION['user'];
+}
 
 $action = (isset($_POST['action']) and $_POST['action']!="") ? $_POST['action'] : null;
 if ($action) {
@@ -29,7 +37,7 @@ if ($action) {
 }
 
 function LoadComments($conn, $u_id)
-{ //TODO Add right fields here
+{
   $id = mysqli_real_escape_string($conn, $_POST["p_id"]);
   $sql = "SELECT comments.id,
                  comments.time,
@@ -70,7 +78,6 @@ function NewComment($conn, $u_id)
   } else {
       die('{ "message": "ERROR: CONN FAILED: '.$conn->connect_error.'"}');
   }
-
 }
 
 ?>

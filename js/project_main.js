@@ -42,6 +42,7 @@ $('#removeRow').click((event)=>{
   updateSaveStatus()
 })
 $('#refresh').click((event)=>{
+  console.log(p);
   event.preventDefault()
   saved=false
   updateAll()
@@ -87,6 +88,8 @@ $( '#workhours' ).change(function() {
   updateSaveStatus()
 })
 $( '#comment' ).change(function() {
+  p.comment = $( '#comment' ).val()
+  console.log(p)
   saved = false
   updateSaveStatus()
 })
@@ -365,7 +368,7 @@ function loadPersonalInfo(){
 
 function loadChats(){
   p.getComments().then(()=>{
-    $( '#comments' ).html(p.html)
+    $( '#comments' ).html(p.projHtml)
   })
 }
 
@@ -412,7 +415,15 @@ $(()=>{ // JQUERY STARTFUNCTION
 
   setInterval(()=>{if(!saved){ Save()}}, 15000)
 
-  $('#companylist').html('').load('./h_load_companies.php', () => $('#companylist').val(company))
+  $('#companylist').load('./h_load_companies.php', (resp)=>{
+    let t = ''
+    for (let i of JSON.parse(resp)) {
+      t = t+'<option value='+i['id']+'>'+i['name']+'</option>'
+    }
+    $('#companylist').html(t).val(p.companyId)
+  })
+
+
   $('#updateProject').ajaxForm({
     dataType:  'json',
     success: updateSuccess

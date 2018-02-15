@@ -1,274 +1,282 @@
 .f6h {
-font-family: Arial, Helvetica, sans-serif;
-font-size:6pt;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 6pt;
 }
 
 table {
-    font-family: Arial, Helvetica, sans-serif;
-    min-width: 900px;
-    width: 100%;
+  font-family: Arial, Helvetica, sans-serif;
+  min-width: 900px;
+  width: 100%;
 }
 
 .f9 {
-font-size:9pt;
+  font-size: 9pt;
 }
 
 .f10 {
-font-size:10pt;
+  font-size: 10pt;
 }
 
 .f12 {
-font-size:12pt;
+  font-size: 12pt;
 }
 
 .xl70 {
-background:#FF9;
-font-size:8pt;
-text-align:center;
+  background: #FF9;
+  font-size: 8pt;
+  text-align: center;
 }
 
 .xl7 {
-background:#FFC;
-font-size:8pt;
+  background: #FFC;
+  font-size: 8pt;
 }
 
 .line {
-border-top:.5pt solid gray;
+  border-top: .5pt solid gray;
 }
 
 .gray {
-background:gray;
-color:#FFF;
-font-size:8pt;
-text-align:center;
+  background: gray;
+  color: #FFF;
+  font-size: 8pt;
+  text-align: center;
 }
 
 .xl195 {
-background:#FFFFE5;
-font-size:7pt;
-text-align:center;
+  background: #FFFFE5;
+  font-size: 7pt;
+  text-align: center;
 }
 
 .xl10 {
-background:#F2FFF2;
-font-size:9pt;
+  background: #F2FFF2;
+  font-size: 9pt;
 }
 
 .brightgreen {
-background:#F2FFF2;
-font-size:7pt;
-border: .5px solid #fff;
-text-align: right;
+  background: #F2FFF2;
+  font-size: 7pt;
+  border: .5px solid #fff;
+  text-align: right;
 }
 
-.bold{
-    font-weight: 800;
+.bold {
+  font-weight: 800;
 }
 
 .pay {
-font-size:8pt;
-text-align:center;
-font-weight: 800;
+  font-size: 8pt;
+  text-align: center;
+  font-weight: 800;
 }
 
-.base{
-    background:#FFC;
+.base {
+  background: #FFC;
 }
 
-.overtime{
-    background:#FFE5CC;
+.overtime {
+  background: #FFE5CC;
 }
 
-.additional{
-    background:#E5FFE5;
+.additional {
+  background: #E5FFE5;
 }
 
 .f7 {
-font-size:7pt;
+  font-size: 7pt;
 }
 
 .f6 {
-font-size:6pt;
+  font-size: 6pt;
 }
 
 .xl16221306 {
-font-family:"Wingdings 3";
-font-size:7pt;
+  font-family: "Wingdings 3";
+  font-size: 7pt;
 }
 
 .f8orange {
-background:#FFF2E5;
-font-size:7pt;
-text-align:center;
-vertical-align:bottom;
+  background: #FFF2E5;
+  font-size: 7pt;
+  text-align: center;
+  vertical-align: bottom;
 }
 
 .f14 {
-font-size:14pt;
+  font-size: 14pt;
 }
 
 .brightorange {
-background:#FFD8B2;
-font-size:8pt;
-text-align:center;
-border: .5px solid #fff;
+  background: #FFD8B2;
+  font-size: 8pt;
+  text-align: center;
+  border: .5px solid #fff;
 }
 
 .wingdings {
-color:gray;
-font-family:"Wingdings 3";
-font-size:9pt;
-text-align:center;
+  color: gray;
+  font-family: "Wingdings 3";
+  font-size: 9pt;
+  text-align: center;
 }
 
 .td202 {
-background:#FFF2E5;
-font-size:7pt;
-text-align:right;
-border: .5px solid #fff;
+  background: #FFF2E5;
+  font-size: 7pt;
+  text-align: right;
+  border: .5px solid #fff;
 }
 
 .td17 {
-background:#CCE5FF;
-font-size:8pt;
-text-align:center;
-vertical-align:middle;
+  background: #CCE5FF;
+  font-size: 8pt;
+  text-align: center;
+  vertical-align: middle;
 }
 
 .bluetop {
-background:#E5F2FF;
-color:#000;
-font-size:8pt;
-text-align:center;
+  background: #E5F2FF;
+  color: #000;
+  font-size: 8pt;
+  text-align: center;
 }
 
 .vbottom {
-vertical-align:bottom;
+  vertical-align: bottom;
 }
 
 .brightyellow {
-background:#FFFFE5;
-font-size:8pt;
-text-align:center;
-border: .5px solid #fff;
+  background: #FFFFE5;
+  font-size: 8pt;
+  text-align: center;
+  border: .5px solid #fff;
 }
 
 .td127 {
-background:#F2FFF2;
-font-size:8pt;
-text-align:center;
+  background: #F2FFF2;
+  font-size: 8pt;
+  text-align: center;
 }
 
 .td128 {
-background:#FFF2E5;
-font-size:7pt;
-text-align:center;
+  background: #FFF2E5;
+  font-size: 7pt;
+  text-align: center;
 }
 
 .darkyellow {
-background:#FFFFB2;
-font-size:9pt;
-text-align:center;
+  background: #FFFFB2;
+  font-size: 9pt;
+  text-align: center;
 }
 
-.xl11,.xl13621306,.xl13821306 {
-font-size:9pt;
-vertical-align:bottom;
+.xl11, .xl13621306, .xl13821306 {
+  font-size: 9pt;
+  vertical-align: bottom;
 }
 
-.td118,.xl10121306,.td102,.td117,.td119,.td128 {
-font-size:8pt;
-text-align:center;
+.td118, .xl10121306, .td102, .td117, .td119, .td128 {
+  font-size: 8pt;
+  text-align: center;
 }
 
-.brightgreen{
-        background:#F2FFF2;
-        font-size:8pt;
-        text-align:center;
-        border: .5px solid #fff;
+.brightgreen {
+  background: #F2FFF2;
+  font-size: 8pt;
+  text-align: center;
+  border: .5px solid #fff;
 }
+
 .darkgreen {
-background:#E5FFE5;
-font-size:8pt;
-text-align:center;
-border: .5px solid #fff;
+  background: #E5FFE5;
+  font-size: 8pt;
+  text-align: center;
+  border: .5px solid #fff;
 }
 
 .xl14221306 {
-font-size:12pt;
-vertical-align:bottom;
+  font-size: 12pt;
+  vertical-align: bottom;
 }
 
-.xl16,.xl15021306 {
-font-size:7pt;
-vertical-align:bottom;
+.xl16, .xl15021306 {
+  font-size: 7pt;
+  vertical-align: bottom;
 }
 
 .blue {
-background:#CCE5FF;
-font-size:8pt;
-padding-left: 5px;
+  background: #CCE5FF;
+  font-size: 8pt;
+  padding-left: 5px;
 }
 
-.td186,.xl124,.xl18721306 {
-background:#CCE5FF;
-font-size:9pt;
-text-align:center;
-border: .5px solid #fff;
+.td186, .xl124, .xl18721306 {
+  background: #CCE5FF;
+  font-size: 9pt;
+  text-align: center;
+  border: .5px solid #fff;
 }
 
 .td187 {
-text-align:left;
-padding-left: 5px;
+  text-align: left;
+  padding-left: 5px;
 }
 
 .darkorange {
-background:#FFE5CC;
-font-size:8pt;
-text-align:center;
-border: .5px solid #fff;
+  background: #FFE5CC;
+  font-size: 8pt;
+  text-align: center;
+  border: .5px solid #fff;
 }
 
 .td135 {
-font-size:9pt;
-text-align:center;
+  font-size: 9pt;
+  text-align: center;
 }
 
-.totals{
-    font-size:8pt;
-    text-align:center;
-    vertical-align:bottom;
-    border-bottom: .5px solid;
-    border-left: .5px solid;
-    border-right: .5px solid;
-    border-color: black;
+.totals {
+  font-size: 8pt;
+  text-align: center;
+  vertical-align: bottom;
+  border-bottom: .5px solid;
+  border-left: .5px solid;
+  border-right: .5px solid;
+  border-color: black;
 }
 
 .xl71 {
-font-size:8pt;
-text-align:center;
-vertical-align:center;
+  font-size: 8pt;
+  text-align: center;
+  vertical-align: center;
 }
 
 .xl1 {
-font-size:8pt;
+  font-size: 8pt;
 }
 
-.xl8021306,.xl15,.xl15 {
-font-size:8pt;
+.xl8021306, .xl15, .xl15 {
+  font-size: 8pt;
 }
 
-.td972,.xl19 {
-background:#FFF2E5;
-font-size:8pt;
-text-align:center;
+.td972, .xl19 {
+  background: #FFF2E5;
+  font-size: 8pt;
+  text-align: center;
 }
 
-@media print
-{
-    .no-print, .no-print *
-    {
-        display: none !important;
-    }
+ul {
+  list-style-type: none;
 }
+
+.dropdown-comments {
+  min-width: 500px !important;
+}
+
+@media print {
+  .no-print, .no-print * {
+    display: none !important;
+  }
+}
+
 wingdings

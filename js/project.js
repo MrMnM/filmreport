@@ -10,6 +10,7 @@ export default class Project {
     this.work=''
     this.pay=0
     this.company=''
+    this.companyId=''
 
     this.json=null
     this.rows=[]
@@ -42,6 +43,7 @@ export default class Project {
       this.job=data.job
       this.pay=data.pay
       this.company=data.company
+      this.companyId=data.companyId
     })
     return p
   }
@@ -85,10 +87,18 @@ export default class Project {
     return p
   }
 
-  get html(){
+  get projHtml(){
     let o = ''
     for (let c of this.comments) {
-      o += c.render()
+      o += c.renderProject()
+    }
+    return o
+  }
+
+  get viewHtml(){
+    let o = ''
+    for (let c of this.comments) {
+      o += c.renderView()
     }
     return o
   }

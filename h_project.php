@@ -214,7 +214,8 @@ function GetProjectInfo($u_id, $conn)
         $o = ["name"=>$name,
               "job"=>$job,
               "pay"=>$pay,
-              "company"=>$company];
+              "company"=>$company,
+              "companyId"=>$company_id];
         echo json_encode($o);
     } else {
         die('{ "message":"ERROR GETTING PROJECT INFO"}');

@@ -7,7 +7,7 @@ export default class Comment {
     this.text=text
   }
 
-  render(){
+  renderProject(){
     let t=`
     <div class="media msg">
       <div class="media-body">
@@ -16,6 +16,23 @@ export default class Comment {
         <small class="col-lg-10 nopadding">${this.text}</small>
       </div>
     </div>`
+    return t
+  }
+
+  renderView(){
+    let t=`
+    <li class="divider"></li>
+    <li>
+      <a href="#">
+        <div>
+        <!--  <strong>${this.from}</strong>-->
+            <span class="pull-right text-muted">
+              <em><i class="fa fa-clock-o"></i> ${this.date}</em>
+            </span>
+          </div>
+          <div>${this.text}</div>
+      </a>
+    </li>`
     return t
   }
 }

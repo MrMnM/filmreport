@@ -58,24 +58,13 @@ if (basename($_SERVER['PHP_SELF'])=="index.php") {
                     <i class="fa fa-user fa-fw"></i>&nbsp; <?echo $u_name;?>&nbsp;&nbsp; <i class="fa fa-caret-down"></i>
                 </a>
             <ul class="dropdown-menu dropdown-user">
-                <li></li>
                 <li class="divider"></li>
-
-                <li><a href="user.php"><i class="fa fa-user fa-fw"></i> Pers&ouml;nliche Informationen</a>
-                </li>
-                <!--<li><a href="#"><i class="fa fa-gear fa-fw"></i> Einstellungen</a>
-                </li>-->
+                <li><a href="user.php"><i class="fa fa-user fa-fw"></i> Pers&ouml;nliche Informationen</a></li>
                 <li class="divider"></li>
-                <li><a href="login.php"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
-                </li>
-            </ul>
-            <!-- /.dropdown-user -->
-        </li>
-
-        <!-- /.dropdown -->
-    </ul>
-
-    <!-- /.navbar-top-links -->
+                <li><a href="login.php"><i class="fa fa-sign-out fa-fw"></i> Logout</a></li>
+            </ul><!-- /.dropdown-user -->
+        </li><!-- /.dropdown -->
+    </ul> <!-- /.navbar-top-links -->
 
     <div class="navbar-default sidebar" role="navigation">
         <div class="sidebar-nav navbar-collapse">
