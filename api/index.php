@@ -1,5 +1,5 @@
-<?php 
-require_once('../vendor/autoload.php'); 
+<?php
+require_once('../vendor/autoload.php');
 require_once('../vendor/Medoo.php');
 
 //--------------------------------------------------------
@@ -21,7 +21,7 @@ $container['database'] = function () {
 		'server' => 'localhost',
 		'username' => 'filmstun_dev',
 		'password' => 'ZbFqMoHOAFIO'
-	]); 
+	]);
 };
 //--------------------------------------------------------
 //  ROUTING
@@ -33,6 +33,9 @@ $app->get('/', function($request, $response, $args) {
 $app->get('/test/{id}', function($request, $response, $args) {
  $usr = new User();
  $usr->find($this->database, $args);
+});
+$app->get('/user/', function($request, $response, $args) {
+ echo 'user';
 });
 
 /*
@@ -52,7 +55,7 @@ $app->group('/v1', function () {
         $this->group('/{eventId}', function () {
             $this->get('', 'App\controllers\EventController:getEvent');
             $this->put('', 'App\controllers\EventController:updateEvent');
-            $this->delete('', 'App\controllers\EventController:deleteEvent');            
+            $this->delete('', 'App\controllers\EventController:deleteEvent');
         });
     });
 });
@@ -60,5 +63,5 @@ $app->group('/v1', function () {
 
 //--------------------------------------------------------
 // RUNNING
-//-------------------------------------------------------- 
+//--------------------------------------------------------
 $app->run();

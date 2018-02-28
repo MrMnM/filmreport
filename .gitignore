@@ -1,7 +1,5 @@
-/includes/inc_dbconnect.php
+public_html/includes/inc_dbconnect.php
+public_html/dev/
+public_html/includes/Classes/
+public_html/template_rapport.xls
 .remote-sync.json
-.htacces
-/dev/
-/less/
-/includes/Classes/
-template_rapport.xls
