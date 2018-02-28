@@ -2,3 +2,6 @@
 .remote-sync.json
 .htacces
 /dev/
+/less/
+/includes/Classes/
+template_rapport.xls

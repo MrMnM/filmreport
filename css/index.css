@@ -1,0 +1,70 @@
+.hero {
+  background: url(../img/bg.jpg) no-repeat center;
+  background-size: cover;
+  border: none;
+}
+
+.jumbotron {
+  margin-bottom: 0;
+}
+
+@media (min-width:992px) {
+  .hero .get-it {
+    text-align: left;
+    margin-top: 40px;
+    padding-right: 30px;
+  }
+}
+
+@media (max-width:992px) {
+  .hero .get-it {
+    text-align: center;
+  }
+}
+
+.hero .get-it h1, .hero .get-it p {
+  color: #444;
+  text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
+  margin-bottom: 20px;
+}
+
+.hero .get-it .btn {
+  align: left;
+  margin-left: 10px;
+  margin-bottom: 30px;
+  text-shadow: none;
+}
+
+.icon-feature {
+  text-align: center;
+  width: 100%;
+}
+
+.icon-feature .fa {
+  font-size: 60px;
+  margin: 10px;
+}
+
+section.features {
+  background-color: #337ab7;
+  padding: 20px 0;
+  color: #fff;
+}
+
+.features h2 {
+  color: #fff;
+}
+
+.features .icon-features {
+  margin-top: 10px;
+}
+
+.site-footer {
+  padding: 20px 0;
+  text-align: center;
+}
+
+.site-footer h5 {
+  color: inherit;
+  font-size: 10px;
+}

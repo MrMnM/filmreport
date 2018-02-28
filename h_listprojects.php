@@ -4,21 +4,23 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL | E_STRICT);
 
-include './includes/inc_sessionhandler_ajax.php';
-include './includes/inc_dbconnect.php';
+require './includes/inc_sessionhandler_ajax.php';
+require './includes/inc_dbconnect.php';
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {die('{ "message": "ERROR: CONN FAILED:'. $conn->connect_error.'"}');}
 
 
-$sql = "SELECT company_id, name FROM `companies`";
+$sql = "SELECT company_id, 
+               name 
+        FROM `companies`";
 $result = $conn->query($sql);
 if ($result->num_rows > 0) {
     while ($cmp = $result->fetch_assoc()) {
       $comp[$cmp["company_id"]] = $cmp["name"];
     }
 }
- //TODO Join SQL
+
 
 $sql = "SELECT project_id,
                p_start,
@@ -32,12 +34,13 @@ $sql = "SELECT project_id,
         WHERE user_id='$u_id'";
 
 if ($_GET["fin"]==1) {
-    $sql += " AND p_finished=1;";
+    $sql .= " AND p_finished=1;";
 } elseif ($_GET["fin"]==0)  {
-    $sql += " AND p_finished=0;";
+    $sql .= " AND p_finished=0;";
 } elseif ($_GET["fin"]==2) {
-    $sql += ";";
+    $sql .= ";";
 }
+
 
 $result = $conn->query($sql);
 $full=[];

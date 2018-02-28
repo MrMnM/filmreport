@@ -51,6 +51,7 @@ function ListFields($conn, $fields)
 }
 $query = str_lreplace(', ',$query);
 $sql = "SELECT $query FROM `companies`";
+$result = $conn->query($sql);
 $full=[];
 if ($result->num_rows > 0) {
     while ($cmp = $result->fetch_assoc()) {

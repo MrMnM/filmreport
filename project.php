@@ -111,7 +111,6 @@ if (!empty($json)){?>
         <div class="panel-heading">
             <h4 id="title"><div class="loading-spinner-left"></div>&nbsp;</h4>
             <ul class="nav nav-tabs">
-                <li><div style="navtext">Infos</div></li>
                 <li class="active"><a href="#project" data-toggle="tab" aria-expanded="true">Infos</a></li>
                 <li><a href="#hours" data-toggle="tab" aria-expanded="false">Stunden</a></li>
                 <li><a href="#notes" data-toggle="tab" aria-expanded="false">Kommentare</a></li>

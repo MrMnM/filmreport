@@ -1,5 +1,5 @@
 <?php
-    session_name('SESSID');
+session_name('SESSID');
 session_start();
 if (!isset($_SESSION["running"]) || ($_SESSION["running"] != 1)) {
     session_destroy();
@@ -9,3 +9,4 @@ if (!isset($_SESSION["running"]) || ($_SESSION["running"] != 1)) {
     $u_name= $_SESSION['name'];
     $u_type=$_SESSION['type'];
 }
+?>

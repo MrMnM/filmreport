@@ -5,7 +5,6 @@ error_reporting(E_ALL | E_STRICT);
 error_reporting(E_ALL);
 ini_set('display_errors', 'on');
 
-
 include './includes/inc_dbconnect.php';
 //include './includes/inc_sessionhandler_ajax.php';
 

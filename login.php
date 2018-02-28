@@ -62,7 +62,7 @@ if (!empty($_POST["pw"]) && !empty($_POST["mail"])) {
                 $_SESSION['name'] = $name;
                 $_SESSION['type'] = $type;
                 //echo session_status();
-                header( 'Location: ./index.php') ;
+                header( 'Location: ./home.php') ;
             }
 
         } elseif (!$activated) {

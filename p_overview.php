@@ -1,7 +1,7 @@
 <?
 include './includes/inc_sessionhandler_default.php';
 include './includes/inc_variables.php';
-//if ($u_type!='producer') {header( 'Location: ./index.php') ;}
+//if ($u_type!='producer') {header( 'Location: ./home.php') ;}
 ?>
 
 <!DOCTYPE html>

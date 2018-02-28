@@ -100,7 +100,7 @@ if (!empty($_GET["id"])) {
   <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
     <div class="container-fluid">
       <div class="navbar-header">
-        <a class="navbar-brand" href="index.php">Abrechnungsgenerator</a>
+        <a class="navbar-brand" href="home.php">Abrechnungsgenerator</a>
       </div>            <!-- /.navbar-top-links -->
       <ul class="nav navbar-nav">
         <li class="active"><a href="#">Rapport</a></li>

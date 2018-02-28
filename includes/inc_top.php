@@ -7,7 +7,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-        <a class="navbar-brand" href="index.php">Filmstunden <? echo $VERSION; ?></a>
+        <a class="navbar-brand" href="home.php">Filmstunden <? echo $VERSION; ?></a>
     </div>
     <!-- /.navbar-header -->
 
@@ -20,7 +20,7 @@
         }
         $disabled = "";
 
-if (basename($_SERVER['PHP_SELF'])=="index.php") {
+if (basename($_SERVER['PHP_SELF'])=="home.php") {
 
         ?>
         <input id="switchType" type="checkbox" data-toggle="toggle" data-onstyle="default"  data-on="Freelancer" data-off="Produzent"  <?echo $type; echo $disabled?>>
@@ -71,7 +71,7 @@ if (basename($_SERVER['PHP_SELF'])=="index.php") {
             <ul class="nav" id="side-menu">
 
                 <li class="">
-                    <a href="index.php"><i class="fa fa-home fa-fw"></i> Dashboard</a>
+                    <a href="home.php"><i class="fa fa-home fa-fw"></i> Dashboard</a>
                 </li>
 
 <!-- FREELANCER -->
