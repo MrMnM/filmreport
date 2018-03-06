@@ -42,7 +42,6 @@ $('#removeRow').click((event)=>{
   updateSaveStatus()
 })
 $('#refresh').click((event)=>{
-  console.log(p);
   event.preventDefault()
   saved=false
   updateAll()

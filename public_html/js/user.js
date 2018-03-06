@@ -1,5 +1,6 @@
-let u = new User()
-LoadUser()
+import {activateSideMenu} from  './sidemenu.js'
+
+let u = {}
 
 $('tr.name')
   .mouseenter(function() {
@@ -11,12 +12,12 @@ $('tr.name')
   })
 $('tr.address')
   .mouseenter(function() {
-    $(this).find('.address').html('<input type="text" id="address1" value="' + u.address1 + '"><br><input type="text" id="address2" value="' + u.address2 + '">')
+    $(this).find('.address').html('<input type="text" id="address1" value="' + u.address_1 + '"><br><input type="text" id="address2" value="' + u.address_2 + '">')
   })
   .mouseleave(function() {
-    u.address1 = $('#address1').val()
-    u.address2 = $('#address2').val()
-    $(this).find('.address').html(u.address1 + '<br>' + u.address2)
+    u.address_1 = $('#address1').val()
+    u.address_2 = $('#address2').val()
+    $(this).find('.address').html(u.address_1 + '<br>' + u.address_2)
   })
 $('tr.tel')
   .mouseenter(function() {
@@ -46,11 +47,11 @@ $('tr.ahv')
   })
 $('tr.dob')
   .mouseenter(function() {
-    $(this).find('.dob').html('<input type="date" id="dob" value="' + u.dob + '">')
+    $(this).find('.dob').html('<input type="date" id="dob" value="' + u.dateob + '">')
   })
   .mouseleave(function() {
-    u.dob = $('#dob').val()
-    $(this).find('.adob').html(u.dob)
+    u.dateob = $('#dob').val()
+    $(this).find('.adob').html(u.dateob)
   })
 $('tr.konto')
   .mouseenter(function() {
@@ -79,10 +80,10 @@ jQuery('#saveInfo').click(function(event) {
       'us_id': us_id,
       'name': u.name,
       'tel': u.tel,
-      'address1': u.address1,
-      'address2': u.address2,
+      'address_1': u.address_1,
+      'address_2': u.address_2,
       'ahv': u.ahv,
-      'dob': u.dob,
+      'dateob': u.dob,
       'konto': u.konto,
       'bvg': u.bvg,
     },
@@ -97,14 +98,17 @@ jQuery('#saveInfo').click(function(event) {
   })
 })
 
+
 function LoadUser() {
-  $.post('h_user.php', {
-    action: 'get',
-    us_id
-  }).done(function(data) {
-    u = jQuery.parseJSON(data)
-    Redraw()
+  $.ajax({
+    url: 'https://api.filmstunden.ch/user',
+    xhrFields: {withCredentials: true},
+    type: 'GET',
   })
+    .done(data => {
+      u=data
+      Redraw()
+    })
 }
 
 function Redraw() {
@@ -112,24 +116,14 @@ function Redraw() {
   $('td.name').html(u.name)
   $('td.mail').html(u.mail)
   $('td.ahv').html(u.ahv)
-  $('td.dob').html(u.dob)
+  $('td.dob').html(u.dateob)
   $('td.konto').html(u.konto)
-  $('td.address').html(u.address1 + '<br>' + u.address2)
+  $('td.address').html(u.address_1 + '<br>' + u.address_2)
   $('td.name').html(u.name)
   $('td.bvg').html(u.bvg)
 }
 
-function User() {
-  let obj = {}
-  obj.action = 'update'
-  obj.name = ' '
-  obj.address1 = ' '
-  obj.address2 = ' '
-  obj.tel = ' '
-  obj.mail = ' '
-  obj.ahv = ' '
-  obj.dob = ' '
-  obj.konto = ' '
-  obj.bvg = ' '
-  return obj
-}
+$(()=>{ // JQUERY STARTFUNCTION
+  activateSideMenu()
+  LoadUser()
+})

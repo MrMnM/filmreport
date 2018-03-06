@@ -68,7 +68,9 @@ window.setFinish = function(id, name) {
 $(function() {
   activateSideMenu()
   window.table = $('#projectTable').DataTable({
-    'ajax': 'h_listprojects.php?fin=' + fin,
+    'ajax': {'url':'https://api.filmstunden.ch/project?m=' + mode,
+      xhrFields: {withCredentials: true},
+    },
     'pagingType': 'numbers',
     'order': [
       [0, 'desc']
@@ -84,13 +86,13 @@ $(function() {
     ],
     'columnDefs': [{
       'targets': 1,
-      'render': (data, type, row) => renderTitle(data, type, row, fin)
+      'render': (data, type, row) => renderTitle(data, type, row, mode)
     },{
       'targets': 5,
       'data': 5,
       'searchable': false,
       'sortable': false,
-      'render': (data, type, row) => renderTools(data, type, row, fin)
+      'render': (data, type, row) => renderTools(data, type, row, mode)
     }],
     'responsive': {
       'details': {

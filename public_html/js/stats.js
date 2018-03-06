@@ -1,4 +1,4 @@
-export default function refreshStats(chart,start,end){
+export function refreshStats(chart,start,end){
   if (chart === null) {
     chart = Morris.Line({
       element: 'stats',
@@ -23,12 +23,13 @@ export default function refreshStats(chart,start,end){
   }
 
   $.ajax({
-    url: 'h_miscdata.php',
+    url: 'https://api.filmstunden.ch/stats',
     type: 'GET',
+    xhrFields: {withCredentials: true},
     dataType: 'json',
     data: {
-      's': start,
-      'e': end
+      'start': start,
+      'end': end
     },
   })
     .done(data => {
@@ -40,22 +41,47 @@ export default function refreshStats(chart,start,end){
     })
 
   $.ajax({
-    url: 'h_chart.php',
+    url: 'https://api.filmstunden.ch/stats/chart/line',
     type: 'GET',
+    xhrFields: {withCredentials: true},
     dataType: 'json',
     data: {
-      't': 'l',
-      's': start,
-      'e': end
+      'start': start,
+      'end': end
     }
   })
     .done(data => {
       let odata = data
       data.sort(function(a, b) {return b.Pay - a.Pay})
       //cars.sort(function(a, b){return a.year - b.year});
-      chart.options.ymax = Math.round((data[0].Pay + 1500)/1000)*1000
+      chart.options.ymax = Math.round((data[0].Pay+1000)/1000)*1000
       chart.setData(odata)
     })
     .fail(() => {console.error('linechart request failed')})
   return chart
+}
+export function refreshDonut (donut) {
+  if (donut === null) {
+    donut = Morris.Donut({
+      element: 'donut',
+      data: [{
+        label: 'loading...',
+        value: 100
+      }]
+    }).on('click', function(i, row) {
+      window.location.href = './project_overview.php?search=' + row.label
+    })
+  }
+
+  $.ajax({
+    url: 'https://api.filmstunden.ch/stats/chart/donut',
+    type: 'GET',
+    xhrFields: {withCredentials: true},
+    dataType: 'json'
+  })
+    .done(data => {
+      donut.setData(data)
+    })
+    .fail(() => { console.error('donutchart request failed') })
+  return donut
 }

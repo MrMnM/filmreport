@@ -126,8 +126,6 @@ include('./includes/inc_top.php');
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/jquery.metismenu/1.1.3/metisMenu.min.js"></script>
-<script src="./js/sidemenu.js"></script>
-<script>var us_id = "<? echo $u_id;?>";</script>
-<script src="./js/user.js"></script>
+<script type="module" src="./js/user.js"></script>
 </body>
 </html>

@@ -1,11 +1,12 @@
-import refreshStats from  './linechart.js'
-import refreshDonut from  './donutchart.js'
+import {refreshStats, refreshDonut} from  './stats.js'
 import {activateSideMenu, switchTypes} from  './sidemenu.js'
 import {pad} from './timeHelpers.js'
 
 
-
+var chart = null
+var donut = null
 // Get saved data from sessionStorage
+
 let e=0
 let s=0
 if (sessionStorage.getItem('interval')) {
@@ -18,8 +19,6 @@ if (sessionStorage.getItem('interval')) {
   s = start.getFullYear()+'-'+pad(start.getMonth()+1)+'-'+pad(start.getDate())
   e = end.getFullYear()+'-'+pad(end.getMonth()+1)+'-'+pad(end.getDate())
 }
-var chart = null
-var donut = null
 
 $('#switchType').change(function() {
   switchTypes($(this).prop('checked'))
@@ -36,12 +35,10 @@ $( '#fromDate' ).change(function() {
   chart = refreshStats(chart,s,e)
 })
 
-$(function() {
+$(()=> { // STARTFUNCTION
   activateSideMenu()
   $('#toDate').val(e)
   $('#fromDate').val(s)
-  chart = refreshStats(chart,s,e)
-  refreshDonut(donut)
   $('#switchType').bootstrapToggle()
   switchTypes($('#switchType').prop('checked'))
   $('.input-daterange input').each(function() {
@@ -51,4 +48,6 @@ $(function() {
       todayHighlight: true
     })
   })
+  donut = refreshDonut(donut)
+  chart = refreshStats(chart,s,e).redraw()
 })

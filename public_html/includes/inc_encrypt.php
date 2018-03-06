@@ -1,9 +1,8 @@
 <?
-function encrypt( $string, $action = 'e' ) {
+function encrypt($string, $action = 'e' ) {
     // you may change these values to your own
     $secret_key = 'my_simple_secret_key'; //TODO Replace with by Userkey
     $secret_iv = 'my_simple_secret_iv';
-
     $output = false;
     $encrypt_method = "AES-256-CBC"; //if possible GCM
     $key = hash( 'sha256', $secret_key );

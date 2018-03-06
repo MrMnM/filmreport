@@ -1,6 +1,7 @@
 <?
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
+ini_set('session.cookie_domain', '.filmstunden.ch' );
 //error_reporting( E_ALL | E_STRICT );
 
 include './includes/inc_dbconnect.php';
@@ -13,6 +14,7 @@ $activated =TRUE;
 
 if (true){
     session_name('SESSID');
+    session_set_cookie_params(0, '/', '.filmstunden.ch');
     session_start();
     if (!empty($_SESSION['running']) && $_SESSION['running'] == 1){
         $closedExisting = TRUE;

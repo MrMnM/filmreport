@@ -223,12 +223,12 @@ if ( isset( $_GET['search'] ) && !empty( $_GET['search'] ) ){
 
 if ( isset( $_GET['view'] ) && !empty( $_GET['view'] ) ){
  if ($_GET['view']=='archive') {
-     echo 'const fin=1'.PHP_EOL;
+     echo 'const mode=2'.PHP_EOL;
  }else{
-     echo 'const fin=0'.PHP_EOL;
+     echo 'const mode=1'.PHP_EOL;
 }
 }else{
-    echo'const fin=2'.PHP_EOL;
+    echo'const mode=0'.PHP_EOL;
 
 }
 ?>

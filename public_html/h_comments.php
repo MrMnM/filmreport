@@ -9,6 +9,7 @@ include './includes/inc_dbconnect.php';
 //include './includes/inc_sessionhandler_ajax.php';
 
 session_name('SESSID');
+session_set_cookie_params(0, '/', '.filmstunden.ch');
 session_start();
 if (!isset($_SESSION["running"]) || ($_SESSION["running"] != 1)) {
 $u_id="guest";
