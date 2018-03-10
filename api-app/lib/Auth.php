@@ -1,9 +1,9 @@
 <?
 class Auth
 {
-    public function __construct($container) {
+    public function __construct() {
       session_name('SESSID');
-      session_set_cookie_params(0, '/', '.filmstunden.ch');
+      session_set_cookie_params(0, '/', '.filmstunden.ch',TRUE,TRUE);
       session_start();
     }
 

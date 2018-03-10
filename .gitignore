@@ -1,5 +1,7 @@
 public_html/includes/inc_dbconnect.php
 public_html/dev/
+api-app/lib/Encrypt.php
+api-app/lib/Globals.php
 public_html/includes/Classes/
 public_html/template_rapport.xls
 .remote-sync.json

@@ -3,9 +3,13 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting( E_ALL | E_STRICT );
 include './includes/inc_sessionhandler_default.php';
-include './includes/inc_dbconnect.php';
 include './includes/inc_encrypt.php';
-include './includes/inc_variables.php';
+require_once('../api-app/lib/Globals.php');
+$db=$GLOBALS['db'];
+$servername = "localhost";
+$dbname = $db['database_name'];
+$username = $db['username'];
+$password = $db['password'];
 ?>
 
 <!DOCTYPE html>
@@ -134,7 +138,7 @@ if (!empty($json)){?>
                                     <i class="fa fa-briefcase fa-fw"></i> Projektinformationen
                                     <div class="pull-right">
                                         <div class="btn-group">
-                                            <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#updateProjectModal">
+                                            <button type="button" id="openProjectModal" class="btn btn-default btn-xs" data-toggle="modal" data-target="#updateProjectModal">
                                                 <span class="fa fa-pencil"></span>
                                             </button>
                                         </div><!--btn-group-->
@@ -362,10 +366,10 @@ if (!empty($json)){?>
                         <div class="col-lg-6">
                           <div class="panel panel-default">
                             <div class="panel-heading">
-                              <i class="fa fa-comments fa-fw"></i> Kommentare
+                              <i class="fa fa-comments fa-fw"></i> Chat
                             </div>
                             <div class="panel-body">
-                              <div class="message-wrap col-lg-12" id="comments">
+                              <div class="message-wrap col-lg-12" id="chats">
 <!-- COMMENTS LOAD IN HERE ****************************************************************3-->
                               </div>
                               <div class="send-wrap hideSend">
@@ -403,12 +407,10 @@ if (!empty($json)){?>
                         /*NAME HERE *************************************************************************************************/
                         echo $name;?>" required="">
                     </div>
-                    <datalist id="jobs">
-                    <?include('./includes/inc_joblist.html');?>
-                    </datalist>
+                    <datalist id="joblist"></datalist>
                     <div class="form-group input-group">
                         <span class="input-group-addon">Arbeit als:</span>
-                        <input type="text" list="jobs" class="form-control" name="work" value="<?
+                        <input type="text" list="joblist" class="form-control" name="work" value="<?
 /* JOB HERE ******************************************************************************************************************************************/
                          echo $job;?>" required>
                     </div>
@@ -421,6 +423,7 @@ if (!empty($json)){?>
                         <div class="form-group input-group companylist">
                             <span class="input-group-addon">Produktionsfirma</span>
                             <select class="form-control" name="company" id="companylist">
+                              <option>Loading Companies...</option>
                             </select>
                         </div>
                     </div>
@@ -443,7 +446,6 @@ if (!empty($json)){?>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
 <script src="https://cdn.jsdelivr.net/twix.js/1.1.5/twix.min.js"></script>
 <script type="module" src="./js/project_main.js"></script>
-<!--on ready-->
 <script>
     moment().format();
     var company="<?

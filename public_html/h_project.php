@@ -5,8 +5,14 @@ error_reporting(E_ALL | E_STRICT);
 error_reporting(E_ALL);
 ini_set('display_errors', 'on');
 
-include './includes/inc_dbconnect.php';
+
 include './includes/inc_sessionhandler_ajax.php';
+require_once('../api-app/lib/Globals.php');
+$db=$GLOBALS['db'];
+$servername = "localhost";
+$dbname = $db['database_name'];
+$username = $db['username'];
+$password = $db['password'];
 
 $action = (isset($_POST['action']) and $_POST['action']!="") ? $_POST['action'] : null;
 if ($action) {
@@ -63,8 +69,9 @@ function NewProject($u_id, $conn)
     $p_company= mysqli_real_escape_string($conn, $_POST["company"]);
     $now = date(DATE_ATOM, time());
     $project_id = md5($p_name.$now);
-    $url='http://www.filmstunden.ch/shorten.php?longurl=http://www.xibrix.ch/filmreport/view.php?id='.$project_id;
-    $short = file_get_contents($url);
+    //$url='http://www.filmstunden.ch/shorten.php?longurl=http://www.xibrix.ch/filmreport/view.php?id='.$project_id;
+    //$short = file_get_contents($url);
+    $short = "";
 
     $sql = "INSERT INTO projects (c_date,project_id,user_id,p_name,p_start,p_job,p_gage,p_company,view_id)
     VALUES ('$now', '$project_id', '$u_id','$p_name','$p_startdate','$p_work','$p_pay','$p_company','$short')";

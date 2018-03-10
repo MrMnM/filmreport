@@ -27,16 +27,7 @@ $('tr.tel')
     u.tel = $('#tel').val()
     $(this).find('.tel').html(u.tel)
   })
-/*
-$( "tr.mail" )
-.mouseenter(function() {
-    $( this ).find('.mail').html( '<input type="mail" id="mail" value="'+u.mail+'">');
-})
-.mouseleave(function() {
-    u.mail=$('#mail').val();
-    $( this ).find('.mail').html(u.mail);
-});
-*/
+
 $('tr.ahv')
   .mouseenter(function() {
     $(this).find('.ahv').html('<input type="text" id="ahv" pattern="756\.\d{4}\.\d{4}\.\d{2}" value="' + u.ahv + '">')
@@ -73,23 +64,22 @@ $('tr.bvg')
 jQuery('#saveInfo').click(function(event) {
   event.preventDefault()
   $.ajax({
-    url: 'h_user.php',
+    url: 'https://api.filmstunden.ch/user',
+    xhrFields: {withCredentials: true},
+    type: 'POST',
     dataType: 'json',
     data: {
-      'action': 'update',
-      'us_id': us_id,
       'name': u.name,
       'tel': u.tel,
       'address_1': u.address_1,
       'address_2': u.address_2,
       'ahv': u.ahv,
-      'dateob': u.dob,
+      'dateob': u.dateob,
       'konto': u.konto,
       'bvg': u.bvg,
     },
-    type: 'POST',
     success: function(data) {
-      if (data.message == 'SUCCESS') {
+      if (data.msg == 'SUCCESS') {
         //TODO SUCCESS
       } else {
         alert('ERROR')

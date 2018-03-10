@@ -1,4 +1,4 @@
-import Comment from './Comment.js'
+import Chat from './Chat.js'
 import Row from './Row.js'
 
 export default class Project {
@@ -24,8 +24,7 @@ export default class Project {
 
     //COMMENTS
     this.comment=''
-    this.comments=[]
-    //this.comments.push(new Comment(1,'test','test','test'))
+    this.chats=[]
   }
 
 
@@ -69,18 +68,19 @@ export default class Project {
     this.rows[c].date = d
   }
 
-  getComments(){
+  getChats(){
     let p=$.ajax({
-      url: 'h_comments.php',
+      url: 'https://api.filmstunden.ch/chats',
       dataType: 'json',
-      data : { action: 'load', p_id: this.id },
-      type: 'POST',
+      xhrFields: {withCredentials: true},
+      data : { p: this.id },
+      type: 'GET',
       context: this
     })
     p=p.then((data) => {
       let i=0
       for (let v of data) {
-        this.comments[i]=new Comment(v.id, this.id, v.date, v.from, v.text)
+        this.chats[i]=new Chat(v.id, this.id, v.date, v.from, v.text)
         i++
       }
     })
@@ -89,7 +89,7 @@ export default class Project {
 
   get projHtml(){
     let o = ''
-    for (let c of this.comments) {
+    for (let c of this.chats) {
       o += c.renderProject()
     }
     return o
@@ -97,7 +97,7 @@ export default class Project {
 
   get viewHtml(){
     let o = ''
-    for (let c of this.comments) {
+    for (let c of this.chats) {
       o += c.renderView()
     }
     return o

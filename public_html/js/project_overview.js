@@ -1,5 +1,6 @@
 import {renderTools, renderTitle} from  './dataTableRender.js'
 import {activateSideMenu} from  './sidemenu.js'
+import { loadJoblist } from './Jobs.js'
 
 
 function newCreated(data) {
@@ -12,20 +13,17 @@ function newCreated(data) {
 
 function companyCreated(cmp) {
   $('#newCompany').modal('hide')
-  let date = new Date()
-  let ts = date.getTime()
-  if (cmp.message == 'SUCCESS') {
+  if (cmp.status == 'SUCCESS') {
     $.ajax({
-      url: 'h_company.php?_='+ts,
-      type: 'POST',
-      dataType: 'json',
-      data: {'action':'list','fields':['id','name']}
+      url: 'https://api.filmstunden.ch/company',
+      type: 'GET',
+      dataType: 'json'
     })
       .done(data => {
         $('#companylist').html('')
         data.forEach((c) =>{
           $('#companylist').append($('<option>', {
-            value: c.id,
+            value: c.company_id,
             text: c.name
           }))
         })
@@ -65,7 +63,7 @@ window.setFinish = function(id, name) {
   $('#finModalTitle').html('' + name)
 }
 
-$(function() {
+$(()=> { // STARTFUNCTION
   activateSideMenu()
   window.table = $('#projectTable').DataTable({
     'ajax': {'url':'https://api.filmstunden.ch/project?m=' + mode,
@@ -125,18 +123,18 @@ $(function() {
     dataType: 'json',
     success: companyCreated
   })
-  let date = new Date()
-  let ts = date.getTime()
+
+  loadJoblist()
+
   $.ajax({
-    url: 'h_company.php?_='+ts,
-    type: 'POST',
+    url: 'https://api.filmstunden.ch/company',
+    type: 'GET',
     dataType: 'json',
-    data: {'action':'list','fields':['id','name']}
   })
     .done(data => {
       data.forEach((c) =>{
         $('#companylist').append($('<option>', {
-          value: c.id,
+          value: c.company_id,
           text: c.name
         }))
       })

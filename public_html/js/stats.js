@@ -37,7 +37,6 @@ export function refreshStats(chart,start,end){
       $('#dateRange').html(start+' bis '+end)
       $('#activeProjects').html(data.active_projects)
       chart.options.goals = [data.mean_month]
-      chart.redraw()
     })
 
   $.ajax({
@@ -53,13 +52,14 @@ export function refreshStats(chart,start,end){
     .done(data => {
       let odata = data
       data.sort(function(a, b) {return b.Pay - a.Pay})
-      //cars.sort(function(a, b){return a.year - b.year});
       chart.options.ymax = Math.round((data[0].Pay+1000)/1000)*1000
       chart.setData(odata)
+      chart.redraw()
     })
     .fail(() => {console.error('linechart request failed')})
   return chart
 }
+
 export function refreshDonut (donut) {
   if (donut === null) {
     donut = Morris.Donut({

@@ -4,16 +4,18 @@ ini_set('display_startup_errors', 1);
 error_reporting( E_ALL | E_STRICT );
 
 include './includes/inc_encrypt.php';
-include './includes/inc_dbconnect.php';
-include './includes/inc_variables.php';
+require_once('../api-app/lib/Globals.php');
+$db=$GLOBALS['db'];
+$servername = "localhost";
+$dbname = $db['database_name'];
+$username = $db['username'];
+$password = $db['password'];
 
 if (!empty($_GET["id"])&&!empty($_GET["t"])) {
     $p_id=$_GET["id"];
     $type=$_GET["t"];
     $conn = new mysqli($servername, $username, $password, $dbname);
-    // Check connection
     if ($conn->connect_error) {die('{ "message": "ERROR: CONN FAILED:'. $conn->connect_error.'"}');}
-
     $sql = "SELECT user_id, p_name, p_company, p_job, p_gage, p_start, p_end, p_json, p_comment FROM `projects` WHERE project_id='$p_id';";
     $result = $conn->query($sql);
 
@@ -132,9 +134,7 @@ $objWorksheet->setCellValue('P2', $p_name);
 //$objWorksheet->getStyle('P2')->getFont()->setBold(true);
 //$objWorksheet->getStyle('P2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 $objWorksheet->setCellValue('P3', $sdate);
-//$objWorksheet->getStyle('P3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 $objWorksheet->setCellValue('V3', $edate);
-//$objWorksheet->getStyle('V3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 $objWorksheet->setCellValue('P4', $c_name);
 $objWorksheet->setCellValue('P5', $c_address1);
 $objWorksheet->setCellValue('P6', $c_address2);
@@ -188,7 +188,12 @@ foreach($dat as $arr){
     $objWorksheet->setCellValue("Q".$cur,$arr['fift']);
     $objWorksheet->setCellValue("R".$cur,$arr['sixt']);
     $objWorksheet->setCellValue("T".$cur,$arr['night']);
-    $objWorksheet->setCellValue("W".$cur,$arr['lunch']);
+    if ($arr['lunch']==1) {
+      $objWorksheet->setCellValue("W".$cur,1);
+    }else{
+      $objWorksheet->setCellValue("W".$cur,0);
+    }
+
     $objWorksheet->setCellValue("X".$cur,$arr['car']);
     if ($i != $len - 1) {
         $objWorksheet->insertNewRowBefore($rowCounter, 1);
@@ -201,7 +206,7 @@ foreach($dat as $arr){
 }
 
 //TotalAZ
-$cur=$rowCounter;
+$cur=$rowCounter-1;
 $interval = $allhours1->diff($allhours2);
 $d=$interval->d;
 $h=$interval->h;
@@ -236,7 +241,7 @@ $objWorksheet->setCellValue("R".$cur,round($all250*$p_pay/9*2.5, 2));
 $objWorksheet->setCellValue("T".$cur,round($all25*$p_pay/9*0.25, 2));
 $objWorksheet->setCellValue("W".$cur,round($allfood*32, 2));
 $objWorksheet->setCellValue("X".$cur,round($allcar*0.7, 2));
-$cur=$cur+2;
+$cur=$cur+3;
 $p125=round($all125*$p_pay/9*1.25, 2);
 $p150=round($all150*$p_pay/9*1.5, 2);
 $p200=round($all200*$p_pay/9*2.0, 2);

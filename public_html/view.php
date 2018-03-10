@@ -4,8 +4,12 @@ ini_set('display_startup_errors', 1);
 error_reporting( E_ALL | E_STRICT );
 
 include './includes/inc_encrypt.php';
-include './includes/inc_dbconnect.php';
-include './includes/inc_variables.php';
+require_once('../api-app/lib/Globals.php');
+$db=$GLOBALS['db'];
+$servername = "localhost";
+$dbname = $db['database_name'];
+$username = $db['username'];
+$password = $db['password'];
 
 $type=1;
 if (!empty($_GET["t"])) {
@@ -112,7 +116,7 @@ if (!empty($_GET["id"])) {
                   <i class="fa fa-comments fa-fw"></i> <i class="fa fa-caret-down"></i>
               </a>
               <ul class="dropdown-menu dropdown-comments">
-                <ul id="comments"></ul>
+                <ul id="chats"></ul>
                 <li></br></li>
                 <li>
                     <textarea style="border: none" class="col-lg-2 form-control send-message" rows="1" placeholder="Antworten..." id="commentText"></textarea>
@@ -570,6 +574,7 @@ $allhours2 = new DateTime('2000-01-01 00:00:00');
 
 <script type="module" src="./js/view.js"></script>
 <script>
+if (location.protocol !== "https:") location.protocol = "https:";
 const us_id = "guest"
 const p_id = "<?echo $p_id;?>"
 </script>

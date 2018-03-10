@@ -1,44 +1,6 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL | E_STRICT);
-
-include './includes/inc_dbconnect.php';
-include './includes/inc_variables.php';
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-if ($conn->connect_error) {die('{ "message": "ERROR: '.$conn->connect_error.'"}');}
-
-$validated = false;
-
-/* VALIDATION
-Evtl externes, komplettvalidierungsscript, auch für Password reset
-Next to your resetkey column place a DATETIME column called, maybe, expires.
-Then, whenever you insert a new reset key, also insert a value into expires:
-INSERT INTO forgot (resetkey, expires) VALUES (whatever, NOW() + INTERVAL 48 HOUR)
-Right before you read any reset key from the table, do this:
-DELETE FROM forgot WHERE expires < NOW()
-*/
-if (!empty($_GET["v"])) {
-    $val = mysqli_real_escape_string($conn, $_GET["v"]);
-    $sql = "SELECT active, u_id FROM `users` WHERE active='$val';";
-    $result = $conn->query($sql);
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            $u_id = $row["u_id"];
-        }
-        $sql = "UPDATE users SET active = 'yes' WHERE u_id = '$u_id'";
-        if ($conn->query($sql) === true) {
-            $validated = true;
-        } else {
-            die('{ "message": "ERROR: ' . $sql . $conn->error.'}');
-        }
-    } else {
-        die('{ "message": "Ung&uuml;ltiger Validierungsschl&uuml;ssel" }');
-    }
-}
+require_once('../api-app/lib/Globals.php');
 ?>
-
 <html>
 <head>
     <meta charset="utf-8">
@@ -61,23 +23,14 @@ if (!empty($_GET["v"])) {
                 <i class="fa fa-user fa-fw"></i><b> Neues Konto erstellen</b>
             </div>
             <div class="panel-body">
-
-<?php if ($validated==true) {?>
-  <div id="success" class="alert alert-success">
-    <p>Account wurde erfolreich Validiert</p>
-    <a href=".\..\login.php" class="btn btn-link">Zum Login</a>
-  </div>
-<?} else {?>
-
       <div id="error" class="alert alert-danger alert-dismissable" style="display: none;">
           <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
           <p id="errorcontent">Benutzername und/oder Passwort stimmen nicht &uuml;berein.</p>
       </div>
       <div id="success" class="alert alert-success" style="display: none;">
-          <p>Account wurde erfolreich erstellt, eine E-Mail wurde an die angegebene Addresse versendet. Es kann einige Minuten dauern, bis das Mail tatsächlich ankommt, bitte etwas Geduld</p>
+          <p>Account wurde erfolreich erstellt, eine E-Mail wurde an die angegebene Addresse versendet. Es kann einige Minuten dauern, bis das Mail tatsächlich ankommt, bitte etwas Geduld. Die Bestätigungs E-Mail ist 12 Stunden gültig und muss innerhalb dieser Zeit registriert werden.</p>
       </div>
-      <form role="form" method="post" action="h_user.php" id="createAccount">
-          <input type="hidden" name="action" value="new">
+      <form role="form" method="post" action="https://api.filmstunden.ch/user/new" id="createAccount">
           <fieldset>
               <div class="form-group">
                   <label>Name</label>
@@ -104,19 +57,18 @@ if (!empty($_GET["v"])) {
                           <i class="fa fa-question fa-fw"></i>
                       </button>
                   </div>
-                  <input class="form-control" type="password" pattern=".{5,}" name="pw" placeholder="&#0149;&#0149;&#0149;&#0149;&#0149;&#0149;" required>
+                  <input class="form-control" type="password" pattern=".{5,}" name="pw" placeholder="&#0149;&#0149;&#0149;&#0149;&#0149;&#0149&#0149;&#0149;&#0149;&#0149;&#0149;&#0149;" required>
               </div>
               <div class="form-group">
                   <label>Passwort wiederholen</label>
-                  <input class="form-control" type="password" name="pw2" placeholder="&#0149;&#0149;&#0149;&#0149;&#0149;&#0149;" required>
+                  <input class="form-control" type="password" name="pw2" placeholder="&#0149;&#0149;&#0149;&#0149;&#0149;&#0149&#0149;&#0149;&#0149;&#0149;&#0149;&#0149;" required>
               </div>
               <button type="submit" class="btn btn-lg btn-success btn-block">Erstellen</button>
           </fieldset>
       </form>
-      <?}?>
   </div>
 </div>
-<p align="right"><font size="-1" color="#888888"><?php echo $VERSION; ?></font></p>
+<p align="right"><font size="-1" color="#888888"><?php echo $GLOBALS['version']; ?></font></p>
 </div>
 </div>
 </div>
@@ -125,7 +77,7 @@ if (!empty($_GET["v"])) {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.1/jquery.form.min.js"></script>
 <script>
-$(document).ready(function() {
+$(()=>{
 $('#createAccount').ajaxForm({
         dataType:  'json',
         success: updateSuccess
@@ -133,14 +85,14 @@ $('#createAccount').ajaxForm({
 });
 $("[data-toggle=popover]").popover()
 function updateSuccess(data){
-    if (data.message=="SUCCESS") {
+    if (data.status=="SUCCESS") {
         $('#success').show()
         $('#createAccount').hide()
         $('#error').hide()
     }else{
         $('#error').show()
         $('#success').hide()
-        $('#error').find("p").html(data.message)
+        $('#error').find("p").html(data.msg)
     }
 }
 </script>

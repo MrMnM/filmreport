@@ -4,17 +4,24 @@ ini_set('display_startup_errors', 1);
 ini_set('session.cookie_domain', '.filmstunden.ch' );
 //error_reporting( E_ALL | E_STRICT );
 
-include './includes/inc_dbconnect.php';
-include './includes/inc_variables.php';
+require_once('../api-app/lib/Globals.php');
+$db=$GLOBALS['db'];
+$servername = "localhost";
+$dbname = $db['database_name'];
+$username = $db['username'];
+$password = $db['password'];
+
+
+
 
 $unknownUser = FALSE;
 $invalidPassword = FALSE;
 $closedExisting = FALSE;
 $activated =TRUE;
 
-if (true){
+if (true){ //Todo check Tokencookie
     session_name('SESSID');
-    session_set_cookie_params(0, '/', '.filmstunden.ch');
+    session_set_cookie_params(0, '/', '.filmstunden.ch',TRUE,TRUE);
     session_start();
     if (!empty($_SESSION['running']) && $_SESSION['running'] == 1){
         $closedExisting = TRUE;
@@ -74,6 +81,7 @@ if (!empty($_POST["pw"]) && !empty($_POST["mail"])) {
         }
     }
 }
+//TODO Move to AJAX
 ?>
 
 <html>
@@ -133,7 +141,7 @@ if (!empty($_POST["pw"]) && !empty($_POST["mail"])) {
             </form>
           </div><!--body-->
         </div>
-        <p align="right"><font size="-1" color="#888888"><? echo $VERSION; ?></font></p>
+        <p align="right"><font size="-1" color="#888888"><? echo $GLOBALS['version']; ?></font></p>
     </div><!--md-4-->
   </div><!--row-->
 </div><!--container-->

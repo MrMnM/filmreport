@@ -1,11 +1,11 @@
-<?
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting( E_ALL | E_STRICT );
-
-include './includes/inc_sessionhandler_default.php';
-include './includes/inc_dbconnect.php';
-include './includes/inc_variables.php';
+<?php
+require_once('./includes/inc_sessionhandler_default.php');
+require_once('../api-app/lib/Globals.php');
+$db=$GLOBALS['db'];
+$servername = "localhost";
+$dbname = $db['database_name'];
+$username = $db['username'];
+$password = $db['password'];
 ?>
 
 <!DOCTYPE html>
@@ -16,26 +16,20 @@ include './includes/inc_variables.php';
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-
     <title>Projektabrechnung</title>
-    <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/jquery.metismenu/1.1.3/metisMenu.min.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css"/>
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap.min.css"/>
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.15/r-2.1.1/datatables.min.css"/>
-    <!-- Custom CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdn.datatables.net/v/bs/dt-1.10.15/r-2.1.1/datatables.min.css"/>
     <link href="./css/main.css" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
 </head>
 
 <body>
 <div id="wrapper">
-    <?
-        include('./includes/inc_top.php');
-    ?>
+<?php include_once('./includes/inc_top.php');?>
 <div id="page-wrapper">
     <p></br></p>
     <div class="row">
@@ -96,12 +90,10 @@ include './includes/inc_variables.php';
                                     <span class="input-group-addon">Startdatum</span>
                                     <input type="date" name="date" class="form-control" placeholder="500" required>
                                 </div>
-                                <datalist id="jobs">
-                                <?include('./includes/inc_joblist.html');?>
-                                </datalist>
+                                <datalist id="joblist"></datalist>
                                 <div class="form-group input-group">
                                     <span class="input-group-addon">Arbeit als:</span>
-                                    <input type="text" list="jobs" class="form-control" name="work" required>
+                                    <input type="text" list="joblist" class="form-control" name="work" required>
                                 </div>
                                 <div class="form-group input-group">
                                     <span class="input-group-addon">Tagesgage</span>
@@ -125,7 +117,7 @@ include './includes/inc_variables.php';
                             <h4 class="modal-title" id="myModalLabel">Neue Produktionfirma hinzufügen</h4>
                         </div>
                         <div class="modal-body" id="newCompanyCreated">
-                            <form role="form" action="h_new_prodcomp.php" method="post" id="newProdcomp">
+                            <form role="form" action="https://api.filmstunden.ch/company/new" method="post" id="newProdcomp">
                                 <div class="form-group input-group">
                                     <span class="input-group-addon">Firmenname</span>
                                     <input type="text" name="name" class="form-control" placeholder="Prodfirma" required="">
@@ -206,32 +198,32 @@ include './includes/inc_variables.php';
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/jquery.metismenu/1.1.3/metisMenu.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.1.1/js/dataTables.responsive.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.1.1/js/responsive.bootstrap.min.js"></script>
-<!-- JqueryForms -->
+<script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.1.1/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.1.1/js/responsive.bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.1/jquery.form.min.js"></script>
 <script type="module" src="./js/project_overview.js"></script>
 <script>
+
 <?php
-if ( isset( $_GET['search'] ) && !empty( $_GET['search'] ) ){
+if (isset($_GET['search']) && !empty($_GET['search'])) {
     echo 'const search="'.$_GET['search'].'"'.PHP_EOL;
-}else{
+} else {
     echo 'const search=null'.PHP_EOL;
 }
 
-if ( isset( $_GET['view'] ) && !empty( $_GET['view'] ) ){
- if ($_GET['view']=='archive') {
-     echo 'const mode=2'.PHP_EOL;
- }else{
-     echo 'const mode=1'.PHP_EOL;
-}
-}else{
+if (isset($_GET['view']) && !empty($_GET['view'])) {
+    if ($_GET['view']=='archive') {
+        echo 'const mode=2'.PHP_EOL;
+    } else {
+        echo 'const mode=1'.PHP_EOL;
+    }
+} else {
     echo'const mode=0'.PHP_EOL;
-
 }
 ?>
+
 </script>
 </body>
 </html>

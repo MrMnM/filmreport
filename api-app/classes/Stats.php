@@ -1,4 +1,6 @@
 <?php
+use \Medoo\Medoo;
+
 class Stats
 {
     public function __construct($container)

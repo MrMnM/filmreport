@@ -1,8 +1,8 @@
-export default class Comment {
+export default class Chat {
   constructor(id,p_id,date,from,text){
     this.id = id
     this.p_id = p_id
-    this.date = moment(date).add(1,'hours').fromNow()
+    this.date = moment(date).fromNow()
     this.from =from
     this.text=text
   }

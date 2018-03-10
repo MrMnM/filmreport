@@ -2,10 +2,8 @@ import {refreshStats, refreshDonut} from  './stats.js'
 import {activateSideMenu, switchTypes} from  './sidemenu.js'
 import {pad} from './timeHelpers.js'
 
-
 var chart = null
 var donut = null
-// Get saved data from sessionStorage
 
 let e=0
 let s=0
@@ -29,12 +27,14 @@ $( '#toDate' ).change(function() {
   sessionStorage.setItem('interval',s+';'+e)
   chart = refreshStats(chart,s,e)
 })
+
 $( '#fromDate' ).change(function() {
   s=$('#fromDate').val()
   sessionStorage.setItem('interval',s+';'+e)
   chart = refreshStats(chart,s,e)
 })
 
+// --------------------------------------------------------
 $(()=> { // STARTFUNCTION
   activateSideMenu()
   $('#toDate').val(e)
@@ -43,11 +43,12 @@ $(()=> { // STARTFUNCTION
   switchTypes($('#switchType').prop('checked'))
   $('.input-daterange input').each(function() {
     $(this).datepicker({
-      format: 'yyyy-mm-dd',
+      format: 'yyyy-mm',
       todayBtn: 'linked',
       todayHighlight: true
     })
   })
   donut = refreshDonut(donut)
-  chart = refreshStats(chart,s,e).redraw()
+  chart = refreshStats(chart,s,e)
+  chart.redraw()
 })

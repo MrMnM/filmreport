@@ -7,7 +7,7 @@
       <span class="icon-bar"></span>
       <span class="icon-bar"></span>
     </button>
-    <a class="navbar-brand" href="home.php">Filmstunden <? echo $VERSION; ?></a>
+    <a class="navbar-brand" href="home.php">Filmstunden <? echo $GLOBALS['version']; ?></a>
   </div><!-- /.navbar-header -->
   <ul class="nav navbar-top-links navbar-right">
 

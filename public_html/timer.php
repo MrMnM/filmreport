@@ -2,7 +2,12 @@
 
 //TODO Macheen das es ohne login klappt
 include './includes/inc_sessionhandler_default.php';
-include './includes/inc_variables.php';
+require_once('../api-app/lib/Globals.php');
+$db=$GLOBALS['db'];
+$servername = "localhost";
+$dbname = $db['database_name'];
+$username = $db['username'];
+$password = $db['password'];
 ?>
 
 

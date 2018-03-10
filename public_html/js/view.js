@@ -2,10 +2,11 @@ import Project from './Project.js'
 
 const p = new Project(p_id)
 
+
 function loadChats(){
-  p.getComments().then(()=>{
+  p.getChats().then(()=>{
     if(p.viewHtml!=''){
-      $( '#comments' ).html(p.viewHtml)
+      $( '#chats' ).html(p.viewHtml)
     }else{
       let emptyComment=`
       <li class="divider"></li>
@@ -17,7 +18,7 @@ function loadChats(){
         </div>
         <div>Noch keine Kommentare</div>
       </li>`
-      $( '#comments' ).html(emptyComment)
+      $( '#chats' ).html(emptyComment)
     }
   })
 }
@@ -26,16 +27,16 @@ $('#submitComment').click((e)=>{
   e.preventDefault()
   //TODO check required
   let text=$('#commentText').val()
-  console.log('clicked', text)
-  addComment(text)
+  addChat(text)
 })
 
-function addComment(text){
+function addChat(text){
   $('.hideSend').hide()
   $.ajax({
-    url: 'h_comments.php',
+    url: 'https://api.filmstunden.ch/chats',
+    xhrFields: {withCredentials: true},
     dataType: 'json',
-    data : { action: 'add', p_id: p_id,us_id: us_id,to_id: 'test', text: text}, //TODO Correct entries here
+    data : { p_id: p_id, text: text}, //TODO Move to one file and include
     type: 'POST',
   })
     .done(()=>{
@@ -43,7 +44,7 @@ function addComment(text){
       $('.hideSend').show()
     })
     .fail(()=>{
-      alert('Fehler')
+      loadChats()
       $('.hideSend').show()
     })
 }
