@@ -131,18 +131,7 @@ function SaveProject($u_id, $conn)
 
 function FinishProject($u_id, $conn)
 {
-    /*  TODO  $us_id = mysqli_real_escape_string($conn, $_POST["us_id"]);
-        if($u_id != $us_id){
-            die('{ "message": "ERROR: NOT LOGGED IN"}');
-        }
-    */
-    $p_id = mysqli_real_escape_string($conn, $_POST["p_id"]);
-    $sql = "UPDATE projects SET  p_finished=1 WHERE project_id = '$p_id'";
-    if ($conn->query($sql) === true) {
-    } else {
-        die('{ "message": "ERROR: CONN FAILED: '.$conn->connect_error.'"}');
-    }
-    echo '{ "message": "SUCCESS",  "project_id":"'.$p_id.'"}';
+
 }
 
 function UpdateProject($u_id, $conn)

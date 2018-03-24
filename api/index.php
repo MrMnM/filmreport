@@ -53,21 +53,26 @@ $app->get('/', function ($request, $response, $args) {
 });
 // User
 $app->get('/user', 'User:get');
+$app->get('/user/get/{u_id}', 'User:getSpecific'); // This takes an encrypted version of the userid
 $app->post('/user', 'User:update');
 $app->post('/user/new', 'User:new');
 $app->get('/user/validate', 'User:validate'); //?v=xx
 
 // Company
 $app->get('/company', 'Company:list');
-$app->get('/company/{id}', 'Company:get');
 $app->post('/company/new', 'Company:new');
-$app->delete('/company/{id}', 'Company:delete');
+$app->get('/company/{c_id}', 'Company:get');
+$app->delete('/company/{c_id}', 'Company:delete');
 
 // Project
 $app->get('/project', 'Project:list');
-$app->get('/project/{id}', 'Project:load');
-$app->post('/project/{id}', 'Project:save');
-$app->delete('/project/{id}', 'Project:delete');
+$app->post('/project/new', 'Project:new');
+$app->post('/project/{p_id}', 'Project:save');
+$app->delete('/project/{p_id}', 'Project:delete');
+$app->get('/project/{p_id}/data', 'Project:getData');
+$app->get('/project/{p_id}/info', 'Project:getInfo');
+$app->post('/project/{p_id}/info', 'Project:saveInfo');
+$app->post('/project/{p_id}/finish', 'Project:delete');
 
 // Stats
 $app->get('/stats/chart/donut', 'Stats:donutchart');
@@ -78,8 +83,8 @@ $app->get('/stats', 'Stats:misc'); //?start=xx&end=xx
 $app->get('/jobs', 'Jobs:get');
 
 //Chats
-$app->get('/chats', 'Chat:get'); //?p=xx
-$app->post('/chats', 'Chat:add'); //?p=xx
+$app->get('/chats/{p_id}', 'Chat:get'); //TODO: Move into line
+$app->post('/chats/{p_id}', 'Chat:add'); //?text=xxx
 
 
 // View

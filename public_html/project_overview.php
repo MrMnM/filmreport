@@ -178,7 +178,7 @@ $password = $db['password'];
                         <div class="modal-body">
                             <div class="alert alert-info">Achtung, dadurch wird das Projekt <strong id="toFinName"></strong> abgeschlossen und kann danach nicht mehr bearbeitet werden</div>
                             <form role="form" action="h_project.php" method="post" id="finishProject">
-                                <input type="hidden" name="action" value="finish">
+                                <input type="hidden" name="action" value="finish"> <!--TODO Get this back to working with new api-->
                                     <input type="hidden" class="form-control" name="p_id" id="toFinID">
                                     <input type="hidden" class="form-control" id="toFinName" disabled>
                             </div>

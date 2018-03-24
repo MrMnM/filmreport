@@ -43,7 +43,7 @@ $(()=> { // STARTFUNCTION
   switchTypes($('#switchType').prop('checked'))
   $('.input-daterange input').each(function() {
     $(this).datepicker({
-      format: 'yyyy-mm',
+      format: 'yyyy-mm-dd',
       todayBtn: 'linked',
       todayHighlight: true
     })

@@ -12,14 +12,8 @@ export default class Row {
     this.car = 0
     this.lunch = false
     this.workhours = '00:00'
-    // TODO Overtime in Array
-    this.tent = 0
-    this.elev = 0
-    this.twel = 0
-    this.thir = 0
-    this.four = 0
-    this.fift = 0
-    this.sixt = 0
+    // TODO Overtime in Array perhour
+    this.overtime=[0,0,0,0,0,0,0]
     this.night = 0
   }
 
@@ -44,10 +38,9 @@ export default class Row {
       this.workhours='05:00'
       return this.workhours
     }
-    var brk = this.break
-    var pause=[]
-    pause[0] = brk.split(':')[0]
-    pause[1] = brk.split(':')[1]
+
+    let brk = this.break
+    let pause = brk.split(':')
     var difference = moment.utc(moment(this.end,'HH:mm').diff(moment(this.start,'HH:mm'))).format('HH:mm')
     var duration = moment.duration(difference)
     duration.subtract(pause[0] + ':00', 'hours')
@@ -55,6 +48,7 @@ export default class Row {
     this.workhours = moment.utc(+duration).format('H:mm')
     return this.workhours
   }
+
   getBase() {
     if (this.manualBase == false){
       switch(this.work){
@@ -76,10 +70,11 @@ export default class Row {
     }
     return this.base
   }
+
   getOvertime(hour) {
     let ret=0
-    let workhours = this.getWorkHours()
-    let currentHour = timeFromMins((hour-1)*60)
+    const workhours = this.getWorkHours()
+    const currentHour = timeFromMins((hour-1)*60)
     if (workhours > currentHour){
       if(subTimes(workhours,currentHour) > '01:00'){
         if (workhours>'16:00' && currentHour == '15:00'){
@@ -97,13 +92,13 @@ export default class Row {
         }
       }
     }
-    if (hour==10) {this.tent=ret}
-    if (hour==11) {this.elev=ret}
-    if (hour==12) {this.twel=ret}
-    if (hour==13) {this.thir=ret}
-    if (hour==14) {this.four=ret}
-    if (hour==15) {this.fift=ret}
-    if (hour==16) {this.sixt=ret}
+    if (hour==10) {this.overtime[0]=ret}
+    if (hour==11) {this.overtime[1]=ret}
+    if (hour==12) {this.overtime[2]=ret}
+    if (hour==13) {this.overtime[3]=ret}
+    if (hour==14) {this.overtime[4]=ret}
+    if (hour==15) {this.overtime[5]=ret}
+    if (hour==16) {this.overtime[6]=ret}
     return ret
   }
 

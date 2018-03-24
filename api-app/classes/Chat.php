@@ -11,7 +11,7 @@ class Chat
 
     public function get($request, $response, $args)
     {
-        $p_id = $request->getQueryParam('p');
+        $p_id = $args['p_id'];
         $data = $this->db->select('chats', [
                            "[>]users" => ["from" => "u_id"]
                        ], [
@@ -30,7 +30,7 @@ class Chat
             $c=['id'=>$cur["id"],
               'date'=>$cur["time"],
               'from'=>$cur["name"],
-              'text'=>$cur["text"]
+              'text'=>htmlspecialchars($cur["text"], ENT_QUOTES)
           ];
             array_push($full, $c);
         }
@@ -50,8 +50,8 @@ class Chat
             $u_id= $_SESSION['user'];
         }
         $req = $request->getParsedBody();
-        $p_id=$req["p_id"];
-        $text=$req["text"];
+        $p_id=$args['p_id'];
+        $text=htmlspecialchars($req["text"], ENT_QUOTES);
 
         $to = $this->db->get("projects", "user_id", [
              "project_id" => $p_id

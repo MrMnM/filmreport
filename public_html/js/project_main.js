@@ -9,10 +9,7 @@ export function getRate(num) {
 
 const p = new Project(p_id)
 var rowCounter = loadElement.length
-//var rowElement = new Array()
 var saved = true
-//const basePay = $('#basePay').val()
-//const basePay = p.pay
 const startDate = new Date($('#startDate').val())
 
 //   BUTTONS
@@ -41,18 +38,19 @@ $('#addRow').click((event) => {
   updateBottom()
   updateSaveStatus()
 })
+
 $('#removeRow').click((event) => {
   event.preventDefault()
   saved = false
   if (rowCounter != 0) {
     rowCounter--
     $('#r' + rowCounter).remove()
-    //rowElement.pop()
-    p.rows.pop()
+    p.rows.pop() //TODO: Make Individual Rows deletabel
   }
   updateBottom()
   updateSaveStatus()
 })
+
 $('#refresh').click((event) => {
   event.preventDefault()
   saved = false
@@ -93,8 +91,7 @@ $('#workhours').change(function() {
     p.rows[currentNumber].work = event.target.value
   }
   p.rows[currentNumber].date = $('#date' + currentNumber).val()
-  updateRow(currentNumber)
-  updateBottom()
+  updateAll()
   updateSaveStatus()
 })
 
@@ -141,7 +138,7 @@ function addRow() {
         </tr>`)
   $('#workhours').append(newRow)
   saved = false
-  updateRow(rowCounter)
+  updateAll()
   updateSaveStatus()
   rowCounter++
 }
@@ -176,7 +173,6 @@ function loadRow(currentRow) {
 function Save() {
   $('#saveButton').hide()
   $('#saveButtonDisabled').show()
-  //let rows = JSON.stringify(rowElement)
   let rows = JSON.stringify(p.rows)
   $.ajax({
     url: 'h_project.php',
@@ -400,11 +396,11 @@ function updateAll() {
 function addChat(text) {
   $('.hideSend').hide()
   $.ajax({
-    url: 'https://api.filmstunden.ch/chats',
+    url: 'https://api.filmstunden.ch/chats/'+p_id,
     type: 'POST',
     xhrFields: {withCredentials: true},
     dataType: 'json',
-    data: {  p_id: p_id, text: text }, //TODO Correct entries here
+    data: { text: text }, //TODO Correct entries here
   })
     .done(() => {
       loadChats()

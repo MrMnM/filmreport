@@ -403,20 +403,20 @@ if (!empty($json)){?>
                         <input type="hidden" name="p_id" value="<? echo $p_id;?>">
                     <div class="form-group input-group">
                         <span class="input-group-addon">Projektname</span>
-                        <input type="text" name="name" class="form-control" value="<?
+                        <input type="text" id="p_name" name="name" class="form-control" value="<?
                         /*NAME HERE *************************************************************************************************/
                         echo $name;?>" required="">
                     </div>
                     <datalist id="joblist"></datalist>
                     <div class="form-group input-group">
                         <span class="input-group-addon">Arbeit als:</span>
-                        <input type="text" list="joblist" class="form-control" name="work" value="<?
+                        <input type="text" id="p_job" list="joblist" class="form-control" name="work" value="<?
 /* JOB HERE ******************************************************************************************************************************************/
                          echo $job;?>" required>
                     </div>
                     <div class="form-group input-group">
                         <span class="input-group-addon">Tagesgage</span>
-                        <input type="number" name="pay" class="form-control" value="<?
+                        <input type="number" id="pay" name="pay" class="form-control" value="<?
 /* PAY HERE *************************************************************************************************************************************************/
                         echo $pay;?>" required>
                     </div>

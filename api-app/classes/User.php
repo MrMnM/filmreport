@@ -34,11 +34,46 @@ class User
         $data = $data['0'];
         $data['ahv'] = $this->enc->encrypt($data['ahv'], 'd');
         $data['konto'] = $this->enc->encrypt($data['konto'], 'd');
+        array_walk_recursive($data, function(&$item) {
+            $item = htmlspecialchars($item, ENT_QUOTES);
+        });
         return $response ->withHeader('Access-Control-Allow-Origin', 'https://filmstunden.ch')
                        ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
                        ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS')
                        ->withHeader('Access-Control-Allow-Credentials', 'true')
                        ->withJson($data);
+    }
+
+    public function getSpecific($request, $response, $args){
+      //$u_id = $this->enc->encrypt($args['u_id'],'d');
+      $u_id = $args['u_id']; //TODO IMplement Encryption uf uid
+      $data = $this->db->select('users', [
+                          'mail',
+                          'name',
+                          'tel',
+                          'address_1',
+                          'address_2',
+                          'ahv',
+                          'dateob',
+                          'konto',
+                          'bvg',
+                          'type',
+                          'affiliation',
+                        ], [
+                          "u_id" => $u_id
+                        ]);
+      if (sizeof($data)>1) {throw new Exception('Multiple Users with same ID');};
+      $data = $data['0'];
+      $data['ahv'] = $this->enc->encrypt($data['ahv'], 'd');
+      $data['konto'] = $this->enc->encrypt($data['konto'], 'd');
+      array_walk_recursive($data, function(&$item) {
+          $item = htmlspecialchars($item, ENT_QUOTES);
+      });
+      return $response ->withHeader('Access-Control-Allow-Origin', 'https://filmstunden.ch')
+                     ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+                     ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS')
+                     ->withHeader('Access-Control-Allow-Credentials', 'true')
+                     ->withJson($data);
     }
 
     public function update($request, $response, $args)

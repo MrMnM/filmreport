@@ -51,13 +51,13 @@
     </li><!-- /.dropdown -->
     <li class="dropdown">
       <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-        <i class="fa fa-user fa-fw"></i>&nbsp; <?echo $u_name;?>&nbsp;&nbsp; <i class="fa fa-caret-down"></i>
+        <i class="fa fa-user fa-fw"></i>&nbsp; <?echo htmlspecialchars($u_name, ENT_QUOTES);?>&nbsp;&nbsp; <i class="fa fa-caret-down"></i>
       </a>
       <ul class="dropdown-menu dropdown-user">
         <li class="divider"></li>
         <li><a href="user.php"><i class="fa fa-user fa-fw"></i> Pers&ouml;nliche Informationen</a></li>
         <li class="divider"></li>
-        <li><a href="login.php"><i class="fa fa-sign-out fa-fw"></i> Logout</a></li>
+        <li><a href="login.php" onclick="document.cookie = 'REMID=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';"><i class="fa fa-sign-out fa-fw"></i> Logout</a></li>
       </ul><!-- /.dropdown-user -->
     </li><!-- /.dropdown -->
   </ul> <!-- /.navbar-top-links -->

@@ -59,25 +59,47 @@ class Project
         return $response;
     }
 
-    public function load($request, $response, $args)
+    public function new($request, $response, $args)
     {
-        $data = "load";
-        $data .= $args['id'];
-        $response = $response->withJson($data);
-        return $response;
+
+    }
+
+    public function getData($request, $response, $args)
+    {
+      $p_id=$args['p_id'];
+
     }
     public function save($request, $response, $args)
     {
-        $data = "save";
-        $data .= $args['id'];
-        $response = $response->withJson($data);
-        return $response;
+      $p_id=$args['p_id'];
+
     }
     public function delete($request, $response, $args)
     {
-        $data = "delete";
-        $data .= $args['id'];
-        $response = $response->withJson($data);
-        return $response;
+      $p_id=$args['p_id'];
+
+    }
+
+    public function saveInfo($request, $response, $args)
+    {
+      $p_id=$args['p_id'];
+
+    }
+
+    public function finish($request, $response, $args)
+    {
+      $p_id=$args['p_id'];
+      $sql = "UPDATE projects SET  p_finished=1 WHERE project_id = '$p_id'";
+      if ($conn->query($sql) === true) {
+      } else {
+          die('{ "message": "ERROR: CONN FAILED: '.$conn->connect_error.'"}');
+      }
+      echo '{ "message": "SUCCESS",  "project_id":"'.$p_id.'"}';
+    }
+    public function getInfo($request, $response, $args)
+    {
+      $p_id=$args['p_id'];
+
+
     }
 }

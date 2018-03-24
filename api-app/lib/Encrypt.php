@@ -1,7 +1,7 @@
 <?
 class Encrypt
 {
-    public function __construct($container) {
+    public function __construct() {
     }
 
       public function encrypt( $string, $action = 'e' ) {

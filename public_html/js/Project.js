@@ -70,10 +70,9 @@ export default class Project {
 
   getChats(){
     let p=$.ajax({
-      url: 'https://api.filmstunden.ch/chats',
+      url: 'https://api.filmstunden.ch/chats/'+this.id,
       dataType: 'json',
       xhrFields: {withCredentials: true},
-      data : { p: this.id },
       type: 'GET',
       context: this
     })
