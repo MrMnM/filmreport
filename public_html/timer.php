@@ -45,11 +45,8 @@ $password = $db['password'];
 <body>
 <div id="wrapper">
     <?
-    if ($u_type == 'producer') {
-    include('./includes/inc_top_producer.php');
-    }else{
-    include('./includes/inc_top_freelancer.php');
-    }
+    include('./includes/inc_top.php');
+
     ?>
 <div id="page-wrapper">
     <p></br></p>

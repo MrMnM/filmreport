@@ -12,7 +12,6 @@ export default class Row {
     this.car = 0
     this.lunch = false
     this.workhours = '00:00'
-    // TODO Overtime in Array perhour
     this.overtime=[0,0,0,0,0,0,0]
     this.night = 0
   }

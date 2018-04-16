@@ -64,7 +64,7 @@ $('tr.bvg')
 jQuery('#saveInfo').click(function(event) {
   event.preventDefault()
   $.ajax({
-    url: 'https://api.filmstunden.ch/user',
+    url: 'https://filmstunden.ch/api/v01/user',
     xhrFields: {withCredentials: true},
     type: 'POST',
     dataType: 'json',
@@ -80,9 +80,9 @@ jQuery('#saveInfo').click(function(event) {
     },
     success: function(data) {
       if (data.msg == 'SUCCESS') {
-        //TODO SUCCESS
+        console.log(data.msg)
       } else {
-        alert('ERROR')
+        console.error(data.msg)
       }
     }
   })
@@ -91,7 +91,7 @@ jQuery('#saveInfo').click(function(event) {
 
 function LoadUser() {
   $.ajax({
-    url: 'https://api.filmstunden.ch/user',
+    url: 'https://filmstunden.ch/api/v01/user',
     xhrFields: {withCredentials: true},
     type: 'GET',
   })

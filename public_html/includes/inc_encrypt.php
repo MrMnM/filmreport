@@ -5,10 +5,10 @@ function encrypt( $string, $action = 'e' ) {
     $cur = 'v00:';
     if($v=='v00:' || $action=='e'){
       if($v=='v00:'){$string = substr($string,4);}
-      $secret_key = 'QEPEg-wg_PKn?PtBx-VpF34fRQ@zYE*B'; //TODO Replace with by Userkey
+      $secret_key = 'QEPEg-wg_PKn?PtBx-VpF34fRQ@zYE*B'; 
       $secret_iv = 'JzUSGr?$2tWRn*r$5sTJ7E!LBw6zUdX!';
     }else{
-      $secret_key = 'my_simple_secret_key'; //TODO Replace with by Userkey
+      $secret_key = 'my_simple_secret_key';
       $secret_iv = 'my_simple_secret_iv';
     }
 

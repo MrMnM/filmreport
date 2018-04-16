@@ -1,11 +1,16 @@
 <?php
-require_once('./includes/inc_encrypt.php');
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting( E_ALL | E_STRICT );
+
+include './includes/inc_encrypt.php';
 require_once('../api-app/lib/Globals.php');
 $db=$GLOBALS['db'];
 $servername = "localhost";
 $dbname = $db['database_name'];
 $username = $db['username'];
 $password = $db['password'];
+
 $type=1;
 if (!empty($_GET["t"])) {
     $type=$_GET["t"];
@@ -18,7 +23,7 @@ if (!empty($_GET["id"])) {
             if ($conn->connect_error) {
                 die("Connection failed: " . $conn->connect_error);
             }
-            $sql = "SELECT user_id, p_name, p_company, p_job, p_gage, p_start, p_end, p_json, p_comment, spesen FROM `projects` WHERE project_id='$p_id';";
+            $sql = "SELECT user_id, p_name, p_company, p_job, p_gage, p_start, p_end, p_json, p_comment FROM `projects` WHERE project_id='$p_id';";
             $result = $conn->query($sql);
 
             if ($result->num_rows > 0) {
@@ -33,13 +38,11 @@ if (!empty($_GET["id"])) {
                     $p_json = $row["p_json"];
                     $user = $row["user_id"];
                     $comment = $row["p_comment"];
-                    $spesen=$row["spesen"];
                 }
             }
 
 			$sdate = $i_sdate->format('d/m/Y');
 			$edate = $i_edate->format('d/m/Y');
-      $c_id=$p_company;
 
 			if($p_json=='' || $p_json=='[]'){
 				die('<font color="red"><b>Das Projekt ist noch leer, bitte Stunden hinzuf&uuml;gen</b></font>');
@@ -74,8 +77,6 @@ if (!empty($_GET["id"])) {
       <ul class="nav navbar-nav">
         <li class="active"><a href="#">Rapport</a></li>
         <li><a href="#" onclick="alert('Noch nicht implementiert')">Abrechnung</a></li>
-        <li><a href="#" onclick="alert('Noch nicht implementiert')">Spesen</a></li>
-
       </ul>
         <ul class="nav navbar-nav navbar-right">
           <li class="dropdown">
@@ -511,7 +512,7 @@ $allhours1 = $allhours2 = new DateTime('2000-01-01 00:00:00');
         <td colspan="11"></td>
         <td colspan="10" class="xl1" align="right">Zusätzliche Spesen (siehe Spesenblatt):</td>
         <td></td>
-        <td class="pay additional" colspan="2"><?= $spesen; ?></td>
+        <td class="pay additional" colspan="2">20</td>
       </tr>
 			<tr>
 				<td class="f10" height="10" ></td>
@@ -556,7 +557,6 @@ $allhours1 = $allhours2 = new DateTime('2000-01-01 00:00:00');
 if (location.protocol !== "https:") location.protocol = "https:";
 const us_id = "guest"
 const p_id = "<?echo $p_id;?>"
-const c_id= "<?echo $c_id;?>"
 </script>
 
 </body>

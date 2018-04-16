@@ -9,9 +9,8 @@ export default class Company {
 
   loadCompany(){
     let p=$.ajax({
-      url: 'https://api.filmstunden.ch/company/'+this.id,
+      url: 'https://filmstunden.ch/api/v01/company/'+this.id,
       dataType: 'json',
-      xhrFields: {withCredentials: true},
       type: 'GET',
       context: this
     })

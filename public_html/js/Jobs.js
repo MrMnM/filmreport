@@ -1,7 +1,6 @@
 export function loadJoblist() {
-  $.ajax({
-    url: 'https://api.filmstunden.ch/jobs',
-    xhrFields: { withCredentials: true },
+  let p = $.ajax({
+    url: 'https://filmstunden.ch/api/v01/jobs',
     type: 'GET',
     dataType: 'json'
   }).done(data => {
@@ -12,4 +11,5 @@ export function loadJoblist() {
       dataList.appendChild(option)
     })
   })
+  return p
 }

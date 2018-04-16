@@ -57,7 +57,7 @@
         <li class="divider"></li>
         <li><a href="user.php"><i class="fa fa-user fa-fw"></i> Pers&ouml;nliche Informationen</a></li>
         <li class="divider"></li>
-        <li><a href="login.php" onclick="document.cookie = 'REMID=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';"><i class="fa fa-sign-out fa-fw"></i> Logout</a></li>
+        <li><a href="login.php?action=logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a></li>
       </ul><!-- /.dropdown-user -->
     </li><!-- /.dropdown -->
   </ul> <!-- /.navbar-top-links -->

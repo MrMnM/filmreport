@@ -21,40 +21,38 @@ $password = $db['password'];
     <meta name="description" content="">
     <meta name="author" content="">
     <title>Projektabrechnung</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/jquery.metismenu/1.1.3/metisMenu.min.css" integrity="sha256-4NxXT7KyZtupE4YdYLDGnR5B8P0JWjNBpF8mQBzYtrM=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/jquery.metismenu/1.1.3/metisMenu.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="./css/main.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
 </head>
 
 <body>
 <div id="wrapper">
-<?
-    include('./includes/inc_top.php');
-?>
+<?//***********************************************
+include_once('./includes/inc_top.php');
+//***********************************************?>
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">
             <p></p>
+            <!--error messages-->
+            <div class="alert alert-danger" id="saveError" style="display:none">
+                <span class="savetext">Fehler beim Speichern</span>
+                <button type="button" id="resaveButton" class="btn btn-danger"><span class="fa fa-cloud-upload"> Erneut versuchen</span></button>
+            </div>
             <div class="alert alert-warning" id="saveWarning" style="display:none">
                 <div class="project-spinner"></div>
             <span class="savetext">Nicht gespeicherte &Auml;nderungen.</span>
                 <button type="button" id="saveButton" class="btn btn-warning saveButton"><span class="fa fa-cloud-upload"> Speichern</span></button>
-                <button type="button" class="btn btn-warning disabled" id="saveButtonDisabled" style="display:none"><span class="fa fa-save"> Speichern</span</button>
+                <button type="button" class="btn btn-warning disabled" id="saveButtonDisabled" style="display:none"><span class="fa fa-cloud-upload"> Speichern</span</button>
             </div>
             <div class="alert alert-success" id="saveInfo" style="display:none">
                 Gespeichert.
             </div>
-
-            <?if (!empty($_GET["id"])) { ?>
-                    <div class="alert alert-info" id="saveNone">
-                            &nbsp;
-                    </div>
-            <?}else{?>
-                    <div class="alert alert-danger" id="saveNone">
-                        <b>KEIN PROJEKT GELADEN</b>
-                    </div>
-            <? die();}?>
+            <div class="alert alert-info" id="saveNone">
+                &nbsp;
+            </div>
         </div><!-- /col-lg-12 -->
     </div><!-- /row -->
 <?
@@ -116,7 +114,8 @@ if (!empty($json)){?>
             <h4 id="title"><div class="loading-spinner-left"></div>&nbsp;</h4>
             <ul class="nav nav-tabs">
                 <li class="active"><a href="#project" data-toggle="tab" aria-expanded="true">Infos</a></li>
-                <li><a href="#hours" data-toggle="tab" aria-expanded="false">Stunden</a></li>
+                <li><a href="#hours" data-toggle="tab" aria-expanded="false" id="hoursTab">Stunden</a></li>
+                <li><a href="#spesen" data-toggle="tab" aria-expanded="false">Spesen</a></li>
                 <li><a href="#notes" data-toggle="tab" aria-expanded="false">Kommentare</a></li>
             </ul>
 
@@ -229,7 +228,6 @@ if (!empty($json)){?>
                                 </div><!--panel-body-->
                             </div><!--panel-->
                         </div><!--col.lg-6-->
-
                     </div><!--row-->
                 </div><!--tab-pane-->
 
@@ -283,66 +281,92 @@ if (!empty($json)){?>
 
                         </div><!-- /.col-lg-12 -->
                     </div><!--row-->
-                    <div class="row hidden-xs">
-                        <div class="col-lg-12">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-7 col-md-offset-5">
                             <p></p>
-                            <table width="100%" class="table table-striped table-bordered table-hover" id="calcualtions">
-                                <tr>
-                                    <td colspan ="5" align="right" width="550px">Arbeitszeit in Stunden:</td>
-                                    <td width="100px" id="totalWorkHours"></td>
-                                    <td width="80px"></td>
-                                    <td colspan="2"><font size=-2>125%</font></td>
-                                    <td colspan="2"><font size=-2>150%</font></td>
-                                    <td colspan="2"><font size=-2>200%</font></td>
-                                    <td colspan="1"><font size=-2>250%</font></td>
-                                    <td><font size=-2>25%</font></td>
-                                    <td colspan="2" width=10%></td>
-                                </tr>
-                                <tr>
-                                    <td colspan ="6" align="right"></td>
-                                    <td id="hoursDay">0</td>
-                                    <td colspan="2" id="hours125">0</td>
-                                    <td colspan="2" id="hours150">0</td>
-                                    <td colspan="2" id="hours200">0</td>
-                                    <td id="hours250">0</td>
-                                    <td id="hours25">0</td>
-                                    <td id="lunches">0</td>
-                                    <td id="totalKilometers">0</td>
-                                </tr>
-                                <tr>
-                                    <td colspan ="6" align="right"> a CHF:</td>
-                                    <td id="payRateDay">0</td>
-                                    <td colspan="2" id="payRate125">0</td>
-                                    <td colspan="2" id="payRate150">0</td>
-                                    <td colspan="2" id="payRate200">0</td>
-                                    <td id="payRate250">0</td>
-                                    <td id="payRate25">0</td>
-                                    <td>32</td>
-                                    <td>0.7</td>
-                                </tr>
-                                <tr>
-                                    <td colspan ="6" align="right">CHF:</td>
-                                    <td id="totalDay">0</td>
-                                    <td colspan="2" id="total125">0</td>
-                                    <td colspan="2" id="total150">0</td>
-                                    <td colspan="2" id="total200">0</td>
-                                    <td id="total250">0</td>
-                                    <td id="total25">0</td>
-                                    <td id="totalLunch">0</td>
-                                    <td id="totalCar">0</td>
-                                </tr>
-                                <tr>
-                                    <td colspan ="6" align="right">Total: </td>
-                                    <td align="center">Grundlohn</td>
-                                    <td colspan="8" align="center">Zuschlaege</td>
-                                    <td colspan="2" align="center">Spesen</td>
-                                </tr>
-                                <tr>
-                                    <td colspan ="6" align="right">CHF: </td>
-                                    <td align="center" id="salaryBase"></td>
-                                    <td colspan="8" align="center" id="salaryOvertime"></td>
-                                    <td colspan="2" align="center" id="salaryAdditional"></td>
-                                </tr>
+
+                            <table class="table table-bordered table-hover" cellspacing="0" cellpadding="0">
+                              <tr>
+                                <th width="35px"></th>
+                                <th colspan="3">Totalarbeitszeit in Stunden:</th>
+                                <th id="totalWorkHours"></th>
+                              </tr>
+                              <tr class="cat">
+                                <th class="collapseHeader"><i class="fa fa-chevron-right"></i></th>
+                                <th colspan="3" class="collapseHeader">Grundlohn</th>
+                                <th class="collapseHeader" id="salaryBase"></th>
+                              </tr>
+                              <tr class="BottomSub">
+                                <td></td>
+                                <td>Grundlohn (9h/Tag)</td>
+                                <td id="hoursDay"></td>
+                                <td id="payRateDay"></td>
+                                <td id="totalDay"></td>
+                              </tr>
+                              <tr class="cat">
+                                <th class="collapseHeader"><i class="fa fa-chevron-right"></i></th>
+                                <th colspan="3" class="collapseHeader">Uberstundenzuschläge Total</th>
+                                <th class="collapseHeader" id="salaryOvertime"></th>
+                              </tr>
+                              <tr class="BottomSub">
+                                <td></td>
+                                <td>125 (10&11)</td>
+                                <td id="hours125"></td>
+                                <td id="payRate125"></td>
+                                <td id="total125"></td>
+                              </tr>
+                              <tr class="BottomSub">
+                                <td></td>
+                                <td>150 (12&13)</td>
+                                <td id="hours150"></td>
+                                <td id="payRate150"></td>
+                                <td id="total150"></td>
+                              </tr>
+                              <tr class="BottomSub">
+                                <td></td>
+                                <td>200 (14&15)</td>
+                                <td id="hours200"></td>
+                                <td id="payRate200"></td>
+                                <td id="total200"></td>
+                              </tr>
+                              <tr class="BottomSub">
+                                <td></td>
+                                <td>250 (16+)</td>
+                                <td id="hours250"></td>
+                                <td id="payRate250"></td>
+                                <td id="total250"></td>
+                              </tr>
+                              <tr class="BottomSub">
+                                <td></td>
+                                <td>Nacht</td>
+                                <td id="hours25"></td>
+                                <td id="payRate25"></td>
+                                <td id="total25"></td>
+                              </tr>
+                              <tr class="cat">
+                                <th class="collapseHeader"><i class="fa fa-chevron-right"></i></th>
+                                <th colspan="3" class="collapseHeader">Spesen Total</th>
+                                <th class="collapseHeader" id="salaryAdditional"></th>
+                              </tr>
+                              <tr class="BottomSub">
+                                <td></td>
+                                <td>Essen</td>
+                                <td id="lunches"></td>
+                                <td>à 32 CHF</td>
+                                <td id="totalLunch"></td>
+                              </tr>
+                              <tr class="BottomSub">
+                                <td></td>
+                                <td>Auto</td>
+                                <td id="totalKilometers"></td>
+                                <td>à 0.7 CHF</td>
+                                <td id="totalCar"></td>
+                              </tr>
+                              <tr class="cat">
+                                <th></th>
+                                <th colspan="3">Total</th>
+                                <th id="totalOverall"></th>
+                              </tr>
                             </table>
                         </div><!--col-lg-12-->
                     </div><!--row-->
@@ -357,9 +381,9 @@ if (!empty($json)){?>
                                     <i class="fa fa-comment-o fa-fw"></i> Bemerkungen
                                 </div>
                                 <div class="panel-body">
-                                    <textarea class="form-control" rows="3" width=100% id="comment"><?
-/*COMMENT HERE **************************************************************************************************************/
-                                    echo $comment;?></textarea>
+                                    <textarea class="form-control" rows="3" width=100% id="comment">
+<!-- COMMENT LOADS IN HERE ****************************************************************-->
+                                    </textarea>
                                 </div>
                             </div>
                         </div><!--col-lg-12-->
@@ -370,20 +394,86 @@ if (!empty($json)){?>
                             </div>
                             <div class="panel-body">
                               <div class="message-wrap col-lg-12" id="chats">
-<!-- COMMENTS LOAD IN HERE ****************************************************************3-->
+<!-- CHATS LOAD IN HERE ****************************************************************-->
                               </div>
                               <div class="send-wrap hideSend">
                                                               <br>
                                 <textarea class="form-control send-message" rows="3" placeholder="Antworten..." id="commentText"></textarea>
                               </div>
                               <div class="btn-panel hideSend">
-                                <a href="" class=" col-lg-4 text-right btn send-message-btn pull-right" role="button" id="submitComment"><i class="fa fa-plus"></i> Antworten</a>
+                                <a href="#" class=" col-lg-4 text-right btn send-message-btn pull-right" role="button" id="submitComment"><i class="fa fa-plus"></i> Antworten</a>
                               </div><!--btn-->
                             </div><!--panelBody-->
                           </div><!--panel-->
                         </div><!--col-lg-6-->
                       </div><!--col-lg-12-->
                     </div><!--row-->
+
+                    <div class="tab-pane fade in" id="spesen">
+                        <p></p>
+                        <div class="row">
+                            <div class="col-lg-12">
+                              <div class="panel panel-default">
+                                <div class="panel-heading">
+                                  <i class="fa fa-credit-card fa-fw"></i> Spesen
+                                </div>
+                          			<div class="panel-body">
+                          				<div class="table-responsive">
+                          					<table class="table table-condensed">
+                          						<thead>
+                                          <tr>
+                              							<td><strong>Item</strong></td>
+                              							<td class="text-center"><strong>Price</strong></td>
+                              							<td class="text-center"><strong>Quantity</strong></td>
+                              							<td class="text-right"><strong>Totals</strong></td>
+                                            </tr>
+                          						</thead>
+                          						<tbody>
+                          							<!-- foreach ($order->lineItems as $line) or some such thing here -->
+                          							<tr>
+                          								<td>BS-200</td>
+                          								<td class="text-center">$10.99</td>
+                          								<td class="text-center">1</td>
+                          								<td class="text-right">$10.99</td>
+                          							  </tr>
+                                        <tr>
+                              						<td>BS-400</td>
+                          								<td class="text-center">$20.00</td>
+                          								<td class="text-center">3</td>
+                          								<td class="text-right">$60.00</td>
+                          						   	</tr>
+                                        <tr>
+                                  				<td>BS-1000</td>
+                          								<td class="text-center">$600.00</td>
+                          								<td class="text-center">1</td>
+                          								<td class="text-right">$600.00</td>
+                          						  	</tr>
+                          							<tr>
+                          								<td class="thick-line"></td>
+                          								<td class="thick-line"></td>
+                          								<td class="thick-line text-center"><strong>Subtotal</strong></td>
+                          								<td class="thick-line text-right">$670.99</td>
+                          							  </tr>
+                          							<tr>
+                          								<td class="no-line"></td>
+                          								<td class="no-line"></td>
+                          								<td class="no-line text-center"><strong>Shipping</strong></td>
+                          								<td class="no-line text-right">$15</td>
+                          							  </tr>
+                          							<tr>
+                          								<td class="no-line"></td>
+                          								<td class="no-line"></td>
+                          								<td class="no-line text-center"><strong>Total</strong></td>
+                          								<td class="no-line text-right">$685.99</td>
+                          							  </tr>
+                          						</tbody>
+                          					</table>
+                          				</div>
+                          			</div>
+                          		</div>
+                            </div><!--col-lg-12-->
+                          </div><!--col-lg-12-->
+                        </div><!--row-->
                 </div><!--tab-pane-->
             </div><!--tab-content-->
         </div><!--panel-body-->
@@ -403,22 +493,16 @@ if (!empty($json)){?>
                         <input type="hidden" name="p_id" value="<? echo $p_id;?>">
                     <div class="form-group input-group">
                         <span class="input-group-addon">Projektname</span>
-                        <input type="text" id="p_name" name="name" class="form-control" value="<?
-                        /*NAME HERE *************************************************************************************************/
-                        echo $name;?>" required="">
+                        <input type="text" id="p_name" name="name" class="form-control" required>
                     </div>
                     <datalist id="joblist"></datalist>
                     <div class="form-group input-group">
                         <span class="input-group-addon">Arbeit als:</span>
-                        <input type="text" id="p_job" list="joblist" class="form-control" name="work" value="<?
-/* JOB HERE ******************************************************************************************************************************************/
-                         echo $job;?>" required>
+                        <input type="text" id="p_job" list="joblist" class="form-control" name="work" required>
                     </div>
                     <div class="form-group input-group">
                         <span class="input-group-addon">Tagesgage</span>
-                        <input type="number" id="pay" name="pay" class="form-control" value="<?
-/* PAY HERE *************************************************************************************************************************************************/
-                        echo $pay;?>" required>
+                        <input type="number" id="p_pay" name="pay" class="form-control" required>
                     </div>
                         <div class="form-group input-group companylist">
                             <span class="input-group-addon">Produktionsfirma</span>

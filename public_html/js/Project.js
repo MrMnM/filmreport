@@ -12,12 +12,14 @@ export default class Project {
     this.company=''
     this.companyId=''
 
+    //Stunden
     this.json=null
     this.rows=[]
 
     //ADDINFO
     this.tothour='00:00'
     this.totmoney=0
+    this.startdate='000-00-00'
     this.enddate='0000-00-00'
     this.calcbase='SSFV_DAY'
     this.basehours=9
@@ -28,12 +30,11 @@ export default class Project {
   }
 
 
-  loadProjectInfo(){
+  loadProject(){
     let p= $.ajax({
-      url: 'h_project.php',
+      url: 'https://filmstunden.ch/api/v01/project/'+this.id,
       dataType: 'json',
-      data : { action: 'getinfo', us_id: us_id, p_id: this.id },
-      type: 'POST',
+      type: 'GET',
       context: this
     })
 
@@ -43,20 +44,6 @@ export default class Project {
       this.pay=data.pay
       this.company=data.company
       this.companyId=data.companyId
-    })
-    return p
-  }
-
-  loadProjectData(){
-    let p= $.ajax({
-      url: 'h_project.php',
-      dataType: 'json',
-      data : { action: 'load', p_id: this.id },
-      type: 'POST',
-      context: this
-    })
-
-    p=p.then((data) => {
       this.json=data.data
       this.comment=data.comment
     })
@@ -70,7 +57,7 @@ export default class Project {
 
   getChats(){
     let p=$.ajax({
-      url: 'https://api.filmstunden.ch/chats/'+this.id,
+      url: 'https://filmstunden.ch/api/v01/chats/'+this.id,
       dataType: 'json',
       xhrFields: {withCredentials: true},
       type: 'GET',

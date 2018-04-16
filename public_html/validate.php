@@ -30,7 +30,7 @@ require_once('../api-app/lib/Globals.php');
       <div id="success" class="alert alert-success" style="display: none;">
           <p>Account wurde erfolreich validiert</p>
       </div>
-      <form role="form" method="get" action="https://api.filmstunden.ch/user/validate?v=<?= urlencode($_GET['v']);?>" id="validateAccount">
+      <form role="form" method="get" action="https://filmstunden.ch/api/v01/user/validate?v=<?= urlencode($_GET['v']);?>" id="validateAccount">
           <fieldset>
               <button type="submit" id="validate-btn" class="btn btn-lg btn-success btn-block">Benutzeraccount validieren</button>
           </fieldset>

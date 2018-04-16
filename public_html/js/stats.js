@@ -23,7 +23,7 @@ export function refreshStats(chart,start,end){
   }
 
   $.ajax({
-    url: 'https://api.filmstunden.ch/stats',
+    url: 'https://filmstunden.ch/api/v01/stats',
     type: 'GET',
     xhrFields: {withCredentials: true},
     dataType: 'json',
@@ -40,7 +40,7 @@ export function refreshStats(chart,start,end){
     })
 
   $.ajax({
-    url: 'https://api.filmstunden.ch/stats/chart/line',
+    url: 'https://filmstunden.ch/api/v01/stats/chart/line',
     type: 'GET',
     xhrFields: {withCredentials: true},
     dataType: 'json',
@@ -69,12 +69,12 @@ export function refreshDonut (donut) {
         value: 100
       }]
     }).on('click', function(i, row) {
-      window.location.href = './project_overview.php?search=' + row.label
+      window.location.href = './project_overview.php?search=' + encodeURIComponent(row.label)
     })
   }
 
   $.ajax({
-    url: 'https://api.filmstunden.ch/stats/chart/donut',
+    url: 'https://filmstunden.ch/api/v01/stats/chart/donut',
     type: 'GET',
     xhrFields: {withCredentials: true},
     dataType: 'json'

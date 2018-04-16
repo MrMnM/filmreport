@@ -1,10 +1,33 @@
 import {renderTools, renderTitle} from  './dataTableRender.js'
 import {activateSideMenu} from  './sidemenu.js'
-import { loadJoblist } from './Jobs.js'
+import {loadJoblist} from './Jobs.js'
+import {getParam} from './miscHelpers.js'
+
+let delProjURL = ''
+const search = getParam('search')
+let mode = 0
+if (getParam('view')=='archive'){
+  mode = 2
+}else if(getParam('view')!=null){
+  mode = 1
+}
+
+
+$('#delete-btn').click(() => {
+  $.ajax({
+    url: delProjURL,
+    type: 'DELETE'
+  }).done(()=>{
+    $('#deleteProjectModal').modal('hide')
+    table.ajax.reload()
+  }).fail(()=>{
+    console.error('couldn\'t delete project')
+  })
+})
 
 
 function newCreated(data) {
-  if (data.message == 'SUCCESS') {
+  if (data.status == 'SUCCESS') {
     window.location.href = './project.php?id=' + data.project_id
   } else {
     console.error(data.message)
@@ -15,7 +38,7 @@ function companyCreated(cmp) {
   $('#newCompany').modal('hide')
   if (cmp.status == 'SUCCESS') {
     $.ajax({
-      url: 'https://api.filmstunden.ch/company',
+      url: 'https://filmstunden.ch/api/v01/company',
       type: 'GET',
       dataType: 'json'
     })
@@ -35,17 +58,8 @@ function companyCreated(cmp) {
   }
 }
 
-function projDeleted(data) {
-  if (data.message == 'SUCCESS') {
-    $('#deleteProjectModal').modal('hide')
-    table.ajax.reload()
-  } else {
-    console.error(data.message)
-  }
-}
-
 function projFinished(data) {
-  if (data.message == 'SUCCESS') {
+  if (data.status == 'SUCCESS') {
     $('#finishProjectModal').modal('hide')
     table.ajax.reload()
   } else {
@@ -54,19 +68,19 @@ function projFinished(data) {
 }
 
 window.setDelete = function(id, name) {
-  $('#toDelID').val(id)
+  delProjURL = 'https://filmstunden.ch/api/v01/project/'+id
   $('#delModalTitle').html('<strong>"' + name + '"</strong> wirklich L&ouml;schen ?')
 }
 
 window.setFinish = function(id, name) {
-  $('#toFinID').val(id)
+  $('#finishProject').attr('action', 'https://filmstunden.ch/api/v01/project/'+id+'/finish')
   $('#finModalTitle').html('' + name)
 }
 
 $(()=> { // STARTFUNCTION
   activateSideMenu()
   window.table = $('#projectTable').DataTable({
-    'ajax': {'url':'https://api.filmstunden.ch/project?m=' + mode,
+    'ajax': {'url':'https://filmstunden.ch/api/v01/project?m=' + mode,
       xhrFields: {withCredentials: true},
     },
     'pagingType': 'numbers',
@@ -115,10 +129,6 @@ $(()=> { // STARTFUNCTION
     dataType: 'json',
     success: projFinished
   })
-  $('#deleteProject').ajaxForm({
-    dataType: 'json',
-    success: projDeleted
-  })
   $('#newProdcomp').ajaxForm({
     dataType: 'json',
     success: companyCreated
@@ -127,7 +137,7 @@ $(()=> { // STARTFUNCTION
   loadJoblist()
 
   $.ajax({
-    url: 'https://api.filmstunden.ch/company',
+    url: 'https://filmstunden.ch/api/v01/company',
     type: 'GET',
     dataType: 'json',
   })

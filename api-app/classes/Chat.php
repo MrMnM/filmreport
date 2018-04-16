@@ -34,11 +34,7 @@ class Chat
           ];
             array_push($full, $c);
         }
-        return $response ->withHeader('Access-Control-Allow-Origin', 'https://filmstunden.ch')
-                         ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-                         ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS')
-                         ->withHeader('Access-Control-Allow-Credentials', 'true')
-                         ->withJson($full);
+        return $response->withJson($full);
     }
 
 
@@ -65,11 +61,7 @@ class Chat
                          "receiver" => $to,
                         ]);
 
-        return $response ->withHeader('Access-Control-Allow-Origin', 'https://filmstunden.ch')
-                         ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-                         ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS')
-                         ->withHeader('Access-Control-Allow-Credentials', 'true')
-                         ->withJson(array('status'=>'SUCCESS','msg'=>'Nachricht hinzugefügt'));
+        return $response->withJson(array('status'=>'SUCCESS','msg'=>'Nachricht hinzugefügt'));
     }
 
 

@@ -2,7 +2,7 @@ import Project from './Project.js'
 import Company from './Company.js'
 
 const p = new Project(p_id)
-const c = new Company('edc6a')
+const c = new Company(c_id) //TODO: get this dynamically
 const enc_u_id = '50947f3cdd8ec68d3517c19bb3f26753'
 let u = {}
 
@@ -37,8 +37,7 @@ $('#submitComment').click((e)=>{
 
 var loadPersonalInfo = new Promise((resolve)=>{
   $.ajax({
-    url: 'https://api.filmstunden.ch/user/get/'+enc_u_id,
-    xhrFields: { withCredentials: true },
+    url: 'https://filmstunden.ch/api/v01/user/get/'+enc_u_id,
     type: 'GET',
     dataType: 'json'
   }).done((data) => {
@@ -51,7 +50,7 @@ var loadPersonalInfo = new Promise((resolve)=>{
 function addChat(text){
   $('.hideSend').hide()
   $.ajax({
-    url: 'https://api.filmstunden.ch/chats/'+p_id,
+    url: 'https://filmstunden.ch/api/v01/chats/'+p_id,
     xhrFields: {withCredentials: true},
     dataType: 'json',
     data : { text: text}, //TODO Move to one file and include
@@ -73,6 +72,7 @@ function refreshView(){
   $('#p_job').html()
   $('#sdate').html()
   $('#edate').html()
+
   $('#u_name').html(u.name)
   $('#u_address1').html(u.address_1)
   $('#u_address2').html(u.address_2)
@@ -85,6 +85,8 @@ function refreshView(){
   $('#c_name').html(c.name)
   $('#c_address1').html(c.address1)
   $('#c_address2').html(c.address2)
+
+  $('#pay_additional').html()
 }
 
 $(()=>{ // JQUERY STARTFUNCTION
@@ -96,5 +98,7 @@ $(()=>{ // JQUERY STARTFUNCTION
     refreshView()
     $('#loading').hide()
     $('#main').show()
+    console.log(p)
+
   })
 })

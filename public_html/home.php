@@ -1,5 +1,6 @@
 <?//----------------------------------
-include './includes/inc_sessionhandler_default.php';
+require_once('./includes/inc_sessionhandler_default.php');
+require_once('../api-app/lib/Globals.php');
 //------------------------------------?>
 
 <!DOCTYPE html>
@@ -10,9 +11,7 @@ include './includes/inc_sessionhandler_default.php';
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-
     <title>Projektabrechnung</title>
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/jquery.metismenu/1.1.3/metisMenu.min.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/morris.js/0.5.1/morris.css"/>
@@ -26,7 +25,7 @@ include './includes/inc_sessionhandler_default.php';
 <div id="wrapper">
 
 <?//----------------------------------
-include('./includes/inc_top.php');
+include_once('./includes/inc_top.php');
 //------------------------------------?>
 
 <div id="page-wrapper">

@@ -23,6 +23,12 @@ body {
   top: -7px;
 }
 
+#resaveButton {
+  position: relative;
+  float: right;
+  top: -7px;
+}
+
 #saveButtonDisabled {
   position: relative;
   float: right;
@@ -629,12 +635,6 @@ input {
   border-radius: 3px;
 }
 
-@media only screen and (max-width: 1200px) {
-  .largescreen {
-    display: none !important;
-  }
-}
-
 .panel.with-nav-tabs .panel-heading {
   padding: 5px 5px 0 5px;
 }
@@ -807,4 +807,12 @@ body::-webkit-scrollbar {
 
 ::-webkit-scrollbar-thumb:window-inactive {
   background: #ddd;
+}
+
+table, tr, td, th {
+  border-collapse: collapse;
+}
+
+.BottomSub {
+  display: none;
 }

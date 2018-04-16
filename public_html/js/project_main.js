@@ -2,10 +2,10 @@ import Project from './Project.js'
 import { timeToMins, roundToTwo, minsToHours, formatDate } from './timeHelpers.js'
 import { activateSideMenu } from './sidemenu.js'
 import { loadJoblist } from './Jobs.js'
+import { getParam} from './miscHelpers.js'
 
-export function getRate(num) {
-  return roundToTwo(p.pay / 9 * num / 100)
-}
+if(getParam('id')===null){window.location.href = './home.php'}
+export function getRate(num) {return roundToTwo(p.pay / 9 * num / 100)}
 
 const p = new Project(p_id)
 var rowCounter = loadElement.length
@@ -14,15 +14,13 @@ const startDate = new Date($('#startDate').val())
 
 //   BUTTONS
 //-----------------------------------------------------------------------------
-$('#saveButton').click((event) => {
-  event.preventDefault()
-  Save()
-  updateSaveStatus()
-})
+$('#saveButton').click(() => Save())
+$('#resaveButton').click(() => Save())
+$('#hoursTab').click(() => updateAll())
 
 $('#openProjectModal').click((event) => {
   event.preventDefault()
-  $('#companylist').load('https://api.filmstunden.ch/company', (resp) => {
+  $('#companylist').load('https://filmstunden.ch/api/v01/company', (resp) => {
     let t = ''
     for (let i of JSON.parse(resp)) {
       t = t + '<option value=' + i['company_id'] + '>' + i['name'] + '</option>'
@@ -31,28 +29,25 @@ $('#openProjectModal').click((event) => {
   })
 })
 
-$('#addRow').click((event) => {
-  event.preventDefault()
+$('#addRow').click(() => {
   saved = false
   addRow()
   updateBottom()
   updateSaveStatus()
 })
 
-$('#removeRow').click((event) => {
-  event.preventDefault()
+$('#removeRow').click(() => {
   saved = false
   if (rowCounter != 0) {
     rowCounter--
     $('#r' + rowCounter).remove()
     p.rows.pop() //TODO: Make Individual Rows deletabel
   }
-  updateBottom()
+  updateAll()
   updateSaveStatus()
 })
 
-$('#refresh').click((event) => {
-  event.preventDefault()
+$('#refresh').click(() => {
   saved = false
   updateAll()
   updateSaveStatus()
@@ -60,15 +55,19 @@ $('#refresh').click((event) => {
 
 $('#submitComment').click((event) => {
   event.preventDefault()
-  //TODO check required
   let text = $('#commentText').val()
   addChat(text)
+})
+
+$('.collapseHeader').click(function(){
+  $(this).find('i').toggleClass('fa-chevron-down').toggleClass('fa-chevron-right')
+  $(this).parent('tr').nextUntil('.cat').toggle()
 })
 
 // CHHANGEFUNCTION ------------------------------------------------------------
 //-----------------------------------------------------------------------------
 
-$('#workhours').change(function() {
+$('#workhours').change(function(event) {
   saved = false
   let currentField = event.target.name.substring(0, 4)
   let currentNumber = event.target.name.substring(4)
@@ -95,17 +94,15 @@ $('#workhours').change(function() {
   updateSaveStatus()
 })
 
-$('#comment').change(function() {
-  p.comment = $('#comment').val()
-  console.log(p)
+$('#comment').change(()=> {
   saved = false
+  p.comment = $('#comment').val()
   updateSaveStatus()
 })
 
 // HELPERS
 //------------------------------------------------------------------------------
 function addRow() {
-  //event.preventDefault();
   let currentDate = startDate
   if (rowCounter > 0) {
     let currentCounter = rowCounter - 1
@@ -115,7 +112,6 @@ function addRow() {
   }
   let date = formatDate(currentDate)
   p.addRow(rowCounter, date)
-  //rowElement.push(new Row(rowCounter))
   const newRow = $(`
         <tr id="r${rowCounter}">
         <td><input type="date" id="date${rowCounter}" name="date${rowCounter}" value="${formatDate(currentDate)}"></td>
@@ -170,28 +166,28 @@ function loadRow(currentRow) {
   }
 }
 
+
 function Save() {
+  let error=0
   $('#saveButton').hide()
+  $('#resaveButton').hide()
   $('#saveButtonDisabled').show()
   let rows = JSON.stringify(p.rows)
   $.ajax({
-    url: 'h_project.php',
+    url: 'https://filmstunden.ch/api/v01/project/'+p.id,
     dataType: 'json',
-    data: { 'action': 'save', 'p_id': p.id, 'data': rows, 'add': p.addInfo, 'comment': p.comment },
-    type: 'POST',
-    success: function(data) {
-      if (data.message == 'SUCCESS') {
-        saved = true
-        updateSaveStatus()
-      } else {
-        saved = false
-        updateSaveStatus()
-      }
-    },
-    complete: function() {
-      $('#saveButton').show()
-      $('#saveButtonDisabled').hide()
-    }
+    data: { 'data': rows, 'add': p.addInfo, 'comment': p.comment },
+    type: 'POST'
+  }).done(()=>{
+    saved=true
+    error=0
+  }).fail(()=>{
+    saved=false
+    error=1
+  }).always(()=>{
+    $('#saveButton').show()
+    $('#saveButtonDisabled').hide()
+    updateSaveStatus(error)
   })
 }
 
@@ -200,25 +196,25 @@ function updateRow(row) {
 
   if (p.rows[row].getOvertime(10) > 0) {
     $('#tent' + row).html(p.rows[row].getOvertime(10))
-  } else { $('#tent' + row).html('0') }
+  } else { $('#tent' + row).html('&nbsp;') }
   if (p.rows[row].getOvertime(11) > 0) {
     $('#elev' + row).html(p.rows[row].getOvertime(11))
-  } else { $('#elev' + row).html('0') }
+  } else { $('#elev' + row).html('&nbsp;') }
   if (p.rows[row].getOvertime(12) > 0) {
     $('#twel' + row).html(p.rows[row].getOvertime(12))
-  } else { $('#twel' + row).html('0') }
+  } else { $('#twel' + row).html('&nbsp;') }
   if (p.rows[row].getOvertime(13) > 0) {
     $('#thir' + row).html(p.rows[row].getOvertime(13))
-  } else { $('#thir' + row).html('0') }
+  } else { $('#thir' + row).html('&nbsp;') }
   if (p.rows[row].getOvertime(14) > 0) {
     $('#four' + row).html(p.rows[row].getOvertime(14))
-  } else { $('#four' + row).html('0') }
+  } else { $('#four' + row).html('&nbsp;') }
   if (p.rows[row].getOvertime(15) > 0) {
     $('#fift' + row).html(p.rows[row].getOvertime(15))
-  } else { $('#fift' + row).html('0') }
+  } else { $('#fift' + row).html('&nbsp;') }
   if (p.rows[row].getOvertime(16) > 0) {
     $('#sixt' + row).html(p.rows[row].getOvertime(16))
-  } else { $('#sixt' + row).html('0') }
+  } else { $('#sixt' + row).html('&nbsp;') }
   $('#nigh' + row).html(p.rows[row].getNightHours())
   $('#base' + row).val(p.rows[row].getBase())
 }
@@ -288,12 +284,12 @@ function updateBottom() {
   let totalAdditional = roundToTwo(totalLunch + totalCar)
   let totalOvertime = roundToTwo(total25 + total125 + total150 + total200 + total250)
 
-  $('#payRateDay').html(p.pay)
-  $('#payRate125').html(getRate(125))
-  $('#payRate150').html(getRate(150))
-  $('#payRate200').html(getRate(200))
-  $('#payRate250').html(getRate(250))
-  $('#payRate25').html(getRate(25))
+  $('#payRateDay').html('&agrave; '+p.pay)
+  $('#payRate125').html('&agrave; '+getRate(125))
+  $('#payRate150').html('&agrave; '+getRate(150))
+  $('#payRate200').html('&agrave; '+getRate(200))
+  $('#payRate250').html('&agrave; '+getRate(250))
+  $('#payRate25').html('&agrave; '+getRate(25))
   $('#totalKilometers').html(totalKilometers)
   $('#lunches').html(lunches)
   $('#totalWorkHours').html(minsToHours(totalWorkHours))
@@ -314,21 +310,32 @@ function updateBottom() {
   $('#salaryBase').html(totalDay)
   $('#salaryOvertime').html(totalOvertime)
   $('#salaryAdditional').html(totalAdditional)
+  $('#totalOverall').html(roundToTwo(totalDay+totalOvertime+totalAdditional))
 
-  p.enddate = p.rows[p.rows.length - 1].date
+  if(p.rows.length>0){
+    p.enddate = p.rows[p.rows.length - 1].date
+  }
   p.tothour = minsToHours(totalWorkHours)
   p.totmoney = roundToTwo(totalDay + totalOvertime + totalAdditional)
 }
 
-function updateSaveStatus() {
+function updateSaveStatus(error=0) {
   if (saved) {
     $('#saveInfo').show()
     $('#saveNone').hide()
     $('#saveWarning').hide()
-  } else {
+    $('#saveError').hide()
+  } else if (!saved && !error) {
     $('#saveInfo').hide()
     $('#saveNone').hide()
     $('#saveWarning').show()
+    $('#saveError').hide()
+  } else {
+    $('#saveInfo').hide()
+    $('#saveNone').hide()
+    $('#saveWarning').hide()
+    $('#saveError').show()
+    $('#resaveButton').show()
   }
 }
 
@@ -350,43 +357,46 @@ function updateSuccess(data) {
 }
 
 function loadProject(p) {
-  p.loadProjectInfo().then(() => {
-    $('#projectName').html(p.name)
-    $('#title').html(p.name)
-    $('#projectJob').html(p.job)
-    $('#projectPay').html(p.pay)
-    $('#projectCompany').html(p.company)
-  })
-  p.loadProjectData().then(() => {
-    $('#comment').html(p.comment)
+  p.loadProject().then(() => {
+    document.getElementById('comment').innerHTML = p.comment
+    document.getElementById('projectName').innerHTML = p.name
+    document.getElementById('title').innerHTML = p.name
+    document.getElementById('projectJob').innerHTML = p.job
+    document.getElementById('projectPay').innerHTML = p.pay
+    document.getElementById('projectCompany').innerHTML = p.company
+    //modal
+    document.getElementById('p_name').value = p.name
+    document.getElementById('p_job').value = p.job
+    document.getElementById('p_pay').value = p.pay
   })
 }
 
 function loadPersonalInfo() {
-  $.ajax({
-    url: 'https://api.filmstunden.ch/user',
-    xhrFields: { withCredentials: true },
+  let p =$.ajax({
+    url: 'https://filmstunden.ch/api/v01/user',
     type: 'GET',
     dataType: 'json'
   }).done((data) => {
-    $('#userName').html(data.name)
-    $('#userAddress').html(data.address_1 + '<br>' + data.address_2)
-    $('#userTel').html(data.tel)
-    $('#userMail').html(data.mail)
-    $('#userAHV').html(data.ahv)
-    $('#userDob').html(data.dateob)
-    $('#userKonto').html(data.konto)
-    $('#userBVG').html(data.bvg)
+    document.getElementById('userName').innerHTML = data.name
+    document.getElementById('userAddress').innerHTML = data.address_1 + '<br>' + data.address_2
+    document.getElementById('userTel').innerHTML = data.tel
+    document.getElementById('userMail').innerHTML = data.mail
+    document.getElementById('userAHV').innerHTML = data.ahv
+    document.getElementById('userDob').innerHTML = data.dateob
+    document.getElementById('userKonto').innerHTML = data.konto
+    document.getElementById('userBVG').innerHTML = data.bvg
   })
+  return p
 }
 
 function loadChats() {
   p.getChats().then(() => {
     $('#chats').html(p.projHtml)
   })
+  return p
 }
 
-function updateAll() {
+export function updateAll() {
   for (let i = 0; i < p.rows.length; i++) {
     updateRow(i)
   }
@@ -396,7 +406,7 @@ function updateAll() {
 function addChat(text) {
   $('.hideSend').hide()
   $.ajax({
-    url: 'https://api.filmstunden.ch/chats/'+p_id,
+    url: 'https://filmstunden.ch/api/v01/chats/'+p_id,
     type: 'POST',
     xhrFields: {withCredentials: true},
     dataType: 'json',
@@ -419,7 +429,6 @@ $(() => { // JQUERY STARTFUNCTION
     p.rows = []
   } else {
     loadJSON(loadElement) //TODO Load over AJAX
-    updateAll()
   }
 
   loadProject(p)

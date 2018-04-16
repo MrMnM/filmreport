@@ -21,21 +21,6 @@ if ($action) {
     if ($conn->connect_error) {die('{ "message": "ERROR: CONN FAILED:'. $conn->connect_error.'"}');}
 
     switch ($_POST["action"]) {
-    case 'new':
-       if (!empty($u_id) && !empty($_POST["name"]) && !empty($_POST["date"]) && !empty($_POST["work"]) && !empty($_POST["pay"]) && !empty($_POST["company"])) {
-           NewProject($u_id, $conn);
-       } else {die('{ "message": "ERROR: PLEASE SUPPLY CORRECT DATA" }');}
-      break;
-    case 'delete':
-        if (!empty($_POST["p_id"]) && !empty($u_id)) {
-            DeleteProject($u_id, $conn);
-        } else {die('{ "message": "ERROR: PLEASE SUPPLY CORRECT DATA" }');}
-        break;
-    case 'save':
-        if (!empty($u_id) && !empty($_POST["data"])&& !empty($_POST["p_id"])&& !empty($_POST["add"])) {
-            SaveProject($u_id, $conn);
-        } else {die('{ "message": "ERROR: PLEASE SUPPLY CORRECT DATA" }');}
-        break;
     case 'load':
         if (!empty($u_id) && !empty($_POST["p_id"])) {
             LoadProject($u_id, $conn);
@@ -46,92 +31,12 @@ if ($action) {
             UpdateProject($u_id, $conn);
         } else {die('{ "message": "ERROR: PLEASE SUPPLY CORRECT DATA" }');}
         break;
-    case 'finish':
-        if (!empty($u_id)  && !empty($_POST["p_id"])) {
-            FinishProject($u_id, $conn);
-        } else {die('{ "message": "ERROR: PLEASE SUPPLY CORRECT DATA" }');}
-        break;
     case 'getinfo':
         if (!empty($u_id) && !empty($_POST["us_id"]) && !empty($_POST["p_id"])) {
             GetProjectInfo($u_id, $conn);
         } else {die('{ "message": "ERROR: PLEASE SUPPLY CORRECT DATA" }');}
         break;
   }
-}
-
-
-function NewProject($u_id, $conn)
-{
-    $p_name= mysqli_real_escape_string($conn, $_POST["name"]);
-    $p_startdate= mysqli_real_escape_string($conn, $_POST["date"]);
-    $p_work= mysqli_real_escape_string($conn, $_POST["work"]);
-    $p_pay= mysqli_real_escape_string($conn, $_POST["pay"]);
-    $p_company= mysqli_real_escape_string($conn, $_POST["company"]);
-    $now = date(DATE_ATOM, time());
-    $project_id = md5($p_name.$now);
-    //$url='http://www.filmstunden.ch/shorten.php?longurl=http://www.xibrix.ch/filmreport/view.php?id='.$project_id;
-    //$short = file_get_contents($url);
-    $short = "";
-
-    $sql = "INSERT INTO projects (c_date,project_id,user_id,p_name,p_start,p_job,p_gage,p_company,view_id)
-    VALUES ('$now', '$project_id', '$u_id','$p_name','$p_startdate','$p_work','$p_pay','$p_company','$short')";
-
-    if ($conn->query($sql) === true) {
-        echo '{ "message": "SUCCESS",  "project_id":"'.$project_id.'"}';
-    } else {
-        die('{ "message": "ERROR: CONN FAILED: '.$conn->connect_error.'"}');
-    }
-}
-
-function DeleteProject($u_id, $conn)
-{
-    $id = mysqli_real_escape_string($conn, $_POST["p_id"]);
-    $sql = "DELETE FROM projects WHERE project_id='$id' AND user_id='$u_id'";
-    if ($conn->query($sql) === true) {
-        echo '{ "message": "SUCCESS",  "project_id":"'.$id.'"}';
-    } else {
-        die('{ "message": "ERROR: CONN FAILED: '.$conn->connect_error.'"}');
-    }
-}
-
-function SaveProject($u_id, $conn)
-{
-    $data = mysqli_real_escape_string($conn, $_POST['data']);
-    $add = json_decode($_POST['add'], true);
-    $tothours=mysqli_real_escape_string($conn, $add['tothour']);
-    $totmoney=mysqli_real_escape_string($conn, $add['totmoney']);
-    $enddate=mysqli_real_escape_string($conn, $add['enddate']);
-    //$calcBase=mysqli_real_escape_string($conn, $add['calcBase']);
-    $calcBase=0;
-    $baseHours=0;
-    //$baseHours =mysqli_real_escape_string($conn, $add['baseHours']);
-    $settings = json_encode(array('calcBase' => $calcBase, 'baseHours' => $baseHours));
-    $p_id = mysqli_real_escape_string($conn, $_POST['p_id']);
-    if (!empty($_POST["comment"])) {
-        $comment = mysqli_real_escape_string($conn, $_POST['comment']);
-    } else {
-        $comment = "";
-    }
-
-    $sql = "UPDATE projects
-            SET p_json = '$data',
-                tot_hours='$tothours',
-                tot_money='$totmoney',
-                p_end='$enddate',
-                p_comment='$comment',
-                settings='$settings'
-            WHERE project_id = '$p_id'";
-
-    if ($conn->query($sql) === true) {
-        die('{ "message": "SUCCESS"}');
-    } else {
-        die('{ "message": "ERROR: CONN FAILED: '.$conn->connect_error.'"}');
-    }
-}
-
-function FinishProject($u_id, $conn)
-{
-
 }
 
 function UpdateProject($u_id, $conn)

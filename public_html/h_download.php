@@ -1,9 +1,5 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting( E_ALL | E_STRICT );
-
-include './includes/inc_encrypt.php';
+require_once('./includes/inc_encrypt.php');
 require_once('../api-app/lib/Globals.php');
 $db=$GLOBALS['db'];
 $servername = "localhost";

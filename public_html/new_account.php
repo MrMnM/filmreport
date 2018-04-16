@@ -30,7 +30,7 @@ require_once('../api-app/lib/Globals.php');
       <div id="success" class="alert alert-success" style="display: none;">
           <p>Account wurde erfolreich erstellt, eine E-Mail wurde an die angegebene Addresse versendet. Es kann einige Minuten dauern, bis das Mail tatsächlich ankommt, bitte etwas Geduld. Die Bestätigungs E-Mail ist 12 Stunden gültig und muss innerhalb dieser Zeit registriert werden.</p>
       </div>
-      <form role="form" method="post" action="https://api.filmstunden.ch/user/new" id="createAccount">
+      <form role="form" method="post" action="https://filmstunden.ch/api/v01/user/new" id="createAccount">
           <fieldset>
               <div class="form-group">
                   <label>Name</label>

@@ -1,11 +1,6 @@
 <?php
 require_once('./includes/inc_sessionhandler_default.php');
 require_once('../api-app/lib/Globals.php');
-$db=$GLOBALS['db'];
-$servername = "localhost";
-$dbname = $db['database_name'];
-$username = $db['username'];
-$password = $db['password'];
 ?>
 
 <!DOCTYPE html>
@@ -71,8 +66,7 @@ $password = $db['password'];
                             <h4 class="modal-title" id="myModalLabel">Neues Projekt</h4>
                         </div>
                         <div class="modal-body">
-                            <form role="form" action="h_project.php" method="post" id="newProject">
-                                <input type="hidden" name="action" value="new">
+                            <form role="form" action="https://filmstunden.ch/api/v01/project/new" method="post" id="newProject">
                                 <div class="form-group input-group">
                                     <span class="input-group-addon">Produktionsfirma</span>
                                     <select class="form-control"  name="company" id="companylist" required>
@@ -93,7 +87,7 @@ $password = $db['password'];
                                 <datalist id="joblist"></datalist>
                                 <div class="form-group input-group">
                                     <span class="input-group-addon">Arbeit als:</span>
-                                    <input type="text" list="joblist" class="form-control" name="work" required>
+                                    <input type="text" list="joblist" class="form-control" name="work" id="work" required>
                                 </div>
                                 <div class="form-group input-group">
                                     <span class="input-group-addon">Tagesgage</span>
@@ -117,7 +111,7 @@ $password = $db['password'];
                             <h4 class="modal-title" id="myModalLabel">Neue Produktionfirma hinzufügen</h4>
                         </div>
                         <div class="modal-body" id="newCompanyCreated">
-                            <form role="form" action="https://api.filmstunden.ch/company/new" method="post" id="newProdcomp">
+                            <form role="form" action="https://filmstunden.ch/api/v01/company/new" method="post" id="newProdcomp">
                                 <div class="form-group input-group">
                                     <span class="input-group-addon">Firmenname</span>
                                     <input type="text" name="name" class="form-control" placeholder="Prodfirma" required="">
@@ -154,16 +148,11 @@ $password = $db['password'];
                         </div>
                         <div class="modal-body">
                             <div class="alert alert-danger">Achtung, dadurch wird das Projekt <strong id="toDelName"></strong> endg&uuml;ltig gel&ouml;scht</div>
-                            <form role="form" action="h_project.php" method="post" id="deleteProject">
-                                <input type="hidden" name="action" value="delete">
-                                    <input type="hidden" class="form-control" name="p_id" id="toDelID">
-                                    <input type="hidden" class="form-control" id="toDelName" disabled>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
-                                <button type="submit" class="btn btn-danger">L&ouml;schen</button>
+                                <button type="button" class="btn btn-danger" id="delete-btn">L&ouml;schen</button>
                             </div>
-                        </form>
                     </div><!-- /.modal-content -->
                 </div><!-- /.modal-dialog -->
             </div><!-- /.modal -->
@@ -177,10 +166,7 @@ $password = $db['password'];
                         </div>
                         <div class="modal-body">
                             <div class="alert alert-info">Achtung, dadurch wird das Projekt <strong id="toFinName"></strong> abgeschlossen und kann danach nicht mehr bearbeitet werden</div>
-                            <form role="form" action="h_project.php" method="post" id="finishProject">
-                                <input type="hidden" name="action" value="finish"> <!--TODO Get this back to working with new api-->
-                                    <input type="hidden" class="form-control" name="p_id" id="toFinID">
-                                    <input type="hidden" class="form-control" id="toFinName" disabled>
+                            <form role="form" action="" method="post" id="finishProject">
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
@@ -194,7 +180,6 @@ $password = $db['password'];
     </div><!--row-->
 </div> <!-- /#page-wrapper -->
 </div><!-- /#wrapper -->
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/jquery.metismenu/1.1.3/metisMenu.min.js"></script>
@@ -203,27 +188,7 @@ $password = $db['password'];
 <script src="https://cdn.datatables.net/responsive/2.1.1/js/dataTables.responsive.min.js"></script>
 <script src="https://cdn.datatables.net/responsive/2.1.1/js/responsive.bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.1/jquery.form.min.js"></script>
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.min.js"></script>-->
 <script type="module" src="./js/project_overview.js"></script>
-<script>
-
-<?php
-if (isset($_GET['search']) && !empty($_GET['search'])) {
-    echo 'const search="'.$_GET['search'].'"'.PHP_EOL;
-} else {
-    echo 'const search=null'.PHP_EOL;
-}
-
-if (isset($_GET['view']) && !empty($_GET['view'])) {
-    if ($_GET['view']=='archive') {
-        echo 'const mode=2'.PHP_EOL;
-    } else {
-        echo 'const mode=1'.PHP_EOL;
-    }
-} else {
-    echo'const mode=0'.PHP_EOL;
-}
-?>
-
-</script>
 </body>
 </html>

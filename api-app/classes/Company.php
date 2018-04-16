@@ -15,11 +15,7 @@ class Company
                           ],[
                             "ORDER" => "name"
                           ]);
-                          return $response ->withHeader('Access-Control-Allow-Origin', 'https://filmstunden.ch')
-                                           ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-                                           ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS')
-                                           ->withHeader('Access-Control-Allow-Credentials', 'true')
-                                           ->withJson($data);
+      return $response ->withJson($data);
     }
 
     public function get($request,$response,$args){
@@ -38,11 +34,7 @@ class Company
         array_walk_recursive($data, function(&$item) {
             $item = htmlspecialchars($item, ENT_QUOTES);
         });
-        return $response ->withHeader('Access-Control-Allow-Origin', 'https://filmstunden.ch')
-                       ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-                       ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS')
-                       ->withHeader('Access-Control-Allow-Credentials', 'true')
-                       ->withJson($data);
+        return $response->withJson($data);
     }
 
 
@@ -62,11 +54,7 @@ class Company
                            "telephone" => $phone,
                            "mail" => $req['mail']
                           ]);
-        return $response ->withHeader('Access-Control-Allow-Origin', 'https://filmstunden.ch')
-                         ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-                         ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS')
-                         ->withHeader('Access-Control-Allow-Credentials', 'true')
-                         ->withJson(array('status'=>'SUCCESS','msg'=>'Produktionsfirma Erstellt','c_id'=>$companyid));
+        return $response->withJson(array('status'=>'SUCCESS','msg'=>'Produktionsfirma Erstellt','c_id'=>$companyid));
     }
 
 

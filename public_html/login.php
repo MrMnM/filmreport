@@ -1,9 +1,4 @@
 <?
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-ini_set('session.cookie_domain', '.filmstunden.ch' );
-//error_reporting( E_ALL | E_STRICT );
-
 require_once('../api-app/lib/Globals.php');
 $db=$GLOBALS['db'];
 $servername = "localhost";
@@ -17,74 +12,44 @@ if ($conn->connect_error) {
 }
 $conn->query("DELETE FROM tokens WHERE timeout < NOW()");
 
-
 $unknownUser = FALSE;
 $invalidPassword = FALSE;
 $closedExisting = FALSE;
 $activated =TRUE;
 
+if (isset($_GET['action']) && strtolower($_GET['action']) == 'logout'){
+  setcookie("REMID", '0', time()-3600, '/', '.filmstunden.ch',TRUE,TRUE);
+  setcookie("SESSID", '0', time()-3600, '/', '.filmstunden.ch',TRUE,TRUE);
+  $closedExisting = TRUE;
+}elseif(isset($_COOKIE['REMID'])){
+      $cookie= htmlspecialchars($_COOKIE["REMID"]);
+      $t_id = explode(":", $cookie);
+      $sql = "SELECT tokens.token_id,
+                     tokens.user_id,
+                     tokens.token,
+                     users.name
+              FROM `tokens`
+              LEFT JOIN users ON tokens.user_id = users.u_id
+              WHERE tokens.type='rem' AND tokens.token_id='$t_id[0]';";
+      $result = $conn->query($sql);
+      if ($result->num_rows > 0) {
+          while($row = $result->fetch_assoc()) {
+              $dbt_id = $row["token_id"];
+              $uid = $row["user_id"];
+              $db_token = $row["token"];
+              $name = $row["name"];
+          }
+        }
+        if($db_token===$t_id[1]){
+          login($conn,$uid,$name,'0',$rememberme);
+        }
+  }
+
+
 if (isset($_POST['remember']) && strtolower($_POST['remember']) == 'remember'){
     $rememberme = 1;
 }
 
-
-function login($conn,$uid,$name,$type,$remember){
-  if($remember){
-    $sql = "DELETE FROM tokens WHERE user_id='$uid'";
-    $result = $conn->query($sql);
-    $rand1 = bin2hex(random_bytes(3));
-    $rand2 = bin2hex(random_bytes(30));
-    $value=$rand1.'%'.$rand2;
-    setcookie("REMID", $value, time()+60*60*24*7*2, '/', '.filmstunden.ch',TRUE,TRUE);
-    //TODO delete token on Logout
-    $sql = "INSERT INTO tokens (type, token_id, user_id, token, timeout)
-                       VALUES ('rem', '$rand1', '$uid', '$rand2', NOW() + INTERVAL 2 WEEK);";
-    $result = $conn->query($sql);
-  }
-  if (session_status() === PHP_SESSION_ACTIVE){
-      $_SESSION['running'] = 1;
-      $_SESSION['user'] = $uid;
-      $_SESSION['name'] = $name;
-      $_SESSION['type'] = $type;
-      header( 'Location: ./home.php') ;
-  }else{
-    die("Session not running");
-  }
-}
-
-session_name('SESSID');
-session_set_cookie_params(0, '/', '.filmstunden.ch',TRUE,TRUE);
-session_start();
-if (!empty($_SESSION['running']) && $_SESSION['running'] == 1){
-    $closedExisting = TRUE;
-}
-$_SESSION['running'] = null;
-$_SESSION['user'] = null;
-
-
-if(isset($_COOKIE['REMID'])){
-    $cookie= htmlspecialchars($_COOKIE["REMID"]);
-    $t_id = explode("%", $cookie);
-    $sql = "SELECT tokens.token_id,
-                   tokens.user_id,
-                   tokens.token,
-                   users.name
-            FROM `tokens`
-            LEFT JOIN users ON tokens.user_id = users.u_id
-            WHERE tokens.type='rem' AND tokens.token_id='$t_id[0]';";
-    $result = $conn->query($sql);
-    if ($result->num_rows > 0) {
-        while($row = $result->fetch_assoc()) {
-            $dbt_id = $row["token_id"];
-            $uid = $row["user_id"];
-            $db_token = $row["token"];
-            $name = $row["name"];
-        }
-      }
-      if($db_token==$t_id[1]){
-        login($conn,$uid,$name,'0',$rememberme);
-      }
-}
 
 if (!empty($_POST["pw"]) && !empty($_POST["mail"])) {
     $pw= $_POST["pw"];
@@ -122,9 +87,38 @@ if (!empty($_POST["pw"]) && !empty($_POST["mail"])) {
         }
     }
 }
+
+
+function login($conn,$uid,$name,$type,$remember){
+  session_name('SESSID');
+  session_set_cookie_params(0, '/', '.filmstunden.ch',TRUE,TRUE);
+  session_start();
+  if($remember){
+    $sql = "DELETE FROM tokens WHERE user_id='$uid'";
+    $conn->query($sql);
+    $rand1 = bin2hex(random_bytes(4));
+    $rand2 = bin2hex(random_bytes(30));
+    $value=$rand1.':'.$rand2;
+    setcookie("REMID", $value, time()+60*60*24*7*2, '/', '.filmstunden.ch',TRUE,TRUE);
+    //TODO delete token on Logout
+    $sql = "INSERT INTO tokens (type, token_id, user_id, token, timeout)
+                       VALUES ('rem', '$rand1', '$uid', '$rand2', NOW() + INTERVAL 2 WEEK);";
+    $result = $conn->query($sql);
+  }
+  if (session_status() === PHP_SESSION_ACTIVE){
+      $_SESSION['running'] = 1;
+      $_SESSION['user'] = $uid;
+      $_SESSION['name'] = $name;
+      $_SESSION['type'] = $type;
+      header( 'Location: ./home.php') ;
+  }else{
+    die("Session not running");
+  }
+}
 ?>
 
-<html>
+<!DOCTYPE html>
+<html lang="de">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
