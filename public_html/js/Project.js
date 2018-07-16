@@ -1,13 +1,15 @@
 import Chat from './Chat.js'
 import Row from './Row.js'
+import Expense from './Expense.js'
 
 export default class Project {
   constructor(id){
     //PROJECT
+    this.saved = true
     this.id=id
     this.user=''
     this.name=''
-    this.work=''
+    this.job=''
     this.pay=0
     this.company=''
     this.companyId=''
@@ -19,7 +21,7 @@ export default class Project {
     //ADDINFO
     this.tothour='00:00'
     this.totmoney=0
-    this.startdate='000-00-00'
+    this.startdate= new Date('0000-00-00')
     this.enddate='0000-00-00'
     this.calcbase='SSFV_DAY'
     this.basehours=9
@@ -27,6 +29,9 @@ export default class Project {
     //COMMENTS
     this.comment=''
     this.chats=[]
+
+    //EXPENSES
+    this.expenses=[]
   }
 
 
@@ -39,6 +44,7 @@ export default class Project {
     })
 
     p=p.then((data) => {
+      this.startdate=new Date(data.startdate)
       this.name=data.name
       this.job=data.job
       this.pay=data.pay
@@ -55,11 +61,28 @@ export default class Project {
     this.rows[c].date = d
   }
 
+  getExpenses(){
+    this.expenses=[]
+    let p=$.ajax({
+      url: 'https://filmstunden.ch/api/v01/expenses/'+this.id,
+      dataType: 'json',
+      type: 'GET',
+      context: this
+    })
+    p=p.then((data) => {
+      let i=0
+      for (let v of data) {
+        this.expenses[i]=new Expense(i+1,v.id,v.date,v.name,v.value,v.comment,v.img)
+        i++
+      }
+    })
+    return p
+  }
+
   getChats(){
     let p=$.ajax({
       url: 'https://filmstunden.ch/api/v01/chats/'+this.id,
       dataType: 'json',
-      xhrFields: {withCredentials: true},
       type: 'GET',
       context: this
     })
@@ -73,7 +96,7 @@ export default class Project {
     return p
   }
 
-  get projHtml(){
+  get chatProjHtml(){
     let o = ''
     for (let c of this.chats) {
       o += c.renderProject()
@@ -81,12 +104,24 @@ export default class Project {
     return o
   }
 
-  get viewHtml(){
+  get chatViewHtml(){
     let o = ''
     for (let c of this.chats) {
       o += c.renderView()
     }
     return o
+  }
+
+  get expenseHtml(){
+    if(this.expenses.length>0){
+      let o = ''
+      for (let c of this.expenses) {
+        o += c.render()
+      }
+      return o
+    }else{
+      return '<tr><td colspan="5" align="center">Noch keine Spesen hinzugefügt</td></tr>'
+    }
   }
 
   get addInfo(){

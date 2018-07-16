@@ -16,6 +16,8 @@ require_once('../../api-app/classes/Project.php');
 require_once('../../api-app/classes/Stats.php');
 require_once('../../api-app/classes/User.php');
 require_once('../../api-app/classes/View.php');
+require_once('../../api-app/classes/Expenses.php');
+require_once('../../api-app/classes/Timer.php');
 
 use Medoo\Medoo;
 
@@ -78,12 +80,18 @@ $app->group('/v01', function() {
   //$this->get('/project/{p_id}/info', 'Project:getInfo');
   $this->post('/project/{p_id}/info', 'Project:saveInfo');
   $this->post('/project/{p_id}/finish', 'Project:finish');
+  $this->get('/project/{p_id}/download', 'Project:download');
 
   // Stats
   $this->get('/stats/chart/donut', 'Stats:donutchart');
   $this->get('/stats/chart/line', 'Stats:linechart'); //?start=xx&end=xx
   $this->get('/stats', 'Stats:misc'); //?start=xx&end=xx
 
+  //Expenses
+  $this->get('/expenses/{p_id}', 'Expenses:get');
+  $this->post('/expenses/{p_id}', 'Expenses:save');
+  $this->post('/expenses/{p_id}/upload', 'Expenses:upload');
+  $this->delete('/expenses/{p_id}/{e_id}', 'Expenses:delete');
   // Jobs
   $this->get('/jobs', 'Jobs:get');
 
@@ -94,6 +102,15 @@ $app->group('/v01', function() {
   // View
   $this->get('/view', 'View:get');
   $this->get('/view/download', 'View:Download'); //?format=xx
+
+  // View
+  $this->get('/timer', 'Timer:list');
+  $this->post('/timer', 'Timer:new');
+  $this->get('/timer/{t_id}', 'Timer:load');
+  $this->post('/timer/{t_id}', 'Timer:update');
+  $this->delete('/timer/{t_id}', 'Timer:delete');
+
+
 });
 
 

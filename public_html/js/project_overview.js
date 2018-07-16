@@ -2,6 +2,7 @@ import {renderTools, renderTitle} from  './dataTableRender.js'
 import {activateSideMenu} from  './sidemenu.js'
 import {loadJoblist} from './Jobs.js'
 import {getParam} from './miscHelpers.js'
+import {formatDate} from './timeHelpers.js'
 
 let delProjURL = ''
 const search = getParam('search')
@@ -80,9 +81,7 @@ window.setFinish = function(id, name) {
 $(()=> { // STARTFUNCTION
   activateSideMenu()
   window.table = $('#projectTable').DataTable({
-    'ajax': {'url':'https://filmstunden.ch/api/v01/project?m=' + mode,
-      xhrFields: {withCredentials: true},
-    },
+    'ajax': {'url':'https://filmstunden.ch/api/v01/project?m=' + mode},
     'pagingType': 'numbers',
     'order': [
       [0, 'desc']
@@ -120,6 +119,10 @@ $(()=> { // STARTFUNCTION
 
 
   new $.fn.dataTable.Responsive(table)
+
+  let currentTime = new Date()
+  document.getElementById('newDate').value = formatDate(currentTime)
+
 
   $('#newProject').ajaxForm({
     dataType: 'json',

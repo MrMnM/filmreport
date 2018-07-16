@@ -72,9 +72,9 @@ if (!empty($_GET["id"])) {
         <a class="navbar-brand" href="home.php">Abrechnungsgenerator</a>
       </div>            <!-- /.navbar-top-links -->
       <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Rapport</a></li>
-        <li><a href="#" onclick="alert('Noch nicht implementiert')">Abrechnung</a></li>
-        <li><a href="#" onclick="alert('Noch nicht implementiert')">Spesen</a></li>
+        <li class="active" id="navRapa"><a href="#" id="navRap">Rapport</a></li>
+        <li id="navAbra"><a href="#" id="navAbr">Abrechnung</a></li>
+        <li id="navExpa"><a href="#" id="navExp" onclick="alert('Noch nicht implementiert')">Spesen</a></li>
 
       </ul>
         <ul class="nav navbar-nav navbar-right">
@@ -83,12 +83,11 @@ if (!empty($_GET["id"])) {
                   <i class="fa fa-comments fa-fw"></i> <i class="fa fa-caret-down"></i>
               </a>
               <ul class="dropdown-menu dropdown-comments">
-                <ul id="chats"></ul>
-                <li></br></li>
-                <li>
+                <div id="chats"></div>
+
                     <textarea style="border: none" class="col-lg-2 form-control send-message" rows="1" placeholder="Antworten..." id="commentText"></textarea>
                     <a href="" class=" btn send-message-btn pull-right" role="button" id="submitComment"><i class="fa fa-plus"></i> Antworten</a>
-                </li>
+
               </ul>
               <!-- /.dropdown-messages -->
           <li class="dropdown">
@@ -126,7 +125,7 @@ if (!empty($_GET["id"])) {
 	<div id="loading">
     <i class="fa fa-spinner fa-spin" style="position:absolute;right:50%;margin-top:40px;"></i>
   </div>
-	<div id="main" style="display:none">
+	<div id="rapport" style="display:none">
 		<table border="0" cellpadding="0" cellspacing="0" class="f10">
 			<col class="f10" >
 			<col class="f10" >
@@ -543,6 +542,345 @@ $allhours1 = $allhours2 = new DateTime('2000-01-01 00:00:00');
 			</tr>
 		</table>
 	</div>
+  <div id="abrechnung" style="display:none">
+    <table border="0" cellpadding="1px">
+      <tbody>
+        <tr>
+          <td class="maintitle" colspan="2" rowspan="2" height="20">LOHNABRECHNUNG</td>
+          <td class="spacer" style="width: 73px;">&nbsp;</td>
+          <td class="spacer" style="width: 08px;">&nbsp;</td>
+          <td class="spacer" style="width: 82px;">&nbsp;</td>
+          <td class="spacer" style="width: 88px;">&nbsp;</td>
+          <td class="spacer" style="width: 82px;">&nbsp;</td>
+          <td class="spacer" style="width: 14px;">&nbsp;</td>
+        </tr>
+        <tr>
+          <td class="fs8">&nbsp;</td>
+          <td class="fs8" colspan="2">Datum:</td>
+          <td class="fs8" colspan="3">##DATE##</td>
+        </tr>
+        <tr>
+          <td colspan="3">&nbsp;</td>
+          <td class="fs8" colspan="2">Rapport Nr.:</td>
+          <td class="fs8" colspan="3">##RAPPNR##</td>
+        </tr>
+        <tr>
+          <td class="fs8">Vorname/ Name:</td>
+          <td class="fs8">##NAME##</td>
+          <td class="spacer" colspan="6">&nbsp;</td>
+        </tr>
+        <tr>
+          <td class="fs8" >Adresse:</td>
+          <td class="fs8" >#ADD1##4</td>
+          <td class="spacer" ></td>
+          <td class="fs8" colspan="2">Produktion:</td>
+          <td class="BetwTitlesmall fs7" colspan="3">##PROJ##</td>
+        </tr>
+        <tr>
+          <td class="fs8">&nbsp;</td>
+          <td class="fs8">##ADD2##</td>
+          <td class="spacer" >&nbsp;</td>
+          <td class="fs8" colspan="2">Dreh [von/bis]:</td>
+          <td class="BetwTitlesmall fs7" >##VON##</td>
+          <td class="BetwTitlesmall fs7"  colspan="2">##BIS##</td>
+        </tr>
+        <tr>
+          <td class="fs8" >E-Mail:</td>
+          <td class="fs8" >##EMAIL##</td>
+          <td class="spacer" >&nbsp;</td>
+          <td class="fs8" colspan="2">Arbeit als:</td>
+          <td class="BetwTitlesmall fs7" colspan="3">##JOB##</td>
+        </tr>
+        <tr>
+          <td class="fs8">Telefon:</td>
+          <td class="fs8">##TELNR##</td>
+          <td class="spacer">&nbsp;</td>
+          <td class="fs8" colspan="2">Grundlohn:</td>
+          <td class="bryellow fs8">##GRUNDLOHN##</td>
+          <td class="darkyellow fs8 bold"  colspan="2">(9h / Tag)</td>
+        </tr>
+
+        <tr>
+          <td class="fs8" >AHV-Nr.:</td>
+          <td class="fs8">##AHV##</td>
+          <td class="spacer" colspan="3">&nbsp;</td>
+          <td class="fs7" colspan="3">Abrechnung nach AAB SSFV 2007</td>
+        </tr>
+        <tr>
+          <td class="fs8" >Geb. Datum:</td>
+          <td class="fs8" style="width: 121px;">##DOB##</td>
+          <td class="fs8" >&nbsp;</td>
+          <td class="fs8" style="width: 90px;" colspan="2">Produktionsfirma:</td>
+          <td class="BetwTitlesmall fs7" style="width: 184px;" colspan="3">##PRODF##</td>
+        </tr>
+        <tr>
+          <td class="fs8">Konto:</td>
+          <td class="fs8">##KONTONR##</td>
+          <td class="spacer">&nbsp;</td>
+          <td class="fs8" colspan="2" rowspan="2">Adresse:</td>
+          <td class="BetwTitlesmall fs7" colspan="3">##ADD1##</td>
+        </tr>
+        <tr>
+          <td class="fs8" >BV:&nbsp;</td>
+          <td class="fs8" >##BV##</td>
+          <td class="spacer" >&nbsp;</td>
+          <td class="BetwTitlesmall fs7" colspan="3">##ADD2##</td>
+        </tr>
+        <tr>
+          <td class="fs8" colspan="8">&nbsp;</td>
+        </tr>
+        <tr>
+          <td class="titlebar fs7"  colspan="2">Beschreibung&nbsp;</td>
+          <td class="titlebar fs7"  colspan="2">Anz.</td>
+          <td class="titlebar fs7" >Einheit</td>
+          <td class="titlebar fs7" >CHF/Stk.</td>
+          <td class="titlebar fs7"  colspan="2">CHF</td>
+        </tr>
+        <tr>
+          <td class="fs8" colspan="8">&nbsp;</td>
+        </tr>
+        <tr>
+          <td class="yelltitle fs10" colspan="2">Tagesgage / Grundlohn</td>
+          <td class="fs7"  colspan="4"><span class="wingdings">q</span>&Uuml;bertrag aus Arbeitsrapport</td>
+          <td class="fs8" colspan="2">&nbsp;</td>
+        </tr>
+        <tr>
+          <td class="bryellow fs8">##DTAE1##</td>
+          <td class="bryellow fs8">Dreh</td>
+          <td class="darkyellow fs8">##ANZTAG##</td>
+          <td class="fs8">&nbsp;</td>
+          <td class="bryellow fs8">Tag</td>
+          <td class="bryellow fs8">##GRUNDLOHNTAG##</td>
+          <td class="bryellow fs8" colspan="2">#GRUNDLOHNTAG##</td>
+        </tr>
+        <tr>
+          <td class="bryellow fs8" >##DTAE2</td>
+          <td class="bryellow fs8" >Dreh</td>
+          <td class="darkyellow fs8" >##ANZTAG2##</td>
+          <td class="fs8" >&nbsp;</td>
+          <td class="bryellow fs8" >Tag</td>
+          <td class="bryellow fs8" >##GRUNDLOHNTAG##</td>
+          <td class="bryellow fs8" colspan="2">##GRUNDLOHNTAG##</td>
+        </tr>
+        <tr>
+          <td class="bryellow fs8" colspan="2">Anzahl Tage x Grundlohn</td>
+          <td class="darkyellow fs8">##ANZTAG##</td>
+          <td class="fs8">&nbsp;</td>
+          <td class="bryellow fs8">Tag</td>
+          <td class="bryellow fs8">##GRUNDLOHNTAG##</td>
+          <td class="bryellow fs8" colspan="2">##GRUNDLOHN##</td>
+        </tr>
+      </tr>
+      <tr>
+        <td class="fs8" colspan="8">&nbsp;</td>
+      </tr>
+
+      <tr>
+        <td class="bryellow fs8" colspan="2">Ferienzulage</td>
+        <td class="bryellow fs8" align="right">8.33%</td>
+        <td class="fs8" >&nbsp;</td>
+        <td class="bryellow fs8" >##GRUNDLOHN##</td>
+        <td class="fs8" >&nbsp;</td>
+        <td class="bryellow fs8"  colspan="2">##FERIENZULA##</td>
+      </tr>
+      <tr>
+        <td class="overline fs7" colspan="6">Subtotal Grundlohn inkl. Ferienzulage</td>
+        <td class="overline fs7" colspan="2">##GRUNDLOHNUNDFZ##</td>
+      </tr>
+      <tr>
+        <td class="fs8" colspan="8">&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="orantitle fs10"  colspan="2">&Uuml;berstunden &amp; Zuschl&auml;ge</td>
+        <td class="fs7"  colspan="6"><span class="wingdings">q</span> &Uuml;bertrag aus Arbeitsrapport</td>
+      </tr>
+      <tr>
+        <td class="brorange fs8">10. und 11. Stunde</td>
+        <td class="brorange fs8">100%</td>
+        <td class="darorange fs8" align="right">##ANZ1011##</td>
+        <td class="fs8">&nbsp;</td>
+        <td class="brorange fs8">&agrave; CHF</td>
+        <td class="brorange fs8">##RATE1011##</td>
+        <td class="brorange fs8" colspan="2">##TOT1011##</td>
+      </tr>
+      <tr>
+        <td class="brorange fs8">12. und 13. Stunde</td>
+        <td class="brorange fs8">150%</td>
+        <td class="darorange fs8" align="right">0</td>
+        <td class="fs8">&nbsp;</td>
+        <td class="brorange fs8">&agrave; CHF</td>
+        <td class="brorange fs8">##RATE1213##</td>
+        <td class="brorange fs8" colspan="2">##TOT1213##</td>
+      </tr>
+      <tr>
+        <td class="brorange fs8">14. und 15. Stunde</td>
+        <td class="brorange fs8">200%</td>
+        <td class="darorange fs8" align="right">0</td>
+        <td class="fs8">&nbsp;</td>
+        <td class="brorange fs8">&agrave; CHF</td>
+        <td class="brorange fs8">100.00</td>
+        <td class="brorange fs8" colspan="2">-</td>
+      </tr>
+      <tr>
+        <td class="brorange fs8">ab 16. Stunde</td>
+        <td class="brorange fs8">250%</td>
+        <td class="darorange fs8"align="right">0</td>
+        <td class="fs8">&nbsp;</td>
+        <td class="brorange fs8">&agrave; CHF</td>
+        <td class="brorange fs8">125.00</td>
+        <td class="brorange fs8" colspan="2">-</td>
+      </tr>
+      <tr>
+        <td class="brorange fs8" colspan="2">Nachtstundenzuschlag &agrave; 25% (Nachtstunden 23:00-5:00)</td>
+        <td class="darorange fs8" align="right">1</td>
+        <td class="fs8">&nbsp;</td>
+        <td class="brorange fs8">&agrave; CHF</td>
+        <td class="brorange fs8">12.50</td>
+        <td class="brorange fs8" colspan="2">10.25</td>
+      </tr>
+      <tr>
+        <td class="overline fs7" colspan="6">&nbsp;Subtotal &Uuml;berstunden &amp; Zuschl&auml;ge</td>
+        <td class="overline fs7" colspan="2">##SUBUEBER##</td>
+      </tr>
+      <tr>
+        <td class="fs8" colspan="6">&nbsp;</td>
+        <td class="fs8" colspan="2">&nbsp;</td>
+      </tr>
+
+      <tr>
+        <td class="BetwTitle" colspan="6">Total Bruttolohn</td>
+        <td class="BetwTitle" colspan="2">##TOTBRUT##</td>
+      </tr>
+      <tr>
+        <td class="fs8" colspan="8">&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="bluetitle fs10" colspan="2" height="16">Abz&uuml;ge Sozialleistungen</td>
+        <td class="fs7"  colspan="6">* Einige Abz&uuml;ge sind je nach Arbeitgeber unterschiedlich !</td>
+      </tr>
+      <tr>
+        <td class="brblue fs8" >AHV / IV / EO</td>
+        <td class="brblue fs8" >&nbsp;</td>
+        <td class="brblue fs8"  align="right">6.05%</td>
+        <td class="fs8"></td>
+        <td class="brblue fs8" >1,107.75</td>
+        <td class="fs8" ></td>
+        <td class="brblue fs8" colspan="2">-67.00</td>
+      </tr>
+      <tr>
+        <td class="brblue fs8" >ALV</td>
+        <td class="brblue fs8" >( je nach Arbeitgeber * )</td>
+        <td class="brblue fs8" align="right">1.10%</td>
+        <td class="fs8" >&nbsp;</td>
+        <td class="brblue fs8" >&nbsp;</td>
+        <td class="fs8">&nbsp;</td>
+        <td class="brblue fs8" colspan="2">-</td>
+      </tr>
+      <tr>
+        <td class="brblue fs8" >BVG-Pr&auml;mie</td>
+        <td class="brblue fs8" >VFA&nbsp;</td>
+        <td class="brblue fs8" >6.00%</td>
+        <td class="fs8" ></td>
+        <td class="brblue fs8" >1,107.75</td>
+        <td class="fs8" ></td>
+        <td class="brblue fs8" colspan="2">-66.50</td>
+      </tr>
+      <tr>
+        <td class="brblue fs8">UVG / NBU</td>
+        <td class="brblue fs8" >( je nach Arbeitgeber * )</td>
+        <td class="brblue fs8"  align="right">1.62%</td>
+        <td class="fs8">&nbsp;</td>
+        <td class="brblue fs8" >&nbsp;</td>
+        <td class="fs8" >&nbsp;</td>
+        <td class="brblue fs8"  colspan="2">-</td>
+      </tr>
+      <tr>
+        <td class="fs8" colspan="8"></td>
+      </tr>
+      <tr>
+        <td class="overline fs7" colspan="6">Subtotal Abz&uuml;ge</td>
+        <td class="overline fs7" colspan="2">##SUBABZ##</td>
+      </tr>
+      <tr>
+        <td class="fs8" colspan="8"></td>
+      </tr>
+      <tr>
+        <td class="BetwTitle"  colspan="6">Total Nettolohn</td>
+        <td class="BetwTitle"  colspan="2">##NET##</td>
+      </tr>
+      <tr>
+        <td colspan="8"></td>
+      </tr>
+      <tr>
+        <td class="fs8" colspan="8">&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="darblue fs10"  colspan="2">Familienzulage</td>
+        <td class="brblue fs8"  align="right">0.00%</td>
+        <td class="fs8" >&nbsp;</td>
+        <td class="brblue fs8" >-</td>
+        <td class="fs8" >&nbsp;</td>
+        <td class="brblue fs8"  colspan="2">-</td>
+      </tr>
+      <tr>
+        <td class="fs8"  colspan="8"></td>
+      </tr>
+      <tr>
+        <td class="greentitle"  colspan="2" height="17">Spesen / Transportkosten</td>
+        <td class="fs7" colspan="6"><span class="wingdings">q</span>&Uuml;bertrag aus Arbeitsrapport</td>
+      </tr>
+      <tr>
+        <td class="spacer"  colspan="8" height="3"></td>
+      </tr>
+      <tr>
+        <td class="brgreen fs8"  colspan="2">Verpflegung</td>
+        <td class="dargreen fs8"  align="right">0</td>
+        <td class="fs8" >&nbsp;</td>
+        <td class="brgreen fs8" >&agrave; CHF</td>
+        <td class="brgreen fs8" >##FOODRATE##</td>
+        <td class="brgreen fs8"  colspan="2">##FOODNR##</td>
+      </tr>
+      <tr>
+        <td class="brgreen fs8"  colspan="2">Autokilometer</td>
+        <td class="dargreen fs8"  align="right">0</td>
+        <td class="fs8" >&nbsp;</td>
+        <td class="brgreen fs8" >&agrave; CHF</td>
+        <td class="brgreen fs8" >##KILRATE##</td>
+        <td class="brgreen fs8"  colspan="2">##KILNR##</td>
+      </tr>
+      <tr>
+        <td class="brgreen fs8"  colspan="2">Weitere Spesen</td>
+        <td class="dargreen fs8"  align="right">0</td>
+        <td class="fs8" >&nbsp;</td>
+        <td class="brgreen fs8" >&agrave; CHF</td>
+        <td class="brgreen fs8" >0.70</td>
+        <td class="brgreen fs8"  colspan="2">-</td>
+      </tr>
+      <tr class="spacer">
+        <td class="fs8" colspan="8"></td>
+      </tr>
+      <tr>
+        <td class="overline fs7" colspan="6">Subtotal Spesen</td>
+        <td class="overline fs7" colspan="2">##SPES##</td>
+      </tr>
+      <tr>
+        <td class="fs8"  colspan="8"></td>
+      </tr>
+      <tr>
+        <td class="BetwTitle"  colspan="6">Total Betrag</td>
+        <td class="BetwTitle"  colspan="2">##TOT##</td>
+      </tr>
+      <tr>
+        <td  colspan="8"></td>
+      </tr>
+      <tr>
+        <td class="fs8" colspan="3">Bitte den entsprechenden Betrag innert 30 Tagen auf folgendes Konto &uuml;berweisen:</td>
+        <td class="spacer" ></td>
+        <td class="fs8" colspan="4">UBS CH32 0023 3233 7271 1940C</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 </div>
 </div>
 </div>
@@ -558,6 +896,5 @@ const us_id = "guest"
 const p_id = "<?echo $p_id;?>"
 const c_id= "<?echo $c_id;?>"
 </script>
-
 </body>
 </html>

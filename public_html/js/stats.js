@@ -3,8 +3,8 @@ export function refreshStats(chart,start,end){
     chart = Morris.Line({
       element: 'stats',
       data: [{
-        period: '2017-01',
-        Pay: 0
+        period: '0000-00',
+        Pay: 500
       }],
       xkey: 'period',
       ykeys: ['Pay'],
@@ -22,41 +22,33 @@ export function refreshStats(chart,start,end){
     })
   }
 
-  $.ajax({
-    url: 'https://filmstunden.ch/api/v01/stats',
-    type: 'GET',
-    xhrFields: {withCredentials: true},
-    dataType: 'json',
-    data: {
-      'start': start,
-      'end': end
-    },
-  })
-    .done(data => {
-      $('#monthlyMean').html(data.mean_month)
-      $('#dateRange').html(start+' bis '+end)
-      $('#activeProjects').html(data.active_projects)
-      chart.options.goals = [data.mean_month]
-    })
 
-  $.ajax({
-    url: 'https://filmstunden.ch/api/v01/stats/chart/line',
-    type: 'GET',
-    xhrFields: {withCredentials: true},
-    dataType: 'json',
-    data: {
-      'start': start,
-      'end': end
-    }
-  })
-    .done(data => {
+  let fetchData = {
+    method: 'GET',
+    headers: new Headers(),
+    credentials: 'include'
+  }
+
+  // TODO Promise All & gotten rid of jQuery
+  fetch('https://filmstunden.ch/api/v01/stats?start='+start+'&end='+end,fetchData)
+    .then(response => response.json())
+    .then(data=>{
+      document.getElementById('monthlyMean').innerHTML = data.mean_month
+      document.getElementById('dateRange').innerHTML = start+' bis '+end
+      document.getElementById('activeProjects').innerHTML = data.active_projects
+      chart.options.goals = [data.mean_month]
+      return fetch('https://filmstunden.ch/api/v01/stats/chart/line?start='+start+'&end='+end, fetchData)
+    })
+    .then(response => response.json())
+    .then(data =>{
       let odata = data
       data.sort(function(a, b) {return b.Pay - a.Pay})
       chart.options.ymax = Math.round((data[0].Pay+1000)/1000)*1000
       chart.setData(odata)
       chart.redraw()
+      return chart
     })
-    .fail(() => {console.error('linechart request failed')})
+    .catch(error => console.error(error))
   return chart
 }
 
@@ -72,16 +64,12 @@ export function refreshDonut (donut) {
       window.location.href = './project_overview.php?search=' + encodeURIComponent(row.label)
     })
   }
-
-  $.ajax({
-    url: 'https://filmstunden.ch/api/v01/stats/chart/donut',
-    type: 'GET',
-    xhrFields: {withCredentials: true},
-    dataType: 'json'
-  })
-    .done(data => {
+  fetch('https://filmstunden.ch/api/v01/stats/chart/donut',{credentials: 'include'})
+    .then(response => response.json())
+    .then(data=>{
       donut.setData(data)
+      return donut
     })
-    .fail(() => { console.error('donutchart request failed') })
-  return donut
+    .catch(error => console.error(error))
+
 }

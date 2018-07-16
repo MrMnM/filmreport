@@ -1,16 +1,7 @@
-<?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting( E_ALL | E_STRICT );
-include './includes/inc_sessionhandler_default.php';
-include './includes/inc_encrypt.php';
+<?//----------------------------------
+require_once('./includes/inc_sessionhandler_default.php');
 require_once('../api-app/lib/Globals.php');
-$db=$GLOBALS['db'];
-$servername = "localhost";
-$dbname = $db['database_name'];
-$username = $db['username'];
-$password = $db['password'];
-?>
+//------------------------------------?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -24,14 +15,20 @@ $password = $db['password'];
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/jquery.metismenu/1.1.3/metisMenu.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.4.0/min/dropzone.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/featherlight/1.7.13/featherlight.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.basictable/1.0.8/basictable.min.css" />
+
     <link href="./css/main.css" rel="stylesheet">
 </head>
 
 <body>
 <div id="wrapper">
-<?//***********************************************
-include_once('./includes/inc_top.php');
-//***********************************************?>
+
+  <?//----------------------------------
+  include_once('./includes/inc_top.php');
+  //------------------------------------?>
+
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">
@@ -55,59 +52,6 @@ include_once('./includes/inc_top.php');
             </div>
         </div><!-- /col-lg-12 -->
     </div><!-- /row -->
-<?
-if (!empty($_GET["id"])) {
-    $conn = new mysqli($servername, $username, $password, $dbname);
-    $p_id = $conn->real_escape_string($_GET["id"]);
-
-    // Check connection
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-
-    //TODO ESCAPES! Get all of THis Data Dynamically!
-
-    //Get Projects
-    $sql = "SELECT p_name, p_company, p_job, p_gage, p_start, p_json, p_comment FROM `projects` WHERE project_id='$p_id';";
-    $result = $conn->query($sql);
-    if ($result->num_rows > 0) {
-        while($row = $result->fetch_assoc()) {
-            $name = $row["p_name"];
-            $company_id = $conn->real_escape_string($row["p_company"]);
-            $job = $row["p_job"];
-            $pay = $row["p_gage"];
-            $date = $row["p_start"];
-            $json = $row["p_json"];
-            $comment = $row["p_comment"];
-        }
-    }
-
-    //Get companies
-    $sql = "SELECT name, address_1, address_2 FROM `companies` WHERE company_id='$company_id';";
-    $result = $conn->query($sql);
-
-    if ($result->num_rows > 0) {
-        while($row = $result->fetch_assoc()) {
-            $company = $row["name"];
-            $c_address1 = $row["address_1"];
-            $c_address2= $row["address_2"];
-        }
-    }
-    $company = $company."\n</br>".$c_address1."\n</br>".$c_address2;
-}
-
-//TODO Get Rid of this Shit
-// JSON HERE ************************************************************************************************************************
-if (!empty($json)){?>
-    <script>
-    var loadElement = JSON.parse('<?echo $json?>')
-    </script>
-<?}else{?>
-    <script>
-    var loadElement = new Array()
-    </script>
-<?}?>
-
 <!-- MAINCONTENT -->
     <div class="panel with-nav-tabs panel-default">
         <div class="panel-heading">
@@ -121,7 +65,7 @@ if (!empty($json)){?>
 
             <div style="float:right; margin-top:-50px;">
                 <button type="button" id="refresh" class="btn btn-default refreshButton"><i class="fa fa-refresh"></i></button>
-                <button type="button" class="btn btn-default" onclick="window.open('view.php?id=<?echo $p_id;?>')"><i class="fa fa-eye"></i></button>
+                <button type="button" id="view" class="btn btn-default"><i class="fa fa-eye"></i></button>
             </div>
 
         </div>
@@ -166,11 +110,6 @@ if (!empty($json)){?>
                                             </tbody>
                                         </table>
                                     </div>
-                                    <input type="hidden" id="projectId" value="<? echo $p_id;?>">
-                                    <input type="hidden" id="startDate" value="<?
-/* DATE HERE *******************************************************************************************************/
-                                    echo $date;?>">
-                                    <input type="hidden" id="basePay"value="<? echo $pay;?>">
                                 </div><!--panel-body-->
                             </div><!--panel-->
                         </div><!--col-lg-6-->
@@ -242,36 +181,46 @@ if (!empty($json)){?>
                                         <option value="Vorbereitung">Vorbereitung</option>
                                         <option value="Reisetag">Reisetag</option>
                                     </datalist>
-                                    <table width="100%" class="table table-striped table-bordered table-hover" id="workhours" name="wh">
-                                        <tr>
-                                            <th width="135px">Datum</th>
-                                            <th width="120px">Was</th>
-                                            <th colspan="3" width="250px">Arbeitszeit</th>
-                                            <th class="largescreen"></th>
-                                            <th></th>
-                                            <th colspan="8" class="hidden-xs hidden-sm hidden-md">Zuschlaege</th>
-                                            <th colspan="2" width="110px">Spesen</th>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td>Beginn</td>
-                                            <td>Ende</td>
-                                            <td>Pausen</td>
-                                            <td width="60px" class="largescreen">in h</td>
-                                            <td></td>
-                                            <td class="hidden-xs hidden-sm hidden-md"><font size=-2>10</font></td>
-                                            <td class="hidden-xs hidden-sm hidden-md"><font size=-2>11</font></td>
-                                            <td class="hidden-xs hidden-sm hidden-md"><font size=-2>12</font></td>
-                                            <td class="hidden-xs hidden-sm hidden-md"><font size=-2>13</font></td>
-                                            <td class="hidden-xs hidden-sm hidden-md"><font size=-2>14</font></td>
-                                            <td class="hidden-xs hidden-sm hidden-md"><font size=-2>15</font></td>
-                                            <td class="hidden-xs hidden-sm hidden-md"><font size=-2>16+</font></td>
-                                            <td class="hidden-xs hidden-sm hidden-md"><font size=-2>Nacht</font></td>
-                                            <td width=20px>Essen</td>
-                                            <td>Auto</td>
-                                        </tr>
+                                    <table width="100%" class="table table-striped table-bordered table-condensed" id="workhours" name="wh">
+
+                                                    <tr>
+                                                        <th width="135px">Datum</th>
+                                                        <th width="120px">Was</th>
+                                                        <th colspan="3" width="250px">Arbeitszeit</th>
+                                                        <th class="hidden-xs hidden-sm hidden-md"></th>
+                                                        <th></th>
+                                                        <th colspan="8" class="hidden-xs hidden-sm hidden-md">Zuschlaege</th>
+                                                        <th colspan="2" width="110px">Spesen</th>
+                                                    </tr>
+
+                                                 <tr>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td class="hidden-xs">Beginn</td>
+                                                        <td class="hidden-xs">Ende</td>
+                                                        <td class="hidden-xs">Pausen</td>
+                                                        <td width="60px" class="hidden-xs hidden-sm hidden-md">in h</td>
+                                                        <td></td>
+                                                        <td class="hidden-xs hidden-sm hidden-md"><font size=-2>10</font></td>
+                                                        <td class="hidden-xs hidden-sm hidden-md"><font size=-2>11</font></td>
+                                                        <td class="hidden-xs hidden-sm hidden-md"><font size=-2>12</font></td>
+                                                        <td class="hidden-xs hidden-sm hidden-md"><font size=-2>13</font></td>
+                                                        <td class="hidden-xs hidden-sm hidden-md"><font size=-2>14</font></td>
+                                                        <td class="hidden-xs hidden-sm hidden-md"><font size=-2>15</font></td>
+                                                        <td class="hidden-xs hidden-sm hidden-md"><font size=-2>16+</font></td>
+                                                        <td class="hidden-xs hidden-sm hidden-md"><font size=-2>Nacht</font></td>
+                                                        <td width=20px class="hidden-xs">Essen</td>
+                                                        <td class="hidden-xs">Auto</td>
+                                                    </tr>
+
                                     </table>
+
+<!--
+                                    <ul class="list-group" id="workhours" style="list-style-type: none;padding=0;margin:0;"></ul>
+-->
+
+
+
                                 </form>
 
                                 <div id="editButtons">
@@ -413,66 +362,23 @@ if (!empty($json)){?>
                         <p></p>
                         <div class="row">
                             <div class="col-lg-12">
-                              <div class="panel panel-default">
-                                <div class="panel-heading">
-                                  <i class="fa fa-credit-card fa-fw"></i> Spesen
-                                </div>
-                          			<div class="panel-body">
-                          				<div class="table-responsive">
-                          					<table class="table table-condensed">
-                          						<thead>
-                                          <tr>
-                              							<td><strong>Item</strong></td>
-                              							<td class="text-center"><strong>Price</strong></td>
-                              							<td class="text-center"><strong>Quantity</strong></td>
-                              							<td class="text-right"><strong>Totals</strong></td>
-                                            </tr>
-                          						</thead>
-                          						<tbody>
-                          							<!-- foreach ($order->lineItems as $line) or some such thing here -->
-                          							<tr>
-                          								<td>BS-200</td>
-                          								<td class="text-center">$10.99</td>
-                          								<td class="text-center">1</td>
-                          								<td class="text-right">$10.99</td>
-                          							  </tr>
-                                        <tr>
-                              						<td>BS-400</td>
-                          								<td class="text-center">$20.00</td>
-                          								<td class="text-center">3</td>
-                          								<td class="text-right">$60.00</td>
-                          						   	</tr>
-                                        <tr>
-                                  				<td>BS-1000</td>
-                          								<td class="text-center">$600.00</td>
-                          								<td class="text-center">1</td>
-                          								<td class="text-right">$600.00</td>
-                          						  	</tr>
-                          							<tr>
-                          								<td class="thick-line"></td>
-                          								<td class="thick-line"></td>
-                          								<td class="thick-line text-center"><strong>Subtotal</strong></td>
-                          								<td class="thick-line text-right">$670.99</td>
-                          							  </tr>
-                          							<tr>
-                          								<td class="no-line"></td>
-                          								<td class="no-line"></td>
-                          								<td class="no-line text-center"><strong>Shipping</strong></td>
-                          								<td class="no-line text-right">$15</td>
-                          							  </tr>
-                          							<tr>
-                          								<td class="no-line"></td>
-                          								<td class="no-line"></td>
-                          								<td class="no-line text-center"><strong>Total</strong></td>
-                          								<td class="no-line text-right">$685.99</td>
-                          							  </tr>
-                          						</tbody>
-                          					</table>
-                          				</div>
+                                  <div class="table-responsive">
+                                     <table class="table table-striped table-bordered table-condensed">
+                                       <thead>
+                                         <tr>
+                                           <th width="30px">#</th>
+                                           <th width="100px">Datum</th>
+                                           <th width="20%">Name</th>
+                                           <th class="hidden-xs hidden-sm">Beschreibung</th>
+                                           <th width="100px"></th>
+                                         </tr>
+                                       </thead>
+                                       <tbody id="expenseTable">
+                                       </tbody>
+                                     </table>
+                                   </div>
+                                  <a href="#" id="addExpenseBtn" class="btn btn-default btn-block"  data-toggle="modal" data-target="#addExpenseModal">Ausgaben hinzuf&uuml;gen</a>
                           			</div>
-                          		</div>
-                            </div><!--col-lg-12-->
-                          </div><!--col-lg-12-->
                         </div><!--row-->
                 </div><!--tab-pane-->
             </div><!--tab-content-->
@@ -487,10 +393,7 @@ if (!empty($json)){?>
                     <h4 class="modal-title" id="myModalLabel">Projektinformationen anpassen</h4>
                 </div>
                 <div class="modal-body">
-                    <form role="form" action="h_project.php" method="post" id="updateProject">
-                        <input type="hidden" name="action" value="update">
-                        <input type="hidden" name="us_id" value="<? echo $u_id;?>">
-                        <input type="hidden" name="p_id" value="<? echo $p_id;?>">
+                    <form role="form" action="" method="post" id="updateProject">
                     <div class="form-group input-group">
                         <span class="input-group-addon">Projektname</span>
                         <input type="text" id="p_name" name="name" class="form-control" required>
@@ -519,24 +422,59 @@ if (!empty($json)){?>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+
+    <div class="modal fade" id="addExpenseModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Spesen Hinzufügen</h4>
+                </div>
+                <div class="modal-body">
+                  <div class="form-group input-group" id="exp_date_g">
+                      <span class="input-group-addon">Datum</span>
+                      <input type="date" id="exp_date" name="name" class="form-control" required>
+                  </div>
+                    <div class="form-group input-group" id="exp_name_g">
+                        <span class="input-group-addon">Name</span>
+                        <input type="text" id="exp_name" name="name" class="form-control" required>
+                    </div>
+                    <div class="form-group input-group" id="exp_value_g">
+                        <span class="input-group-addon">Betrag</span>
+                        <input type="number" id="exp_value" name="pay" class="form-control" required>
+                    </div>
+                    <div class="form-group input-group">
+                        <span class="input-group-addon">Beschreibung</span>
+                        <textarea class="form-control" rows="2" id="exp_comment"></textarea>
+                    </div>
+                    <div id="imageupload">
+                    <form action="#" class="dropzone" id="fileUploadZone">
+                    <div class="fallback">
+                      <input name="file" type="file" />
+                    </div>
+                  </div>
+                  <div id="imagefinder" style="display:none">
+                  </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
+                        <button type="button" class="btn btn-primary" id="saveExpenseBtn">Speichern</button>
+                    </div>
+
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
 </div><!--pagewrapper-->
 </div><!-- /#wrapper -->
-
-<!-- jQuery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.4.0/min/dropzone.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/jquery.metismenu/1.1.3/metisMenu.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.1/jquery.form.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
 <script src="https://cdn.jsdelivr.net/twix.js/1.1.5/twix.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/featherlight/1.7.13/featherlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.basictable/1.0.8/jquery.basictable.min.js"></script>
 <script type="module" src="./js/project_main.js"></script>
-<script>
-    moment().format();
-    var company="<?
-/* COMPANY HERE **********************************************************************************************************/
-    echo $company_id?>"
-    const us_id = "<? echo $u_id;?>"
-    const p_id = "<?echo $p_id;?>"
-</script>
 </body>
 </html>

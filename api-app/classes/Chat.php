@@ -23,7 +23,12 @@ class Chat
                         'chats.text'
                       ], [
                         "project" => $p_id
-                      ]);
+                      ], 	["ORDER" => [
+
+		// Order by column with descending sorting
+		"chats.time" => "DESC"
+
+	]]);
 
         $full=[];
         foreach ($data as $cur) {

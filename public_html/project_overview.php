@@ -1,7 +1,7 @@
-<?php
+<?//----------------------------------
 require_once('./includes/inc_sessionhandler_default.php');
 require_once('../api-app/lib/Globals.php');
-?>
+//------------------------------------?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -24,7 +24,11 @@ require_once('../api-app/lib/Globals.php');
 
 <body>
 <div id="wrapper">
-<?php include_once('./includes/inc_top.php');?>
+
+  <?//----------------------------------
+  include_once('./includes/inc_top.php');
+  //------------------------------------?>
+
 <div id="page-wrapper">
     <p></br></p>
     <div class="row">
@@ -82,7 +86,7 @@ require_once('../api-app/lib/Globals.php');
                                 </div>
                                 <div class="form-group input-group">
                                     <span class="input-group-addon">Startdatum</span>
-                                    <input type="date" name="date" class="form-control" placeholder="500" required>
+                                    <input type="date" id="newDate" name="date" class="form-control" required>
                                 </div>
                                 <datalist id="joblist"></datalist>
                                 <div class="form-group input-group">

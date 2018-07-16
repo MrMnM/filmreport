@@ -4,40 +4,54 @@ import { activateSideMenu } from './sidemenu.js'
 import { loadJoblist } from './Jobs.js'
 import { getParam} from './miscHelpers.js'
 
-if(getParam('id')===null){window.location.href = './home.php'}
+moment().format()
+
 export function getRate(num) {return roundToTwo(p.pay / 9 * num / 100)}
 
+//var loadElement = new Array()
+const p_id = getParam('id')
+if(p_id===null){window.location.href = './home.php'}
 const p = new Project(p_id)
-var rowCounter = loadElement.length
-var saved = true
-const startDate = new Date($('#startDate').val())
+var img = ''
+
+
+Dropzone.options.fileUploadZone = {
+  url: 'https://filmstunden.ch/api/v01/expenses/'+p_id+'/upload',
+  paramName: 'file', // The name that will be used to transfer the file
+  maxFilesize: 5, // MB
+  maxFiles: 1,
+  acceptedFiles: 'image/*,application/pdf',
+  dictDefaultMessage: '<p class="text-muted"><i class="fa fa-cloud-upload fa-5x"></i></br>Scans von Quittungen hinzufügen</p>',
+  dictMaxFilesExceeded: 'Es kann nur eine Quittung pro Eintrag hochgeladen werden',
+  dictInvalidFileType: 'Es können nur Bilder und PDF\'s hochgeladen werden',
+  success: function(file, response){
+    uploadComplete(response)
+  }
+}
+
 
 //   BUTTONS
 //-----------------------------------------------------------------------------
 $('#saveButton').click(() => Save())
 $('#resaveButton').click(() => Save())
-$('#hoursTab').click(() => updateAll())
-
-$('#openProjectModal').click((event) => {
-  event.preventDefault()
+$('#openProjectModal').click(() => {
   $('#companylist').load('https://filmstunden.ch/api/v01/company', (resp) => {
     let t = ''
     for (let i of JSON.parse(resp)) {
-      t = t + '<option value=' + i['company_id'] + '>' + i['name'] + '</option>'
+      t +=  '<option value=' + i['company_id'] + '>' + i['name'] + '</option>'
     }
     $('#companylist').html(t).val(p.companyId)
   })
 })
-
 $('#addRow').click(() => {
-  saved = false
+  p.saved = false
   addRow()
-  updateBottom()
+  updateAll()
   updateSaveStatus()
 })
-
 $('#removeRow').click(() => {
-  saved = false
+  let rowCounter = p.rows.length
+  p.saved = false
   if (rowCounter != 0) {
     rowCounter--
     $('#r' + rowCounter).remove()
@@ -46,13 +60,11 @@ $('#removeRow').click(() => {
   updateAll()
   updateSaveStatus()
 })
-
 $('#refresh').click(() => {
-  saved = false
+  document.getElementById('refresh').setAttribute('disabled',true)
   updateAll()
-  updateSaveStatus()
+  document.getElementById('refresh').removeAttribute('disabled')
 })
-
 $('#submitComment').click((event) => {
   event.preventDefault()
   let text = $('#commentText').val()
@@ -64,38 +76,100 @@ $('.collapseHeader').click(function(){
   $(this).parent('tr').nextUntil('.cat').toggle()
 })
 
+$('#saveExpenseBtn').click(()=>{
+  if(!$('#exp_date')[0].checkValidity()){
+    $('#exp_date_g').addClass('has-error')
+    console.error('error in form')
+    return
+  }else{
+    $('#exp_date_g').removeClass('has-error')
+  }
+
+  if(!$('#exp_name')[0].checkValidity()){
+    $('#exp_name_g').addClass('has-error')
+    console.error('error in form')
+    return
+  }else{
+    $('#exp_name_g').removeClass('has-error')
+  }
+
+  if(!$('#exp_value')[0].checkValidity()){
+    $('#exp_value_g').addClass('has-error')
+    console.error('error in form')
+    return
+  }else{
+    $('#exp_value_g').removeClass('has-error')
+  }
+
+  $.ajax({
+    url: 'https://filmstunden.ch/api/v01/expenses/'+p.id,
+    dataType: 'json',
+    data: {
+      'date': $('#exp_date').val(),
+      'name': $('#exp_name').val(),
+      'comment': $('#exp_comment').val() ,
+      'img': img,
+      'val': $('#exp_value').val()
+    },
+    type: 'POST'
+  }).done(()=>{
+    $('#exp_date').val(formatDate(new Date()))
+    $('#exp_name').val('')
+    $('#exp_comment').val('')
+    $('#exp_value').val('')
+    $('#addExpenseModal').modal('toggle')
+    loadExpenses()
+  }).fail(()=>{
+    console.error('fail')
+  }).always(()=>{
+
+  })
+
+})
+
+
 // CHHANGEFUNCTION ------------------------------------------------------------
 //-----------------------------------------------------------------------------
 
-$('#workhours').change(function(event) {
-  saved = false
-  let currentField = event.target.name.substring(0, 4)
-  let currentNumber = event.target.name.substring(4)
-  if (currentField == 'star') {
-    p.rows[currentNumber].start = event.target.value
-  } else if (currentField == 'ende') {
-    p.rows[currentNumber].end = event.target.value
-  } else if (currentField == 'brea') {
-    p.rows[currentNumber].break = event.target.value
-  } else if (currentField == 'date') {
-    p.rows[currentNumber].date = event.target.value
-  } else if (currentField == 'base') {
-    p.rows[currentNumber].manualBase = true
-    p.rows[currentNumber].base = event.target.value
-  } else if (currentField == 'cark') {
-    p.rows[currentNumber].car = event.target.value
-  } else if (currentField == 'lunc') {
-    p.rows[currentNumber].lunch ^= true
-  } else if (currentField == 'work') {
-    p.rows[currentNumber].work = event.target.value
+$('#workhours').change((event)=>{
+  p.saved = false
+  let curField = event.target.name.substring(0, 4)
+  let curNumber = event.target.name.substring(4)
+  let tval = event.target.value
+
+  switch(curField) {
+  case 'star':
+    p.rows[curNumber].start = tval
+    break
+  case 'ende':
+    p.rows[curNumber].end = tval
+    break
+  case 'brea':
+    p.rows[curNumber].break = tval
+    break
+  case 'date':
+    p.rows[curNumber].date =tval
+    break
+  case 'base':
+    p.rows[curNumber].manualBase = true
+    p.rows[curNumber].base = tval
+    break
+  case 'cark':
+    p.rows[curNumber].car = tval
+    break
+  case 'lunc':
+    p.rows[curNumber].lunch ^= true
+    break
+  case 'work':
+    p.rows[curNumber].work = tval
+    break
   }
-  p.rows[currentNumber].date = $('#date' + currentNumber).val()
-  updateAll()
+  updateRow(curNumber)
   updateSaveStatus()
 })
 
 $('#comment').change(()=> {
-  saved = false
+  p.saved = false
   p.comment = $('#comment').val()
   updateSaveStatus()
 })
@@ -103,7 +177,8 @@ $('#comment').change(()=> {
 // HELPERS
 //------------------------------------------------------------------------------
 function addRow() {
-  let currentDate = startDate
+  let currentDate = p.startdate
+  let rowCounter = p.rows.length
   if (rowCounter > 0) {
     let currentCounter = rowCounter - 1
     let inputDate = $('[name="date' + currentCounter + '"]').val()
@@ -112,57 +187,48 @@ function addRow() {
   }
   let date = formatDate(currentDate)
   p.addRow(rowCounter, date)
-  const newRow = $(`
-        <tr id="r${rowCounter}">
-        <td><input type="date" id="date${rowCounter}" name="date${rowCounter}" value="${formatDate(currentDate)}"></td>
-        <td><input type="text" name="work${rowCounter}" size=10 list="work"></td>
-        <td><input type="time" name="star${rowCounter}" min=0 value="00:00"></td>
-        <td><input type="time" name="ende${rowCounter}" min=0 value="00:00"></td>
-        <td><input type="time" name="brea${rowCounter}" min=0  value="00:00"></td>
-        <td id="wtim${rowCounter}">0</td>
-        <td><input type="number" id="base${rowCounter}" name="base${rowCounter}" min=0 step="0.1"></td>
-        <td id="tent${rowCounter}" class="hidden-xs hidden-sm hidden-md">0</td>
-        <td id="elev${rowCounter}" class="hidden-xs hidden-sm hidden-md">0</td>
-        <td id="twel${rowCounter}" class="hidden-xs hidden-sm hidden-md">0</td>
-        <td id="thir${rowCounter}" class="hidden-xs hidden-sm hidden-md">0</td>
-        <td id="four${rowCounter}" class="hidden-xs hidden-sm hidden-md">0</td>
-        <td id="fift${rowCounter}" class="hidden-xs hidden-sm hidden-md">0</td>
-        <td id="sixt${rowCounter}" class="hidden-xs hidden-sm hidden-md">0</td>
-        <td id="nigh${rowCounter}" class="hidden-xs hidden-sm hidden-md">0</td>
-        <td><input type="checkbox" id="lunch${rowCounter}" name="lunc${rowCounter}"></td>
-        <td><input type="number" name="cark${rowCounter}" min=0 value=0></td>
-        </tr>`)
-  $('#workhours').append(newRow)
-  saved = false
-  updateAll()
-  updateSaveStatus()
-  rowCounter++
 }
 
-function loadRow(currentRow) {
-  let newRow = $(`
-        <tr id="r${currentRow}">
-        <td><input type="date" id="date${currentRow}" name="date${currentRow}" value="${p.rows[currentRow].date}"></td>
-        <td><input type="text" name="work${currentRow}" size=10 list="work" value="${p.rows[currentRow].work}"></td>
-        <td><input type="time" name="star${currentRow}" min=0 value="${p.rows[currentRow].start}"></td>
-        <td><input type="time" name="ende${currentRow}" min=0 value="${p.rows[currentRow].end}"></td>
-        <td><input type="time" name="brea${currentRow}" min=0 value="${p.rows[currentRow].break}"></td>
-        <td id="wtim${currentRow}" class="hidden-xs hidden-sm hidden-md">0</td>
-        <td><input type="number" id="base${currentRow}" name="base${currentRow}" min=0 step="0.1" value="${p.rows[currentRow].base}"></td>
-        <td id="tent${currentRow}" class="hidden-xs hidden-sm hidden-md">0</td>
-        <td id="elev${currentRow}" class="hidden-xs hidden-sm hidden-md">0</td>
-        <td id="twel${currentRow}" class="hidden-xs hidden-sm hidden-md">0</td>
-        <td id="thir${currentRow}" class="hidden-xs hidden-sm hidden-md">0</td>
-        <td id="four${currentRow}" class="hidden-xs hidden-sm hidden-md">0</td>
-        <td id="fift${currentRow}" class="hidden-xs hidden-sm hidden-md">0</td>
-        <td id="sixt${currentRow}" class="hidden-xs hidden-sm hidden-md">0</td>
-        <td id="nigh${currentRow}" class="hidden-xs hidden-sm hidden-md">0</td>
-        <td><input type="checkbox" id="lunch${currentRow}" name="lunc${currentRow}" value="${p.rows[currentRow].lunch}"></td>
-        <td><input type="number" name="cark${currentRow}" min=0 value="${p.rows[currentRow].car}"></td>
-        </tr>`)
-  $('#workhours').append(newRow)
-  if (p.rows[currentRow].lunch) {
-    $('#lunch' + currentRow).prop('checked', true)
+function redrawRows(){
+  $('#workhours').find('tr:gt(1)').remove()
+  for(let c of p.rows){
+    let currentRow = c.id
+    let newRow =   `<tr id="r${currentRow}">
+                      <td><input type="date" id="date${currentRow}" name="date${currentRow}" value="${p.rows[currentRow].date}"></td>
+                      <td><input type="text" name="work${currentRow}" size=10 list="work" value="${p.rows[currentRow].work}"></td>
+                      <td><input type="time" name="star${currentRow}" min=0 value="${p.rows[currentRow].start}"></td>
+                      <td><input type="time" name="ende${currentRow}" min=0 value="${p.rows[currentRow].end}"></td>
+                      <td><input type="time" name="brea${currentRow}" min=0 value="${p.rows[currentRow].break}"></td>
+                      <td id="wtim${currentRow}" class="hidden-xs hidden-sm hidden-md">0</td>
+                      <td><input type="number" id="base${currentRow}" name="base${currentRow}" min=0 step="0.1" value="${p.rows[currentRow].base}"></td>
+                      <td id="tent${currentRow}" class="hidden-xs hidden-sm hidden-md">0</td>
+                      <td id="elev${currentRow}" class="hidden-xs hidden-sm hidden-md">0</td>
+                      <td id="twel${currentRow}" class="hidden-xs hidden-sm hidden-md">0</td>
+                      <td id="thir${currentRow}" class="hidden-xs hidden-sm hidden-md">0</td>
+                      <td id="four${currentRow}" class="hidden-xs hidden-sm hidden-md">0</td>
+                      <td id="fift${currentRow}" class="hidden-xs hidden-sm hidden-md">0</td>
+                      <td id="sixt${currentRow}" class="hidden-xs hidden-sm hidden-md">0</td>
+                      <td id="nigh${currentRow}" class="hidden-xs hidden-sm hidden-md">0</td>
+                      <td><input type="checkbox" id="lunch${currentRow}" name="lunc${currentRow}" value="${p.rows[currentRow].lunch}"></td>
+                      <td><input type="number" name="cark${currentRow}" min=0 value="${p.rows[currentRow].car}"></td>
+                      </tr>`
+    /*  newRow = `<li class="list-group-item-project">
+                <div class="col-md-1" style="border:1px solid gray">
+                </div>
+                <div class="col-md-5">
+                  <h4 class="list-group-item-heading"> List group heading </h4>
+                    <p class="list-group-item-text"> Qui diam libris ei, vidisse incorrupte at mel. His euismod salutandi dissentiunt eu. Habeo offendit ea mea. Nostro blandit sea ea, viris timeam molestiae an has. At nisl platonem eum.
+                    </p>
+                </div>
+                <div class="col-md-6 text-center">
+                  <button type="button" class="btn btn-default btn-lg btn-block"> Vote Now! </button>
+                </div>
+              </li>`
+    */
+    $('#workhours').append(newRow)
+    if (c.lunch) {
+      $('#lunch' + currentRow).prop('checked', true)
+    }
   }
 }
 
@@ -173,16 +239,17 @@ function Save() {
   $('#resaveButton').hide()
   $('#saveButtonDisabled').show()
   let rows = JSON.stringify(p.rows)
+  p.json = rows
   $.ajax({
     url: 'https://filmstunden.ch/api/v01/project/'+p.id,
     dataType: 'json',
-    data: { 'data': rows, 'add': p.addInfo, 'comment': p.comment },
+    data: { 'data': p.json, 'add': p.addInfo, 'comment': p.comment },
     type: 'POST'
   }).done(()=>{
-    saved=true
+    p.saved=true
     error=0
   }).fail(()=>{
-    saved=false
+    p.saved=false
     error=1
   }).always(()=>{
     $('#saveButton').show()
@@ -193,33 +260,19 @@ function Save() {
 
 function updateRow(row) {
   $('#wtim' + row).html(p.rows[row].getWorkHours())
-
-  if (p.rows[row].getOvertime(10) > 0) {
-    $('#tent' + row).html(p.rows[row].getOvertime(10))
-  } else { $('#tent' + row).html('&nbsp;') }
-  if (p.rows[row].getOvertime(11) > 0) {
-    $('#elev' + row).html(p.rows[row].getOvertime(11))
-  } else { $('#elev' + row).html('&nbsp;') }
-  if (p.rows[row].getOvertime(12) > 0) {
-    $('#twel' + row).html(p.rows[row].getOvertime(12))
-  } else { $('#twel' + row).html('&nbsp;') }
-  if (p.rows[row].getOvertime(13) > 0) {
-    $('#thir' + row).html(p.rows[row].getOvertime(13))
-  } else { $('#thir' + row).html('&nbsp;') }
-  if (p.rows[row].getOvertime(14) > 0) {
-    $('#four' + row).html(p.rows[row].getOvertime(14))
-  } else { $('#four' + row).html('&nbsp;') }
-  if (p.rows[row].getOvertime(15) > 0) {
-    $('#fift' + row).html(p.rows[row].getOvertime(15))
-  } else { $('#fift' + row).html('&nbsp;') }
-  if (p.rows[row].getOvertime(16) > 0) {
-    $('#sixt' + row).html(p.rows[row].getOvertime(16))
-  } else { $('#sixt' + row).html('&nbsp;') }
-  $('#nigh' + row).html(p.rows[row].getNightHours())
+  $('#tent' + row).html((p.rows[row].getOvertime(10) > 0)?(p.rows[row].getOvertime(10)):'&nbsp;')
+  $('#elev' + row).html((p.rows[row].getOvertime(11) > 0)?(p.rows[row].getOvertime(11)):'&nbsp;')
+  $('#twel' + row).html((p.rows[row].getOvertime(12) > 0)?(p.rows[row].getOvertime(12)):'&nbsp;')
+  $('#thir' + row).html((p.rows[row].getOvertime(13) > 0)?(p.rows[row].getOvertime(13)):'&nbsp;')
+  $('#four' + row).html((p.rows[row].getOvertime(14) > 0)?(p.rows[row].getOvertime(14)):'&nbsp;')
+  $('#fift' + row).html((p.rows[row].getOvertime(15) > 0)?(p.rows[row].getOvertime(15)):'&nbsp;')
+  $('#sixt' + row).html((p.rows[row].getOvertime(16) > 0)?(p.rows[row].getOvertime(16)):'&nbsp;')
+  $('#nigh' + row).html((p.rows[row].getNightHours() > 0)?(p.rows[row].getNightHours()):'&nbsp;')
   $('#base' + row).val(p.rows[row].getBase())
 }
 
 function updateBottom() {
+  let rowCounter = p.rows.length
   let totalKilometers = 0
   for (let i = 0; i < p.rows.length; ++i) {
     totalKilometers += parseInt(p.rows[i].car)
@@ -251,7 +304,7 @@ function updateBottom() {
     hours125 += parseFloat(p.rows[i].getOvertime(11))
   }
 
-  var hours150 = 0
+  let hours150 = 0
   for (let i = 0; i < p.rows.length; ++i) {
     hours150 += parseFloat(p.rows[i].getOvertime(12))
     hours150 += parseFloat(p.rows[i].getOvertime(13))
@@ -320,12 +373,12 @@ function updateBottom() {
 }
 
 function updateSaveStatus(error=0) {
-  if (saved) {
+  if (p.saved) {
     $('#saveInfo').show()
     $('#saveNone').hide()
     $('#saveWarning').hide()
     $('#saveError').hide()
-  } else if (!saved && !error) {
+  } else if (!p.saved && !error) {
     $('#saveInfo').hide()
     $('#saveNone').hide()
     $('#saveWarning').show()
@@ -340,15 +393,18 @@ function updateSaveStatus(error=0) {
 }
 
 function loadJSON(data) {
-  for (var i = 0; i < data.length; i++) {
-    p.addRow(i) //DATE
-    p.rows[i].loadFromJSON(data[i])
-    loadRow(i)
+  if(data){
+    data = JSON.parse(data)
+    for (var i = 0; i < data.length; i++) {
+      p.addRow(i) //DATE
+      p.rows[i].loadFromJSON(data[i])
+      //loadRow(i)
+    }
   }
 }
 
 function updateSuccess(data) {
-  if (data.message == 'SUCCESS') {
+  if (data.status == 'SUCCESS') {
     loadProject(p)
     $('#updateProjectModal').modal('hide')
   } else {
@@ -358,16 +414,12 @@ function updateSuccess(data) {
 
 function loadProject(p) {
   p.loadProject().then(() => {
-    document.getElementById('comment').innerHTML = p.comment
-    document.getElementById('projectName').innerHTML = p.name
-    document.getElementById('title').innerHTML = p.name
-    document.getElementById('projectJob').innerHTML = p.job
-    document.getElementById('projectPay').innerHTML = p.pay
-    document.getElementById('projectCompany').innerHTML = p.company
-    //modal
-    document.getElementById('p_name').value = p.name
-    document.getElementById('p_job').value = p.job
-    document.getElementById('p_pay').value = p.pay
+    console.log(p)
+    loadJSON(p.json)
+    //UI INteraction
+    document.getElementById('view').onclick = ()=>window.open('view.php?id='+p_id)
+    document.getElementById('updateProject').setAttribute('action', 'https://filmstunden.ch/api/v01/project/'+p_id+'/info')
+    updateAll()
   })
 }
 
@@ -391,15 +443,54 @@ function loadPersonalInfo() {
 
 function loadChats() {
   p.getChats().then(() => {
-    $('#chats').html(p.projHtml)
+    $('#chats').html(p.chatProjHtml)
   })
   return p
 }
 
+function loadExpenses() {
+  p.getExpenses().then(() => {
+    $('#expenseTable').html(p.expenseHtml)
+  })
+  return p
+}
+
+$('#expenseTable').on('click', '.delExpense', (event)=> {
+  console.log('nice:', event)
+  deleteExpense(event.currentTarget.id)
+})
+
+
+function deleteExpense(e_id){
+  $.ajax({
+    url: 'https://filmstunden.ch/api/v01/expenses/'+p.id+'/'+e_id,
+    dataType: 'json',
+    type: 'DELETE'
+  }).done(()=>{
+    console.log('done')
+    loadExpenses()
+  }).fail(()=>{
+    console.error('fail')
+  })
+}
+
 export function updateAll() {
+  document.getElementById('comment').innerHTML = p.comment
+  document.getElementById('projectName').innerHTML = p.name
+  document.getElementById('title').innerHTML = p.name
+  document.getElementById('projectJob').innerHTML = p.job
+  document.getElementById('projectPay').innerHTML = p.pay
+  document.getElementById('projectCompany').innerHTML = p.company
+  document.getElementById('p_name').value = p.name
+  document.getElementById('p_job').value = p.job
+  document.getElementById('p_pay').value = p.pay
+
+  redrawRows()
+
   for (let i = 0; i < p.rows.length; i++) {
     updateRow(i)
   }
+
   updateBottom()
 }
 
@@ -421,23 +512,34 @@ function addChat(text) {
     })
 }
 
+function uploadComplete(resp){
+  if(resp.status=='SUCCESS'){
+    img = resp.file_id
+    //$('#imageupload').hide()
+    //$('#imagefinder').show()
+  }
+}
+
+
 // STARTFUNCTION
 // -----------------------------------------------------------------------------
 $(() => { // JQUERY STARTFUNCTION
+  $('#exp_date').val(formatDate(new Date()))
+  $('#workhours').basictable('start')
+
   activateSideMenu()
-  if (loadElement.length == 0) {
-    p.rows = []
-  } else {
-    loadJSON(loadElement) //TODO Load over AJAX
-  }
 
   loadProject(p)
   loadPersonalInfo()
   loadChats()
   loadJoblist()
+  loadExpenses()
 
-  setInterval(() => { if (!saved) { Save() } }, 15000)
 
+  //Autosave
+  setInterval(() => { if (!p.saved) { Save() } }, 15000)
+
+  //Jqueery Form
   $('#updateProject').ajaxForm({
     dataType: 'json',
     success: updateSuccess

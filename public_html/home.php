@@ -18,6 +18,7 @@ require_once('../api-app/lib/Globals.php');
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
     <link rel="stylesheet" href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/placeholder-loading/dist/css/placeholder-loading.min.css">
     <link rel="stylesheet" href="./css/main.css">
 </head>
 
@@ -39,7 +40,8 @@ include_once('./includes/inc_top.php');
                 </div>
             </div><!-- /.panel-heading -->
             <div class="panel-body">
-                <div id="stats"></div>
+                <div id="stats">
+                </div>
                 <div class="input-group input-daterange">
                     <input width=50px type="text" class="form-control input-s" id="fromDate" value="">
                     <div class="input-group-addon input-s">bis</div>
@@ -57,7 +59,7 @@ include_once('./includes/inc_top.php');
               <i class="fa fa-tasks fa-5x"></i>
             </div><!--col-xs-3-->
             <div class="col-xs-9 text-right">
-              <div class="huge" id="activeProjects"></div>
+              <div class="huge" id="activeProjects"><div class="lds-ring"><div></div><div></div><div></div><div></div></div></div>
               <div>Aktive Projekte</div>
             </div><!--text-right-->
           </div><!--row-->
@@ -72,7 +74,7 @@ include_once('./includes/inc_top.php');
               <div id="dateRange"></div>
             </div><!--col-xs-8-->
             <div class="col-xs-4 text-right">
-              <div class="huge" id="monthlyMean"></div>
+              <div class="huge" id="monthlyMean"><div class="lds-ring"><div></div><div></div><div></div><div></div></div></div>
             </div><!--col-xs-4-->
           </div><!--row-->
         </div><!--panel-heading-->
@@ -81,7 +83,7 @@ include_once('./includes/inc_top.php');
     <div class="col-lg-4 col-md-6">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <i class="fa fa-bar-chart-o fa-fw"></i> Donut Chart Example
+          <i class="fa fa-bar-chart-o fa-fw"></i> Einnahmen pro Firma
         </div>
         <div class="panel-body">
           <div id="donut"></div>

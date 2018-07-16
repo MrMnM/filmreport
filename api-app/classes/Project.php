@@ -3,14 +3,14 @@ use \Medoo\Medoo;
 
 class Project
 {
-  public function __construct($container)
-  {
+public function __construct($container)
+{
     $this->db = $container->get('database');
     $this->auth = $container->get('auth');
-  }
+}
 
-  public function list($request, $response, $args)
-  {
+public function list($request, $response, $args)
+{
     $this->auth->check();
     $mode = $request->getQueryParam('m');
     if ($mode == 0) {
@@ -29,8 +29,7 @@ class Project
       'companies.name',
       'projects.tot_hours',
       'projects.tot_money',
-      'projects.p_finished',
-      'projects.view_id'
+      'projects.p_finished'
     ], [
       "AND" => [
         "user_id" => $_SESSION['user'],
@@ -39,24 +38,25 @@ class Project
     ]);
     $o=[];
     foreach ($indata as $cur) {
-      $c=[$cur["p_start"],
-      $cur["p_name"],
-      $cur["name"],
-      $cur["tot_hours"],
-      $cur["tot_money"],
-      $cur["project_id"],
-      $cur["p_finished"],
-      $cur["view_id"]
-    ];
-    array_push($o, $c);
-  }
-  $out=['data' => $o];
-  $response = $response->withJson($out);
-  return $response;
+        $c=[
+        $cur["p_start"],
+        $cur["p_name"],
+        $cur["name"],
+        $cur["tot_hours"],
+        $cur["tot_money"],
+        $cur["project_id"],
+        $cur["p_finished"]
+        ];
+      array_push($o, $c);
+    }
+    $out=['data' => $o];
+    $response = $response->withJson($out);
+    return $response;
 }
 
 public function new($request, $response, $args)
 {
+  $this->auth->check();
   $req = $request->getParsedBody();
   $now = date(DATE_ATOM, time());
   $project_id = md5($req['name'].$now);
@@ -74,12 +74,14 @@ public function new($request, $response, $args)
   return $response->withJson($out);
 }
 
-public function load($request, $response, $args){
+public function load($request, $response, $args)
+{
+  $this->auth->check();
   $p_id=$args['p_id'];
-
   $in = $this->db->select('projects', [
     "[>]companies" => ["p_company" => "company_id"]
   ], [
+    'projects.p_start',
     'projects.p_name',
     'projects.p_company',
     'projects.p_job',
@@ -92,29 +94,34 @@ public function load($request, $response, $args){
   ], [
     'project_id' => $p_id
   ]);
-if (sizeof($in)>1) {throw new Exception('Multiple Projects with same ID');};
-$in=$in[0];
-$company = $company.$in['name']."</br>".$in['address_1']."</br>".$in['address_2'];
-$o = [
-"name"=>$in['p_name'],
-"job"=>$in['p_job'],
-"pay"=>$in['p_gage'],
-"company"=>$company,
-"companyId"=>$in['p_company'],
-"data"=>$in['p_json'],
-"comment"=>$in['p_comment']
-];
-return $response->withJson($o);
+  if (sizeof($in)>1) {throw new Exception('Multiple Projects with same ID');};
+  $in=$in[0];
+  $company = $in['name']."</br>".$in['address_1']."</br>".$in['address_2'];
+  $o = [
+    "startdate"=>$in['p_start'],
+    "name"=>$in['p_name'],
+    "job"=>$in['p_job'],
+    "pay"=>$in['p_gage'],
+    "company"=>$company,
+    "companyId"=>$in['p_company'],
+    "data"=>$in['p_json'],
+    "comment"=>$in['p_comment']
+  ];
+  return $response->withJson($o);
 }
 
-public function save($request, $response, $args){
+public function save($request, $response, $args)
+{
   $this->auth->check();
   $p_id=$args['p_id'];
   $req = $request->getParsedBody();
-  $add=json_decode($req['add'], true);
-  $calcBase=0;
-  $baseHours=0;
-  $settings = json_encode(array('calcBase' => $calcBase, 'baseHours' => $baseHours));
+  $add=json_decode($req['add'],true);
+  $calcBase='SSFV_DAY';
+  $baseHours=9;
+  $otRates = [25,25,50,50,100,100,150];
+  $settings = json_encode(array('calcBase' => $calcBase,
+                                'baseHours' => $baseHours,
+                                'otRates' => $otRates));
 
   $comment = "";
   if (!empty($req['comment'])) {
@@ -144,6 +151,9 @@ public function delete($request, $response, $args)
   $this->auth->check();
   $p_id=$args['p_id'];
   $resp = $this->db->delete('projects', ['project_id' => $p_id]);
+$mask = '../upload/'.$p_id.'_*.*';
+array_map('unlink', glob($mask));
+
   if($resp==1){
     return $response->withStatus(204);
   }else{
@@ -153,47 +163,23 @@ public function delete($request, $response, $args)
 
 public function saveInfo($request, $response, $args)
 {
+  $this->auth->check();
   $p_id=$args['p_id'];
-  /*    $us_id = mysqli_real_escape_string($conn, $_POST["us_id"]);
-  if ($u_id != $us_id) {
-  die('{ "message": "ERROR: NOT LOGGED IN"}');
+  $req = $request->getParsedBody();
+  $query = $this->db->update('projects', [
+    "p_name" => $req['name'],
+    "p_job" => $req['work'],
+    "p_gage" => $req['pay'],
+    "p_company" => $req['company']
+  ], [
+    "project_id" => $p_id
+  ]);
+if($query>0){
+  $out= array('status'=>'SUCCESS','project_id'=>$p_id);
+}else{
+  $out = array('status'=>'ERROR','project_id'=>$p_id);
 }
-$p_id = mysqli_real_escape_string($conn, $_POST["p_id"]);
-
-if (!empty($_POST["name"])) {
-$cur= mysqli_real_escape_string($conn, $_POST["name"]);
-$sql = "UPDATE projects SET  p_name='$cur' WHERE project_id = '$p_id'";
-if ($conn->query($sql) === true) {
-} else {
-die('{ "message": "ERROR: CONN FAILED: '.$conn->connect_error.'"}');
-}
-}
-if (!empty($_POST["work"])) {
-$cur= mysqli_real_escape_string($conn, $_POST["work"]);
-$sql = "UPDATE projects SET  p_job='$cur' WHERE project_id = '$p_id'";
-if ($conn->query($sql) === true) {
-} else {
-die('{ "message": "ERROR: CONN FAILED: '.$conn->connect_error.'"}');
-}
-}
-if (!empty($_POST["pay"])) {
-$cur= mysqli_real_escape_string($conn, $_POST["pay"]);
-$sql = "UPDATE projects SET  p_gage='$cur' WHERE project_id = '$p_id'";
-if ($conn->query($sql) === true) {
-} else {
-die('{ "message": "ERROR: CONN FAILED: '.$conn->connect_error.'"}');
-}
-}
-if (!empty($_POST["company"])) {
-$cur= mysqli_real_escape_string($conn, $_POST["company"]);
-$sql = "UPDATE projects SET  p_company='$cur' WHERE project_id = '$p_id'";
-if ($conn->query($sql) === true) {
-} else {
-die('{ "message": "ERROR: CONN FAILED: '.$conn->connect_error.'"}');
-}
-}
-echo '{ "message": "SUCCESS",  "project_id":"'.$p_id.'"}';
-*/
+return $response->withJson($out);
 }
 
 public function finish($request, $response, $args)
@@ -214,8 +200,9 @@ public function finish($request, $response, $args)
   return $response->withJson($out);
 }
 
-public function getInfo($request, $response, $args)
+public function download($request, $response, $args)
 {
   $p_id=$args['p_id'];
 }
+
 }

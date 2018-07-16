@@ -65,7 +65,6 @@ jQuery('#saveInfo').click(function(event) {
   event.preventDefault()
   $.ajax({
     url: 'https://filmstunden.ch/api/v01/user',
-    xhrFields: {withCredentials: true},
     type: 'POST',
     dataType: 'json',
     data: {

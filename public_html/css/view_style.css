@@ -279,4 +279,106 @@ ul {
   }
 }
 
-wingdings
+/* HERE ABR STYLE */
+
+.wingdings_abr {
+  font-family: "Wingdings 3";
+}
+
+.spacer {
+  font-size: 10.0pt;
+  font-weight: 400;
+  vertical-align: bottom;
+}
+
+.fs8 {
+  font-size: 8.0pt;
+  font-weight: 400;
+}
+
+.fs7 {
+  font-size: 7.0pt;
+  font-weight: 400;
+}
+
+.fs10 {
+  font-size: 10.0pt;
+  font-weight: 400;
+}
+
+.dargreen {
+  background: #CCFFCC;
+}
+
+.brgreen {
+  background: #E5FFE5;
+}
+
+.greentitle {
+  background: #CCFFCC;
+}
+
+.darblue {
+  background: #CCE5FF;
+}
+
+.bluetitle {
+  padding: 5px;
+  background: #CCE5FF;
+}
+
+.brblue {
+  background: #E5F2FF;
+}
+
+.darorange {
+  background: #ffe5cc;
+}
+
+.brorange {
+  background: #fff2e5
+}
+
+.orantitle {
+  padding: 5px;
+  background: #ffe5cc;
+}
+
+.darkyellow {
+  text-align: right;
+  background: #FFFFB2;
+}
+
+.yelltitle {
+  padding: 5px;
+  background: #FFFFB2;
+}
+
+.titlebar fs7 {
+  padding: 1px;
+  border-top: .5pt solid #969696;
+  border-left: .5pt solid #969696;
+}
+
+.BetwTitle {
+  font-size: 8.0pt;
+  font-weight: 800;
+  background: #DFDFDF;
+}
+
+.BetwTitlesmall {
+  background: #DFDFDF;
+}
+
+.maintitle {
+  font-size: 14.0pt;
+  font-weight: 400;
+}
+
+.bryellow {
+  background: #FFFFE5;
+}
+
+.overline {
+  border-top: .5pt solid #969696;
+}

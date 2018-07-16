@@ -37,11 +37,7 @@ class User
     array_walk_recursive($data, function(&$item) {
       $item = htmlspecialchars($item, ENT_QUOTES);
     });
-    return $response ->withHeader('Access-Control-Allow-Origin', 'https://filmstunden.ch')
-    ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-    ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS')
-    ->withHeader('Access-Control-Allow-Credentials', 'true')
-    ->withJson($data);
+    return $response->withJson($data);
   }
 
   public function getSpecific($request, $response, $args){
@@ -69,11 +65,7 @@ class User
     array_walk_recursive($data, function(&$item) {
       $item = htmlspecialchars($item, ENT_QUOTES);
     });
-    return $response ->withHeader('Access-Control-Allow-Origin', 'https://filmstunden.ch')
-    ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-    ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS')
-    ->withHeader('Access-Control-Allow-Credentials', 'true')
-    ->withJson($data);
+    return $response->withJson($data);
   }
 
   public function update($request, $response, $args)
@@ -95,40 +87,24 @@ class User
       ]);
       $data =  array('status'=>'200','msg'=>'SUCCESS');
     } catch (Exception $e) {
-      $data =  array('status'=>'500','msg'=>'ERROR');
+      return $response->withStatus(500);
     }
-    return $response ->withHeader('Access-Control-Allow-Origin', 'https://filmstunden.ch')
-    ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-    ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS')
-    ->withHeader('Access-Control-Allow-Credentials', 'true')
-    ->withJson($data);
+    return $response->withJson($data);
   }
 
   public function new($request, $response, $args)
   {
     $req = $request->getParsedBody();
     if (empty($req["name"]) || empty($req["mail"]) || empty($req["pw"]) || empty($req["pw2"])) {
-      return $response->withHeader('Access-Control-Allow-Origin', 'https://filmstunden.ch')
-      ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-      ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS')
-      ->withHeader('Access-Control-Allow-Credentials', 'true')
-      ->withJson(array('status'=>'ERROR','msg'=>'Es wurden nicht alle Daten übermittelt'));
+      return $response->withJson(array('status'=>'ERROR','msg'=>'Es wurden nicht alle Daten übermittelt'));
     }
     if ($req["pw"]!=$req["pw2"]) {
-      return $response->withHeader('Access-Control-Allow-Origin', 'https://filmstunden.ch')
-      ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-      ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS')
-      ->withHeader('Access-Control-Allow-Credentials', 'true')
-      ->withJson(array('status'=>'ERROR','msg'=>'Passwörter stimmen nicht überein'));
+      return $response->withJson(array('status'=>'ERROR','msg'=>'Passwörter stimmen nicht überein'));
     }
 
     $count =  $this->db->count('users', ['mail'=>$req['mail']]);
     if ($count>0) {
-      return $response->withHeader('Access-Control-Allow-Origin', 'https://filmstunden.ch')
-      ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-      ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS')
-      ->withHeader('Access-Control-Allow-Credentials', 'true')
-      ->withJson(array('status'=>'ERROR','msg'=>'Diese Mailaddresse ist bereits registriert'));
+      return $response->withJson(array('status'=>'ERROR','msg'=>'Diese Mailaddresse ist bereits registriert'));
     }
 
     $mail = $req['mail'];

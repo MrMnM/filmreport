@@ -16,18 +16,19 @@ class Stats
     $end = new DateTime($request->getQueryParam('end'));
     $indata = $this->db->select('projects', [
       'tot_money',
-      'p_end'
+      'p_end',
+      'p_start'
     ], [
       "user_id" => $_SESSION['user'],
       "p_end[<>]" => [$start->format('Y-m-d'), $end->format('Y-m-d')],
-      "ORDER" => "p_end",
+      "ORDER" => "p_start",
     ]);
 
     $allDates=[];
     $i=0;
 
     foreach ($indata as $in) {
-      $allDates[$i][0]=new DateTime($in["p_end"]);
+      $allDates[$i][0]=new DateTime($in["p_start"]);
       $allDates[$i][1]=$in["tot_money"];
       $i++;
     }
@@ -37,27 +38,31 @@ class Stats
       $allDates[$i][1]=0;
     }
 
-    $monthsDifference = ($end->diff($start)->m + ($end->diff($start)->y*12))+1;
+    $monthsDifference = ($end->diff($start)->m + ($end->diff($start)->y*12));
     $out = array_pad(array([0,0]), $monthsDifference, [0,0]);
 
     $j=0;
-    while ($start < $end) {
+    $current = new DateTime($start->format('Y-m-01'));
+    while ($current < $end) {
       for ($i=0; $i<count($allDates) ; $i++) {
-        if ($allDates[$i][0]->format('Y-m')==$start->format('Y-m')) {
+        if ($allDates[$i][0]->format('Y-m')===$current->format('Y-m')) {
           $out[$j][0]+=$allDates[$i][1];
-          $out[$j][1]=$start->format('Y-m');
+          $out[$j][1]=$current->format('Y-m');
         } else {
-          $out[$j][1]=$start->format('Y-m');
+          $out[$j][1]=$current->format('Y-m');
         }
       }
-
-      $start->modify('+1 month');
+      $current->modify('+1 month');
       $j++;
     }
 
     $o=[];
     foreach ($out as $v) {
+      if ($v[0]==null) {
+        $to = ['period'=>$v[1],'Pay'=>0];
+      }else{
       $to = ['period'=>$v[1],'Pay'=>$v[0]];
+    }
       array_push($o, $to);
     }
 

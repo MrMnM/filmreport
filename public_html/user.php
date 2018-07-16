@@ -1,7 +1,7 @@
-<?
-include './includes/inc_sessionhandler_default.php';
+<?//----------------------------------
+require_once('./includes/inc_sessionhandler_default.php');
 require_once('../api-app/lib/Globals.php');
-?>
+//------------------------------------?>
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -19,7 +19,11 @@ require_once('../api-app/lib/Globals.php');
 
 <body>
 <div id="wrapper">
-<?include('./includes/inc_top.php');?>
+
+  <?//----------------------------------
+  include_once('./includes/inc_top.php');
+  //------------------------------------?>
+
 <div id="page-wrapper">
   <p></br></p>
   <div class="row">

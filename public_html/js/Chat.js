@@ -21,18 +21,16 @@ export default class Chat {
 
   renderView(){
     let t=`
-    <li class="divider"></li>
-    <li>
-      <a href="#">
-        <div>
-        <!--  <strong>${this.from}</strong>-->
-            <span class="pull-right text-muted">
-              <em><i class="fa fa-clock-o"></i> ${this.date}</em>
+    <div class="media msg" style="border-bottom: 1px solid #e7e7e7; margin-top: 5px;">
+      <div class="media-body">
+        <div style="color: #BBB; margin-bottom: -1.5em; margin-left:10px;"><strong>${this.from}</strong></div>
+            <span class="pull-right text-muted" style="margin-right: 20px;">
+              <small><em><i class="fa fa-clock-o"></i> ${this.date}</em></small>
             </span>
           </div>
-          <div>${this.text}</div>
-      </a>
-    </li>`
+          <div style="color: #777; padding: 5px; padding-left:10px;">${this.text}</div>
+    </div>
+    </div>`
     return t
   }
 }

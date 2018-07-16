@@ -7,11 +7,11 @@ class Auth
       session_start();
     }
 
-    public function check($request,$response,$args){
+    public function check(){
       if (!isset($_SESSION["running"]) || ($_SESSION["running"] != 1)) {
           session_destroy();
-          header('Content-Type: application/json');
-          die(json_encode(array('status'=>'403','msg'=>'ERROR: UNAUTHORIZED')));
+          header('HTTP/1.1 304 Not Authorized');
+          die();
       } else {
           return TRUE;
       }

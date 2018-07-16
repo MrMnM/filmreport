@@ -9,8 +9,8 @@ let u = {}
 
 function loadChats(){
   p.getChats().then(()=>{
-    if(p.viewHtml!=''){
-      $( '#chats' ).html(p.viewHtml)
+    if(p.chatViewHtml!=''){
+      $( '#chats' ).html(p.chatViewHtml)
     }else{
       let emptyComment=`
       <li class="divider"></li>
@@ -34,6 +34,16 @@ $('#submitComment').click((e)=>{
   addChat(text)
 })
 
+$('#navAbr').click((e)=>{
+  e.preventDefault()
+  $('#rapport').hide()
+  $('#abrechnung').show()
+})
+$('#navRap').click((e)=>{
+  e.preventDefault()
+  $('#rapport').show()
+  $('#abrechnung').hide()
+})
 
 var loadPersonalInfo = new Promise((resolve)=>{
   $.ajax({
@@ -97,8 +107,13 @@ $(()=>{ // JQUERY STARTFUNCTION
   ]).then(()=>{
     refreshView()
     $('#loading').hide()
-    $('#main').show()
+    $('#rapport').show()
     console.log(p)
 
+  })
+
+  $( 'ul.nav li' ).on( 'click', function() {
+    $( this ).parent().find( 'li.active' ).removeClass( 'active' )
+    $( this ).addClass( 'active' )
   })
 })
