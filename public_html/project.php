@@ -18,7 +18,6 @@ require_once('../api-app/lib/Globals.php');
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.4.0/min/dropzone.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/featherlight/1.7.13/featherlight.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.basictable/1.0.8/basictable.min.css" />
-
     <link href="./css/main.css" rel="stylesheet">
 </head>
 
@@ -62,12 +61,10 @@ require_once('../api-app/lib/Globals.php');
                 <li><a href="#spesen" data-toggle="tab" aria-expanded="false">Spesen</a></li>
                 <li><a href="#notes" data-toggle="tab" aria-expanded="false">Kommentare</a></li>
             </ul>
-
             <div style="float:right; margin-top:-50px;">
                 <button type="button" id="refresh" class="btn btn-default refreshButton"><i class="fa fa-refresh"></i></button>
                 <button type="button" id="view" class="btn btn-default"><i class="fa fa-eye"></i></button>
             </div>
-
         </div>
 
         <div class="panel-body">
@@ -182,58 +179,47 @@ require_once('../api-app/lib/Globals.php');
                                         <option value="Reisetag">Reisetag</option>
                                     </datalist>
                                     <table width="100%" class="table table-striped table-bordered table-condensed" id="workhours" name="wh">
+                                             <tr>
+                                                <th width="135px">Datum</th>
+                                                <th width="120px">Was</th>
+                                                <th colspan="3" width="250px">Arbeitszeit</th>
+                                                <th class="hidden-xs hidden-sm hidden-md"></th>
+                                                <th></th>
+                                                <th colspan="8" class="hidden-xs hidden-sm hidden-md">Zuschlaege</th>
+                                                <th colspan="2" width="110px">Spesen</th>
+                                              </tr>
 
-                                                    <tr>
-                                                        <th width="135px">Datum</th>
-                                                        <th width="120px">Was</th>
-                                                        <th colspan="3" width="250px">Arbeitszeit</th>
-                                                        <th class="hidden-xs hidden-sm hidden-md"></th>
-                                                        <th></th>
-                                                        <th colspan="8" class="hidden-xs hidden-sm hidden-md">Zuschlaege</th>
-                                                        <th colspan="2" width="110px">Spesen</th>
-                                                    </tr>
-
-                                                 <tr>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td class="hidden-xs">Beginn</td>
-                                                        <td class="hidden-xs">Ende</td>
-                                                        <td class="hidden-xs">Pausen</td>
-                                                        <td width="60px" class="hidden-xs hidden-sm hidden-md">in h</td>
-                                                        <td></td>
-                                                        <td class="hidden-xs hidden-sm hidden-md"><font size=-2>10</font></td>
-                                                        <td class="hidden-xs hidden-sm hidden-md"><font size=-2>11</font></td>
-                                                        <td class="hidden-xs hidden-sm hidden-md"><font size=-2>12</font></td>
-                                                        <td class="hidden-xs hidden-sm hidden-md"><font size=-2>13</font></td>
-                                                        <td class="hidden-xs hidden-sm hidden-md"><font size=-2>14</font></td>
-                                                        <td class="hidden-xs hidden-sm hidden-md"><font size=-2>15</font></td>
-                                                        <td class="hidden-xs hidden-sm hidden-md"><font size=-2>16+</font></td>
-                                                        <td class="hidden-xs hidden-sm hidden-md"><font size=-2>Nacht</font></td>
-                                                        <td width=20px class="hidden-xs">Essen</td>
-                                                        <td class="hidden-xs">Auto</td>
-                                                    </tr>
-
+                                              <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td class="hidden-xs">Beginn</td>
+                                                <td class="hidden-xs">Ende</td>
+                                                <td class="hidden-xs">Pausen</td>
+                                                <td width="60px" class="hidden-xs hidden-sm hidden-md">in h</td>
+                                                <td></td>
+                                                <td class="hidden-xs hidden-sm hidden-md"><font size=-2>10</font></td>
+                                                <td class="hidden-xs hidden-sm hidden-md"><font size=-2>11</font></td>
+                                                <td class="hidden-xs hidden-sm hidden-md"><font size=-2>12</font></td>
+                                                <td class="hidden-xs hidden-sm hidden-md"><font size=-2>13</font></td>
+                                                <td class="hidden-xs hidden-sm hidden-md"><font size=-2>14</font></td>
+                                                <td class="hidden-xs hidden-sm hidden-md"><font size=-2>15</font></td>
+                                                <td class="hidden-xs hidden-sm hidden-md"><font size=-2>16+</font></td>
+                                                <td class="hidden-xs hidden-sm hidden-md"><font size=-2>Nacht</font></td>
+                                                <td width=20px class="hidden-xs">Essen</td>
+                                                <td class="hidden-xs">Auto</td>
+                                              </tr>
                                     </table>
-
-<!--
-                                    <ul class="list-group" id="workhours" style="list-style-type: none;padding=0;margin:0;"></ul>
--->
-
-
-
                                 </form>
 
                                 <div id="editButtons">
                                     <button type="button" id="addRow" class="btn btn-success btn-circle"><i class="fa fa-plus"></i></button>
                                     <button type="button" id="removeRow" class="btn btn-danger btn-circle"><i class="fa fa-minus"></i></button>
                                 </div>
-
                         </div><!-- /.col-lg-12 -->
                     </div><!--row-->
                     <div class="row">
                         <div class="col-sm-12 col-md-7 col-md-offset-5">
                             <p></p>
-
                             <table class="table table-bordered table-hover" cellspacing="0" cellpadding="0">
                               <tr>
                                 <th width="35px"></th>

@@ -100,8 +100,8 @@ $app->group('/v01', function() {
   $this->post('/chats/{p_id}', 'Chat:add'); //?text=xxx
 
   // View
-  $this->get('/view', 'View:get');
-  $this->get('/view/download', 'View:Download'); //?format=xx
+  $this->get('/view/{p_id}', 'View:get');
+  $this->get('/view/download/{p_id}', 'View:Download'); //?format=xx
 
   // View
   $this->get('/timer', 'Timer:list');

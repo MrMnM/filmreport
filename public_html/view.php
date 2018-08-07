@@ -125,6 +125,8 @@ if (!empty($_GET["id"])) {
 	<div id="loading">
     <i class="fa fa-spinner fa-spin" style="position:absolute;right:50%;margin-top:40px;"></i>
   </div>
+
+<!--------------------------------------------------------------------------------------------------------------->
 	<div id="rapport" style="display:none">
 		<table border="0" cellpadding="0" cellspacing="0" class="f10">
 			<col class="f10" >
@@ -133,9 +135,9 @@ if (!empty($_GET["id"])) {
 			<col class="f10" width="30">
 			<col class="f10" span="4" >
 			<col class="f10" width="30">
-            <col class="f10">
-            <col class="f10" width="30">
-            <col class="f10" span="4">
+      <col class="f10">
+      <col class="f10" width="30">
+      <col class="f10" span="4">
 			<col class="f10" >
 			<col class="f10" >
 			<col class="f10" >
@@ -157,9 +159,11 @@ if (!empty($_GET["id"])) {
 				<td class="f10"></td>
 				<td class="td17 bold" colspan="9" id="p_name"><?= $p_name;?></td>
 			</tr>
+
 			<tr>
 				<td height="2"></td>
 			</tr>
+
 			<tr>
 				<td class="blue" colspan="3" height="18" id="u_name"></td>
 				<td class="xl1" colspan="3"></td>
@@ -171,9 +175,11 @@ if (!empty($_GET["id"])) {
 				<td class="xl71" colspan="2">bis</td>
 				<td class="td17" colspan="3" id="edate"><?= $edate?></td>
 			</tr>
+
 			<tr>
 				<td height="2"></td>
 			</tr>
+
 			<tr>
 				<td class="blue" colspan="3" height="18" id="u_address1"></td>
 				<td class="xl1"></td>
@@ -311,7 +317,6 @@ if (!empty($_GET["id"])) {
 $allbase=$all125=$all150=$all200=$all250=$all25=$allfood=$allcar=$version=0;
 $allhours1 = $allhours2 = new DateTime('2000-01-01 00:00:00');
 			foreach($dat as $arr){
-
 				if($arr['workhours']==0){
 					break;
 				}
@@ -542,6 +547,7 @@ $allhours1 = $allhours2 = new DateTime('2000-01-01 00:00:00');
 			</tr>
 		</table>
 	</div>
+  <!--------------------------------------------------------------------------------------------------------------->
   <div id="abrechnung" style="display:none">
     <table border="0" cellpadding="1px">
       <tbody>
@@ -557,74 +563,74 @@ $allhours1 = $allhours2 = new DateTime('2000-01-01 00:00:00');
         <tr>
           <td class="fs8">&nbsp;</td>
           <td class="fs8" colspan="2">Datum:</td>
-          <td class="fs8" colspan="3">##DATE##</td>
+          <td class="fs8" colspan="3" id="ab_date">##DATE##</td>
         </tr>
         <tr>
           <td colspan="3">&nbsp;</td>
           <td class="fs8" colspan="2">Rapport Nr.:</td>
-          <td class="fs8" colspan="3">##RAPPNR##</td>
+          <td class="fs8" colspan="3" id="ab_rappnr">##RAPPNR##</td>
         </tr>
         <tr>
           <td class="fs8">Vorname/ Name:</td>
-          <td class="fs8">##NAME##</td>
+          <td class="fs8" id="ab_name">##NAME##</td>
           <td class="spacer" colspan="6">&nbsp;</td>
         </tr>
         <tr>
           <td class="fs8" >Adresse:</td>
-          <td class="fs8" >#ADD1##4</td>
+          <td class="fs8" id="ab_addr1">#ADD1##4</td>
           <td class="spacer" ></td>
           <td class="fs8" colspan="2">Produktion:</td>
-          <td class="BetwTitlesmall fs7" colspan="3">##PROJ##</td>
+          <td class="BetwTitlesmall fs7" colspan="3" id="ab_proj">##PROJ##</td>
         </tr>
         <tr>
           <td class="fs8">&nbsp;</td>
-          <td class="fs8">##ADD2##</td>
+          <td class="fs8" id="ab_addr2">##ADD2##</td>
           <td class="spacer" >&nbsp;</td>
           <td class="fs8" colspan="2">Dreh [von/bis]:</td>
-          <td class="BetwTitlesmall fs7" >##VON##</td>
-          <td class="BetwTitlesmall fs7"  colspan="2">##BIS##</td>
+          <td class="BetwTitlesmall fs7" id="ab_fromdate">##VON##</td>
+          <td class="BetwTitlesmall fs7"  colspan="2" id="ab_todate">##BIS##</td>
         </tr>
         <tr>
           <td class="fs8" >E-Mail:</td>
-          <td class="fs8" >##EMAIL##</td>
+          <td class="fs8" id="ab_mail">##EMAIL##</td>
           <td class="spacer" >&nbsp;</td>
           <td class="fs8" colspan="2">Arbeit als:</td>
-          <td class="BetwTitlesmall fs7" colspan="3">##JOB##</td>
+          <td class="BetwTitlesmall fs7" colspan="3" id="ab_job">##JOB##</td>
         </tr>
         <tr>
           <td class="fs8">Telefon:</td>
-          <td class="fs8">##TELNR##</td>
+          <td class="fs8" id="ab_tel">##TELNR##</td>
           <td class="spacer">&nbsp;</td>
           <td class="fs8" colspan="2">Grundlohn:</td>
-          <td class="bryellow fs8">##GRUNDLOHN##</td>
+          <td class="bryellow fs8" id="ab_base">##GRUNDLOHN##</td>
           <td class="darkyellow fs8 bold"  colspan="2">(9h / Tag)</td>
         </tr>
 
         <tr>
           <td class="fs8" >AHV-Nr.:</td>
-          <td class="fs8">##AHV##</td>
+          <td class="fs8" id="ab_ahv">##AHV##</td>
           <td class="spacer" colspan="3">&nbsp;</td>
           <td class="fs7" colspan="3">Abrechnung nach AAB SSFV 2007</td>
         </tr>
         <tr>
           <td class="fs8" >Geb. Datum:</td>
-          <td class="fs8" style="width: 121px;">##DOB##</td>
+          <td class="fs8" style="width: 121px;" id="ab_dob">##DOB##</td>
           <td class="fs8" >&nbsp;</td>
           <td class="fs8" style="width: 90px;" colspan="2">Produktionsfirma:</td>
-          <td class="BetwTitlesmall fs7" style="width: 184px;" colspan="3">##PRODF##</td>
+          <td class="BetwTitlesmall fs7" style="width: 184px;" colspan="3" id="ab_company">##PRODF##</td>
         </tr>
         <tr>
           <td class="fs8">Konto:</td>
-          <td class="fs8">##KONTONR##</td>
+          <td class="fs8" id="ab_konto">##KONTONR##</td>
           <td class="spacer">&nbsp;</td>
           <td class="fs8" colspan="2" rowspan="2">Adresse:</td>
-          <td class="BetwTitlesmall fs7" colspan="3">##ADD1##</td>
+          <td class="BetwTitlesmall fs7" colspan="3" id="ab_caddr1">##ADD1##</td>
         </tr>
         <tr>
           <td class="fs8" >BV:&nbsp;</td>
           <td class="fs8" >##BV##</td>
           <td class="spacer" >&nbsp;</td>
-          <td class="BetwTitlesmall fs7" colspan="3">##ADD2##</td>
+          <td class="BetwTitlesmall fs7" colspan="3" id="ab_caddr2">##ADD2##</td>
         </tr>
         <tr>
           <td class="fs8" colspan="8">&nbsp;</td>
@@ -645,9 +651,9 @@ $allhours1 = $allhours2 = new DateTime('2000-01-01 00:00:00');
           <td class="fs8" colspan="2">&nbsp;</td>
         </tr>
         <tr>
-          <td class="bryellow fs8">##DTAE1##</td>
+          <td class="bryellow fs8">##DATE1##</td>
           <td class="bryellow fs8">Dreh</td>
-          <td class="darkyellow fs8">##ANZTAG##</td>
+          <td class="ab_darkyellow fs8">##ANZTAG##</td>
           <td class="fs8">&nbsp;</td>
           <td class="bryellow fs8">Tag</td>
           <td class="bryellow fs8">##GRUNDLOHNTAG##</td>
@@ -656,7 +662,7 @@ $allhours1 = $allhours2 = new DateTime('2000-01-01 00:00:00');
         <tr>
           <td class="bryellow fs8" >##DTAE2</td>
           <td class="bryellow fs8" >Dreh</td>
-          <td class="darkyellow fs8" >##ANZTAG2##</td>
+          <td class="ab_darkyellow fs8" >##ANZTAG2##</td>
           <td class="fs8" >&nbsp;</td>
           <td class="bryellow fs8" >Tag</td>
           <td class="bryellow fs8" >##GRUNDLOHNTAG##</td>
@@ -888,13 +894,6 @@ $allhours1 = $allhours2 = new DateTime('2000-01-01 00:00:00');
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
-
 <script type="module" src="./js/view.js"></script>
-<script>
-if (location.protocol !== "https:") location.protocol = "https:";
-const us_id = "guest"
-const p_id = "<?echo $p_id;?>"
-const c_id= "<?echo $c_id;?>"
-</script>
 </body>
 </html>

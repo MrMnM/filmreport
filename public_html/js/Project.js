@@ -56,6 +56,21 @@ export default class Project {
     return p
   }
 
+
+  loadProjectFromData(data){
+    this.startdate=new Date(data.startdate)
+    this.name=data.name
+    this.job=data.job
+    this.pay=data.pay
+    this.company=data.company
+    this.companyId=data.companyId
+    this.json=data.data
+    this.comment=data.comment
+    return p
+  }
+
+
+
   addRow(c,d){
     this.rows.push(new Row(c))
     this.rows[c].date = d

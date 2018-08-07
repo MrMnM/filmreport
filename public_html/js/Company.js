@@ -24,6 +24,14 @@ export default class Company {
     return p
   }
 
+  setCompanyFromData(data){ //TODO: Constructor with overloading
+    this.name = data.name
+    this.address[0] = data.address_1
+    this.address[1] = data.address_2
+    this.mail=data.mail
+    this.tel=data.telephone
+  }
+
   get address1(){
     return this.address[0]
   }

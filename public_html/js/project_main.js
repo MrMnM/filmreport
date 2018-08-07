@@ -1,22 +1,37 @@
 import Project from './Project.js'
-import { timeToMins, roundToTwo, minsToHours, formatDate } from './timeHelpers.js'
-import { activateSideMenu } from './sidemenu.js'
-import { loadJoblist } from './Jobs.js'
-import { getParam} from './miscHelpers.js'
+import {
+  timeToMins,
+  roundToTwo,
+  minsToHours,
+  formatDate
+} from './timeHelpers.js'
+import {
+  activateSideMenu
+} from './sidemenu.js'
+import {
+  loadJoblist
+} from './Jobs.js'
+import {
+  getParam
+} from './miscHelpers.js'
 
 moment().format()
 
-export function getRate(num) {return roundToTwo(p.pay / 9 * num / 100)}
+export function getRate(num) {
+  return roundToTwo(p.pay / 9 * num / 100)
+}
 
 //var loadElement = new Array()
 const p_id = getParam('id')
-if(p_id===null){window.location.href = './home.php'}
+if (p_id === null) {
+  window.location.href = './home.php'
+}
 const p = new Project(p_id)
 var img = ''
 
 
 Dropzone.options.fileUploadZone = {
-  url: 'https://filmstunden.ch/api/v01/expenses/'+p_id+'/upload',
+  url: 'https://filmstunden.ch/api/v01/expenses/' + p_id + '/upload',
   paramName: 'file', // The name that will be used to transfer the file
   maxFilesize: 5, // MB
   maxFiles: 1,
@@ -24,7 +39,7 @@ Dropzone.options.fileUploadZone = {
   dictDefaultMessage: '<p class="text-muted"><i class="fa fa-cloud-upload fa-5x"></i></br>Scans von Quittungen hinzufügen</p>',
   dictMaxFilesExceeded: 'Es kann nur eine Quittung pro Eintrag hochgeladen werden',
   dictInvalidFileType: 'Es können nur Bilder und PDF\'s hochgeladen werden',
-  success: function(file, response){
+  success: function(file, response) {
     uploadComplete(response)
   }
 }
@@ -38,7 +53,7 @@ $('#openProjectModal').click(() => {
   $('#companylist').load('https://filmstunden.ch/api/v01/company', (resp) => {
     let t = ''
     for (let i of JSON.parse(resp)) {
-      t +=  '<option value=' + i['company_id'] + '>' + i['name'] + '</option>'
+      t += '<option value=' + i['company_id'] + '>' + i['name'] + '</option>'
     }
     $('#companylist').html(t).val(p.companyId)
   })
@@ -61,7 +76,7 @@ $('#removeRow').click(() => {
   updateSaveStatus()
 })
 $('#refresh').click(() => {
-  document.getElementById('refresh').setAttribute('disabled',true)
+  document.getElementById('refresh').setAttribute('disabled', true)
   updateAll()
   document.getElementById('refresh').removeAttribute('disabled')
 })
@@ -71,57 +86,57 @@ $('#submitComment').click((event) => {
   addChat(text)
 })
 
-$('.collapseHeader').click(function(){
+$('.collapseHeader').click(function() {
   $(this).find('i').toggleClass('fa-chevron-down').toggleClass('fa-chevron-right')
   $(this).parent('tr').nextUntil('.cat').toggle()
 })
 
-$('#saveExpenseBtn').click(()=>{
-  if(!$('#exp_date')[0].checkValidity()){
+$('#saveExpenseBtn').click(() => {
+  if (!$('#exp_date')[0].checkValidity()) {
     $('#exp_date_g').addClass('has-error')
     console.error('error in form')
     return
-  }else{
+  } else {
     $('#exp_date_g').removeClass('has-error')
   }
 
-  if(!$('#exp_name')[0].checkValidity()){
+  if (!$('#exp_name')[0].checkValidity()) {
     $('#exp_name_g').addClass('has-error')
     console.error('error in form')
     return
-  }else{
+  } else {
     $('#exp_name_g').removeClass('has-error')
   }
 
-  if(!$('#exp_value')[0].checkValidity()){
+  if (!$('#exp_value')[0].checkValidity()) {
     $('#exp_value_g').addClass('has-error')
     console.error('error in form')
     return
-  }else{
+  } else {
     $('#exp_value_g').removeClass('has-error')
   }
 
   $.ajax({
-    url: 'https://filmstunden.ch/api/v01/expenses/'+p.id,
+    url: 'https://filmstunden.ch/api/v01/expenses/' + p.id,
     dataType: 'json',
     data: {
       'date': $('#exp_date').val(),
       'name': $('#exp_name').val(),
-      'comment': $('#exp_comment').val() ,
+      'comment': $('#exp_comment').val(),
       'img': img,
       'val': $('#exp_value').val()
     },
     type: 'POST'
-  }).done(()=>{
+  }).done(() => {
     $('#exp_date').val(formatDate(new Date()))
     $('#exp_name').val('')
     $('#exp_comment').val('')
     $('#exp_value').val('')
     $('#addExpenseModal').modal('toggle')
     loadExpenses()
-  }).fail(()=>{
+  }).fail(() => {
     console.error('fail')
-  }).always(()=>{
+  }).always(() => {
 
   })
 
@@ -131,44 +146,44 @@ $('#saveExpenseBtn').click(()=>{
 // CHHANGEFUNCTION ------------------------------------------------------------
 //-----------------------------------------------------------------------------
 
-$('#workhours').change((event)=>{
+$('#workhours').change((event) => {
   p.saved = false
   let curField = event.target.name.substring(0, 4)
   let curNumber = event.target.name.substring(4)
   let tval = event.target.value
 
-  switch(curField) {
-  case 'star':
-    p.rows[curNumber].start = tval
-    break
-  case 'ende':
-    p.rows[curNumber].end = tval
-    break
-  case 'brea':
-    p.rows[curNumber].break = tval
-    break
-  case 'date':
-    p.rows[curNumber].date =tval
-    break
-  case 'base':
-    p.rows[curNumber].manualBase = true
-    p.rows[curNumber].base = tval
-    break
-  case 'cark':
-    p.rows[curNumber].car = tval
-    break
-  case 'lunc':
-    p.rows[curNumber].lunch ^= true
-    break
-  case 'work':
-    p.rows[curNumber].work = tval
-    break
+  switch (curField) {
+    case 'star':
+      p.rows[curNumber].start = tval
+      break
+    case 'ende':
+      p.rows[curNumber].end = tval
+      break
+    case 'brea':
+      p.rows[curNumber].break = tval
+      break
+    case 'date':
+      p.rows[curNumber].date = tval
+      break
+    case 'base':
+      p.rows[curNumber].manualBase = true
+      p.rows[curNumber].base = tval
+      break
+    case 'cark':
+      p.rows[curNumber].car = tval
+      break
+    case 'lunc':
+      p.rows[curNumber].lunch ^= true
+      break
+    case 'work':
+      p.rows[curNumber].work = tval
+      break
   }
   updateRow(curNumber)
   updateSaveStatus()
 })
 
-$('#comment').change(()=> {
+$('#comment').change(() => {
   p.saved = false
   p.comment = $('#comment').val()
   updateSaveStatus()
@@ -189,11 +204,11 @@ function addRow() {
   p.addRow(rowCounter, date)
 }
 
-function redrawRows(){
+function redrawRows() {
   $('#workhours').find('tr:gt(1)').remove()
-  for(let c of p.rows){
+  for (let c of p.rows) {
     let currentRow = c.id
-    let newRow =   `<tr id="r${currentRow}">
+    let newRow = `<tr id="r${currentRow}">
                       <td><input type="date" id="date${currentRow}" name="date${currentRow}" value="${p.rows[currentRow].date}"></td>
                       <td><input type="text" name="work${currentRow}" size=10 list="work" value="${p.rows[currentRow].work}"></td>
                       <td><input type="time" name="star${currentRow}" min=0 value="${p.rows[currentRow].start}"></td>
@@ -234,24 +249,29 @@ function redrawRows(){
 
 
 function Save() {
-  let error=0
+  updateAll()
+  let error = 0
   $('#saveButton').hide()
   $('#resaveButton').hide()
   $('#saveButtonDisabled').show()
   let rows = JSON.stringify(p.rows)
   p.json = rows
   $.ajax({
-    url: 'https://filmstunden.ch/api/v01/project/'+p.id,
+    url: 'https://filmstunden.ch/api/v01/project/' + p.id,
     dataType: 'json',
-    data: { 'data': p.json, 'add': p.addInfo, 'comment': p.comment },
+    data: {
+      'data': p.json,
+      'add': p.addInfo,
+      'comment': p.comment
+    },
     type: 'POST'
-  }).done(()=>{
-    p.saved=true
-    error=0
-  }).fail(()=>{
-    p.saved=false
-    error=1
-  }).always(()=>{
+  }).done(() => {
+    p.saved = true
+    error = 0
+  }).fail(() => {
+    p.saved = false
+    error = 1
+  }).always(() => {
     $('#saveButton').show()
     $('#saveButtonDisabled').hide()
     updateSaveStatus(error)
@@ -260,14 +280,14 @@ function Save() {
 
 function updateRow(row) {
   $('#wtim' + row).html(p.rows[row].getWorkHours())
-  $('#tent' + row).html((p.rows[row].getOvertime(10) > 0)?(p.rows[row].getOvertime(10)):'&nbsp;')
-  $('#elev' + row).html((p.rows[row].getOvertime(11) > 0)?(p.rows[row].getOvertime(11)):'&nbsp;')
-  $('#twel' + row).html((p.rows[row].getOvertime(12) > 0)?(p.rows[row].getOvertime(12)):'&nbsp;')
-  $('#thir' + row).html((p.rows[row].getOvertime(13) > 0)?(p.rows[row].getOvertime(13)):'&nbsp;')
-  $('#four' + row).html((p.rows[row].getOvertime(14) > 0)?(p.rows[row].getOvertime(14)):'&nbsp;')
-  $('#fift' + row).html((p.rows[row].getOvertime(15) > 0)?(p.rows[row].getOvertime(15)):'&nbsp;')
-  $('#sixt' + row).html((p.rows[row].getOvertime(16) > 0)?(p.rows[row].getOvertime(16)):'&nbsp;')
-  $('#nigh' + row).html((p.rows[row].getNightHours() > 0)?(p.rows[row].getNightHours()):'&nbsp;')
+  $('#tent' + row).html((p.rows[row].getOvertime(10) > 0) ? (p.rows[row].getOvertime(10)) : '&nbsp;')
+  $('#elev' + row).html((p.rows[row].getOvertime(11) > 0) ? (p.rows[row].getOvertime(11)) : '&nbsp;')
+  $('#twel' + row).html((p.rows[row].getOvertime(12) > 0) ? (p.rows[row].getOvertime(12)) : '&nbsp;')
+  $('#thir' + row).html((p.rows[row].getOvertime(13) > 0) ? (p.rows[row].getOvertime(13)) : '&nbsp;')
+  $('#four' + row).html((p.rows[row].getOvertime(14) > 0) ? (p.rows[row].getOvertime(14)) : '&nbsp;')
+  $('#fift' + row).html((p.rows[row].getOvertime(15) > 0) ? (p.rows[row].getOvertime(15)) : '&nbsp;')
+  $('#sixt' + row).html((p.rows[row].getOvertime(16) > 0) ? (p.rows[row].getOvertime(16)) : '&nbsp;')
+  $('#nigh' + row).html((p.rows[row].getNightHours() > 0) ? (p.rows[row].getNightHours()) : '&nbsp;')
   $('#base' + row).val(p.rows[row].getBase())
 }
 
@@ -337,12 +357,12 @@ function updateBottom() {
   let totalAdditional = roundToTwo(totalLunch + totalCar)
   let totalOvertime = roundToTwo(total25 + total125 + total150 + total200 + total250)
 
-  $('#payRateDay').html('&agrave; '+p.pay)
-  $('#payRate125').html('&agrave; '+getRate(125))
-  $('#payRate150').html('&agrave; '+getRate(150))
-  $('#payRate200').html('&agrave; '+getRate(200))
-  $('#payRate250').html('&agrave; '+getRate(250))
-  $('#payRate25').html('&agrave; '+getRate(25))
+  $('#payRateDay').html('&agrave; ' + p.pay)
+  $('#payRate125').html('&agrave; ' + getRate(125))
+  $('#payRate150').html('&agrave; ' + getRate(150))
+  $('#payRate200').html('&agrave; ' + getRate(200))
+  $('#payRate250').html('&agrave; ' + getRate(250))
+  $('#payRate25').html('&agrave; ' + getRate(25))
   $('#totalKilometers').html(totalKilometers)
   $('#lunches').html(lunches)
   $('#totalWorkHours').html(minsToHours(totalWorkHours))
@@ -363,16 +383,16 @@ function updateBottom() {
   $('#salaryBase').html(totalDay)
   $('#salaryOvertime').html(totalOvertime)
   $('#salaryAdditional').html(totalAdditional)
-  $('#totalOverall').html(roundToTwo(totalDay+totalOvertime+totalAdditional))
+  $('#totalOverall').html(roundToTwo(totalDay + totalOvertime + totalAdditional))
 
-  if(p.rows.length>0){
+  if (p.rows.length > 0) {
     p.enddate = p.rows[p.rows.length - 1].date
   }
   p.tothour = minsToHours(totalWorkHours)
   p.totmoney = roundToTwo(totalDay + totalOvertime + totalAdditional)
 }
 
-function updateSaveStatus(error=0) {
+function updateSaveStatus(error = 0) {
   if (p.saved) {
     $('#saveInfo').show()
     $('#saveNone').hide()
@@ -393,22 +413,23 @@ function updateSaveStatus(error=0) {
 }
 
 function loadJSON(data) {
-  if(data){
+  if (data) {
     data = JSON.parse(data)
     for (var i = 0; i < data.length; i++) {
       p.addRow(i) //DATE
       p.rows[i].loadFromJSON(data[i])
-      //loadRow(i)
     }
   }
 }
 
 function updateSuccess(data) {
   if (data.status == 'SUCCESS') {
-    loadProject(p)
     $('#updateProjectModal').modal('hide')
+    p.loadProject().then(() => {
+      updateAll()
+    })
   } else {
-    alert(data.message)
+    console.error(data.message)
   }
 }
 
@@ -416,15 +437,14 @@ function loadProject(p) {
   p.loadProject().then(() => {
     console.log(p)
     loadJSON(p.json)
-    //UI INteraction
-    document.getElementById('view').onclick = ()=>window.open('view.php?id='+p_id)
-    document.getElementById('updateProject').setAttribute('action', 'https://filmstunden.ch/api/v01/project/'+p_id+'/info')
+    document.getElementById('view').onclick = () => window.open('view.php?id=' + p_id)
+    document.getElementById('updateProject').setAttribute('action', 'https://filmstunden.ch/api/v01/project/' + p_id + '/info')
     updateAll()
   })
 }
 
 function loadPersonalInfo() {
-  let p =$.ajax({
+  let p = $.ajax({
     url: 'https://filmstunden.ch/api/v01/user',
     type: 'GET',
     dataType: 'json'
@@ -455,21 +475,21 @@ function loadExpenses() {
   return p
 }
 
-$('#expenseTable').on('click', '.delExpense', (event)=> {
+$('#expenseTable').on('click', '.delExpense', (event) => {
   console.log('nice:', event)
   deleteExpense(event.currentTarget.id)
 })
 
 
-function deleteExpense(e_id){
+function deleteExpense(e_id) {
   $.ajax({
-    url: 'https://filmstunden.ch/api/v01/expenses/'+p.id+'/'+e_id,
+    url: 'https://filmstunden.ch/api/v01/expenses/' + p.id + '/' + e_id,
     dataType: 'json',
     type: 'DELETE'
-  }).done(()=>{
+  }).done(() => {
     console.log('done')
     loadExpenses()
-  }).fail(()=>{
+  }).fail(() => {
     console.error('fail')
   })
 }
@@ -497,12 +517,16 @@ export function updateAll() {
 function addChat(text) {
   $('.hideSend').hide()
   $.ajax({
-    url: 'https://filmstunden.ch/api/v01/chats/'+p_id,
-    type: 'POST',
-    xhrFields: {withCredentials: true},
-    dataType: 'json',
-    data: { text: text }, //TODO Correct entries here
-  })
+      url: 'https://filmstunden.ch/api/v01/chats/' + p_id,
+      type: 'POST',
+      xhrFields: {
+        withCredentials: true
+      },
+      dataType: 'json',
+      data: {
+        text: text
+      }, //TODO Correct entries here
+    })
     .done(() => {
       loadChats()
       $('.hideSend').show()
@@ -512,8 +536,8 @@ function addChat(text) {
     })
 }
 
-function uploadComplete(resp){
-  if(resp.status=='SUCCESS'){
+function uploadComplete(resp) {
+  if (resp.status == 'SUCCESS') {
     img = resp.file_id
     //$('#imageupload').hide()
     //$('#imagefinder').show()
@@ -535,9 +559,12 @@ $(() => { // JQUERY STARTFUNCTION
   loadJoblist()
   loadExpenses()
 
-
   //Autosave
-  setInterval(() => { if (!p.saved) { Save() } }, 15000)
+  setInterval(() => {
+    if (!p.saved) {
+      Save()
+    }
+  }, 15000)
 
   //Jqueery Form
   $('#updateProject').ajaxForm({
