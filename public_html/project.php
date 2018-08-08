@@ -427,7 +427,7 @@ require_once('../api-app/lib/Globals.php');
                     </div>
                     <div class="form-group input-group" id="exp_value_g">
                         <span class="input-group-addon">Betrag</span>
-                        <input type="number" id="exp_value" name="pay" class="form-control" required>
+                        <input type="number" step="0.01" min="0" id="exp_value" name="pay" class="form-control" required>
                     </div>
                     <div class="form-group input-group">
                         <span class="input-group-addon">Beschreibung</span>

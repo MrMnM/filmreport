@@ -621,14 +621,14 @@ $allhours1 = $allhours2 = new DateTime('2000-01-01 00:00:00');
         </tr>
         <tr>
           <td class="fs8">Konto:</td>
-          <td class="fs8" id="ab_konto">##KONTONR##</td>
+          <td class="fs8" id="ab_konto">##KONTO##</td>
           <td class="spacer">&nbsp;</td>
           <td class="fs8" colspan="2" rowspan="2">Adresse:</td>
           <td class="BetwTitlesmall fs7" colspan="3" id="ab_caddr1">##ADD1##</td>
         </tr>
         <tr>
-          <td class="fs8" >BV:&nbsp;</td>
-          <td class="fs8" >##BV##</td>
+          <td class="fs8" >BVG:&nbsp;</td>
+          <td class="fs8" id="ab_bvg">##BVG##</td>
           <td class="spacer" >&nbsp;</td>
           <td class="BetwTitlesmall fs7" colspan="3" id="ab_caddr2">##ADD2##</td>
         </tr>
@@ -641,9 +641,6 @@ $allhours1 = $allhours2 = new DateTime('2000-01-01 00:00:00');
           <td class="titlebar fs7" >Einheit</td>
           <td class="titlebar fs7" >CHF/Stk.</td>
           <td class="titlebar fs7"  colspan="2">CHF</td>
-        </tr>
-        <tr>
-          <td class="fs8" colspan="8">&nbsp;</td>
         </tr>
         <tr>
           <td class="yelltitle fs10" colspan="2">Tagesgage / Grundlohn</td>

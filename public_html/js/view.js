@@ -86,45 +86,52 @@ function refreshView(){
 }
 
 function refreshRapport(){
+  let usr = dat[0].userData
+  let cmp = dat[0].companyData
   $('#p_pay').html()
   $('#p_name').html()
   $('#p_job').html()
   $('#sdate').html()
   $('#edate').html()
-  $('#u_name').html(dat[0].userData.name)
-  $('#u_address1').html(dat[0].userData.address_1)
-  $('#u_address2').html(dat[0].userData.address_2)
-  $('#u_ahv').html(dat[0].userData.ahv)
-  $('#u_dateob').html(dat[0].userData.dateob)
-  $('#u_tel').html(dat[0].userData.tel)
-  $('#u_konto').html(dat[0].userData.konto)
-  $('#u_mail').html(dat[0].userData.mail)
-  $('#u_bvg').html(dat[0].userData.bvg)
-  $('#c_name').html(dat[0].companyData.c_name)
-  $('#c_address1').html(dat[0].companyData.c_address_1)
-  $('#c_address2').html(dat[0].companyData.c_address_2)
+  $('#u_name').html(usr.name)
+  $('#u_address1').html(usr.address_1)
+  $('#u_address2').html(usr.address_2)
+  $('#u_ahv').html(usr.ahv)
+  $('#u_dateob').html(usr.dateob)
+  $('#u_tel').html(usr.tel)
+  $('#u_konto').html(usr.konto)
+  $('#u_mail').html(usr.mail)
+  $('#u_bvg').html(usr.bvg)
+  $('#c_name').html(cmp.c_name)
+  $('#c_address1').html(cmp.c_address_1)
+  $('#c_address2').html(cmp.c_address_2)
   $('#pay_additional').html()
 }
 
-function refreshAbrechnung(){/*
-  $('#ab_date').html('TEST_DATE')
+function refreshAbrechnung(){
+  let usr = dat[0].userData
+  let cmp = dat[0].companyData
+  let prj = dat[0].projectData
+  $('#ab_date').html(prj.p_start)
   $('#ab_rappnr').html('TEST_NR')
-  $('#ab_name').html(u.name)
-  $('#ab_addr1').html(u.address_1)
-  $('#ab_addr2').html(u.address_2)
-  $('#ab_proj').html('TEST_PROJ')
-  $('#ab_fromdate').html('TEST_FROM')
+  $('#ab_name').html(usr.name)
+  $('#ab_addr1').html(usr.address_1)
+  $('#ab_addr2').html(usr.address_2)
+  $('#ab_proj').html(prj.p_name)
+  $('#ab_fromdate').html(prj.p_start)
   $('#ab_todate').html('TEST_TO')
-  $('#ab_mail').html(u.mail)
-  $('#ab_job').html('TEST_JOB')
-  $('#ab_tel').html(u.tel)
-  $('#ab_base').html('TEST_BASE')
-  $('#ab_ahv').html(u.ahv)
-  $('#ab_dob').html(u.dateob)
-  $('#ab_company').html(c.name)
-  $('#ab_caddr1').html(c.address1)
-  $('#ab_caddr2').html(c.address2)
-*/}
+  $('#ab_mail').html(usr.mail)
+  $('#ab_job').html(prj.p_job)
+  $('#ab_tel').html(usr.tel)
+  $('#ab_base').html(prj.p_gage)
+  $('#ab_ahv').html(usr.ahv)
+  $('#ab_dob').html(usr.dateob)
+  $('#ab_company').html(cmp.name)
+  $('#ab_caddr1').html(cmp.address1)
+  $('#ab_caddr2').html(cmp.address2)
+  $('#ab_bvg').html(usr.bvg)
+  $('#ab_konto').html(usr.konto)  
+}
 
 $(()=>{ // JQUERY STARTFUNCTION
   Promise.all([

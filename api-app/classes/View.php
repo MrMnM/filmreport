@@ -12,7 +12,7 @@ class View
       $p_id=$args['p_id'];
       $in = $this->db->select('projects', [
         "[>]companies(comp)" => ["p_company" => "company_id"],
-        "[>]users(usr)" => ["user_id" => "u_id"]
+        "[>]users(usr)" => ["user_id" => "u_id"],
       ], [
         "projectData" => [
             'projects.p_start',
@@ -37,15 +37,34 @@ class View
             'usr.konto',
             'usr.bvg',
             'usr.type',
-            'usr.affiliation'
+            'usr.affiliation',
+            'usr.mail'
           ]
       ], [
         'project_id' => $p_id
       ]);
+
       $ahv = $this->enc->encrypt($in[0]["userData"]["ahv"], 'd');
       $kont = $this->enc->encrypt($in[0]["userData"]["konto"], 'd');
       $in[0]["userData"]["ahv"] = $ahv;
       $in[0]["userData"]["konto"] = $kont;
+
+      $exp = $this->db->select('expenses', [
+        'date',
+        'name',
+        'value',
+        'comment',
+        'img',
+      ], [
+        "project" => $p_id
+      ]);
+      $expArray =[];
+      foreach ($exp as $cur) {
+        array_push($expArray , $cur);
+      }
+
+      $in[0]["projectData"]["expenses"] = $expArray;
+
       return $response->withJson($in);
     }
 
