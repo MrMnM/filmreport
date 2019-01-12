@@ -74,7 +74,7 @@ if (!empty($_GET["id"])) {
       <ul class="nav navbar-nav">
         <li class="active" id="navRapa"><a href="#" id="navRap">Rapport</a></li>
         <li id="navAbra"><a href="#" id="navAbr">Abrechnung</a></li>
-        <li id="navExpa"><a href="#" id="navExp" onclick="alert('Noch nicht implementiert')">Spesen</a></li>
+        <li id="navExpa"><a href="#" id="navExp">Spesen</a></li>
 
       </ul>
         <ul class="nav navbar-nav navbar-right">
@@ -101,12 +101,12 @@ if (!empty($_GET["id"])) {
                 <li class="divider"></li>
                   <h6 class="dropdown-header">Download:</h6>
                 <li>
-                  <a href="h_download.php?t=xlsx&id=<?= $p_id ?>" target="_blank">
+                  <a href="https://filmstunden.ch/api/v01/view/download/<?= $p_id ?>?format=xlsx" target="_blank">
                     <i class="fa fa-file-excel-o" aria-hidden="true"></i> Excel
                   </a>
                 </li>
                 <li>
-                  <a href="h_download.php?t=pdf&id=<?= $p_id ?>" target="_blank">
+                  <a href="https://filmstunden.ch/api/v01/view/download/<?= $p_id ?>?format=pdf" target="_blank">
                     <i class="fa fa-file-pdf-o" aria-hidden="true"></i> PDF
                   </a>
                 </li>
@@ -161,10 +161,6 @@ if (!empty($_GET["id"])) {
 			</tr>
 
 			<tr>
-				<td height="2"></td>
-			</tr>
-
-			<tr>
 				<td class="blue" colspan="3" height="18" id="u_name"></td>
 				<td class="xl1" colspan="3"></td>
 				<td class="xl1" colspan="4">Abrechnung nach AAB SSFV 2007</td>
@@ -174,10 +170,6 @@ if (!empty($_GET["id"])) {
 				<td class="td17" colspan="4" id="sdate"><?= $sdate?></td>
 				<td class="xl71" colspan="2">bis</td>
 				<td class="td17" colspan="3" id="edate"><?= $edate?></td>
-			</tr>
-
-			<tr>
-				<td height="2"></td>
 			</tr>
 
 			<tr>
@@ -191,9 +183,7 @@ if (!empty($_GET["id"])) {
 				<td class="f10"></td>
 				<td class="blue" colspan="9" id="c_name"></td>
 			</tr>
-			<tr>
-				<td height="2"></td>
-			</tr>
+
 			<tr>
 				<td class="blue" colspan="3" height="18" id="u_address2"></td>
 				<td class="xl1"></td>
@@ -204,9 +194,6 @@ if (!empty($_GET["id"])) {
 				<td class="blue" colspan="9" id="c_address1"></td>
 			</tr>
 			<tr>
-				<td height="2"></td>
-			</tr>
-			<tr>
 				<td class="blue" colspan="3" height="18" id="u_tel"></td>
 				<td class="xl1"></td>
 				<td class="xl1">Konto:</td>
@@ -215,9 +202,6 @@ if (!empty($_GET["id"])) {
 				<td class="xl1"></td>
 				<td class="f10" colspan="4"></td>
 				<td class="blue" colspan="9" id="c_address2"></td>
-			</tr>
-			<tr>
-				<td height="2"></td>
 			</tr>
 			<tr>
 				<td class="blue" colspan="3" height="18" id="u_mail"></td>
@@ -515,7 +499,7 @@ $allhours1 = $allhours2 = new DateTime('2000-01-01 00:00:00');
         <td colspan="11"></td>
         <td colspan="10" class="xl1" align="right">Zusätzliche Spesen (siehe Spesenblatt):</td>
         <td></td>
-        <td class="pay additional" colspan="2"><?= $spesen; ?></td>
+        <td class="pay additional" colspan="2" id="addExp"><?= $spesen; ?></td>
       </tr>
 			<tr>
 				<td class="f10" height="10" ></td>
@@ -879,11 +863,53 @@ $allhours1 = $allhours2 = new DateTime('2000-01-01 00:00:00');
       <tr>
         <td class="fs8" colspan="3">Bitte den entsprechenden Betrag innert 30 Tagen auf folgendes Konto &uuml;berweisen:</td>
         <td class="spacer" ></td>
-        <td class="fs8" colspan="4">UBS CH32 0023 3233 7271 1940C</td>
+        <td class="fs8" colspan="4">##KONTO##</td>
       </tr>
     </tbody>
   </table>
-</div>
+</div><!--abrechnung-->
+  <div id="spesen" style="display:none">
+    <table border="0" cellpadding="0" cellspacing="0" class="f10" width="100%">
+      <tr>
+        <td class="f14" colspan="6" height="26" width="194">SPESENBLATT</td>
+        <td class="xl1" >Produktion:</td>
+        <td class="td17 bold" colspan="2"><?= $p_name;?></td>
+      </tr>
+
+      <tr>
+        <td height="2"></td>
+      </tr>
+
+      <tr>
+        <td class="xl1" colspan="6"></td>
+        <td class="xl1" >Datum [von/bis] :</td>
+        <td class="td17" colspan="2" ><?= $sdate?> bis <?= $edate?></td>
+      </tr>
+
+      <tr>
+        <td height="15"></td>
+      </tr>
+
+      <tr class="xl1">
+        <td class="gray" height="20" width="150px"> Datum</td>
+        <td class="gray" > Name</td>
+        <td class="gray" colspan="6"> Beschreibung</td>
+        <td class="gray" width="150px" > Betrag</td>
+      </tr>
+
+      <tr class="xl1" id="expenseList">
+        <td class="blue fs8">##EXPDATE##</td>
+        <td class="blue fs8">##EXPNAME##</td>
+        <td class="blue fs8" colspan="6">##EXPTEXT##</td>
+        <td class="blue fs8 bold">##EXPVAL##</td>
+      </tr>
+
+      <tr class="xl1" id="expenseList">
+        <td class="blue fs8" height="30" style="text-align: center; font-weight: 700" colspan="9">Keine zus&auml;tzlichen Spesen angegeben</td>
+      </tr>
+
+    </table>
+  </div><!--spesen-->
 </div>
 </div>
 </div>

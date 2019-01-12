@@ -561,9 +561,7 @@ $(() => { // JQUERY STARTFUNCTION
 
   //Autosave
   setInterval(() => {
-    if (!p.saved) {
-      Save()
-    }
+    if (!p.saved) { Save()}
   }, 15000)
 
   //Jqueery Form

@@ -8,14 +8,14 @@ class View
         $this->enc = $container->get('encrypt');
     }
 
-    public function get($request,$response,$args){
-      $p_id=$args['p_id'];
+    private function get($p_id){
       $in = $this->db->select('projects', [
         "[>]companies(comp)" => ["p_company" => "company_id"],
         "[>]users(usr)" => ["user_id" => "u_id"],
       ], [
         "projectData" => [
             'projects.p_start',
+            'projects.p_end',
             'projects.p_name',
             'projects.p_job',
             'projects.p_gage[Int]',
@@ -64,42 +64,38 @@ class View
       }
 
       $in[0]["projectData"]["expenses"] = $expArray;
+      return $in;
+    }
 
+    public function show($request,$response,$args){
+      $p_id=$args['p_id'];
+      $in = self::get($p_id);
       return $response->withJson($in);
     }
 
-
     public function download($request,$response,$args){
-      require_once('./includes/inc_encrypt.php');
-      require_once('../api-app/lib/Globals.php');
-      get();
+      $type=$request->getQueryParam('format');
+      $p_id=$args['p_id'];
+      $in = self::get($p_id);
 
-          $sdate = $i_sdate->format('d/m/Y');
-          $edate = $i_edate->format('d/m/Y');
-          $u_dob = $u_dob->format('d/m/Y');
+      $dat=$in[0]["projectData"]["p_json"];
+      $pay=$in[0]["projectData"]["p_gage"];
 
-          $sql = "SELECT name, address_1, address_2 FROM `companies` WHERE company_id='$p_company';";
-          $result = $conn->query($sql);
-          if ($result->num_rows > 0) {
-              // output data of each row
-              while($row = $result->fetch_assoc()) {
-                  $c_name = $row["name"];
-                  $c_address1 =  $row["address_1"];
-                  $c_address2 =  $row["address_2"];
-              }
-          }
+      $sdate = DateTime::createFromFormat('Y-m-d',$in[0]["projectData"]["p_start"]);
+      $edate = DateTime::createFromFormat('Y-m-d',$in[0]["projectData"]["p_end"]);
+      $u_dob = DateTime::createFromFormat('Y-m-d',$in[0]["userData"]["dateob"]);
 
-          if($p_json=='' || $p_json=='[]'){
-              die('ERROR, EMPTY PROJECT');
-          }
-          $dat = json_decode($p_json, true);
-          $title= $i_sdate->format('ymd').'_'.$p_name;
-          $title= str_replace(" ", "_", $title);
+      $title= $sdate->format('ymd').'_'.$in[0]["projectData"]["p_name"].'_'.$in[0]["userData"]["name"];
+      $title= str_replace(" ", "_", $title);
 
+
+      $sdate = $sdate->format('d/m/Y');
+      $edate = $edate->format('d/m/Y');
+      $u_dob = $u_dob->format('d/m/Y');
 
       date_default_timezone_set('Europe/Berlin');
       /** PHPExcel_IOFactory */
-      require_once '../includes/Classes/PHPExcel/IOFactory.php'; //TODO: Set this correctly
+      require_once '../../vendor/PHPExcel/IOFactory.php'; //TODO: Set this correctly
       //echo date('H:i:s') . " Load from Excel5 template\n";
       $objReader = PHPExcel_IOFactory::createReader('Excel2007');
       $objPHPExcel = $objReader->load("template_rapport.xlsx");
@@ -127,9 +123,6 @@ class View
       ->getPageSetup()
       ->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
 
-//      $objPHPExcel->getActiveSheet()
-//      ->getPageSetup()
-//      ->setPaperSize(PHPExcel_Worksheet_PageSetup::PAPERSIZE_A4);
       $objPHPExcel->getActiveSheet()
       ->getPageMargins()->setTop(0);
       $objPHPExcel->getActiveSheet()
@@ -142,25 +135,25 @@ class View
 
       $objWorksheet = $objPHPExcel->getActiveSheet();
       $objWorksheet->getPageSetup()->setPaperSize(PHPExcel_Worksheet_PageSetup::PAPERSIZE_A4);
-      $objWorksheet->setCellValue('G2', $p_pay);
-      $objWorksheet->setCellValue('A3', $u_name);
-      $objWorksheet->setCellValue('A4', $u_address1);
-      $objWorksheet->setCellValue('A5', $u_address2);
-      $objWorksheet->setCellValue('A6', $u_tel);
-      $objWorksheet->setCellValue('A7', $u_mail);
-      $objWorksheet->setCellValue('G4', $u_ahv);
+      $objWorksheet->setCellValue('G2', $pay);
+      $objWorksheet->setCellValue('A3', $in[0]["userData"]["name"]);
+      $objWorksheet->setCellValue('A4', $in[0]["userData"]["address_1"]);
+      $objWorksheet->setCellValue('A5', $in[0]["userData"]["address_2"]);
+      $objWorksheet->setCellValue('A6', $in[0]["userData"]["tel"]);
+      $objWorksheet->setCellValue('A7', $in[0]["userData"]["mail"]);
+      $objWorksheet->setCellValue('G4', $in[0]["userData"]["ahv"]);
       $objWorksheet->setCellValue('G5', $u_dob);
-      $objWorksheet->setCellValue('G6', $u_konto);
-      $objWorksheet->setCellValue('G7', $u_bvg);
-      $objWorksheet->setCellValue('P2', $p_name);
+      $objWorksheet->setCellValue('G6', $in[0]["userData"]["konto"]);
+      $objWorksheet->setCellValue('G7', $in[0]["userData"]["bvg"]);
+      $objWorksheet->setCellValue('P2', $in[0]["projectData"]["p_name"]);
       //$objWorksheet->getStyle('P2')->getFont()->setBold(true);
       //$objWorksheet->getStyle('P2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
       $objWorksheet->setCellValue('P3', $sdate);
       $objWorksheet->setCellValue('V3', $edate);
-      $objWorksheet->setCellValue('P4', $c_name);
-      $objWorksheet->setCellValue('P5', $c_address1);
-      $objWorksheet->setCellValue('P6', $c_address2);
-      $objWorksheet->setCellValue('P7', $p_job);
+      $objWorksheet->setCellValue('P4', $in[0]["companyData"]["c_name"]);
+      $objWorksheet->setCellValue('P5', $in[0]["companyData"]["c_address_1"]);
+      $objWorksheet->setCellValue('P6', $in[0]["companyData"]["c_address_2"]);
+      $objWorksheet->setCellValue('P7', $in[0]["projectData"]["p_job"]);
 
       $rowCounter = 16;
       $allbase=0;
@@ -175,6 +168,7 @@ class View
       $allhours2 = new DateTime('2000-01-01 00:00:00');
 
       $i = 0;
+
       $len = count($dat);
 
       foreach($dat as $arr){
@@ -246,34 +240,34 @@ class View
       $objWorksheet->setCellValue("W".$cur,$allfood);
       $objWorksheet->setCellValue("X".$cur,$allcar);
       $cur=$cur+1;
-      $objWorksheet->setCellValue("J".$cur,$p_pay);
-      $objWorksheet->setCellValue("L".$cur,round($p_pay/9*1.25, 2));
-      $objWorksheet->setCellValue("N".$cur,round($p_pay/9*1.5, 2));
-      $objWorksheet->setCellValue("P".$cur,round($p_pay/9*2.0, 2));
-      $objWorksheet->setCellValue("R".$cur,round($p_pay/9*2.5, 2));
-      $objWorksheet->setCellValue("T".$cur,round($p_pay/9*0.25, 2));
+      $objWorksheet->setCellValue("J".$cur,$pay);
+      $objWorksheet->setCellValue("L".$cur,round($pay/9*1.25, 2));
+      $objWorksheet->setCellValue("N".$cur,round($pay/9*1.5, 2));
+      $objWorksheet->setCellValue("P".$cur,round($pay/9*2.0, 2));
+      $objWorksheet->setCellValue("R".$cur,round($pay/9*2.5, 2));
+      $objWorksheet->setCellValue("T".$cur,round($pay/9*0.25, 2));
       $objWorksheet->setCellValue("W".$cur,32);
       $objWorksheet->setCellValue("X".$cur,0.7);
       $cur=$cur+1;
-      $objWorksheet->setCellValue("J".$cur,round($allbase*$p_pay,2));
-      $objWorksheet->setCellValue("L".$cur,round($all125*$p_pay/9*1.25, 2));
-      $objWorksheet->setCellValue("N".$cur,round($all150*$p_pay/9*1.5, 2));
-      $objWorksheet->setCellValue("P".$cur,round($all200*$p_pay/9*2.0, 2));
-      $objWorksheet->setCellValue("R".$cur,round($all250*$p_pay/9*2.5, 2));
-      $objWorksheet->setCellValue("T".$cur,round($all25*$p_pay/9*0.25, 2));
+      $objWorksheet->setCellValue("J".$cur,round($allbase*$pay,2));
+      $objWorksheet->setCellValue("L".$cur,round($all125*$pay/9*1.25, 2));
+      $objWorksheet->setCellValue("N".$cur,round($all150*$pay/9*1.5, 2));
+      $objWorksheet->setCellValue("P".$cur,round($all200*$pay/9*2.0, 2));
+      $objWorksheet->setCellValue("R".$cur,round($all250*$pay/9*2.5, 2));
+      $objWorksheet->setCellValue("T".$cur,round($all25*$pay/9*0.25, 2));
       $objWorksheet->setCellValue("W".$cur,round($allfood*32, 2));
       $objWorksheet->setCellValue("X".$cur,round($allcar*0.7, 2));
       $cur=$cur+3;
-      $p125=round($all125*$p_pay/9*1.25, 2);
-      $p150=round($all150*$p_pay/9*1.5, 2);
-      $p200=round($all200*$p_pay/9*2.0, 2);
-      $p250=round($all250*$p_pay/9*2.5, 2);
-      $p25=round($all25*$p_pay/9*0.25, 2);
-      $objWorksheet->setCellValue("J".$cur,round($allbase*$p_pay,2));
+      $p125=round($all125*$pay/9*1.25, 2);
+      $p150=round($all150*$pay/9*1.5, 2);
+      $p200=round($all200*$pay/9*2.0, 2);
+      $p250=round($all250*$pay/9*2.5, 2);
+      $p25=round($all25*$pay/9*0.25, 2);
+      $objWorksheet->setCellValue("J".$cur,round($allbase*$pay,2));
       $overtime=round($p125+$p150+$p200+$p250+$p25,2);
       $objWorksheet->setCellValue("L".$cur,$overtime);
       $objWorksheet->setCellValue("W".$cur,round(round($allfood*32, 2)+round($allcar*0.7, 2),2));
-
+/*
       $comment = strlen($comment) > 300 ? substr($comment,0,297)."..." : $comment;
       $parts = str_split($comment, $split_length = 60);
       $cur=$rowCounter+1;
@@ -281,19 +275,21 @@ class View
           $objWorksheet->setCellValue("A".$cur,$text);
           $cur++;
       }
-
+*/
       //echo date('H:i:s') . " Write to Excel5 format\n";
+      $filename = $title;
       if ($type=="xlsx") {
           $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
-          header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-          header('Content-Disposition: attachment;filename="'.$title.'.xlsx"');
-          header('Cache-Control: max-age=0');
-          $objWriter->save('php://output');
+          return $response->withHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+                      ->withHeader('Content-Disposition', 'attachment;filename="'.$filename.'.xlsx"')
+                      ->write($objWriter->save('php://output'));
+
           //$objWriter->save('documents/'.$p_id.'.xlsx');
       }elseif ($type=="pdf") {
           $rendererName = PHPExcel_Settings::PDF_RENDERER_DOMPDF;
           $rendererLibrary = 'dompdf.php';
-          $rendererLibraryPath = dirname(__FILE__) . '/includes/Classes/dompdf/';
+          require_once '../../vendor/dompdf/lib/Cpdf.php';
+          $rendererLibraryPath = '../../vendor/dompdf/';
           if (!PHPExcel_Settings::setPdfRenderer(
               $rendererName,
               $rendererLibraryPath
@@ -304,13 +300,12 @@ class View
                   'at the top of this script as appropriate for your directory structure'
               );
           }
-          header('Content-Type: application/pdf');
-          header('Content-Disposition: attachment;filename="'.$title.'.pdf"');
-          header('Cache-Control: max-age=0');
-          $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'PDF');
-          $objWriter->save('php://output');
-      }
 
+          $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'PDF');
+          return $response->withHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+                      ->withHeader('Content-Disposition', 'attachment;filename="'.$filename.'.pdf"')
+                      ->write($objWriter->save('php://output'));
+      }
       exit;
     }
 

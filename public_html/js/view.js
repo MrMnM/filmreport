@@ -40,11 +40,19 @@ $('#submitComment').click((e)=>{
 $('#navAbr').click((e)=>{
   e.preventDefault()
   $('#rapport').hide()
+  $('#spesen').hide()
   $('#abrechnung').show()
 })
 $('#navRap').click((e)=>{
   e.preventDefault()
   $('#rapport').show()
+  $('#abrechnung').hide()
+  $('#spesen').hide()
+})
+$('#navExp').click((e)=>{
+  e.preventDefault()
+  $('#spesen').show()
+  $('#rapport').hide()
   $('#abrechnung').hide()
 })
 
@@ -130,7 +138,7 @@ function refreshAbrechnung(){
   $('#ab_caddr1').html(cmp.address1)
   $('#ab_caddr2').html(cmp.address2)
   $('#ab_bvg').html(usr.bvg)
-  $('#ab_konto').html(usr.konto)  
+  $('#ab_konto').html(usr.konto)
 }
 
 $(()=>{ // JQUERY STARTFUNCTION

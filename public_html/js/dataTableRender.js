@@ -11,8 +11,8 @@ export function renderTools (data, type, row, mode) {
         <i class="fa fa-download"></i>
         </button>
         <ul class="dropdown-menu pull-right" role="menu">
-            <li><a href="h_download.php?t=xlsx&id=${data}"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Excel</a></li>
-            <li><a href="h_download.php?t=pdf&id=${data}"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> PDF</a></li>
+            <li><a href="https://filmstunden.ch/api/v01/view/download/${data}?format=xlsx"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Excel</a></li>
+            <li><a href="https://filmstunden.ch/api/v01/view/download/${data}?format=pdf""><i class="fa fa-file-pdf-o" aria-hidden="true"></i> PDF</a></li>
         </ul>
     </div>
     <button type="button" class="btn btn-danger btn-circle" data-toggle="modal" data-target="#deleteProjectModal" onclick="setDelete('${data}','${row[1]}')">

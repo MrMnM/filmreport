@@ -137,7 +137,7 @@ class User
   private function sendRegistrationMail($mail, $active)
   {
     $subject = 'Filmabrechnungsgenerator';
-    $message = 'Hallo, bitte bestaetige deine Email Addresse mit folgendem Link: https:/filmstunden.ch/validate/'.$active;
+    $message = 'Hallo, bitte bestaetige deine Email Addresse mit folgendem Link: https://filmstunden.ch/validate/'.$active;
     $message = wordwrap($message, 76, "\r\n");
     $encoding = "utf-8";
     // Preferences for Subject field

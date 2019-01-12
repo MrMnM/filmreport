@@ -20,15 +20,17 @@ require_once('../api-app/lib/Globals.php');
     <div class="col-md-4 col-md-offset-4">
         <div class="login-panel panel panel-default">
             <div class="panel-heading">
-                <i class="fa fa-user fa-fw"></i><b> Benutzeraccount validieren</b>
+                <i class="fa fa-user fa-fw"></i>
+                <b> Benutzeraccount validieren</b>
             </div>
             <div class="panel-body">
+              <p>Account mit Validierungsschl&uuml;ssel <b><?= urlencode($_GET['v']);?></b> validieren?</p>
       <div id="error" class="alert alert-danger alert-dismissable" style="display: none;">
           <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
           <p id="errorcontent"></p>
       </div>
       <div id="success" class="alert alert-success" style="display: none;">
-          <p>Account wurde erfolreich validiert</p>
+          <p>Account wurde erfolgreich validiert</p>
       </div>
       <form role="form" method="get" action="https://filmstunden.ch/api/v01/user/validate?v=<?= urlencode($_GET['v']);?>" id="validateAccount">
           <fieldset>
@@ -53,6 +55,8 @@ $('#validateAccount').ajaxForm({
         success: updateSuccess
     });
 });
+
+$('#target-email').html('Account:')
 
 $('#login-btn').click(function(){
    window.location.href='https://filmstunden.ch/login.php';

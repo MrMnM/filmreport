@@ -22,28 +22,29 @@ if (isset($_GET['action']) && strtolower($_GET['action']) == 'logout'){
   setcookie("SESSID", '0', time()-3600, '/', '.filmstunden.ch',TRUE,TRUE);
   $closedExisting = TRUE;
 }elseif(isset($_COOKIE['REMID'])){
-      $cookie= htmlspecialchars($_COOKIE["REMID"]);
-      $t_id = explode(":", $cookie);
-      $sql = "SELECT tokens.token_id,
-                     tokens.user_id,
-                     tokens.token,
-                     users.name
-              FROM `tokens`
-              LEFT JOIN users ON tokens.user_id = users.u_id
-              WHERE tokens.type='rem' AND tokens.token_id='$t_id[0]';";
-      $result = $conn->query($sql);
-      if ($result->num_rows > 0) {
-          while($row = $result->fetch_assoc()) {
-              $dbt_id = $row["token_id"];
-              $uid = $row["user_id"];
-              $db_token = $row["token"];
-              $name = $row["name"];
-          }
-        }
-        if($db_token===$t_id[1]){
-          login($conn,$uid,$name,'0',$rememberme);
-        }
+  $cookie= htmlspecialchars($_COOKIE["REMID"]);
+  $t_id = explode(":", $cookie);
+  $sql = "SELECT tokens.token_id,
+                 tokens.user_id,
+                 tokens.token,
+                 users.name
+          FROM `tokens`
+          LEFT JOIN users ON tokens.user_id = users.u_id
+          WHERE tokens.type='rem' AND tokens.token_id='$t_id[0]';";
+  $result = $conn->query($sql);
+  if ($result->num_rows > 0) {
+      while($row = $result->fetch_assoc()) {
+          $dbt_id = $row["token_id"];
+          $uid = $row["user_id"];
+          $db_token = $row["token"];
+          $name = $row["name"];
+      }
   }
+    
+  if($db_token===$t_id[1]){
+      login($conn,$uid,$name,'0',$rememberme);
+  }
+}
 
 
 if (isset($_POST['remember']) && strtolower($_POST['remember']) == 'remember'){
@@ -87,7 +88,6 @@ if (!empty($_POST["pw"]) && !empty($_POST["mail"])) {
         }
     }
 }
-
 
 function login($conn,$uid,$name,$type,$remember){
   session_name('SESSID');
@@ -144,23 +144,31 @@ function login($conn,$uid,$name,$type,$remember){
             </div>
           </div><!--heading-->
           <div class="panel-body">
+          
             <? if ($unknownUser || $invalidPassword) {?>
               <div class="alert alert-danger alert-dismissable">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                 Benutzername und/oder Passwort stimmen nicht &uuml;berein.
               </div>
+              
             <?}elseif (!$activated) {?>
               <div class="alert alert-warning alert-dismissable">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                 Die E-Mail Addresse wurde noch nicht best&auml;tigt.
               </div>
             <?}?>
+            
             <? if ($closedExisting) {?>
               <div class="alert alert-success alert-dismissable">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                 Erfolgreich ausgeloggt
               </div>
             <?}?>
+              <div class="alert alert-danger alert-dismissable" id="ES6" style="display: none;">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                Browser unterst&uuml;tzt ES6 nur eingeschr&auml;nkt!</br>Filmstunden.ch wird nicht einwandfrei funktionieren.
+              </div>
+            
             <form role="form" method="post" action="<? echo $_SERVER['PHP_SELF']; ?>">
               <fieldset>
                 <div class="form-group">
@@ -169,11 +177,13 @@ function login($conn,$uid,$name,$type,$remember){
                 <div class="form-group">
                   <input class="form-control" placeholder="Password" name="pw" type="password" value="" required>
                 </div>
-                <div class="checkbox">
-                    <label>
-                        <input name="remember" type="checkbox" value="remember">Erinnere mich
-                    </label>
-                </div>
+<div class="checkbox">
+  <label>
+   <input name="remember" type="checkbox" value="remember">
+   <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+   Remember me
+   </label>
+</div>
                 <button type="submit" class="btn btn-lg btn-success btn-block">Login</button>
               </fieldset>
             </form>
@@ -185,5 +195,19 @@ function login($conn,$uid,$name,$type,$remember){
 </div><!--container-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script>
+var supportsES6 = function() {
+  try {
+    new Function("(a = 0) => a");
+    return true;
+  }
+  catch (err) {
+    return false;
+  }
+}();
+if(!supportsES6){
+  $( "#ES6" ).show();
+}
+</script>
 </body>
 </html>
