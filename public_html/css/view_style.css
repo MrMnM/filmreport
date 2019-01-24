@@ -129,13 +129,6 @@ table {
   border: .5px solid #fff;
 }
 
-.td17 {
-  background: #CCE5FF;
-  font-size: 8pt;
-  text-align: center;
-  vertical-align: middle;
-}
-
 .bluetop {
   background: #E5F2FF;
   color: #000;
@@ -172,14 +165,9 @@ table {
   text-align: center;
 }
 
-.xl11, .xl13621306, .xl13821306 {
+.xl11{
   font-size: 9pt;
   vertical-align: bottom;
-}
-
-.td118, .xl10121306, .td102, .td117, .td119, .td128 {
-  font-size: 8pt;
-  text-align: center;
 }
 
 .brightgreen {
@@ -194,16 +182,6 @@ table {
   font-size: 8pt;
   text-align: center;
   border: .5px solid #fff;
-}
-
-.xl14221306 {
-  font-size: 12pt;
-  vertical-align: bottom;
-}
-
-.xl16, .xl15021306 {
-  font-size: 7pt;
-  vertical-align: bottom;
 }
 
 .blue {
@@ -254,10 +232,6 @@ table {
 }
 
 .xl1 {
-  font-size: 8pt;
-}
-
-.xl8021306, .xl15, .xl15 {
   font-size: 8pt;
 }
 
@@ -383,4 +357,13 @@ ul {
 
 .overline {
   border-top: .5pt solid #969696;
+}
+
+.center{
+  text-align: center;
+}
+
+.row{
+  margin-left: 0;
+  margin-right: 0;
 }

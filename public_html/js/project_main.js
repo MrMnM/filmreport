@@ -562,7 +562,7 @@ $(() => { // JQUERY STARTFUNCTION
   //Autosave
   setInterval(() => {
     if (!p.saved) { Save()}
-  }, 15000)
+  }, 10000)
 
   //Jqueery Form
   $('#updateProject').ajaxForm({
