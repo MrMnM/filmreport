@@ -4,7 +4,9 @@ import Project from './Project.js'
 import Company from './Company.js'
 import {
   roundToTwo,
-  addTimes
+  addTimes,
+  timeToMins,
+  minsToHours
 } from "./timeHelpers.js";
 
 const us_id = "guest"
@@ -150,7 +152,7 @@ function refreshProjectList(prj) {
     overtime[3] += cur.overtime[6]
     nighttime += cur.night
     nrOfDays += parseFloat(cur.base)
-    workHours = addTimes(workHours, cur.workhours)
+    workHours += parseInt(timeToMins(cur.workhours))
     let tr = `<tr>
     <td class="td186 td187" colspan="2" height="30">${cur.date}</td>
     <td class="td186 td187">${cur.work}</td>
@@ -183,7 +185,7 @@ function refreshProjectList(prj) {
   $('#overtime4').html(overtime[3])
   $('#nighttime').html(nighttime)
   $('#nrOfDays').html(nrOfDays)
-  $('#totalWorkHours').html(workHours)
+  $('#totalWorkHours').html(minsToHours(workHours))
 
   let hoursDay = 9
   let rate = [0, 0, 0, 0, 0]
