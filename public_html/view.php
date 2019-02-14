@@ -84,12 +84,12 @@
 						<table border="0" cellpadding="0" cellspacing="0" class="f10">
 							<col class="f10">
 							<col class="f10">
+							<col class="f10" width="100">
 							<col class="f10">
-							<col class="f10" width="30">
 							<col class="f10" span="4">
 							<col class="f10" width="30">
 							<col class="f10">
-							<col class="f10" width="30">
+							<col class="f10" width="10">
 							<col class="f10" span="4">
 							<col class="f10">
 							<col class="f10">
@@ -97,13 +97,13 @@
 							<col class="f10">
 							<col class="f10">
 							<col class="f10">
-							<col class="f10" width="30">
+							<col class="f10" width="10">
 							<col class="f10" span="2">
 
 							<tr>
 								<td class="f14" colspan="4" height="26" width="194">ARBEITSRAPPORT</td>
 								<td class="f8" colspan="2">Grundlohn:</td>
-								<td class="xl70 bold pay gage">#PAY</td>
+								<td class="xl70 bold pay gage"></td>
 								<td class="f8 center">CHF</td>
 								<td class="xl7" colspan="2">(9h / Tag)</td>
 								<td></td>
@@ -159,7 +159,7 @@
 							<tr>
 								<td class="blue mail" colspan="3" height="18"></td>
 								<td></td>
-								<td>BV:</td>
+								<td class="f8">BVG:</td>
 								<td></td>
 								<td class="blue bvg" colspan="4"></td>
 								<td></td>
@@ -176,8 +176,7 @@
 							</tr>
 							<tr class="f8">
 								<td class="gray" colspan="2" height="20"> Datum</td>
-								<td class="gray"> Was</td>
-								<td></td>
+								<td class="gray" colspan="2"> Was</td>
 								<td class="gray" colspan="4"> Arbeitszeit</td>
 								<td></td>
 								<td class="gray"> Grundlohn</td>
@@ -192,7 +191,7 @@
 								<td class="f8" height="19"></td>
 								<td></td>
 								<td></td>
-								<td rowspan="4" align="centered">&#9656;</td>
+								<td rowspan="4" align="centered"></td>
 								<td class="bluetop"></td>
 								<td class="bluetop"></td>
 								<td class="bluetop"></td>
@@ -319,7 +318,7 @@
 								<td colspan="7" rowspan="4" height="17"></td>
 								<td></td>
 								<td></td>
-								<td  class="brightyellow payBase"></td>
+								<td id="payBase" class="brightyellow"></td>
 								<td class="td7"></td>
 								<td id="pay125" class="td202" colspan="2"></td>
 								<td id="pay150" class="td202" colspan="2"></td>
@@ -492,36 +491,18 @@
 									<td class="titlebar fs7">CHF/Stk.</td>
 									<td class="titlebar fs7" colspan="2">CHF</td>
 								</tr>
-								<tr>
+								<tr id="abr_baselist">
 									<td class="yelltitle fs10" colspan="2">Tagesgage / Grundlohn</td>
 									<td class="fs7" colspan="4"><span class="wingdings">q</span>&Uuml;bertrag aus Arbeitsrapport</td>
 									<td class="f8" colspan="2">&nbsp;</td>
 								</tr>
 								<tr>
-									<td class="bryellow f8">##DATE1##</td>
-									<td class="bryellow f8">Dreh</td>
-									<td class="ab_darkyellow f8">##ANZTAG##</td>
-									<td class="f8">&nbsp;</td>
-									<td class="bryellow f8">Tag</td>
-									<td class="bryellow f8">##GRUNDLOHNTAG##</td>
-									<td class="bryellow f8" colspan="2">#GRUNDLOHNTAG##</td>
-								</tr>
-								<tr>
-									<td class="bryellow f8">##DTAE2</td>
-									<td class="bryellow f8">Dreh</td>
-									<td class="ab_darkyellow f8">##ANZTAG2##</td>
-									<td class="f8">&nbsp;</td>
-									<td class="bryellow f8">Tag</td>
-									<td class="bryellow f8">##GRUNDLOHNTAG##</td>
-									<td class="bryellow f8" colspan="2">##GRUNDLOHNTAG##</td>
-								</tr>
-								<tr>
 									<td class="bryellow f8" colspan="2">Anzahl Tage x Grundlohn</td>
-									<td class="darkyellow f8">##ANZTAG##</td>
+									<td id="totalDays" class="darkyellow f8"></td>
 									<td class="f8">&nbsp;</td>
 									<td class="bryellow f8">Tag</td>
-									<td class="bryellow f8">##GRUNDLOHNTAG##</td>
-									<td class="bryellow f8" colspan="2">##GRUNDLOHN##</td>
+									<td class="bryellow f8 gage"></td>
+									<td class="bryellow f8 totalBase" colspan="2"></td>
 								</tr>
 								</tr>
 								<tr>
@@ -532,13 +513,13 @@
 									<td class="bryellow f8" colspan="2">Ferienzulage</td>
 									<td class="bryellow f8" align="right">8.33%</td>
 									<td class="f8">&nbsp;</td>
-									<td class="bryellow f8">##GRUNDLOHN##</td>
+									<td class="bryellow f8 totalBase"></td>
 									<td class="f8">&nbsp;</td>
-									<td class="bryellow f8" colspan="2">##FERIENZULA##</td>
+									<td id="ferienzulage"class="bryellow f8" colspan="2"></td>
 								</tr>
 								<tr>
 									<td class="overline fs7" colspan="6">Subtotal Grundlohn inkl. Ferienzulage</td>
-									<td class="overline fs7" colspan="2">##GRUNDLOHNUNDFZ##</td>
+									<td id="lohnundfz" class="overline fs7" colspan="2"></td>
 								</tr>
 								<tr>
 									<td class="f8" colspan="8">&nbsp;</td>
@@ -549,51 +530,51 @@
 								</tr>
 								<tr>
 									<td class="brorange f8">10. und 11. Stunde</td>
-									<td class="brorange f8">100%</td>
-									<td class="darorange f8" align="right">##ANZ1011##</td>
+									<td class="brorange f8">125%</td>
+									<td id="abr_ot0" class="darorange f8" align="right"></td>
 									<td class="f8">&nbsp;</td>
 									<td class="brorange f8">&agrave; CHF</td>
-									<td class="brorange f8">##RATE1011##</td>
-									<td class="brorange f8" colspan="2">##TOT1011##</td>
+									<td id="rate0" class="brorange f8"></td>
+									<td id="ot0" class="brorange f8" colspan="2"></td>
 								</tr>
 								<tr>
 									<td class="brorange f8">12. und 13. Stunde</td>
 									<td class="brorange f8">150%</td>
-									<td class="darorange f8" align="right">0</td>
+									<td id="abr_ot1" class="darorange f8" align="right">0</td>
 									<td class="f8">&nbsp;</td>
 									<td class="brorange f8">&agrave; CHF</td>
-									<td class="brorange f8">##RATE1213##</td>
-									<td class="brorange f8" colspan="2">##TOT1213##</td>
+									<td id="rate1" class="brorange f8"></td>
+									<td id="ot1" class="brorange f8" colspan="2">##TOT1213##</td>
 								</tr>
 								<tr>
 									<td class="brorange f8">14. und 15. Stunde</td>
 									<td class="brorange f8">200%</td>
-									<td class="darorange f8" align="right">0</td>
+									<td id="abr_ot2" class="darorange f8" align="right">0</td>
 									<td class="f8">&nbsp;</td>
 									<td class="brorange f8">&agrave; CHF</td>
-									<td class="brorange f8">100.00</td>
-									<td class="brorange f8" colspan="2">-</td>
+									<td id="rate2" class="brorange f8"></td>
+									<td id="ot2" class="brorange f8" colspan="2">-</td>
 								</tr>
 								<tr>
 									<td class="brorange f8">ab 16. Stunde</td>
 									<td class="brorange f8">250%</td>
-									<td class="darorange f8" align="right">0</td>
+									<td id="abr_ot3" class="darorange f8" align="right">0</td>
 									<td class="f8">&nbsp;</td>
 									<td class="brorange f8">&agrave; CHF</td>
-									<td class="brorange f8">125.00</td>
-									<td class="brorange f8" colspan="2">-</td>
+									<td id="rate3" class="brorange f8"></td>
+									<td id="ot3" class="brorange f8" colspan="2">-</td>
 								</tr>
 								<tr>
 									<td class="brorange f8" colspan="2">Nachtstundenzuschlag &agrave; 25% (Nachtstunden 23:00-5:00)</td>
-									<td class="darorange f8" align="right">1</td>
+									<td id="abr_nt"class="darorange f8" align="right">1</td>
 									<td class="f8">&nbsp;</td>
 									<td class="brorange f8">&agrave; CHF</td>
-									<td class="brorange f8">12.50</td>
-									<td class="brorange f8" colspan="2">10.25</td>
+									<td id="rate4" class="brorange f8"></td>
+									<td id="ot4" class="brorange f8" colspan="2">10.25</td>
 								</tr>
 								<tr>
 									<td class="overline fs7" colspan="6">&nbsp;Subtotal &Uuml;berstunden &amp; Zuschl&auml;ge</td>
-									<td class="overline fs7" colspan="2">##SUBUEBER##</td>
+									<td id="totalUeberstunden"class="overline fs7" colspan="2"></td>
 								</tr>
 								<tr>
 									<td class="f8" colspan="6">&nbsp;</td>
@@ -602,7 +583,7 @@
 
 								<tr>
 									<td class="BetwTitle" colspan="6">Total Bruttolohn</td>
-									<td class="BetwTitle" colspan="2">##TOTBRUT##</td>
+									<td class="BetwTitle totalBrutto" colspan="2">##TOTBRUT##</td>
 								</tr>
 								<tr>
 									<td class="f8" colspan="8">&nbsp;</td>
@@ -616,36 +597,36 @@
 									<td class="brblue f8">&nbsp;</td>
 									<td class="brblue f8" align="right">6.05%</td>
 									<td class="f8"></td>
-									<td class="brblue f8">1,107.75</td>
+									<td class="brblue f8 totalBrutto"></td>
 									<td class="f8"></td>
-									<td class="brblue f8" colspan="2">-67.00</td>
+									<td id="abzAhv" class="brblue f8" colspan="2">-67.00</td>
 								</tr>
 								<tr>
 									<td class="brblue f8">ALV</td>
 									<td class="brblue f8">( je nach Arbeitgeber * )</td>
 									<td class="brblue f8" align="right">1.10%</td>
 									<td class="f8">&nbsp;</td>
-									<td class="brblue f8">&nbsp;</td>
+									<td class="brblue f8 totalBrutto"></td>
 									<td class="f8">&nbsp;</td>
-									<td class="brblue f8" colspan="2">-</td>
+									<td id="abzAlv" class="brblue f8" colspan="2">-</td>
 								</tr>
 								<tr>
 									<td class="brblue f8">BVG-Pr&auml;mie</td>
 									<td class="brblue f8">VFA&nbsp;</td>
 									<td class="brblue f8">6.00%</td>
 									<td class="f8"></td>
-									<td class="brblue f8">1,107.75</td>
+									<td class="brblue f8 totalBrutto"></td>
 									<td class="f8"></td>
-									<td class="brblue f8" colspan="2">-66.50</td>
+									<td id="abzBvg" class="brblue f8" colspan="2">-66.50</td>
 								</tr>
 								<tr>
 									<td class="brblue f8">UVG / NBU</td>
 									<td class="brblue f8">( je nach Arbeitgeber * )</td>
 									<td class="brblue f8" align="right">1.62%</td>
 									<td class="f8">&nbsp;</td>
-									<td class="brblue f8">&nbsp;</td>
+									<td class="brblue f8 totalBrutto"></td>
 									<td class="f8">&nbsp;</td>
-									<td class="brblue f8" colspan="2">-</td>
+									<td id="abzUvg" class="brblue f8" colspan="2">-</td>
 								</tr>
 								<tr>
 									<td class="f8" colspan="8"></td>

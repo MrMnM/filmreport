@@ -44,6 +44,11 @@ class View
         'project_id' => $p_id
       ]);
 
+      $inJson = $in[0]["projectData"]["p_json"];
+      if (isset($inJson[0]["tent"])){
+        $in[0]["projectData"]["p_json"]=self::convertOldOvertime($inJson);
+      }
+
       $ahv = $this->enc->encrypt($in[0]["userData"]["ahv"], 'd');
       $kont = $this->enc->encrypt($in[0]["userData"]["konto"], 'd');
       $in[0]["userData"]["ahv"] = $ahv;
@@ -64,7 +69,25 @@ class View
       }
 
       $in[0]["projectData"]["expenses"] = $expArray;
+
       return $in;
+    }
+
+    private function convertOldOvertime($inJson){
+      $out=[];
+      foreach ($inJson as $cur) {
+        $overtime=[$cur["tent"],$cur["elev"],$cur["twel"],$cur["thir"],$cur["four"],$cur["fift"],$cur["sixt"]];
+        unset($cur['tent']);
+        unset($cur['elev']);
+        unset($cur['twel']);
+        unset($cur['thir']);
+        unset($cur['four']);
+        unset($cur['fift']);
+        unset($cur['sixt']);
+        $cur['overtime']=$overtime;
+        array_push($out,$cur);
+      }
+      return $out;
     }
 
     public function show($request,$response,$args){
