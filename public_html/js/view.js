@@ -106,10 +106,24 @@ function refreshView() {
   const usr = dat[0].userData
   const cmp = dat[0].companyData
   const prj = dat[0].projectData
+  const clc = {
+    calc: 'SSFV_DAY',
+    hoursDay: 9,
+    lunch: 32,
+    car: 0.7,
+    ferien: 0.0833,
+    ahv: 0.0605,
+    alv: 0.0110,
+    bvg: 0.0600,
+    uvg: 0.0162,
+    rate: [1.25, 1.50, 2.00, 2.50, 0.25]
+  }
 
   document.title = prj.p_name;
 
   $('.gage').html(prj.p_gage)
+  $('.foodrate').html(clc.lunch)
+  $('.kilrate').html(clc.car)
   $('.startdate').html(prj.p_start)
   $('.enddate').html(prj.p_end)
   $('.projectname').html(prj.p_name)
@@ -128,27 +142,15 @@ function refreshView() {
   $('.c_addr2').html(cmp.c_address_2)
   $('#dateFromTo').html(prj.p_start + ' bis ' + prj.p_end)
   $('#pay_additional').html()
+  $('#comments').html(prj.p_comment)
   $('#ab_rappnr').html('TEST_NR')
 
-  refreshProjectList(prj)
+  refreshProjectList(prj,clc)
   refreshExpenseList(prj)
-  refreshAbrechnungList(prj)
+  refreshAbrechnungList(prj,clc)
 }
 
-function refreshProjectList(prj) {
-  const clc = {
-    calc : 'SSFV_DAY',
-    hoursDay: 9,
-    lunch : 32,
-    car : 0.7,
-    ferien: 0.0833,
-    ahv: 0.0605,
-    alv: 0.0110,
-    bvg: 0.0600,
-    uvg: 0.0162,
-    rate: [1.25, 1.50, 2.00, 2.50, 0.25]
-  }
-
+function refreshProjectList(prj,clc) {
   let overtime = [0, 0, 0, 0]
   let nighttime = 0
   let nrOfDays = 0
@@ -162,7 +164,7 @@ function refreshProjectList(prj) {
   rate[3] = prj.p_gage / clc.hoursDay * clc.rate[3]
   rate[4] = prj.p_gage / clc.hoursDay * clc.rate[4]
 
-let alltr = ''
+  let alltr = ''
   for (let cur of prj.p_json) {
     overtime[0] += cur.overtime[0] + cur.overtime[1]
     overtime[1] += cur.overtime[2] + cur.overtime[3]
@@ -188,7 +190,7 @@ let alltr = ''
     <td class="${cur.overtime[4] ? 'brightorange' : 'medorange'}">${cur.overtime[4]?cur.overtime[4]:'&nbsp;'}</td>
     <td class="${cur.overtime[5] ? 'brightorange' : 'medorange'}">${cur.overtime[5]?cur.overtime[5]:'&nbsp;'}</td>
     <td class="${cur.overtime[6] ? 'brightorange' : 'medorange'}">${cur.overtime[6]?cur.overtime[6]:'&nbsp;'}</td>
-    <td class="${cur.night ? 'brightorange' : 'medorange'}" colspan="2">${cur.night?cur.niight:'&nbsp;'}</td>
+    <td class="${cur.night ? 'brightorange' : 'medorange'}" colspan="2">${cur.night?cur.night:'&nbsp;'}</td>
     <td></td>
     <td></td>
     <td class="${cur.lunch?'darkgreen':'brightgreen'}">${cur.lunch ? '1':'&nbsp;'}</td>
@@ -196,7 +198,7 @@ let alltr = ''
     </tr>`
     alltr += tr
   }
-
+  //----------------------------------------------------------------------------
   $('#fromhere').after(alltr);
   $('#overtime1').html(overtime[0])
   $('#overtime2').html(overtime[1])
@@ -204,7 +206,6 @@ let alltr = ''
   $('#overtime4').html(overtime[3])
   $('#nighttime').html(nighttime)
   $('#nrOfDays').html(nrOfDays)
-  console.log(workHours)
   $('#totalWorkHours').html(minsToHours(workHours))
   $('#rate125').html(roundToTwo(rate[0]))
   $('#rate150').html(roundToTwo(rate[1]))
@@ -220,24 +221,11 @@ let alltr = ''
   $('#totalBase').html(roundToTwo(prj.p_gage * nrOfDays))
   $('#totalOvertime').html(roundToTwo(rate[0] * overtime[0] + rate[1] * overtime[1] + rate[2] * overtime[2] + rate[3] * overtime[3] + rate[4] * nighttime))
   $('#totalAdditional').html(roundToTwo(alllunches * clc.lunch + allcar * clc.car))
-  $('#alllunches').html(alllunches)
-  $('#allcar').html(allcar)
-
+  $('.alllunches').html(alllunches)
+  $('.allcar').html(allcar)
 }
 
-function refreshAbrechnungList(prj) {
-  const clc = {
-    hoursDay: 9,
-    lunch : 32,
-    car : 0.7,
-    ferien: 0.0833,
-    ahv: 0.0605,
-    alv: 0.0110,
-    bvg: 0.0600,
-    uvg: 0.0162,
-    rate: [1.25, 1.50, 2.00, 2.50, 0.25],
-  }
-
+function refreshAbrechnungList(prj,clc) {
   let rate = [0, 0, 0, 0, 0]
   rate[0] = prj.p_gage / clc.hoursDay * clc.rate[0]
   rate[1] = prj.p_gage / clc.hoursDay * clc.rate[1]
@@ -251,7 +239,7 @@ function refreshAbrechnungList(prj) {
   let nighttime = 0
   let alllunches = 0
   let allcar = 0
-
+  let alltr = ''
   for (let cur of prj.p_json) {
     nrOfDays += parseFloat(cur.base) // TODO: move these two into one function
     totalBase += prj.p_gage * cur.base
@@ -270,7 +258,7 @@ function refreshAbrechnungList(prj) {
     						<td class="bryellow f8">${prj.p_gage}</td>
     						<td class="bryellow f8" colspan="2">${prj.p_gage*cur.base}</td>
     					</tr>`
-    $('#abr_baselist').after(tr);
+    alltr += tr
   }
 
   const ferienzulage = totalBase * clc.ferien
@@ -281,7 +269,12 @@ function refreshAbrechnungList(prj) {
   const alv = totalBrutto * clc.alv
   const bvg = totalBrutto * clc.bvg
   const uvg = totalBrutto * clc.uvg
+  const totalAbz = ahv+alv+bvg+uvg
+  const totalNetto = totalBrutto - totalAbz
+  const totalSpesen = allcar*clc.car + alllunches*clc.lunch
+  const total = totalNetto + totalSpesen
 
+  $('#abr_baselist').after(alltr);
   $('.totalBase').html(totalBase)
   $('#totalDays').html(nrOfDays)
   $('#ferienzulage').html(roundToTwo(ferienzulage))
@@ -307,25 +300,29 @@ function refreshAbrechnungList(prj) {
   $('#abzAlv').html(roundToTwo(alv))
   $('#abzBvg').html(roundToTwo(bvg))
   $('#abzUvg').html(roundToTwo(uvg))
+  $('#totalAbz').html(roundToTwo(totalAbz))
+  $('#totalNetto').html(roundToTwo(totalNetto))
+  $('#totalSpesen').html(roundToTwo(totalSpesen))
+  $('#total').html(roundToTwo(total))
 }
 
 function refreshExpenseList(prj) {
+  let totalExpense = 0.0
   let expenseList = ''
   if (prj.expenses.length != 0) {
-    console.log(prj.expenses)
     for (let cur of prj.expenses) {
-      expenseList += `<td class="blue fs8"><a href="https://filmstunden.ch/upload/${cur.img}">${cur.date}</a></td>
+      expenseList += `<td class="blue fs8">${cur.date}</td>
                       <td class="blue fs8"><a href="https://filmstunden.ch/upload/${cur.img}">${cur.name}</a></td>
                       <td class="blue fs8" colspan="6"><a href="https://filmstunden.ch/upload/${cur.img}">${cur.comment}</a></td>
-                      <td class="blue fs8 bold"><a href="https://filmstunden.ch/upload/${cur.img}">${cur.value}</a></td>`
+                      <td class="blue fs8 bold">${cur.value}</td>`
+      totalExpense += cur.value
     }
   } else {
     expenseList = '<td class="blue fs8" height="30" style="text-align: center; font-weight: 700" colspan="9">Keine zus&auml;tzlichen Spesen angegeben</td>'
   }
   $('#expenseList').after(expenseList)
-
+  $('.additionalExpense').html(totalExpense)
 }
-
 
 $(() => { // JQUERY STARTFUNCTION
   Promise.all([

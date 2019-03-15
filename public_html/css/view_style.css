@@ -71,6 +71,10 @@ table {
   font-size: 9pt;
 }
 
+.percent:after{
+  content: '%'
+}
+
 .brightgreen {
   background: #F2FFF2;
   font-size: 7pt;
@@ -336,4 +340,11 @@ ul {
 .row{
   margin-left: 0;
   margin-right: 0;
+}
+
+input[type="number"] {
+  background: #E5F2FF;
+  font-size: 8pt;
+  border: 0;
+  text-align: right;
 }

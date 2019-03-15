@@ -293,8 +293,8 @@
 								<td id="overtime4" class="darkorange" colspan="2"></td>
 								<td id="nighttime" class="darkorange" colspan="2"></td>
 								<td></td>
-								<td id="alllunches" class="darkgreen"></td>
-								<td id="allcar" class="darkgreen"></td>
+								<td class="darkgreen alllunches"></td>
+								<td class="darkgreen allcar"></td>
 							</tr>
 							<tr>
 								<td height="2"></td>
@@ -311,11 +311,11 @@
 								<td id="rate250" class="td202" colspan="2"></td>
 								<td id="rate25" class="td202" colspan="2"></td>
 								<td></td>
-								<td class="brightgreen">32.00</td>
-								<td class="brightgreen">0.70</td>
+								<td class="brightgreen foodrate"></td>
+								<td class="brightgreen kilrate"></td>
 							</tr>
 							<tr>
-								<td colspan="7" rowspan="4" height="17"></td>
+								<td class="f7 vbottom" id="comments" colspan="7" rowspan="4" height="17"></td>
 								<td></td>
 								<td></td>
 								<td id="payBase" class="brightyellow"></td>
@@ -366,7 +366,7 @@
 								<td colspan="11"></td>
 								<td colspan="10" class="f8" align="right">Zusätzliche Spesen (siehe Spesenblatt):</td>
 								<td></td>
-								<td class="additional" colspan="2" id="addExp"></td>
+								<td class="additional pay additionalExpense" colspan="2"></td>
 							</tr>
 							<tr>
 								<td height="10"></td>
@@ -498,7 +498,7 @@
 								</tr>
 								<tr>
 									<td class="bryellow f8" colspan="2">Anzahl Tage x Grundlohn</td>
-									<td id="totalDays" class="darkyellow f8"></td>
+									<td id="totalDays" class="ab_darkyellow f8"></td>
 									<td class="f8">&nbsp;</td>
 									<td class="bryellow f8">Tag</td>
 									<td class="bryellow f8 gage"></td>
@@ -595,34 +595,35 @@
 								<tr>
 									<td class="brblue f8">AHV / IV / EO</td>
 									<td class="brblue f8">&nbsp;</td>
-									<td class="brblue f8" align="right">6.05%</td>
+									<td class="brblue f8" align="right"><input type="number" id="percAHV" value="6.05" step="0.01" disabled>%</td>
 									<td class="f8"></td>
 									<td class="brblue f8 totalBrutto"></td>
 									<td class="f8"></td>
-									<td id="abzAhv" class="brblue f8" colspan="2">-67.00</td>
+									<td id="abzAhv" class="brblue f8" colspan="2"></td>
 								</tr>
 								<tr>
 									<td class="brblue f8">ALV</td>
 									<td class="brblue f8">( je nach Arbeitgeber * )</td>
-									<td class="brblue f8" align="right">1.10%</td>
+									<td class="brblue f8" align="right"><input type="number" id="percALV" value="1.10" step="0.01">%</td><!--1.1-->
 									<td class="f8">&nbsp;</td>
 									<td class="brblue f8 totalBrutto"></td>
 									<td class="f8">&nbsp;</td>
-									<td id="abzAlv" class="brblue f8" colspan="2">-</td>
+									<td id="abzAlv" class="brblue f8" colspan="2"></td>
+
 								</tr>
 								<tr>
 									<td class="brblue f8">BVG-Pr&auml;mie</td>
 									<td class="brblue f8">VFA&nbsp;</td>
-									<td class="brblue f8">6.00%</td>
+									<td class="brblue f8" align="right"><input type="number" id="percBVG" value="6.00" step="0.01" disabled>%</td>
 									<td class="f8"></td>
 									<td class="brblue f8 totalBrutto"></td>
 									<td class="f8"></td>
-									<td id="abzBvg" class="brblue f8" colspan="2">-66.50</td>
+									<td id="abzBvg" class="brblue f8" colspan="2"></td>
 								</tr>
 								<tr>
 									<td class="brblue f8">UVG / NBU</td>
 									<td class="brblue f8">( je nach Arbeitgeber * )</td>
-									<td class="brblue f8" align="right">1.62%</td>
+									<td class="brblue f8" align="right"><input type="number" id="percNBU" value="1.62" step="0.01">%</td>
 									<td class="f8">&nbsp;</td>
 									<td class="brblue f8 totalBrutto"></td>
 									<td class="f8">&nbsp;</td>
@@ -633,14 +634,14 @@
 								</tr>
 								<tr>
 									<td class="overline fs7" colspan="6">Subtotal Abz&uuml;ge</td>
-									<td class="overline fs7" colspan="2">##SUBABZ##</td>
+									<td id="totalAbz" class="overline fs7" colspan="2"></td>
 								</tr>
 								<tr>
 									<td class="f8" colspan="8"></td>
 								</tr>
 								<tr>
 									<td class="BetwTitle" colspan="6">Total Nettolohn</td>
-									<td class="BetwTitle" colspan="2">##NET##</td>
+									<td id="totalNetto" class="BetwTitle" colspan="2"></td>
 								</tr>
 								<tr>
 									<td colspan="8"></td>
@@ -671,38 +672,38 @@
 									<td class="dargreen f8" align="right">0</td>
 									<td class="f8">&nbsp;</td>
 									<td class="brgreen f8">&agrave; CHF</td>
-									<td class="brgreen f8">##FOODRATE##</td>
-									<td class="brgreen f8" colspan="2">##FOODNR##</td>
+									<td class="brgreen f8 foodrate"></td>
+									<td class="brgreen f8 alllunches" colspan="2"></td>
 								</tr>
 								<tr>
 									<td class="brgreen f8" colspan="2">Autokilometer</td>
 									<td class="dargreen f8" align="right">0</td>
 									<td class="f8">&nbsp;</td>
 									<td class="brgreen f8">&agrave; CHF</td>
-									<td class="brgreen f8">##KILRATE##</td>
-									<td class="brgreen f8" colspan="2">##KILNR##</td>
+									<td class="brgreen f8 kilrate"></td>
+									<td class="brgreen f8 allcar" colspan="2"></td>
 								</tr>
 								<tr>
 									<td class="brgreen f8" colspan="2">Weitere Spesen</td>
-									<td class="dargreen f8" align="right">0</td>
+									<td class="dargreen f8 additionalExpense" align="right">0</td>
 									<td class="f8">&nbsp;</td>
-									<td class="brgreen f8">&agrave; CHF</td>
-									<td class="brgreen f8">0.70</td>
-									<td class="brgreen f8" colspan="2">-</td>
+									<td class="brgreen f8"></td>
+									<td class="brgreen f8"></td>
+									<td class="brgreen f8 additionalExpense" colspan="2">-</td>
 								</tr>
 								<tr class="spacer">
 									<td class="f8" colspan="8"></td>
 								</tr>
 								<tr>
 									<td class="overline fs7" colspan="6">Subtotal Spesen</td>
-									<td class="overline fs7" colspan="2">##SPES##</td>
+									<td id="totalSpesen" class="overline fs7" colspan="2"></td>
 								</tr>
 								<tr>
 									<td class="f8" colspan="8"></td>
 								</tr>
 								<tr>
 									<td class="BetwTitle" colspan="6">Total Betrag</td>
-									<td class="BetwTitle" colspan="2">##TOT##</td>
+									<td id="total" class="BetwTitle" colspan="2"></td>
 								</tr>
 								<tr>
 									<td colspan="8"></td>
