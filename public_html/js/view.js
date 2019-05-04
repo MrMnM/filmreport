@@ -232,7 +232,6 @@ function refreshAbrechnungList(prj,clc) {
   rate[2] = prj.p_gage / clc.hoursDay * clc.rate[2]
   rate[3] = prj.p_gage / clc.hoursDay * clc.rate[3]
   rate[4] = prj.p_gage / clc.hoursDay * clc.rate[4]
-
   let nrOfDays = 0
   let totalBase = 0
   let overtime = [0, 0, 0, 0]
@@ -331,6 +330,7 @@ $(() => { // JQUERY STARTFUNCTION
   ]).then(() => {
     refreshView()
 
+    // TODO: Get this working again!
     $("#exceldownload").attr("href", "https://filmstunden.ch/api/v01/view/download/" + p_id + "?format=xlsx");
     $("#pdfdownload").attr("href", "https://filmstunden.ch/api/v01/view/download/" + p_id + "?format=pdf");
     $('#loading').hide()

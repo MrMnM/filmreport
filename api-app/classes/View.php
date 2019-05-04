@@ -111,15 +111,15 @@ class View
       $title= $sdate->format('ymd').'_'.$in[0]["projectData"]["p_name"].'_'.$in[0]["userData"]["name"];
       $title= str_replace(" ", "_", $title);
 
-
       $sdate = $sdate->format('d/m/Y');
       $edate = $edate->format('d/m/Y');
       $u_dob = $u_dob->format('d/m/Y');
 
+
+
       date_default_timezone_set('Europe/Berlin');
       /** PHPExcel_IOFactory */
-      require_once '../../vendor/PHPExcel/IOFactory.php'; //TODO: Set this correctly
-      //echo date('H:i:s') . " Load from Excel5 template\n";
+      require_once '../../vendor/PHPExcel/IOFactory.php';
       $objReader = PHPExcel_IOFactory::createReader('Excel2007');
       $objPHPExcel = $objReader->load("template_rapport.xlsx");
       $objPHPExcel->getDefaultStyle()
@@ -156,27 +156,37 @@ class View
       ->getPageMargins()->setBottom(0);
       $objPHPExcel->getActiveSheet()->getPageSetup()->setFitToWidth(1);
 
-      $objWorksheet = $objPHPExcel->getActiveSheet();
-      $objWorksheet->getPageSetup()->setPaperSize(PHPExcel_Worksheet_PageSetup::PAPERSIZE_A4);
-      $objWorksheet->setCellValue('G2', $pay);
-      $objWorksheet->setCellValue('A3', $in[0]["userData"]["name"]);
-      $objWorksheet->setCellValue('A4', $in[0]["userData"]["address_1"]);
-      $objWorksheet->setCellValue('A5', $in[0]["userData"]["address_2"]);
-      $objWorksheet->setCellValue('A6', $in[0]["userData"]["tel"]);
-      $objWorksheet->setCellValue('A7', $in[0]["userData"]["mail"]);
-      $objWorksheet->setCellValue('G4', $in[0]["userData"]["ahv"]);
-      $objWorksheet->setCellValue('G5', $u_dob);
-      $objWorksheet->setCellValue('G6', $in[0]["userData"]["konto"]);
-      $objWorksheet->setCellValue('G7', $in[0]["userData"]["bvg"]);
-      $objWorksheet->setCellValue('P2', $in[0]["projectData"]["p_name"]);
-      //$objWorksheet->getStyle('P2')->getFont()->setBold(true);
-      //$objWorksheet->getStyle('P2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-      $objWorksheet->setCellValue('P3', $sdate);
-      $objWorksheet->setCellValue('V3', $edate);
-      $objWorksheet->setCellValue('P4', $in[0]["companyData"]["c_name"]);
-      $objWorksheet->setCellValue('P5', $in[0]["companyData"]["c_address_1"]);
-      $objWorksheet->setCellValue('P6', $in[0]["companyData"]["c_address_2"]);
-      $objWorksheet->setCellValue('P7', $in[0]["projectData"]["p_job"]);
+
+            /*COLORS------- FDE9D9 */
+
+      $darkOrange =     array('fill' => array(
+                              'type' => PHPExcel_Style_Fill::FILL_SOLID,
+                              'color' => array('rgb' => 'FCD5B4')));
+      $brightOrange =   array('fill' => array(
+                              'type' => PHPExcel_Style_Fill::FILL_SOLID,
+                              'color' => array('rgb' => 'FDE9D9')));
+
+      $oWs = $objPHPExcel->getActiveSheet();
+      $oWs->getPageSetup()->setPaperSize(PHPExcel_Worksheet_PageSetup::PAPERSIZE_A4);
+      $oWs->setCellValue('G2', $pay);
+      $oWs->setCellValue('A3', $in[0]["userData"]["name"]);
+      $oWs->setCellValue('A4', $in[0]["userData"]["address_1"]);
+      $oWs->setCellValue('A5', $in[0]["userData"]["address_2"]);
+      $oWs->setCellValue('A6', $in[0]["userData"]["tel"]);
+      $oWs->setCellValue('A7', $in[0]["userData"]["mail"]);
+      $oWs->setCellValue('G4', $in[0]["userData"]["ahv"]);
+      $oWs->setCellValue('G5', $u_dob);
+      $oWs->setCellValue('G6', $in[0]["userData"]["konto"]);
+      $oWs->setCellValue('G7', $in[0]["userData"]["bvg"]);
+      $oWs->setCellValue('P2', $in[0]["projectData"]["p_name"]);
+      //$oWs->getStyle('P2')->getFont()->setBold(true);
+      //$oWs->getStyle('P2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+      $oWs->setCellValue('P3', $sdate);
+      $oWs->setCellValue('V3', $edate);
+      $oWs->setCellValue('P4', $in[0]["companyData"]["c_name"]);
+      $oWs->setCellValue('P5', $in[0]["companyData"]["c_address_1"]);
+      $oWs->setCellValue('P6', $in[0]["companyData"]["c_address_2"]);
+      $oWs->setCellValue('P7', $in[0]["projectData"]["p_job"]);
 
       $rowCounter = 16;
       $allbase=0;
@@ -201,44 +211,42 @@ class View
           list($hours, $minutes) = explode(':', $arr['workhours']);
           $allhours2->add(new DateInterval('PT'.$hours.'H'.$minutes.'M'));
           $allbase+=$arr['base'];
-          $all125= $all125 + $arr['tent'] + $arr['elev'];
-          $all150= $all150 + $arr['twel'] + $arr['thir'];
-          $all200= $all200 + $arr['four'] + $arr['fift'];
-          $all250+=$arr['sixt'];
+          $all125= $all125 + $arr['overtime'][0] + $arr['overtime'][1];
+          $all150= $all150 + $arr['overtime'][2] + $arr['overtime'][3];
+          $all200= $all200 + $arr['overtime'][4] + $arr['overtime'][5];
+          $all250+=$arr['overtime'][6];
           $all25+=$arr['night'];
           $allfood+=$arr['lunch'];
           $allcar+=$arr['car'];
           $date = DateTime::createFromFormat('Y-m-d', $arr['date']);
           $date = $date->format('d/m/Y');
           $cur=$rowCounter-1;
-          $objWorksheet->setCellValue("A".$cur, $date);
-          $objWorksheet->getStyle("A".$cur)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
-          $objWorksheet->setCellValue("C".$cur,$arr['work']);
-          $objWorksheet->setCellValue("E".$cur,$arr['start']);
-          $objWorksheet->setCellValue("F".$cur,$arr['end']);
-          $objWorksheet->setCellValue("G".$cur,$arr['break']);
-          $objWorksheet->setCellValue("H".$cur,$arr['workhours']);
-          $objWorksheet->setCellValue("J".$cur,$arr['base']);
-          $objWorksheet->setCellValue("L".$cur,$arr['tent']);
-          $objWorksheet->setCellValue("M".$cur,$arr['elev']);
-          $objWorksheet->setCellValue("N".$cur,$arr['twel']);
-          $objWorksheet->setCellValue("O".$cur,$arr['thir']);
-          $objWorksheet->setCellValue("P".$cur,$arr['four']);
-          $objWorksheet->setCellValue("Q".$cur,$arr['fift']);
-          $objWorksheet->setCellValue("R".$cur,$arr['sixt']);
-          $objWorksheet->setCellValue("T".$cur,$arr['night']);
-          if ($arr['lunch']==1) {
-            $objWorksheet->setCellValue("W".$cur,1);
-          }else{
-            $objWorksheet->setCellValue("W".$cur,0);
-          }
+          $oWs->setCellValue("A".$cur, $date);
+          $oWs->getStyle("A".$cur)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+          $oWs->setCellValue("C".$cur,$arr['work']);
+          $oWs->setCellValue("E".$cur,$arr['start']);
+          $oWs->setCellValue("F".$cur,$arr['end']);
+          $oWs->setCellValue("G".$cur,$arr['break']);
+          $oWs->setCellValue("H".$cur,$arr['workhours']);
+          $oWs->setCellValue("J".$cur,$arr['base']);
+          if ($arr['overtime'][0] > 0) {  $oWs->setCellValue("L".$cur, $arr['overtime'][0]); self::setCellColor($oWs,"L".$cur,$darkOrange);}else{ self::setCellColor($oWs,"L".$cur,$brightOrange);}
+          if ($arr['overtime'][1] > 0) {  $oWs->setCellValue("M".$cur, $arr['overtime'][1]); self::setCellColor($oWs,"M".$cur,$darkOrange);}else{ self::setCellColor($oWs,"M".$cur,$brightOrange);}
+          if ($arr['overtime'][2] > 0) {  $oWs->setCellValue("N".$cur, $arr['overtime'][2]); self::setCellColor($oWs,"N".$cur,$darkOrange);}else{ self::setCellColor($oWs,"N".$cur,$brightOrange);}
+          if ($arr['overtime'][3] > 0) {  $oWs->setCellValue("O".$cur, $arr['overtime'][3]); self::setCellColor($oWs,"O".$cur,$darkOrange);}else{ self::setCellColor($oWs,"O".$cur,$brightOrange);}
+          if ($arr['overtime'][4] > 0) {  $oWs->setCellValue("P".$cur, $arr['overtime'][4]); self::setCellColor($oWs,"P".$cur,$darkOrange);}else{ self::setCellColor($oWs,"P".$cur,$brightOrange);}
+          if ($arr['overtime'][5] > 0) {  $oWs->setCellValue("Q".$cur, $arr['overtime'][5]); self::setCellColor($oWs,"Q".$cur,$darkOrange);}else{ self::setCellColor($oWs,"Q".$cur,$brightOrange);}
+          if ($arr['overtime'][6] > 0) {  $oWs->setCellValue("R".$cur, $arr['overtime'][6]); self::setCellColor($oWs,"R".$cur,$darkOrange);}else{ self::setCellColor($oWs,"R".$cur,$brightOrange);}
+          if ($arr['night'] > 0) {  $oWs->setCellValue("T".$cur, $arr['night']);self::setCellColor($oWs,"T".$cur,$darkOrange);}else{self::setCellColor($oWs,"T".$cur,$brightOrange);}
 
-          $objWorksheet->setCellValue("X".$cur,$arr['car']);
+
+          if ($arr['lunch']==1) {$oWs->setCellValue("W".$cur,1);}else{$oWs->setCellValue("W".$cur,'');}
+
+          $oWs->setCellValue("X".$cur,$arr['car']);
           if ($i != $len - 1) {
-              $objWorksheet->insertNewRowBefore($rowCounter, 1);
-              $objWorksheet->mergeCells('A'.$rowCounter.':B'.$rowCounter);
-              $objWorksheet->mergeCells('R'.$rowCounter.':S'.$rowCounter);
-              $objWorksheet->mergeCells('T'.$rowCounter.':U'.$rowCounter);
+              $oWs->insertNewRowBefore($rowCounter, 1);
+              $oWs->mergeCells('A'.$rowCounter.':B'.$rowCounter);
+              $oWs->mergeCells('R'.$rowCounter.':S'.$rowCounter);
+              $oWs->mergeCells('T'.$rowCounter.':U'.$rowCounter);
           }
           $rowCounter++;
           $i++;
@@ -251,63 +259,62 @@ class View
       $h=$interval->h;
       $m= $interval->i;
       $taz = $d*24+$h.':'.$m;
-      $objWorksheet->setCellValue("H".$cur,$taz);
+      $oWs->setCellValue("H".$cur,$taz);
 
       $cur=$cur+1;
-      $objWorksheet->setCellValue("J".$cur,$allbase);
-      $objWorksheet->setCellValue("L".$cur,$all125);
-      $objWorksheet->setCellValue("N".$cur,$all150);
-      $objWorksheet->setCellValue("P".$cur,$all200);
-      $objWorksheet->setCellValue("R".$cur,$all250);
-      $objWorksheet->setCellValue("T".$cur,$all25);
-      $objWorksheet->setCellValue("W".$cur,$allfood);
-      $objWorksheet->setCellValue("X".$cur,$allcar);
+      $oWs->setCellValue("J".$cur,$allbase);
+      $oWs->setCellValue("L".$cur,$all125);
+      $oWs->setCellValue("N".$cur,$all150);
+      $oWs->setCellValue("P".$cur,$all200);
+      $oWs->setCellValue("R".$cur,$all250);
+      $oWs->setCellValue("T".$cur,$all25);
+      $oWs->setCellValue("W".$cur,$allfood);
+      $oWs->setCellValue("X".$cur,$allcar);
       $cur=$cur+1;
-      $objWorksheet->setCellValue("J".$cur,$pay);
-      $objWorksheet->setCellValue("L".$cur,round($pay/9*1.25, 2));
-      $objWorksheet->setCellValue("N".$cur,round($pay/9*1.5, 2));
-      $objWorksheet->setCellValue("P".$cur,round($pay/9*2.0, 2));
-      $objWorksheet->setCellValue("R".$cur,round($pay/9*2.5, 2));
-      $objWorksheet->setCellValue("T".$cur,round($pay/9*0.25, 2));
-      $objWorksheet->setCellValue("W".$cur,32);
-      $objWorksheet->setCellValue("X".$cur,0.7);
+      $oWs->setCellValue("J".$cur,$pay);
+      $oWs->setCellValue("L".$cur,round($pay/9*1.25, 2));
+      $oWs->setCellValue("N".$cur,round($pay/9*1.5, 2));
+      $oWs->setCellValue("P".$cur,round($pay/9*2.0, 2));
+      $oWs->setCellValue("R".$cur,round($pay/9*2.5, 2));
+      $oWs->setCellValue("T".$cur,round($pay/9*0.25, 2));
+      $oWs->setCellValue("W".$cur,32);
+      $oWs->setCellValue("X".$cur,0.7);
       $cur=$cur+1;
-      $objWorksheet->setCellValue("J".$cur,round($allbase*$pay,2));
-      $objWorksheet->setCellValue("L".$cur,round($all125*$pay/9*1.25, 2));
-      $objWorksheet->setCellValue("N".$cur,round($all150*$pay/9*1.5, 2));
-      $objWorksheet->setCellValue("P".$cur,round($all200*$pay/9*2.0, 2));
-      $objWorksheet->setCellValue("R".$cur,round($all250*$pay/9*2.5, 2));
-      $objWorksheet->setCellValue("T".$cur,round($all25*$pay/9*0.25, 2));
-      $objWorksheet->setCellValue("W".$cur,round($allfood*32, 2));
-      $objWorksheet->setCellValue("X".$cur,round($allcar*0.7, 2));
+      $oWs->setCellValue("J".$cur,round($allbase*$pay,2));
+      $oWs->setCellValue("L".$cur,round($all125*$pay/9*1.25, 2));
+      $oWs->setCellValue("N".$cur,round($all150*$pay/9*1.5, 2));
+      $oWs->setCellValue("P".$cur,round($all200*$pay/9*2.0, 2));
+      $oWs->setCellValue("R".$cur,round($all250*$pay/9*2.5, 2));
+      $oWs->setCellValue("T".$cur,round($all25*$pay/9*0.25, 2));
+      $oWs->setCellValue("W".$cur,round($allfood*32, 2));
+      $oWs->setCellValue("X".$cur,round($allcar*0.7, 2));
       $cur=$cur+3;
       $p125=round($all125*$pay/9*1.25, 2);
       $p150=round($all150*$pay/9*1.5, 2);
       $p200=round($all200*$pay/9*2.0, 2);
       $p250=round($all250*$pay/9*2.5, 2);
       $p25=round($all25*$pay/9*0.25, 2);
-      $objWorksheet->setCellValue("J".$cur,round($allbase*$pay,2));
+      $oWs->setCellValue("J".$cur,round($allbase*$pay,2));
       $overtime=round($p125+$p150+$p200+$p250+$p25,2);
-      $objWorksheet->setCellValue("L".$cur,$overtime);
-      $objWorksheet->setCellValue("W".$cur,round(round($allfood*32, 2)+round($allcar*0.7, 2),2));
-/*
+      $oWs->setCellValue("L".$cur,$overtime);
+      $oWs->setCellValue("W".$cur,round(round($allfood*32, 2)+round($allcar*0.7, 2),2));
+
       $comment = strlen($comment) > 300 ? substr($comment,0,297)."..." : $comment;
       $parts = str_split($comment, $split_length = 60);
       $cur=$rowCounter+1;
       foreach ($parts as $text) {
-          $objWorksheet->setCellValue("A".$cur,$text);
+          $oWs->setCellValue("A".$cur,$text);
           $cur++;
       }
-*/
-      //echo date('H:i:s') . " Write to Excel5 format\n";
+
+
       $filename = $title;
       if ($type=="xlsx") {
           $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
           return $response->withHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-                      ->withHeader('Content-Disposition', 'attachment;filename="'.$filename.'.xlsx"')
-                      ->write($objWriter->save('php://output'));
+                          ->withHeader('Content-Disposition', 'attachment;filename="'.$filename.'.xlsx"')
+                          ->write($objWriter->save('php://output'));
 
-          //$objWriter->save('documents/'.$p_id.'.xlsx');
       }elseif ($type=="pdf") {
           $rendererName = PHPExcel_Settings::PDF_RENDERER_DOMPDF;
           $rendererLibrary = 'dompdf.php';
@@ -326,10 +333,14 @@ class View
 
           $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'PDF');
           return $response->withHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-                      ->withHeader('Content-Disposition', 'attachment;filename="'.$filename.'.pdf"')
-                      ->write($objWriter->save('php://output'));
+                          ->withHeader('Content-Disposition', 'attachment;filename="'.$filename.'.pdf"')
+                          ->write($objWriter->save('php://output'));
       }
       exit;
+    }
+
+    private function setCellColor($oWs,$cell,$color){
+        $oWs->getStyle($cell)->applyFromArray($color);
     }
 
 }

@@ -103,7 +103,7 @@ $app->group('/v01', function() {
   $this->get('/view/{p_id}', 'View:show');
   $this->get('/view/download/{p_id}', 'View:Download'); //?format=xx
 
-  // View
+  // Timer
   $this->get('/timer', 'Timer:list');
   $this->post('/timer', 'Timer:new');
   $this->get('/timer/{t_id}', 'Timer:load');
