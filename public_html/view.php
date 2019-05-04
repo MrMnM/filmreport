@@ -1,3 +1,9 @@
+<?
+function ob_html_compress($buf){
+	return preg_replace(array('/<!--(.*)-->/Uis',"/[[:blank:]]+/"),array('',' '),str_replace(array("\n","\r","\t"),'',$buf));
+}
+ob_start("ob_html_compress");
+?>
 <html>
 
 <head>
@@ -777,3 +783,4 @@
 	<script type="module" src="./js/view.js"></script>
 </body>
 </html>
+<?php ob_end_flush(); ?>

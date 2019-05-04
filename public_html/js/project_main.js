@@ -142,7 +142,6 @@ $('#saveExpenseBtn').click(() => {
 
 })
 
-
 // CHHANGEFUNCTION ------------------------------------------------------------
 //-----------------------------------------------------------------------------
 
@@ -549,10 +548,10 @@ function uploadComplete(resp) {
 // -----------------------------------------------------------------------------
 $(() => { // JQUERY STARTFUNCTION
   $('#exp_date').val(formatDate(new Date()))
-  $('#workhours').basictable({
-      showEmptyCells: true,
-      header: true
-  });
+//  $('#workhours').basictable({
+//      showEmptyCells: true,
+//      header: true
+//  });
   $('#workhours').basictable('start')
 
   activateSideMenu()
