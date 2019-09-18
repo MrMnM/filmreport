@@ -15,7 +15,18 @@ let url = new URL(window.location.href)
 const p_id = url.searchParams.get('id')
 const p = new Project(p_id)
 let dat = {}
-
+const clc = {
+  calc: 'SSFV_DAY',
+  hoursDay: 9,
+  lunch: 32,
+  car: 0.7,
+  ferien: 0.0833,
+  ahv: 0.0605,
+  alv: 0.0110,
+  bvg: 0.0600,
+  uvg: 0.0162,
+  rate: [1.25, 1.50, 2.00, 2.50, 0.25]
+}
 
 function loadChats() {
   p.getChats().then(() => {
@@ -102,24 +113,12 @@ function addChat(text) {
     })
 }
 
-function refreshView() {
+function refreshView(clc) {
   const usr = dat[0].userData
   const cmp = dat[0].companyData
   const prj = dat[0].projectData
-  const clc = {
-    calc: 'SSFV_DAY',
-    hoursDay: 9,
-    lunch: 32,
-    car: 0.7,
-    ferien: 0.0833,
-    ahv: 0.0605,
-    alv: 0.0110,
-    bvg: 0.0600,
-    uvg: 0.0162,
-    rate: [1.25, 1.50, 2.00, 2.50, 0.25]
-  }
 
-  document.title = prj.p_name;
+  document.title = prj.p_end+'_'+prj.p_name+'_'+usr.name;
 
   $('.gage').html(prj.p_gage)
   $('.foodrate').html(clc.lunch)
@@ -147,7 +146,7 @@ function refreshView() {
 
   refreshProjectList(prj,clc)
   refreshExpenseList(prj)
-  refreshAbrechnungList(prj,clc)
+  refreshAbrechnungList(clc)
 }
 
 function refreshProjectList(prj,clc) {
@@ -196,6 +195,7 @@ function refreshProjectList(prj,clc) {
     <td class="${cur.lunch?'darkgreen':'brightgreen'}">${cur.lunch ? '1':'&nbsp;'}</td>
     <td class="${cur.car?'darkgreen':'brightgreen'}">${cur.car ? cur.car:'&nbsp;'}</td>
     </tr>`
+ if(cur.lunch)alllunches = alllunches+1
     alltr += tr
   }
   //----------------------------------------------------------------------------
@@ -225,7 +225,8 @@ function refreshProjectList(prj,clc) {
   $('.allcar').html(allcar)
 }
 
-function refreshAbrechnungList(prj,clc) {
+function refreshAbrechnungList(clc,ref) {
+  const prj = dat[0].projectData
   let rate = [0, 0, 0, 0, 0]
   rate[0] = prj.p_gage / clc.hoursDay * clc.rate[0]
   rate[1] = prj.p_gage / clc.hoursDay * clc.rate[1]
@@ -273,7 +274,7 @@ function refreshAbrechnungList(prj,clc) {
   const totalSpesen = allcar*clc.car + alllunches*clc.lunch
   const total = totalNetto + totalSpesen
 
-  $('#abr_baselist').after(alltr);
+if(!ref) $('#abr_baselist').after(alltr);
   $('.totalBase').html(totalBase)
   $('#totalDays').html(nrOfDays)
   $('#ferienzulage').html(roundToTwo(ferienzulage))
@@ -320,17 +321,29 @@ function refreshExpenseList(prj) {
     expenseList = '<td class="blue fs8" height="30" style="text-align: center; font-weight: 700" colspan="9">Keine zus&auml;tzlichen Spesen angegeben</td>'
   }
   $('#expenseList').after(expenseList)
-  $('.additionalExpense').html(totalExpense)
+  $('.additionalExpense').html(roundToTwo(totalExpense))
 }
+
+document.getElementById("percALV").onchange = ()=> {
+  clc.alv = document.getElementById("percALV").value;
+  refreshAbrechnungList(clc,true)
+}
+
+
+document.getElementById("percNBU").onchange = ()=> {
+   clc.uvg = document.getElementById("percNBU").value;
+   refreshAbrechnungList(clc,true)
+ }
+
+
 
 $(() => { // JQUERY STARTFUNCTION
   Promise.all([
     loadViewData,
     loadChats()
   ]).then(() => {
-    refreshView()
+    refreshView(clc)
 
-    // TODO: Get this working again!
     $("#exceldownload").attr("href", "https://filmstunden.ch/api/v01/view/download/" + p_id + "?format=xlsx");
     $("#pdfdownload").attr("href", "https://filmstunden.ch/api/v01/view/download/" + p_id + "?format=pdf");
     $('#loading').hide()

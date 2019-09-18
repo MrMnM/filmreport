@@ -418,7 +418,7 @@ ob_start("ob_html_compress");
 								<tr>
 									<td class="f8">&nbsp;</td>
 									<td class="f8" colspan="2">Datum:</td>
-									<td class="f8 startdate" colspan="3"></td>
+									<td class="f8 enddate" colspan="3"></td>
 								</tr>
 								<tr>
 									<td colspan="3">&nbsp;</td>

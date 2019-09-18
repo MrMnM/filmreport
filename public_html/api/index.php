@@ -109,11 +109,7 @@ $app->group('/v01', function() {
   $this->get('/timer/{t_id}', 'Timer:load');
   $this->post('/timer/{t_id}', 'Timer:update');
   $this->delete('/timer/{t_id}', 'Timer:delete');
-
-
 });
-
-
 
 //--------------------------------------------------------
 // RUNNING
