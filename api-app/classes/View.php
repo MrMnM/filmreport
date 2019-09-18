@@ -20,7 +20,8 @@ class View
             'projects.p_job',
             'projects.p_gage[Int]',
             'projects.p_json[JSON]',
-            'projects.p_comment'
+            'projects.p_comment',
+            'projects.settings[JSON]'
           ],
         "companyData" => [
             'comp.name(c_name)',
@@ -138,7 +139,6 @@ class View
       $oWs->getPageMargins()->setLeft(0.12);
       $oWs->getPageMargins()->setBottom(0);
       $oWs->getPageSetup()->setFitToWidth(1);
-
 
             /*COLORS-------*/
 
@@ -333,5 +333,4 @@ class View
     private function setCellColor($oWs,$cell,$color){
         $oWs->getStyle($cell)->applyFromArray($color);
     }
-
 }

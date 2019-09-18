@@ -119,9 +119,26 @@ public function save($request, $response, $args)
   $calcBase='SSFV_DAY';
   $baseHours=9;
   $otRates = [25,25,50,50,100,100,150];
-  $settings = json_encode(array('calcBase' => $calcBase,
-                                'baseHours' => $baseHours,
-                                'otRates' => $otRates));
+  $settings = json_encode(array (
+  'ver' => 1,
+  'calc' => 'SSFV_DAY',
+  'hoursDay' => 9,
+  'lunch' => 32,
+  'car' => 0.7,
+  'ferien' => 0.0833,
+  'ahv' => 0.0605,
+  'alv' => 0.011,
+  'bvg' => 0.06,
+  'uvg' => 0.0162,
+  'rate' => 
+  array (
+    0 => 1.25,
+    1 => 1.5,
+    2 => 2,
+    3 => 2.5,
+    4 => 0.25,
+  ),
+));
 
   $comment = "";
   if (!empty($req['comment'])) {

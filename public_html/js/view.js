@@ -15,18 +15,7 @@ let url = new URL(window.location.href)
 const p_id = url.searchParams.get('id')
 const p = new Project(p_id)
 let dat = {}
-const clc = {
-  calc: 'SSFV_DAY',
-  hoursDay: 9,
-  lunch: 32,
-  car: 0.7,
-  ferien: 0.0833,
-  ahv: 0.0605,
-  alv: 0.0110,
-  bvg: 0.0600,
-  uvg: 0.0162,
-  rate: [1.25, 1.50, 2.00, 2.50, 0.25]
-}
+let clc = {}
 
 function loadChats() {
   p.getChats().then(() => {
@@ -113,10 +102,13 @@ function addChat(text) {
     })
 }
 
-function refreshView(clc) {
+function refreshView() {
   const usr = dat[0].userData
   const cmp = dat[0].companyData
   const prj = dat[0].projectData
+  clc = prj.settings
+
+  console.log(clc)
 
   document.title = prj.p_end+'_'+prj.p_name+'_'+usr.name;
 
@@ -225,7 +217,7 @@ function refreshProjectList(prj,clc) {
   $('.allcar').html(allcar)
 }
 
-function refreshAbrechnungList(clc,ref) {
+function refreshAbrechnungList(clc,refreshOnly) {
   const prj = dat[0].projectData
   let rate = [0, 0, 0, 0, 0]
   rate[0] = prj.p_gage / clc.hoursDay * clc.rate[0]
@@ -249,16 +241,18 @@ function refreshAbrechnungList(clc,ref) {
     overtime[3] += cur.overtime[6]
     nighttime += cur.night
 
-    let tr = `<tr>
-    						<td class="bryellow f8">${cur.date}</td>
-    						<td class="bryellow f8">${cur.work}</td>
-    						<td class="ab_darkyellow f8">${cur.base}</td>
-    						<td class="f8">&nbsp;</td>
-    						<td class="bryellow f8">Tag</td>
-    						<td class="bryellow f8">${prj.p_gage}</td>
-    						<td class="bryellow f8" colspan="2">${prj.p_gage*cur.base}</td>
-    					</tr>`
-    alltr += tr
+    if(!refreshOnly){
+      let tr = `<tr>
+      						<td class="bryellow f8">${cur.date}</td>
+      						<td class="bryellow f8">${cur.work}</td>
+      						<td class="ab_darkyellow f8">${cur.base}</td>
+      						<td class="f8">&nbsp;</td>
+      						<td class="bryellow f8">Tag</td>
+      						<td class="bryellow f8">${prj.p_gage}</td>
+      						<td class="bryellow f8" colspan="2">${prj.p_gage*cur.base}</td>
+      					</tr>`
+      alltr += tr
+    }
   }
 
   const ferienzulage = totalBase * clc.ferien
@@ -271,10 +265,16 @@ function refreshAbrechnungList(clc,ref) {
   const uvg = totalBrutto * clc.uvg
   const totalAbz = ahv+alv+bvg+uvg
   const totalNetto = totalBrutto - totalAbz
-  const totalSpesen = allcar*clc.car + alllunches*clc.lunch
+  const addExpense = calculateExpenses(prj)
+  const totalSpesen = allcar*clc.car + alllunches*clc.lunch + addExpense
   const total = totalNetto + totalSpesen
 
-if(!ref) $('#abr_baselist').after(alltr);
+  console.log(addExpense)
+  console.log(clc.alv)
+  console.log(alv)
+
+  if(!refreshOnly) {$('#abr_baselist').after(alltr)}
+
   $('.totalBase').html(totalBase)
   $('#totalDays').html(nrOfDays)
   $('#ferienzulage').html(roundToTwo(ferienzulage))
@@ -307,15 +307,21 @@ if(!ref) $('#abr_baselist').after(alltr);
 }
 
 function refreshExpenseList(prj) {
-  let totalExpense = 0.0
+  let totalExpense = calculateExpenses(prj)
   let expenseList = ''
   if (prj.expenses.length != 0) {
     for (let cur of prj.expenses) {
-      expenseList += `<td class="blue fs8">${cur.date}</td>
-                      <td class="blue fs8"><a href="https://filmstunden.ch/upload/${cur.img}">${cur.name}</a></td>
-                      <td class="blue fs8" colspan="6"><a href="https://filmstunden.ch/upload/${cur.img}">${cur.comment}</a></td>
-                      <td class="blue fs8 bold">${cur.value}</td>`
-      totalExpense += cur.value
+      if(cur.img != ''){
+        expenseList += `<td class="blue fs8">${cur.date}</td>
+                        <td class="blue fs8"><a href="https://filmstunden.ch/upload/${cur.img}">${cur.name}</a></td>
+                        <td class="blue fs8" colspan="6"><a href="https://filmstunden.ch/upload/${cur.img}">${cur.comment}</a></td>
+                        <td class="blue fs8 bold">${cur.value}</td>`
+      }else{
+        expenseList += `<td class="blue fs8">${cur.date}</td>
+                        <td class="blue fs8">${cur.name}</td>
+                        <td class="blue fs8" colspan="6">${cur.comment}</td>
+                        <td class="blue fs8 bold">${cur.value}</td>`
+      }
     }
   } else {
     expenseList = '<td class="blue fs8" height="30" style="text-align: center; font-weight: 700" colspan="9">Keine zus&auml;tzlichen Spesen angegeben</td>'
@@ -324,25 +330,32 @@ function refreshExpenseList(prj) {
   $('.additionalExpense').html(roundToTwo(totalExpense))
 }
 
+function calculateExpenses(prj){
+  let totalExpense = 0.0
+  if (prj.expenses.length != 0) {
+    for (let cur of prj.expenses) {
+      totalExpense += parseFloat(cur.value)
+    }
+  }
+  return totalExpense
+}
+
 document.getElementById("percALV").onchange = ()=> {
-  clc.alv = document.getElementById("percALV").value;
+  clc.alv = parseFloat(document.getElementById("percALV").value*0.01);
   refreshAbrechnungList(clc,true)
 }
 
-
 document.getElementById("percNBU").onchange = ()=> {
-   clc.uvg = document.getElementById("percNBU").value;
+   clc.uvg = parseFloat(document.getElementById("percNBU").value*0.01);
    refreshAbrechnungList(clc,true)
  }
-
-
 
 $(() => { // JQUERY STARTFUNCTION
   Promise.all([
     loadViewData,
     loadChats()
   ]).then(() => {
-    refreshView(clc)
+    refreshView()
 
     $("#exceldownload").attr("href", "https://filmstunden.ch/api/v01/view/download/" + p_id + "?format=xlsx");
     $("#pdfdownload").attr("href", "https://filmstunden.ch/api/v01/view/download/" + p_id + "?format=pdf");

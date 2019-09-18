@@ -695,7 +695,7 @@ ob_start("ob_html_compress");
 									<td class="f8">&nbsp;</td>
 									<td class="brgreen f8"></td>
 									<td class="brgreen f8"></td>
-									<td class="brgreen f8 additionalExpense" colspan="2">-</td>
+									<td id="additionalExpense" class="brgreen f8 additionalExpense" colspan="2">-</td>
 								</tr>
 								<tr class="spacer">
 									<td class="f8" colspan="8"></td>
