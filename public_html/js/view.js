@@ -6,7 +6,9 @@ import {
   roundToTwo,
   addTimes,
   timeToMins,
-  minsToHours
+  minsToHours,
+  formatDateFilename,
+  formatDateSwiss
 } from "./timeHelpers.js";
 
 const us_id = "guest"
@@ -108,22 +110,22 @@ function refreshView() {
   const prj = dat[0].projectData
   clc = prj.settings
 
-  console.log(clc)
-
-  document.title = prj.p_end+'_'+prj.p_name+'_'+usr.name;
+  const curDate = formatDateFilename(prj.p_end)
+  const pageTitle =curDate+'_'+prj.p_name.replace(/ /g,"_")+'_'+usr.name.replace(/ /g,"_")
+  document.title = pageTitle
 
   $('.gage').html(prj.p_gage)
   $('.foodrate').html(clc.lunch)
   $('.kilrate').html(clc.car)
-  $('.startdate').html(prj.p_start)
-  $('.enddate').html(prj.p_end)
+  $('.startdate').html(formatDateSwiss(prj.p_start))
+  $('.enddate').html(formatDateSwiss(prj.p_end))
   $('.projectname').html(prj.p_name)
   $('.job').html(prj.p_job)
   $('.username').html(usr.name)
   $('.u_address1').html(usr.address_1)
   $('.u_address2').html(usr.address_2)
   $('.ahv').html(usr.ahv)
-  $('.dob').html(usr.dateob)
+  $('.dob').html(formatDateSwiss(usr.dateob))
   $('.tel').html(usr.tel)
   $('.konto').html(usr.konto)
   $('.mail').html(usr.mail)
@@ -131,7 +133,7 @@ function refreshView() {
   $('.company').html(cmp.c_name)
   $('.c_addr1').html(cmp.c_address_1)
   $('.c_addr2').html(cmp.c_address_2)
-  $('#dateFromTo').html(prj.p_start + ' bis ' + prj.p_end)
+  $('#dateFromTo').html(formatDateSwiss(prj.p_start) + ' bis ' + formatDateSwiss(prj.p_end))
   $('#pay_additional').html()
   $('#comments').html(prj.p_comment)
   $('#ab_rappnr').html('TEST_NR')
@@ -165,7 +167,7 @@ function refreshProjectList(prj,clc) {
     nrOfDays += parseFloat(cur.base)
     workHours += Number(timeToMins(cur.workhours))
     let tr = `<tr>
-    <td class="td186 td187" colspan="2" height="30">${cur.date}</td>
+    <td class="td186 td187" colspan="2" height="30">${formatDateSwiss(cur.date)}</td>
     <td class="td186 td187" colspan="2">${cur.work}</td>
     <td class="td186">${cur.start}</td>
     <td class="td186">${cur.end}</td>
@@ -243,7 +245,7 @@ function refreshAbrechnungList(clc,refreshOnly) {
 
     if(!refreshOnly){
       let tr = `<tr>
-      						<td class="bryellow f8">${cur.date}</td>
+      						<td class="bryellow f8">${formatDateSwiss(cur.date)}</td>
       						<td class="bryellow f8">${cur.work}</td>
       						<td class="ab_darkyellow f8">${cur.base}</td>
       						<td class="f8">&nbsp;</td>
@@ -312,12 +314,12 @@ function refreshExpenseList(prj) {
   if (prj.expenses.length != 0) {
     for (let cur of prj.expenses) {
       if(cur.img != ''){
-        expenseList += `<td class="blue fs8">${cur.date}</td>
+        expenseList += `<td class="blue fs8">${formatDateSwiss(cur.date)}</td>
                         <td class="blue fs8"><a href="https://filmstunden.ch/upload/${cur.img}">${cur.name}</a></td>
                         <td class="blue fs8" colspan="6"><a href="https://filmstunden.ch/upload/${cur.img}">${cur.comment}</a></td>
                         <td class="blue fs8 bold">${cur.value}</td>`
       }else{
-        expenseList += `<td class="blue fs8">${cur.date}</td>
+        expenseList += `<td class="blue fs8">${formatDateSwiss(cur.date)}</td>
                         <td class="blue fs8">${cur.name}</td>
                         <td class="blue fs8" colspan="6">${cur.comment}</td>
                         <td class="blue fs8 bold">${cur.value}</td>`

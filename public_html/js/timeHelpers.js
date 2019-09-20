@@ -31,4 +31,30 @@ export function addTimes(t0, t1){
 export function roundToTwo(num) {
   return +(Math.round(num + 'e+2')  + 'e-2')
 }
+export function formatDateFilename(date){
+  let d = new Date(date)
+  let month = '' + (d.getMonth() + 1)
+  let day = '' + d.getDate()
+  let year = '' + d.getFullYear()
+
+  if (month.length < 2)
+      month = '0' + month
+  if (day.length < 2)
+      day = '0' + day
+  year = year.substring(2)
+  return [year, month, day].join('')
+}
+
+export function formatDateSwiss(date){
+  let d = new Date(date)
+  let month = '' + (d.getMonth() + 1)
+  let day = '' + d.getDate()
+  let year = '' + d.getFullYear()
+  if (month.length < 2)
+      month = '0' + month
+  if (day.length < 2)
+      day = '0' + day
+  //year = year.substring(2)
+  return [day, month, year].join('.')
+}
 export function pad ( val ) { return val > 9 ? val : '0' + val }
