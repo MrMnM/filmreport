@@ -348,3 +348,5 @@ input[type="number"] {
   border: 0;
   text-align: right;
 }
+
+a { color: inherit; } 

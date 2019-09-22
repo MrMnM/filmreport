@@ -114,6 +114,12 @@ function refreshView() {
   const pageTitle =curDate+'_'+prj.p_name.replace(/ /g,"_")+'_'+usr.name.replace(/ /g,"_")
   document.title = pageTitle
 
+  $('.hoursperday').html(`(${clc.hoursDay}h / Tag)`)
+  $('.tohoursperday').html(`(bis ${clc.hoursDay}h/Tag)<font class="f9"><sup>1</sup></font>`)
+  $('.fromhoursperday').html(`&Uuml;berstunden <font class="f9"><sup>2</sup></font><font class="f6">(${clc.hoursDay}h +)</font>`)
+  $('#otText').html(`2 &Uuml;berstunden: Bei mehr als ${clc.hoursDay} h pro Tag auf der Basis von 1/${clc.hoursDay} Tag.`)
+
+
   $('.gage').html(prj.p_gage)
   $('.foodrate').html(clc.lunch)
   $('.kilrate').html(clc.car)
@@ -126,17 +132,17 @@ function refreshView() {
   $('.u_address2').html(usr.address_2)
   $('.ahv').html(usr.ahv)
   $('.dob').html(formatDateSwiss(usr.dateob))
-  $('.tel').html(usr.tel)
+  $('.tel').html(`<a href="tel:${usr.tel}">${usr.tel}</a>`)
   $('.konto').html(usr.konto)
-  $('.mail').html(usr.mail)
+  $('.mail').html(`<a href="mailto:${usr.mail}">${usr.mail}</a>`)
   $('.bvg').html(usr.bvg)
-  $('.company').html(cmp.c_name)
-  $('.c_addr1').html(cmp.c_address_1)
-  $('.c_addr2').html(cmp.c_address_2)
+  $('.company').html(`<a href="${cmp.url}">${cmp.c_name}</a>`)
+  $('.c_addr1').html(`<a href="${cmp.url}">${cmp.c_address_1}</a>`)
+  $('.c_addr2').html(`<a href="${cmp.url}">${cmp.c_address_2}</a>`)
   $('#dateFromTo').html(formatDateSwiss(prj.p_start) + ' bis ' + formatDateSwiss(prj.p_end))
   $('#pay_additional').html()
   $('#comments').html(prj.p_comment)
-  $('#ab_rappnr').html('TEST_NR')
+  $('#ab_rappnr').html(p_id.substring(0,5))
 
   refreshProjectList(prj,clc)
   refreshExpenseList(prj)
@@ -315,8 +321,8 @@ function refreshExpenseList(prj) {
     for (let cur of prj.expenses) {
       if(cur.img != ''){
         expenseList += `<td class="blue fs8">${formatDateSwiss(cur.date)}</td>
-                        <td class="blue fs8"><a href="https://filmstunden.ch/upload/${cur.img}">${cur.name}</a></td>
-                        <td class="blue fs8" colspan="6"><a href="https://filmstunden.ch/upload/${cur.img}">${cur.comment}</a></td>
+                        <td class="blue fs8"><a href="#" data-featherlight="https://filmstunden.ch/upload/${cur.img}">${cur.name}</a></td>
+                        <td class="blue fs8" colspan="6"><a href="#" data-featherlight="https://filmstunden.ch/upload/${cur.img}">${cur.comment}</a></td>
                         <td class="blue fs8 bold">${cur.value}</td>`
       }else{
         expenseList += `<td class="blue fs8">${formatDateSwiss(cur.date)}</td>
@@ -358,7 +364,6 @@ $(() => { // JQUERY STARTFUNCTION
     loadChats()
   ]).then(() => {
     refreshView()
-
     $("#exceldownload").attr("href", "https://filmstunden.ch/api/v01/view/download/" + p_id + "?format=xlsx");
     $("#pdfdownload").attr("href", "https://filmstunden.ch/api/v01/view/download/" + p_id + "?format=pdf");
     $('#loading').hide()

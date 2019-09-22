@@ -68,6 +68,30 @@ function projFinished(data) {
   }
 }
 
+function setMail(name,id){
+  let project=name
+  let subject='Abrechnung: '+name
+
+  let mailText =  `<p>Hey</p>
+                  <p>Im Anhang und <a href="https://filmstunden.ch/view.php?id=${id}">hier online</a> noch meine Abrechung vom "${project}" Dreh.<br>
+                  Ich hoffe das ist alles ok so, ansonsten meld dich einfach bei mir!</p>
+                  <p>Gruss</p>
+                  <p>Marius</p>`
+
+  $('#project_id').val(id)
+  $('#project_name').val(escape(name.replace(/ /g,"_")))
+  $('#mailSubject').val(subject)
+  $('#mailText').trumbowyg('html', mailText);
+}
+
+function mailSent(data) {
+  if (data.status == 'SUCCESS') {
+    $('#sendMailModal').modal('hide')
+  } else {
+    console.error(data.message)
+  }
+}
+
 window.setDelete = function(id, name) {
   delProjURL = 'https://filmstunden.ch/api/v01/project/'+id
   $('#delModalTitle').html('<strong>"' + name + '"</strong> wirklich L&ouml;schen ?')
@@ -78,7 +102,16 @@ window.setFinish = function(id, name) {
   $('#finModalTitle').html('' + name)
 }
 
+window.setMail = function(id, name) {
+  setMail(name,id)
+}
+
 $(()=> { // STARTFUNCTION
+
+  $('#mailText').trumbowyg({
+      btns: [['viewHTML'], ['bold', 'italic'], ['link']]
+  });
+
   activateSideMenu()
   window.table = $('#projectTable').DataTable({
     'ajax': {'url':'https://filmstunden.ch/api/v01/project?m=' + mode},
@@ -136,6 +169,10 @@ $(()=> { // STARTFUNCTION
     dataType: 'json',
     success: companyCreated
   })
+  $('#sendMail').ajaxForm({
+    dataType: 'json',
+    success: mailSent
+  })
 
   loadJoblist()
 
@@ -153,4 +190,16 @@ $(()=> { // STARTFUNCTION
       })
     })
     .fail(() => { console.error('companies couldnt be loaded') })
+
+    $.ajax({
+      url: 'https://filmstunden.ch/api/v01/user',
+      type: 'GET',
+      dataType: 'json',
+    })
+      .done(data => {
+        console.log(data)
+        $('#user_mail').val(data.mail)
+        $('#user_name').val(data.name)
+      })
+      .fail(() => { console.error('companies couldnt be loaded') })
 })

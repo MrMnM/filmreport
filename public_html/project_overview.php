@@ -18,6 +18,7 @@ require_once('../api-app/lib/Globals.php');
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css"/>
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap.min.css"/>
     <link rel="stylesheet" href="https://cdn.datatables.net/v/bs/dt-1.10.15/r-2.1.1/datatables.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.19.1/ui/trumbowyg.min.css" />
     <link href="./css/main.css" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
@@ -180,6 +181,46 @@ require_once('../api-app/lib/Globals.php');
                     </div><!-- /.modal-content -->
                 </div><!-- /.modal-dialog -->
             </div><!-- /.modal -->
+
+
+            <div class="modal fade" id="sendMailModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title" id="myModalLabel">Abrechnung per Email versenden:</h4>
+                        </div>
+                        <div class="modal-body" id="">
+                            <form role="form" action="https://filmstunden.ch/api/v01/mail" method="post" id="sendMail">
+                                <input type="hidden" id="project_id" name="p_id">
+                                <input type="hidden" id="user_name" name="u_name">
+                                <input type="hidden" id="project_name" name="p_name">
+                                <div class="form-group input-group">
+                                    <span class="input-group-addon">Absender</span>
+                                    <input type="text" id="user_mail"  name="u_mail" class="form-control" readonly required>
+
+                                </div>
+                                <div class="form-group input-group">
+                                    <span class="input-group-addon">Empfänger</span>
+                                    <input type="text" name="mailTo" class="form-control" required>
+                                </div>
+                                <div class="form-group input-group">
+                                    <span class="input-group-addon">Betreff</span>
+                                    <input type="text" id="mailSubject" name="mailSubject" class="form-control"  required>
+                                </div>
+                                <textarea class="form-control" rows=20 id="mailText" name="mailText" required></textarea>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
+                                <button type="submit" class="btn btn-primary" onclick="">Email versenden</button>
+                            </div>
+                        </form>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+
+
+
         </div><!--col-lg-12-->
     </div><!--row-->
 </div> <!-- /#page-wrapper -->
@@ -192,6 +233,7 @@ require_once('../api-app/lib/Globals.php');
 <script src="https://cdn.datatables.net/responsive/2.1.1/js/dataTables.responsive.min.js"></script>
 <script src="https://cdn.datatables.net/responsive/2.1.1/js/responsive.bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.1/jquery.form.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.19.1/trumbowyg.min.js"></script>
 <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.min.js"></script>-->
 <script type="module" src="./js/project_overview.js"></script>
 </body>

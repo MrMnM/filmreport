@@ -4,6 +4,10 @@
   border: none;
 }
 
+a {
+  color: inherit
+}
+
 .jumbotron {
   margin-bottom: 0;
 }

@@ -11,6 +11,7 @@ ob_start("ob_html_compress");
 	<meta content="text/html" http-equiv="Content-Type">
 	<link media="screen" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/featherlight/1.7.13/featherlight.min.css" />
 	<link href="./css/view_style.css" rel="stylesheet" media="screen">
 	<link href="./css/view_style.css" rel="stylesheet" media="print">
 	<title>Loading...</title>
@@ -78,7 +79,7 @@ ob_start("ob_html_compress");
 					</div>
 
 					<div id="noProject" class="alert alert-danger" style="display:none">
-						<strong>FEHLER!</strong> Die eingegebene Projekt-ID ist ung&uuml;ltig!
+						<strong>FEHLER!</strong> Die eingegebene Projekt-ID ist ung&uuml;ltig oder es existiert ein Fehler auf der Seite!
 					</div>
 
 					<div id="ES6" class="alert alert-danger" style="display:none">
@@ -111,7 +112,7 @@ ob_start("ob_html_compress");
 								<td class="f8" colspan="2">Grundlohn:</td>
 								<td class="xl70 bold pay gage"></td>
 								<td class="f8 center">CHF</td>
-								<td class="xl7" colspan="2">(9h / Tag)</td>
+								<td class="xl7 hoursperday" colspan="2"></td>
 								<td></td>
 								<td class="f8" colspan="2">Produktion:</td>
 								<td></td>
@@ -122,7 +123,7 @@ ob_start("ob_html_compress");
 							<tr>
 								<td class="blue username" colspan="3" height="18"></td>
 								<td class="f8" colspan="3"></td>
-								<td class="f8" colspan="4">Abrechnung nach AAB SSFV 2007</td>
+								<td class="f8" colspan="4">Abrechnung nach <a href="https://www.ssfv.ch/?action=get_file&language=de&id=71&resource_link_id=18e">AAB SSFV 2014</a></td>
 								<td></td>
 								<td class="f8" colspan="3">Datum [von/bis] :</td>
 								<td></td>
@@ -187,7 +188,7 @@ ob_start("ob_html_compress");
 								<td></td>
 								<td class="gray"> Grundlohn</td>
 								<td></td>
-								<td class="gray" colspan="10"> Zuschl&auml;ge (Nach AAB SSFV 2007)</td>
+								<td class="gray" colspan="10"> Zuschl&auml;ge (Nach <a href="https://www.ssfv.ch/?action=get_file&language=de&id=71&resource_link_id=18e">AAB SSFV 2014</a>)</td>
 								<td></td>
 								<td class="gray" colspan="2"> Spesen
 									<font class="f8"><sup>4</sup></font>
@@ -203,14 +204,9 @@ ob_start("ob_html_compress");
 								<td class="bluetop"></td>
 								<td class="bluetop"></td>
 								<td rowspan="4" align="centered">&#9656;</td>
-								<td class="xl195">(bis 9h/Tag)
-									<font class="f9"><sup>1</sup></font>
-								</td>
+								<td class="xl195 tohoursperday">(x/hours/day)</td>
 								<td rowspan="4" align="centered">&#9656;</td>
-								<td class="xl19" colspan="8">&Uuml;berstunden
-									<font class="f9"><sup>2</sup></font>
-									<font class="f6">(9h +)</font>
-								</td>
+								<td class="xl19 fromhoursperday" colspan="8">(x+hours/day)</td>
 								<td class="xl19">Nacht</td>
 								<td></td>
 								<td rowspan="4" align="centered">&#9656;</td>
@@ -225,14 +221,13 @@ ob_start("ob_html_compress");
 								<td class="bluetop"></td>
 								<td class="bluetop"></td>
 								<td class="brightyellow"></td>
-								<td class="f8orange" rowspan="3">10.te</td>
-								<td class="f8orange" rowspan="3">11.te</td>
-								<td class="f8orange" rowspan="3">12.te</td>
-								<td class="f8orange" rowspan="3">13.te</td>
-								<td class="f8orange" rowspan="3">14.te</td>
-								<td class="f8orange" rowspan="3">15.te</td>
-								<td class="f8orange" colspan="2" rowspan="3">ab<br> 16.te
-								</td>
+								<td class="f8orange" rowspan="3" id="1Over">10.te</td>
+								<td class="f8orange" rowspan="3" id="2Over">11.te</td>
+								<td class="f8orange" rowspan="3" id="3Over">12.te</td>
+								<td class="f8orange" rowspan="3" id="4Over">13.te</td>
+								<td class="f8orange" rowspan="3" id="5Over">14.te</td>
+								<td class="f8orange" rowspan="3" id="6Over">15.te</td>
+								<td class="f8orange" colspan="2" rowspan="3" id="7Over">ab<br> 16.te</td>
 								<td class="f8orange" colspan="2">23:00</td>
 								<td class="brightgreen"></td>
 								<td class="brightgreen"></td>
@@ -306,7 +301,7 @@ ob_start("ob_html_compress");
 								<td height="2"></td>
 							</tr>
 							<tr>
-								<td class="f7 vbottom" colspan="7" height="17">Berechung nach SSFV</td>
+								<td class="f7 vbottom" colspan="7" height="17">Berechung nach <a href="https://www.ssfv.ch/?action=get_file&language=de&id=71&resource_link_id=18e">AAB SSFV 2014</a></td>
 								<td></td>
 								<td class="f8"><sub>&agrave; CHF</sub></td>
 								<td class="	gage brightyellow"></td>
@@ -385,7 +380,7 @@ ob_start("ob_html_compress");
 								</td>
 							</tr>
 							<tr>
-								<td class="f6" colspan="6">2 &Uuml;berstunden: Bei mehr als 9 h pro Tag auf der Basis von 1/9 Tag.</td>
+								<td class="f6" colspan="6" id="otText">2 &Uuml;berstunden: Bei mehr als 9 h pro Tag auf der Basis von 1/9 Tag.</td>
 								<td></td>
 							</tr>
 							<tr>
@@ -396,7 +391,7 @@ ob_start("ob_html_compress");
 								<td class="f9 vbottom" colspan="15">Bitte auf der Lohnabrechnung die entsprechenden Zulagen, Abz&uuml;ge und Spesen kalkulieren.</td>
 							</tr>
 							<tr>
-								<td class="f6" colspan="6">4 Spesenregelung gem&auml;ss AAB SSFV 2007</td>
+								<td class="f6" colspan="6">4 Spesenregelung gem&auml;ss <a href="https://www.ssfv.ch/?action=get_file&language=de&id=71&resource_link_id=18e">AAB SSFV 2014</a></td>
 								<td class="f10" colspan="3"></td>
 								<td class="f9 vbottom" colspan="15">Zahlbar innert 30 Tagen nach Erhalt. Betrag auf obenstehendes Konto &uuml;berweisen. Danke.</td>
 							</tr>
@@ -458,14 +453,14 @@ ob_start("ob_html_compress");
 									<td class="spacer">&nbsp;</td>
 									<td class="f8" colspan="2">Grundlohn:</td>
 									<td class="bryellow f8 pay gage"></td>
-									<td class="darkyellow f8 bold" colspan="2">(9h / Tag)</td>
+									<td class="darkyellow f8 bold hoursperday" colspan="2"></td>
 								</tr>
 
 								<tr>
 									<td class="f8">AHV-Nr.:</td>
 									<td class="f8 ahv"></td>
 									<td class="spacer" colspan="3">&nbsp;</td>
-									<td class="fs7" colspan="3">Abrechnung nach AAB SSFV 2007</td>
+									<td class="fs7" colspan="3">Abrechnung nach <a href="https://www.ssfv.ch/?action=get_file&language=de&id=71&resource_link_id=18e">AAB SSFV 2014</a></td>
 								</tr>
 								<tr>
 									<td class="f8">Geb. Datum:</td>
@@ -492,7 +487,7 @@ ob_start("ob_html_compress");
 								</tr>
 								<tr>
 									<td class="titlebar fs7" colspan="2">Beschreibung&nbsp;</td>
-									<td class="titlebar fs7" colspan="2">Anz.</td>
+									<td class="titlebar fs7" colspan="2">Anzahl</td>
 									<td class="titlebar fs7">Einheit</td>
 									<td class="titlebar fs7">CHF/Stk.</td>
 									<td class="titlebar fs7" colspan="2">CHF</td>
@@ -765,6 +760,7 @@ ob_start("ob_html_compress");
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/featherlight/1.7.13/featherlight.min.js"></script>
 	<script>
 	var supportsES6 = function() {
 	  try {

@@ -25,6 +25,7 @@ class View
           ],
         "companyData" => [
             'comp.name(c_name)',
+            'comp.url(url)',
             'comp.address_1(c_address_1)',
             'comp.address_2(c_address_2)'
           ],
@@ -129,18 +130,19 @@ class View
       $objPHPExcel->getDefaultStyle()->getBorders()->getLeft()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
       $objPHPExcel->getDefaultStyle()->getBorders()->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
 
+      $objPHPExcel->setActiveSheetIndexByName('Rapport');
       $oWs = $objPHPExcel->getActiveSheet();
 
       $oWs->getPageSetup()->setPaperSize(PHPExcel_Worksheet_PageSetup::PAPERSIZE_A4);
       $oWs->getPageSetup()->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
 
-      $oWs->getPageMargins()->setTop(0);
-      $oWs->getPageMargins()->setRight(0);
+      $oWs->getPageMargins()->setTop(0.12);
+      $oWs->getPageMargins()->setRight(0.12);
       $oWs->getPageMargins()->setLeft(0.12);
-      $oWs->getPageMargins()->setBottom(0);
+      $oWs->getPageMargins()->setBottom(0.12);
       $oWs->getPageSetup()->setFitToWidth(1);
 
-            /*COLORS-------*/
+    /*COLORS-------*/
 
       $darkOrange =     array('fill' => array(
                               'type' => PHPExcel_Style_Fill::FILL_SOLID,
@@ -299,6 +301,8 @@ class View
       }
 
 
+
+
       $filename = $title;
       if ($type=="xlsx") {
           $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
@@ -323,6 +327,7 @@ class View
           }
 
           $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'PDF');
+          //$objWriter->writeAllSheets();
           return $response->withHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
                           ->withHeader('Content-Disposition', 'attachment;filename="'.$filename.'.pdf"')
                           ->write($objWriter->save('php://output'));
