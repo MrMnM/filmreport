@@ -15,7 +15,6 @@ class Mail
     }
 
     public function send($request,$response,$args){
-
             $req = $request->getParsedBody();
             $date = date('ymd');
             $p_id = $req['p_id'];
@@ -88,10 +87,10 @@ TEMP;
             $mail = new PHPMailer;
             $mail->SetFrom('noreply@filmstunden.ch', $name);
             $mail->AddReplyTo($sender, $name);
-            $mail->addAddress('marius.mahler@gmail.com');
-            //$mail->AddCC('person1@domain.com', 'Person One');
-            $mail->Subject  = $req['mailSubject'];
-            $mail->Body     = $body;
+            $mail->AddCC($sender, $name);
+            $mail->addAddress($req['mailTo']);
+            $mail->Subject = $req['mailSubject'];
+            $mail->Body    = $body;
             $mail->IsHTML(true);
             $mail->AddStringAttachment($binary_content, $date."_".$p_name."_".$nospName.".pdf", $encoding = 'base64', $type = 'application/pdf');
             if(!$mail->send()) {

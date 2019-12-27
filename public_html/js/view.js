@@ -200,12 +200,12 @@ function refreshProjectList(prj,clc) {
   }
   //----------------------------------------------------------------------------
   $('#fromhere').after(alltr);
-  $('#overtime1').html(overtime[0])
-  $('#overtime2').html(overtime[1])
-  $('#overtime3').html(overtime[2])
-  $('#overtime4').html(overtime[3])
-  $('#nighttime').html(nighttime)
-  $('#nrOfDays').html(nrOfDays)
+  $('#overtime1').html(roundToTwo(overtime[0]))
+  $('#overtime2').html(roundToTwo(overtime[1]))
+  $('#overtime3').html(roundToTwo(overtime[2]))
+  $('#overtime4').html(roundToTwo(overtime[3]))
+  $('#nighttime').html(roundToTwo(nighttime))
+  $('#nrOfDays').html(roundToTwo(nrOfDays))
   $('#totalWorkHours').html(minsToHours(workHours))
   $('#rate125').html(roundToTwo(rate[0]))
   $('#rate150').html(roundToTwo(rate[1]))
@@ -277,14 +277,10 @@ function refreshAbrechnungList(clc,refreshOnly) {
   const totalSpesen = allcar*clc.car + alllunches*clc.lunch + addExpense
   const total = totalNetto + totalSpesen
 
-  console.log(addExpense)
-  console.log(clc.alv)
-  console.log(alv)
-
   if(!refreshOnly) {$('#abr_baselist').after(alltr)}
 
   $('.totalBase').html(totalBase)
-  $('#totalDays').html(nrOfDays)
+  $('#totalDays').html(roundToTwo(nrOfDays))
   $('#ferienzulage').html(roundToTwo(ferienzulage))
   $('#lohnundfz').html(totalLohn)
   $('#abr_ot0').html(roundToTwo(overtime[0]))

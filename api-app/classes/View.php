@@ -105,6 +105,9 @@ class View
 
       $dat=$in[0]["projectData"]["p_json"];
       $pay=$in[0]["projectData"]["p_gage"];
+      $exp= $in[0]["projectData"]["expenses"];
+      $exp= array_sum(array_column($exp, 'value')); // Sum up all expenses
+      //die(var_dump($exp));
 
       $sdate = DateTime::createFromFormat('Y-m-d',$in[0]["projectData"]["p_start"]);
       $edate = DateTime::createFromFormat('Y-m-d',$in[0]["projectData"]["p_end"]);
@@ -292,15 +295,16 @@ class View
       $oWs->setCellValue("L".$cur,$overtime);
       $oWs->setCellValue("W".$cur,round(round($all["food"]*32, 2)+round($all["car"]*0.7, 2),2));
 
+      $cur=$cur+1;
+      $oWs->setCellValue("W".$cur,$exp);
+      
+      $cur=$rowCounter+1;     
       $comment = strlen($comment) > 300 ? substr($comment,0,297)."..." : $comment;
       $parts = str_split($comment, $split_length = 60);
-      $cur=$rowCounter+1;
       foreach ($parts as $text) {
           $oWs->setCellValue("A".$cur,$text);
           $cur++;
       }
-
-
 
 
       $filename = $title;
