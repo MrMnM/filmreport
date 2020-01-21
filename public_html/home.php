@@ -47,9 +47,13 @@ include_once('./includes/inc_top.php');
                     <div class="input-group-addon input-s">bis</div>
                     <input type="text" class="form-control input-s" id="toDate" value="">
                 </div>
+                <hr>
+                <div id="yearView">
+                </div>
             </div><!-- /.panel-body -->
         </div><!-- /.panel -->
     </div><!-- /.col-lg-8 -->
+
     <div class="col-lg-4 col-md-6">
     <!-- ACTIVE PROJECTS --->
       <div class="panel panel-green">
@@ -90,6 +94,7 @@ include_once('./includes/inc_top.php');
         </div><!-- /.panel-body -->
       </div><!-- /.panel -->
     </div><!-- /.col-lg-4 -->
+
   </div><!-- /.row freelance-->
 
   <div class="row producer" style="display:none;">

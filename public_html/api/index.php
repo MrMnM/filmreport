@@ -88,6 +88,7 @@ $app->group('/v01', function() {
   $this->get('/stats/chart/donut', 'Stats:donutchart');
   $this->get('/stats/chart/line', 'Stats:linechart'); //?start=xx&end=xx
   $this->get('/stats', 'Stats:misc'); //?start=xx&end=xx
+  $this->get('/stats/chart/yearView', 'Stats:yearcomp'); 
 
   //Expenses
   $this->get('/expenses/{p_id}', 'Expenses:get');

@@ -71,5 +71,95 @@ export function refreshDonut (donut) {
       return donut
     })
     .catch(error => console.error(error))
+}
 
+export function refreshYearView (yearView) {
+  if (yearView === null) {
+    yearView = Morris.Bar({
+      element: 'yearView',
+      data: [
+        { y: 'Jan', a: 0, b: 0 },
+      ],
+      xkey: 'y',
+      ykeys: ['a', 'b'],
+      labels: ['Vergangene Jahre', 'Aktuelles Jahr'],
+      barColors:['#a5bbcc', '#0b62a4']
+    })
+  }
+  fetch('https://filmstunden.ch/api/v01/stats/chart/yearView',{credentials: 'include'})
+      .then((response) => {
+        return response.json();
+      })
+      .then((myJson) => {
+        let d = []
+        var tot = []
+        for (let i of myJson) {
+          let cur = {}
+          cur.val = parseInt(i.tot_money)
+          cur.dat = new Date(i.p_end)
+          if (cur.dat.getFullYear() != new Date().getFullYear()) {
+            cur.dat = cur.dat.getMonth()
+            d.push(cur)
+          }else{
+            cur.dat = cur.dat.getMonth()
+            tot.push(cur)
+          }
+        }
+        return [d, tot]
+      })
+      .then((input) => {
+        let d = input[0]
+        let tot = input[1]
+        d.sort((a, b) => {a.dat - b.dat})
+        d = d.reduce(redFun, [])
+        tot = tot.reduce(redFun, [])
+        let val = [0,0,0,0,0,0,0,0,0,0,0,0]
+        let cnt = 0
+        for (var i of d) {
+          let o = i.reduce((acc, curVal) => {
+            return acc + curVal.val
+          }, 0)
+          val[cnt] = Math.round(o/3)
+          cnt++
+        }
+        let totVal = [0,0,0,0,0,0,0,0,0,0,0,0]
+        cnt = 0
+        for (var i of tot) {
+          let o2 = i.reduce((acc, curVal) => {
+            return acc + curVal.val
+          }, 0)
+          totVal[cnt] = o2
+          cnt++
+        }
+        return [val,totVal]
+      })
+      .then((input) =>{
+        let val = input[0]
+        let tot = input[1]
+        let data = [
+          { y: 'Jan', a: val[0], b: tot[0] },
+          { y: 'Feb', a: val[1], b: tot[1] },
+          { y: 'Mar', a: val[2], b: tot[2] },
+          { y: 'Apr', a: val[3], b: tot[3] },
+          { y: 'Mai', a: val[4], b: tot[4] },
+          { y: 'Jun', a: val[5], b: tot[5] },
+          { y: 'Jul', a: val[6], b: tot[6] },
+          { y: 'Aug', a: val[7], b: tot[7] },
+          { y: 'Sep', a: val[8], b: tot[8] },
+          { y: 'Okt', a: val[9], b: tot[9] },
+          { y: 'Nov', a: val[10], b: tot[10] },
+          { y: 'Dez', a: val[11], b: tot[11] }
+        ]
+        yearView.setData(data)
+      })
+    .catch(error => console.error(error))
+}
+
+function redFun (acc, obj) {
+    let key = obj.dat
+    if (!acc[key]) {
+      acc[key] = []
+    }
+    acc[key].push(obj)
+    return acc
 }

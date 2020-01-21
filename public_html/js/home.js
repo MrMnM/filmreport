@@ -1,9 +1,10 @@
-import {refreshStats, refreshDonut} from  './stats.js'
+import {refreshStats, refreshDonut, refreshYearView} from  './stats.js'
 import {activateSideMenu, switchTypes} from  './sidemenu.js'
 import {pad} from './timeHelpers.js'
 
 var chart = null
 var donut = null
+var yearView = null
 
 let e=0
 let s=0
@@ -48,6 +49,7 @@ $(()=> { // STARTFUNCTION
       todayHighlight: true
     })
   })
+  yearView = refreshYearView(yearView)
   donut = refreshDonut(donut)
   chart = refreshStats(chart,s,e)
   chart.redraw()

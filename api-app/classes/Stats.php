@@ -107,6 +107,29 @@ class Stats
     return $response->withJson($o);
   }
 
+  public function yearcomp($request, $response, $args)
+  {
+    $this->auth->check();
+    $indata = $this->db->select('projects', [
+      'tot_money',
+      'p_end'
+    ], 	["AND" => [
+      "user_id" => $_SESSION['user'],
+    ]
+  ]);
+    $o = $indata;
+
+    /*
+    $average = $database->avg("account", "age", [
+	            "gender" => "male"
+    ]);
+
+    */
+
+    return $response->withJson($o);
+  }
+
+
   public function misc($request, $response, $args)
   {
     $this->auth->check();
