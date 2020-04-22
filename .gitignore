@@ -5,3 +5,4 @@ api-app/lib/Globals.php
 public_html/includes/Classes/
 public_html/template_rapport.xls
 .remote-sync.json
+*.code-workspace
