@@ -73,10 +73,10 @@ function setMail(name,id){
   let subject='Abrechnung: '+name
 
   let mailText =  `<p>Hey</p>
-                  <p>Im Anhang und <a href="https://filmstunden.ch/view.php?id=${id}">hier online</a> noch meine Abrechung vom "${project}" Dreh.<br>
-                  Ich hoffe das ist alles ok so, ansonsten meld dich einfach bei mir!</p>
-                  <p>Gruss</p>
-                  <p>Marius</p>`
+                   <p>Im Anhang und <a href="https://filmstunden.ch/view.php?id=${id}">hier online</a> noch meine Abrechung vom "${project}" Dreh.<br>
+                   Ich hoffe das ist alles ok so, ansonsten meld dich einfach bei mir!</p>
+                   <p>Gruss</p>
+                   <p>Marius</p>`
 
   $('#project_id').val(id)
   $('#project_name').val(escape(name.replace(/ /g,"_")))
@@ -87,7 +87,9 @@ function setMail(name,id){
 function mailSent(data) {
   if (data.status == 'SUCCESS') {
     $('#sendMailModal').modal('hide')
+    console.log('Mail sucessfully sent')
   } else {
+    alert('Fehler beim Mailversand')
     console.error(data.message)
   }
 }

@@ -52,13 +52,14 @@ $container['errorHandler'] = function ($c) {
 //--------------------------------------------------------
 //  ROUTING
 $app->get('/', function ($request, $response, $args) {
-    return $response->withJson(array('status'=>'SUCCESS','msg'=>'Filmstunden API select version'));
+    return $response->withJson(array('status'=>'SUCCESS','msg'=>'Filmstunden API, please select version'));
 });
 
 $app->group('/v01', function() {
   $this->get('/', function ($request, $response, $args) {
       return $response->withJson(array('status'=>'SUCCESS','msg'=>'Filmstunden API v01'));
   });
+  
   // User
   $this->get('/user', 'User:get');
   $this->get('/user/get/{u_id}', 'User:getSpecific'); // This takes an encrypted version of the userid
@@ -95,6 +96,7 @@ $app->group('/v01', function() {
   $this->post('/expenses/{p_id}', 'Expenses:save');
   $this->post('/expenses/{p_id}/upload', 'Expenses:upload');
   $this->delete('/expenses/{p_id}/{e_id}', 'Expenses:delete');
+  
   // Jobs
   $this->get('/jobs', 'Jobs:get');
 
@@ -114,7 +116,8 @@ $app->group('/v01', function() {
   $this->delete('/timer/{t_id}', 'Timer:delete');
 
   // Mail
-  $this->post('/mail', 'Mail:send'); //?text=xxx
+  $this->post('/mail', 'Mail:sendBill'); //?text=xxx
+  $this->post('/enquiry', 'Mail:sendEnquiry'); //?text=xxx
 });
 
 //--------------------------------------------------------
