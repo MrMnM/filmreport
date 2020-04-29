@@ -30,9 +30,13 @@ $password = $db['password'];
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/jquery.metismenu/1.1.3/metisMenu.min.css" integrity="sha256-4NxXT7KyZtupE4YdYLDGnR5B8P0JWjNBpF8mQBzYtrM=" crossorigin="anonymous">
     <!-- Custom Fonts -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.19.1/ui/trumbowyg.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.css"/>
+
 
     <!-- Custom CSS -->
     <link href="./css/main.css" rel="stylesheet">
+    <link href="./css/wizard.css" rel="stylesheet">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -49,96 +53,134 @@ $password = $db['password'];
 
     ?>
 <div id="page-wrapper">
-    <p></br></p>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="panel panel-default" id="activetimer" style="display:none;">
-                    <div class="panel-heading" id="projectTitle">
-                    </div>
-                    <!-- /.panel-heading -->
-                    <div class="panel-body">
-                        <form>
-                            <div class="row">
-                                <div class="col-sm-4">
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-success btn-lg dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                            <i class="fa fa-play"></i>
-                                            <!--<span class="caret"></span>-->
-                                        </button>
-                                        <ul class="dropdown-menu" role="menu">
-                                            <li><a href="#" id="shoot"><i class="fa fa-video-camera"></i> Dreh</a>
-                                            </li>
-                                            <li><a href="#" id="load"><i class="fa fa-truck"></i> Laden</a>
-                                            </li>
-                                            <li><a href="#" id="drive"><i class="fa fa-car"></i> Reise</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                        <button type="button" class="btn btn-warning btn-lg" id="pause"><i class="fa fa-pause"></i></button>
-                                        <button type="button" class="btn btn-danger btn-lg" id="stop"><i class="fa fa-stop"></i></button>
-                                    </div>
+<p></br></p>
+<section id="enquiry">
+        <div class="wizard">
+            <div class="wizard-inner">
+                <div class="connecting-line"></div>
+                <ul class="nav nav-tabs" role="tablist">
 
-                                    <div class="col-sm-8 huge" id="timerCount">
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                        <!-- /.panel-body -->
-                    </div>
-                    <!-- /.panel -->
+                    <li role="presentation" class="active">
+                        <a href="#step1" data-toggle="tab" aria-controls="step1" role="tab" title="Step 1">
+                            <span class="round-tab">
+                                 <i class="fa fa-handshake-o" aria-hidden="true"></i>
+                            </span>
+                        </a>
 
-                    <div class="panel panel-default" id="selector">
-                        <div class="panel-heading">
-                            <i class="fa fa-calendar-plus-o fa-fw"></i> Drehanfragen
-                        </div>
-                        <!-- /.panel-heading -->
-                        <div class="panel-body">
-                            <div class="list-group" id="timers">
-                                <a href="#" class="list-group-item success"><div class="loading-spinner-center"></div>&nbsp;</a>
-                            </div>
-                            <button class="btn btn-default btn-block" data-toggle="modal" data-target="#newTimerModal"><i class="fa fa-plus fa-fw"></i> Neue Drehanfrage hinzufügen</button>
-                            <!-- /.list-group -->
-                        </div>
-                        <!-- /.panel-body -->
-                    </div>
-                </div>
-                <!-- /.col-lg-12 -->
+                    </li>
+
+                    <li role="presentation" class="disabled">
+                        <a href="#step2" data-toggle="tab" aria-controls="step2" role="tab" title="Step 2">
+                            <span class="round-tab">
+                                <i class="fa fa-money" aria-hidden="true"></i>
+                            </span>
+                        </a>
+                    </li>
+                    <li role="presentation" class="disabled">
+                        <a href="#step3" data-toggle="tab" aria-controls="step3" role="tab" title="Step 3">
+                            <span class="round-tab">
+                                <i class="fa fa-calendar-o" aria-hidden="true"></i>
+                            </span>
+                        </a>
+                    </li>
+
+                    <li role="presentation" class="disabled">
+                        <a href="#complete" data-toggle="tab" aria-controls="complete" role="tab" title="Complete">
+                            <span class="round-tab">
+                                <i class="fa fa-commenting-o" aria-hidden="true"></i>
+                            </span>
+                        </a>
+                    </li>
+                </ul>
             </div>
-            <!-- /.row -->
-        </div>
-        <!-- /.container-fluid -->
 
-        <!-- Modal -->
-        <div class="modal fade" id="newTimerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="myModalLabel">Neue Anfrage erstellen</h4>
-                    </div>
-                    <div class="modal-body modalContent" name="modalContent" id="modalContent">
-                        <form role="form" action="h_timer.php" method="post" id="newTimerForm">
-                            <input type="hidden" name="action" value="new">
-                            <div class="form-group input-group">
-                                <span class="input-group-addon">Name</span>
-                                <input type="text" name="name" class="form-control" placeholder="Testtimer" required>
+            <form role="form">
+                <div class="tab-content">
+                    <div class="tab-pane active" role="tabpanel" id="step1">
+                            <div class="form-group">
+                                <label>Projekt</label>
+                                <input id="projectName" class="form-control" placeholder="Unbenanntes Projekt" required>
                             </div>
+                            <div class="form-group">
+                                <label>Drehanfrage von</label>
+                                <input id="c_name" class="form-control" placeholder="Hans Muster"><br>
+                                <input id="c_mail" class="form-control" placeholder="hans.muster@mail.com">
+                            </div>
+                            <div class="form-group">
+                                <label>Produktionsfirma</label>
+                                <select class="form-control"  name="company" id="companylist" required><option value="" disabled selected>Firma auswählen oder Addresse unten eingeben</option></select>
+                                <textarea id="companyAddress" rows="3"></textarea>
+                            </div>
+                        <ul class="list-inline pull-right">
+                            <li><button id="firstStep" type="button" class="btn btn-primary next-step">Speichern & Weiter</button></li>
+                        </ul>
+                    </div>
+                    <div class="tab-pane" role="tabpanel" id="step2">
+                        <datalist id="joblist"></datalist>
+                        <div class="form-group">
+                            <label>Arbeit als</label>
+                            <input id="job" type="text" list="joblist" class="form-control" name="work" id="work" required>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
-                            <button type="submit" class="btn btn-primary" onclick="" id="submitbutton" name="submitbutton">Erstellen</button>
-                            <button type="submit" class="btn btn-primary" data-dismiss="modal" id="closebutton" name="closebutton" style="display:none">OK</button>
+                        <div class="form-group">
+                            <label>Abrechnungsart</label>
+                            <select class="form-control"  name="emptype" id="emptype" required>
+                                <option value="Anstellung" selected>Anstellung</option>
+                                <option value="Selbstständig">Selbstständig</option>
+                            </select>
                         </div>
-                    </form>
-                </div>
-                <!-- /.modal-content -->
-            </div>
-            <!-- /.modal-dialog -->
-        </div>
-        <!-- /.modal -->
+                        <div class="form-group">
+                                <label>Lohn & Anstellungskonditionen</label>
+                                <input id="pay" class="form-control" placeholder="510 CHF" required><br>
+                                <input id="pay2" class="form-control" value="9h/Tag SSFV Tagesbasis" required>
 
-    </div>
+                            </div>
+                        <ul class="list-inline pull-right">
+                            <li><button type="button" class="btn btn-default prev-step">Zurück</button></li>
+                            <li><button type="button" class="btn btn-primary next-step">Speichern & Weiter</button></li>
+                        </ul>
+                    </div>
+                    <div class="tab-pane" role="tabpanel" id="step3">
+                        <div class="form-group">
+                            <label>Ladetage</label>
+                            <input id="loaddate" type="text" class="form-control date"/>
+                        </div>
+                        <div class="form-group">
+                            <label>Drehtage</label>
+                            <input id="shootdate" type="text" class="form-control date"/>
+                        </div>
+                        <div class="form-group">
+                            <label>Ausladetage</label>
+                            <input id="unloaddate" type="text" class="form-control date"/>
+                        </div>
+                        <div class="form-group">
+                            <label>Diverse</label>
+                            <input id="miscdate" type="text" class="form-control date"/>
+                        </div>
+                        <ul class="list-inline pull-right">
+                            <li><button type="button" class="btn btn-default prev-step">Zurück</button></li>
+                            <li><button type="button" class="btn btn-primary btn-info-full next-step">Speichern & Weiter</button></li>
+                        </ul>
+                    </div>
+                    <div class="tab-pane" role="tabpanel" id="complete">
+                        <div class="form-group">
+                                <label>Einleitungstext</label>
+                                <textarea id="introtext" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                                <label>Abschlusstext</label>
+                                <textarea id="outrotext" rows="3"></textarea>
+                        </div>
+                        <ul class="list-inline pull-right">
+                            <li><button type="button" class="btn btn-default prev-step">Zurück</button></li>
+                            <li><button type="button" id="sendMail" class="btn btn-primary btn-info-full next-step">Mail Absenden</button></li>
+                        </ul>
+
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </form>
+        </div>
+    </section>
 </div>
 <!-- /#page-wrapper -->
 </div>
@@ -148,6 +190,8 @@ $password = $db['password'];
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/jquery.metismenu/1.1.3/metisMenu.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.1/jquery.form.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.19.1/trumbowyg.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
 <script type="module" src="./js/enquiry.js"></script>
 
     </body>

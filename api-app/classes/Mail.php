@@ -31,12 +31,12 @@ class Mail
             $body = $req['mailText'];
             $sender = $req['u_mail'];
             $name = $req['u_name'];
-			$subject = $req['mailSubject'];
+		      	$subject = $req['mailSubject'];
             $nospName = str_replace(' ', '_', $name);
 
             ///----------------------------------------------------------------------------------------------------------------------------
             ob_start();
-            include('template_abrechnung.html');
+            include('template_abrechnung.php');
             $body = ob_get_clean();
             ///--------------------------------------------------------------------------
           
@@ -44,6 +44,7 @@ class Mail
             $binary_content = file_get_contents($url);
 
             $mail = new PHPMailer;
+            $mail->CharSet = 'utf-8';  
             $mail->SetFrom('noreply@filmstunden.ch', $name);
             $mail->AddReplyTo($sender, $name);
             $mail->AddCC($sender, $name);
@@ -62,26 +63,43 @@ class Mail
     public function sendEnquiry($request,$response,$args){
         $req = $request->getParsedBody();
         $date = date('ymd');
-        $p_id = $req['p_id'];
-        $p_name = $req['p_name'];
-        $body = $req['mailText'];
-        $sender = $req['u_mail'];
-        $name = $req['u_name'];
-        $subject = $req['mailSubject'];
-        $nospName = str_replace(' ', '_', $name);
+        //$p_id = $req['p_id'];
+        $p_title = $req['p_name']; 
+        $introtext = $req['intro'];  
+        $c_name = $req['c_name']; 
+        $c_mail = $req['c_mail']; 
+        $c_address1 = $req['c_addr']; 
+        $u_name = $req['u_name']; 
+        $u_address1 = $req['u_address']; 
+        $u_mail = $req['u_mail'];
+        $job = $req['e_job']; 
+        $emp_type = $req['e_type']; 
+        $emp_pay = $req['e_pay']; 
+        $emp_cond = $req['e_cond']; 
+        $d_prep_nr = "0"; 
+        $d_prep_date = $req['d_load']; 
+        $d_shoot_nr = "0"; 
+        $d_shoot_date = $req['d_shoot']; 
+        $d_load_nr = "0"; 
+        $d_load_date = $req['d_uload']; 
+        $d_misc_nr = "0"; 
+        $d_misc_date = $req['d_misc']; 
+        $comments = ""; 
+        $outrotext = $req['outro']; 
 
         ///----------------------------------------------------------------------------------------------------------------------------
         ob_start();
-        include('template_anfrage.html');
+        include('template_anfrage.php');
         $body = ob_get_clean();
         ///--------------------------------------------------------------------------
       
         $mail = new PHPMailer;
-        $mail->SetFrom('noreply@filmstunden.ch', $name);
-        $mail->AddReplyTo($sender, $name);
-        $mail->AddCC($sender, $name);
-        $mail->addAddress($req['mailTo']);
-        $mail->Subject = $subject;
+        $mail->CharSet = 'utf-8';  
+        $mail->SetFrom('noreply@filmstunden.ch', $u_name); 
+        $mail->AddReplyTo($u_mail, $u_name);
+        $mail->AddCC($u_mail, $u_name);
+        $mail->addAddress($c_mail);
+        $mail->Subject = 'Drehanfrage: '.$p_title;
         $mail->Body    = $body;
         $mail->IsHTML(true);
         if(!$mail->send()) {

@@ -83,7 +83,7 @@
           <a href="timer.php"><i class="fa fa-clock-o fa-fw"></i> Timer</a>
         </li>
         <li  class="freelance" style="display:none;" >
-          <a href="enquiry.php"><i class="fa fa-calendar-plus-o fa-fw"></i> Anfragen</a>
+          <a href="enquiry_overview.php"><i class="fa fa-calendar-plus-o fa-fw"></i> Anfragen</a>
         </li>
 <!-- PRODUCER -->
         <li class="producer" style="display:none;" >

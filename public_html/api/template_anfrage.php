@@ -194,17 +194,17 @@
 													<td style="padding: 0 15px;"><b><?=$d_prep_nr?>&nbsp;</b>Laden/Prep</td>
                                                     <td colspan="2" style="padding: 0 15px;"><?=$d_prep_date?></td>
                                                 </tr>
-												<tr style="border-top:0px solid #ecedee;text-align:left;">
+												<tr style="border-top:0.5px dotted #ecedee;text-align:left;">
                                                     <td style="padding: 5px 15px 5px 0;font-weight: bold;"></td>
 													<td style="padding: 0 15px;"><b><?=$d_shoot_nr?>&nbsp;</b>Dreh</td>
                                                     <td colspan="2" style="padding: 0 15px;"><?=$d_shoot_date?></td>
                                                 </tr>
-												<tr style="border-top:0px solid #ecedee;text-align:left;">
+												<tr style="border-top:0.5px dotted #ecedee;text-align:left;">
                                                     <td style="padding: 5px 15px 5px 0;font-weight: bold;"></td>
 													<td style="padding: 0 15px;"><b><?=$d_load_nr?>&nbsp;</b>Ausladen</td>
                                                     <td colspan="2" style="padding: 0 15px;"><?=$d_load_date?></td>
                                                 </tr>
-												<tr style="border-top:0px solid #ecedee;text-align:left;">
+												<tr style="border-top:0.5px dotted #ecedee;text-align:left;">
                                                     <td style="padding: 5px 15px 5px 0;font-weight: bold;"></td>
 													<td style="padding: 0 15px;"><b><?=$d_misc_nr?>&nbsp;</b>Andere</td>
                                                     <td colspan="2" style="padding: 0 15px;"><?=$d_misc_date?></td>
