@@ -60,52 +60,11 @@ class Mail
             }
     }
 
-    public function sendEnquiry($request,$response,$args){
-        $req = $request->getParsedBody();
-        $date = date('ymd');
-        //$p_id = $req['p_id'];
-        $p_title = $req['p_name']; 
-        $introtext = $req['intro'];  
-        $c_name = $req['c_name']; 
-        $c_mail = $req['c_mail']; 
-        $c_address1 = $req['c_addr']; 
-        $u_name = $req['u_name']; 
-        $u_address1 = $req['u_address']; 
-        $u_mail = $req['u_mail'];
-        $job = $req['e_job']; 
-        $emp_type = $req['e_type']; 
-        $emp_pay = $req['e_pay']; 
-        $emp_cond = $req['e_cond']; 
-        $d_prep_nr = "0"; 
-        $d_prep_date = $req['d_load']; 
-        $d_shoot_nr = "0"; 
-        $d_shoot_date = $req['d_shoot']; 
-        $d_load_nr = "0"; 
-        $d_load_date = $req['d_uload']; 
-        $d_misc_nr = "0"; 
-        $d_misc_date = $req['d_misc']; 
-        $comments = ""; 
-        $outrotext = $req['outro']; 
-
-        ///----------------------------------------------------------------------------------------------------------------------------
-        ob_start();
-        include('template_anfrage.php');
-        $body = ob_get_clean();
-        ///--------------------------------------------------------------------------
-      
-        $mail = new PHPMailer;
-        $mail->CharSet = 'utf-8';  
-        $mail->SetFrom('noreply@filmstunden.ch', $u_name); 
-        $mail->AddReplyTo($u_mail, $u_name);
-        $mail->AddCC($u_mail, $u_name);
-        $mail->addAddress($c_mail);
-        $mail->Subject = 'Drehanfrage: '.$p_title;
-        $mail->Body    = $body;
-        $mail->IsHTML(true);
-        if(!$mail->send()) {
-          return $response ->withJson(array('status'=>'ERROR','msg'=>'something broke'));
-        } else {
-          return $response ->withJson(array('status'=>'SUCCESS', 'msg'=>'Sent Sucesfully'));
-        }
-}
+    private function countDays($in){
+      if ($in == ""){
+        return 0;
+      }else{
+        return count(explode("<br>", $din)); 
+      }
+    }
 }

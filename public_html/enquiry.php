@@ -142,19 +142,47 @@ $password = $db['password'];
                     <div class="tab-pane" role="tabpanel" id="step3">
                         <div class="form-group">
                             <label>Ladetage</label>
-                            <input id="loaddate" type="text" class="form-control date"/>
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <input id="loadnr" type="text" value="0" class="form-control"/>
+                                </div>
+                                <div class="col-sm-10">
+                                    <input id="loaddate" type="text" class="form-control date"/>
+                                </div>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label>Drehtage</label>
-                            <input id="shootdate" type="text" class="form-control date"/>
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <input id="shootnr" type="text" value="0" class="form-control"/>
+                                </div>
+                                <div class="col-sm-10">
+                                    <input id="shootdate" type="text" class="form-control date"/>
+                                </div>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label>Ausladetage</label>
-                            <input id="unloaddate" type="text" class="form-control date"/>
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <input id="unloadnr" type="text" value="0" class="form-control"/>
+                                </div>
+                                <div class="col-sm-10">
+                                    <input id="unloaddate" type="text" class="form-control date"/>
+                                </div>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label>Diverse</label>
-                            <input id="miscdate" type="text" class="form-control date"/>
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <input id="miscnr" type="text" value="0" class="form-control"/>
+                                </div>
+                                <div class="col-sm-10">
+                                    <input id="miscdate" type="text" class="form-control date"/>
+                                </div>
+                            </div>
                         </div>
                         <ul class="list-inline pull-right">
                             <li><button type="button" class="btn btn-default prev-step">Zurück</button></li>
@@ -169,6 +197,10 @@ $password = $db['password'];
                         <div class="form-group">
                                 <label>Abschlusstext</label>
                                 <textarea id="outrotext" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                                <label>Bemerkungen</label>
+                                <textarea id="comment" rows="3"></textarea>
                         </div>
                         <ul class="list-inline pull-right">
                             <li><button type="button" class="btn btn-default prev-step">Zurück</button></li>

@@ -65,6 +65,8 @@ $password = $db['password'];
                                 <tr>
                                     <th>Datum</th>
                                     <th>Projektname</th>
+                                    <th>Von</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                         </table>

@@ -19,7 +19,7 @@ require_once('../../api-app/classes/View.php');
 require_once('../../api-app/classes/Expenses.php');
 require_once('../../api-app/classes/Timer.php');
 require_once('../../api-app/classes/Mail.php');
-
+require_once('../../api-app/classes/Enquiry.php');
 
 use Medoo\Medoo;
 
@@ -115,9 +115,15 @@ $app->group('/v01', function() {
   $this->post('/timer/{t_id}', 'Timer:update');
   $this->delete('/timer/{t_id}', 'Timer:delete');
 
+  // Enquiry
+  $this->get('/enquiries', 'Enquiry:list');
+  $this->get('/enquiries/{p_id}', 'Enquiry:view');
+  $this->get('/enquiries/{p_id}/ics', 'Enquiry:downloadICS');
+  $this->post('/enquiry', 'Enquiry:sendEnquiry'); //?text=xxx
+
+
   // Mail
   $this->post('/mail', 'Mail:sendBill'); //?text=xxx
-  $this->post('/enquiry', 'Mail:sendEnquiry'); //?text=xxx
 });
 
 //--------------------------------------------------------

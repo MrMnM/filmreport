@@ -1,5 +1,5 @@
 export function renderTools (data, type, row, mode) {
-  let active = `
+    let active = `
     <button type="button" class="btn btn-default btn-circle" onclick="window.open('view.php?id=${data}')">
         <i class="fa fa-eye"></i>
     </button>
@@ -23,7 +23,7 @@ export function renderTools (data, type, row, mode) {
         <i class="fa fa-check"></i>
     </button>
     `
-  let archive = `
+    let archive = `
     <button type="button" class="btn btn-default btn-circle" onclick="window.open('view.php?id=${data}')">
         <i class="fa fa-eye"></i>
     </button>
@@ -40,11 +40,30 @@ export function renderTools (data, type, row, mode) {
     <button type="button" class="btn btn-danger btn-circle" data-toggle="modal" data-target="#deleteProjectModal" onclick="setDelete('${data}','${row[1]}')">
         <i class="fa fa-times"></i>
     </button>`
-  return (mode==1) ? active : archive
+    return (mode==1) ? active : archive
 }
 
 export function renderTitle (data, type, row, mode) {
-  let active = '<a href="project.php?id=' + row[5] + '"><b>' + row[1] + '</b></a>'
-  let archive = '<a href="view.php?id=' + row[5] + '"><b>' + row[1] + '</b></a>'
-  return (mode==1) ? active : archive
+    let active = '<a href="project.php?id=' + row[5] + '"><b>' + row[1] + '</b></a>'
+    let archive = '<a href="view.php?id=' + row[5] + '"><b>' + row[1] + '</b></a>'
+    return (mode==1) ? active : archive
+}
+
+export function renderEnquiry(data, type, row) {
+    let cur = '<a href="view_enquiry.php?id=' + row[3] + '"><b>' + row[1] + '</b></a>'
+    return cur
+}
+
+export function renderEnquiryTools (data, type, row) {
+    let tools = `
+        <button type="button" class="btn btn-default btn-circle" onclick="window.open('view_enquiry.php?id=${data}')">
+            <i class="fa fa-eye"></i>
+        </button>
+        <button type="button" class="btn btn-default btn-circle" onclick="window.open('https://filmstunden.ch/api/v01/enquiries/${data}/ics')">
+            <i class="fa fa-calendar"></i>
+        </button>
+        <button type="button" class="btn btn-danger btn-circle" data-toggle="modal" data-target="#deleteEnquiry" onclick="setDelete('${data}','${row[3]}')">
+            <i class="fa fa-times"></i>
+        </button>`
+return tools
 }

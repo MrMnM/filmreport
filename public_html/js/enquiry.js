@@ -2,7 +2,10 @@
 import {activateSideMenu} from  './sidemenu.js'
 import {loadJoblist} from './Jobs.js'
 
-const introText =  `<p>Hey</p><p>Vielen Dank für deine Anfrage zum Dreh. Hier noch die wichtigsten Informationen, die wir soeben telefonisch besprochen haben nochmals in schriftlicher Form, damit für beide Seiten der Umfang des Projekts klar definiert ist.</p>`
+const introText =  `<p>Hey</p>
+<p>Vielen Dank für deine Anfrage zum Dreh.<br>
+Hier noch die wichtigsten Informationen, die wir soeben telefonisch besprochen haben nochmals in schriftlicher Form, damit für beide Seiten der Umfang des Projekts klar definiert ist.</p>`
+const outroText =`<p>Cool dass ich bei diesem Projekt dabei sein darf. Ich freue mich möglichst bald mehr Infos zu erhalten und erwarte freudig den Dreh.</p>`
 const data = []
 let user
 
@@ -12,7 +15,7 @@ $(document).ready(function() {
 
   //Company Address
   const trumboOptions = {
-  btns: [['viewHTML','bold', 'italic']],
+  btns: [['undo', 'redo'],'bold', 'italic'],
   autogrow: true,
   semantic: false
   }
@@ -21,8 +24,14 @@ $(document).ready(function() {
   $('#companyAddress').closest(".trumbowyg-box").css("min-height", "100px")
   $('#companyAddress').prev(".trumbowyg-editor").css("min-height", "100px")
 
+  console.log(introText)
+  console.log(outroText)
+
   $('#introtext').trumbowyg(trumboOptions)
+  $('#introtext').trumbowyg('html', introText)
   $('#outrotext').trumbowyg(trumboOptions)
+  $('#outrotext').trumbowyg('html', outroText)
+  $('#comment').trumbowyg(trumboOptions)
 
   //Dates
   const datepickerOptions = { 
@@ -40,12 +49,8 @@ $(document).ready(function() {
     type: 'GET',
     dataType: 'json',
   })
-  .done(data => {
-    user = data
-    console.log(user)
-  })
+  .done(data => {user = data})
   .fail(() => { console.error('companies couldnt be loaded') })
-
 
 
   $.ajax({
@@ -63,9 +68,6 @@ $(document).ready(function() {
   })
   .fail(() => { console.error('companies couldnt be loaded') })
 
-/*
-  $('#introText').trumbowyg('html', introText)
-*/
      //Initialize tooltips
      $('.nav-tabs > li a[title]').tooltip()
     
@@ -150,6 +152,11 @@ $( "#sendMail" ).click(function(){
   data['dat_misc'] = $('#miscdate').val().split(",").join("<br>")
   data['intro'] = $('#introtext').trumbowyg('html')
   data['outro'] = $('#outrotext').trumbowyg('html')
+  data['comment'] = $('#comment').trumbowyg('html')
+  data['nr_load'] = $('#loadnr').val()
+  data['nr_shoot'] = $('#shootnr').val()
+  data['nr_unload'] = $('#unloadnr').val()
+  data['nr_misc'] = $('#miscnr').val()
   console.log(data)
  
   $.ajax({
@@ -168,15 +175,28 @@ $( "#sendMail" ).click(function(){
       e_type: data['emp_type'],
       e_cond: data['emp_cond'],
       d_load: data['dat_load'],
+      nr_load: data['nr_load'],
       d_shoot: data['dat_shoot'],
+      nr_shoot: data['nr_shoot'],
       d_uload: data['dat_unload'],
+      nr_uload: data['nr_unload'],
       d_misc: data['dat_misc'],
+      nr_misc: data['nr_misc'],
       intro: data['intro'],
-      outro: data['outro']
+      outro: data['outro'],
+      comment: data['comment']
     }
   })
-    .done(function( msg ) {
+    .done(function( data ) {
       $('#enquiry').hide()
+      if (data.status == 'SUCCESS') {
+        $('#updateProjectModal').modal('hide')
+        p.loadProject().then(() => {
+          updateAll()
+        })
+      } else {
+        console.error(data.message)
+      }
     })
     
 })
