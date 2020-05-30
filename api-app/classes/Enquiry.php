@@ -21,6 +21,7 @@ public function downloadICS($request, $response, $args){
   $p_id=$args['p_id'];
   $data = self::loadEnquiry($p_id);
   $data = $data[0];
+  $org = $data['c_mail'];
   //var_dump($data);
   $v = new vcalendar();                              // initiate new CALENDAR
     $v->setConfig( 'unique_id', 'filmstunden.ch' );  // config with site domain
@@ -28,11 +29,10 @@ public function downloadICS($request, $response, $args){
     $v->setProperty( "method", "PUBLISH" );
     $v->setProperty( 'X-WR-CALNAME', 'Drehanfrage '.$data['p_name']);          // set some X-properties, name, content.. .
     $v->setProperty( 'X-WR-CALDESC', 'Automatisch generierter Drehanfragekalender' );
-    $v=self::createCalEvents($v, $data['d_prep_date'], 'prep: '.$data['p_name'], '');
-    $v=self::createCalEvents($v, $data['d_shoot_date'], 'shoot: '.$data['p_name'], '');
-    $v=self::createCalEvents($v, $data['d_uload_date'], 'ret: '.$data['p_name'], '');
-    $v=self::createCalEvents($v, $data['d_misc_date'], 'misc: '.$data['p_name'], '');
-    //echo($v->returnCalendar());
+    $v=self::createCalEvents($v, $data['d_prep_date'], 'prep: '.$data['p_name'], '',$org);
+    $v=self::createCalEvents($v, $data['d_shoot_date'], 'shoot: '.$data['p_name'], '',$org);
+    $v=self::createCalEvents($v, $data['d_uload_date'], 'ret: '.$data['p_name'], '',$org);
+    $v=self::createCalEvents($v, $data['d_misc_date'], 'misc: '.$data['p_name'], '',$org);
   //$v->setProperty( 'X-WR-TIMEZONE', 'Europe/Zurich' );
   return $response->withHeader('Content-Type', 'Content-type:text/calendar')
                   ->withHeader('Content-Disposition: attachment; filename="calendar.ics"')
@@ -40,19 +40,23 @@ public function downloadICS($request, $response, $args){
                   ->write($v->returnCalendar());
 }
 
-private function createCalEvents($calendar, $dates, $name, $desc){
+private function createCalEvents($calendar, $dates, $name, $desc, $org){
   if($dates==""){return $calendar;}
   $dates = explode("<br>", $dates);
   foreach ($dates as $cur) {
     $date = DateTime::createFromFormat('d/m/Y', $cur);
     $dtstart = $date->format('Ymd'); 
-    $dtend = $date->modify('+1 day')->format('Ymd');
+    //$dtend = $date->modify('+1 day')->format('Ymd');
+    //$vevent->setProperty( 'dtstart', '20070401', array('VALUE' => 'DATE'));// alt. date format, now for an all-day event
     $e = new vevent(); 
     $e->setProperty( 'summary', $name );
     $e->setProperty( 'categories', 'WORK' );               
-    $e->setProperty( 'dtstart', $dtstart );
-    $e->setProperty( 'dtend', $dtend );
-    $e->setProperty( 'description', $desc );  
+   // $e->setProperty( 'dtstart', $dtstart );
+   // $e->setProperty( 'dtend', $dtend );
+    $e->setProperty( "sequence", 0 ); 
+    $e->setProperty( 'dtstart', $dtstart, array('VALUE' => 'DATE'));
+    $e->setProperty( 'description', $desc ); 
+    $e->setProperty( 'organizer',   $org ); 
     $e->setProperty( 'location' , 'On Set' );     
     $calendar->addComponent( $e );                
   }
@@ -178,7 +182,7 @@ public function new($input)
   ]);
 
   //if($this->db->rowCount()>0){
-    return true;
+    return $p_id;
   // }
   //var_dump($this->db->error());
   //return false;
@@ -186,9 +190,9 @@ public function new($input)
 
 public function sendEnquiry($request,$response,$args){
     $req = $request->getParsedBody();
-    if(self::new($req)){
+     $p_id = self::new($req);
       $date = date('ymd');
-      //$p_id = $req['p_id'];
+      if (isset($req['p_id'])) {$p_id = $req['p_id'];}
       $p_title = $req['p_name']; 
       $c_name = $req['c_name']; 
       $c_mail = $req['c_mail']; 
@@ -218,7 +222,11 @@ public function sendEnquiry($request,$response,$args){
       include('template_anfrage.php');
       $body = ob_get_clean();
       ///--------------------------------------------------------------------------
-    
+      if(isset($p_id)){
+        $url = 'https://filmstunden.ch/api/v01/enquiries/'.$p_id.'/ics';
+        $binary_content = file_get_contents($url);
+      }
+
       $mail = new PHPMailer;
       $mail->CharSet = 'utf-8';  
       $mail->SetFrom('noreply@filmstunden.ch', $u_name); 
@@ -228,14 +236,23 @@ public function sendEnquiry($request,$response,$args){
       $mail->Subject = 'Drehanfrage: '.$p_title;
       $mail->Body    = $body;
       $mail->IsHTML(true);
+
+      if(isset($p_id)){
+        $filename = str_replace(' ', '_', $p_title);
+        $mail->AddStringAttachment($binary_content, $filename.".ics", $encoding = 'base64', $type = 'application/ics');
+        /* mime_type of application/ics then gmail shows all events in a grey 'Events in this message' box .
+           mime_type of text/calendar it shows the slicker gmail event box.
+        */
+      }
+    
       if(!$mail->send()) {
         return $response ->withJson(array('status'=>'ERROR','msg'=>'mail error'));
       } else {
         return $response ->withJson(array('status'=>'SUCCESS', 'msg'=>'Sent Sucesfully'));
       }
-    }else{
-      return $response ->withJson(array('status'=>'ERROR', 'msg'=>'database error'));
-    }
+ //   }else{
+  //    return $response ->withJson(array('status'=>'ERROR', 'msg'=>'database error'));
+   // }
 }
 
 }

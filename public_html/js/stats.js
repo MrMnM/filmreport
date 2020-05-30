@@ -124,10 +124,15 @@ export function refreshYearView (yearView) {
         }
         let totVal = [0,0,0,0,0,0,0,0,0,0,0,0]
         cnt = 0
-        for (var i of tot) {
-          let o2 = i.reduce((acc, curVal) => {
-            return acc + curVal.val
-          }, 0)
+        //console.log(tot)
+        for (const i of tot) {
+          //unelegant
+          let o2 = 0
+          try{
+            o2 = i.reduce((acc, curVal) => {return acc + curVal.val}, 0)
+          }catch(e){
+            o2 = 0
+          }
           totVal[cnt] = o2
           cnt++
         }

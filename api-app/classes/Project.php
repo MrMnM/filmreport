@@ -168,9 +168,8 @@ public function delete($request, $response, $args)
   $this->auth->check();
   $p_id=$args['p_id'];
   $resp = $this->db->delete('projects', ['project_id' => $p_id]);
-$mask = '../upload/'.$p_id.'_*.*';
-array_map('unlink', glob($mask));
-
+  $mask = '../upload/'.$p_id.'_*.*';
+  array_map('unlink', glob($mask));
   if($resp==1){
     return $response->withStatus(204);
   }else{
