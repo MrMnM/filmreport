@@ -225,6 +225,5 @@ $password = $db['password'];
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.19.1/trumbowyg.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
 <script type="module" src="./js/enquiry.js"></script>
-
     </body>
     </html>

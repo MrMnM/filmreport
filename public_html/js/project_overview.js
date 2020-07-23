@@ -13,7 +13,6 @@ if (getParam('view')=='archive'){
   mode = 1
 }
 
-
 $('#delete-btn').click(() => {
   $.ajax({
     url: delProjURL,
@@ -69,6 +68,7 @@ function projFinished(data) {
 }
 
 function setMail(name,id){
+  console.log('SetMail:',name,'//id:',id)
   let project=name
   let subject='Abrechnung: '+name
 
@@ -105,6 +105,7 @@ window.setFinish = function(id, name) {
 }
 
 window.setMail = function(id, name) {
+  console.log('setMail called')
   setMail(name,id)
 }
 

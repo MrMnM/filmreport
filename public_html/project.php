@@ -81,6 +81,9 @@ require_once('../api-app/lib/Globals.php');
                                             <button type="button" id="openProjectModal" class="btn btn-default btn-xs" data-toggle="modal" data-target="#updateProjectModal">
                                                 <span class="fa fa-pencil"></span>
                                             </button>
+                                            <button type="button" id="openSettingsModal" class="btn btn-default btn-xs" data-toggle="modal" data-target="">
+                                                <span class="fa fa-cog"></span>
+                                            </button>
                                         </div><!--btn-group-->
                                     </div><!--pull-right-->
                                 </div><!--panel-heading-->

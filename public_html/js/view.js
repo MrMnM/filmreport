@@ -65,7 +65,6 @@ $('#navExp').click((e) => {
   $('#abrechnung').hide()
 })
 
-
 var loadViewData = new Promise((resolve, reject) => {
   $.ajax({
     url: 'https://filmstunden.ch/api/v01/view/' + p_id,
@@ -79,7 +78,6 @@ var loadViewData = new Promise((resolve, reject) => {
     resolve()
   })
 })
-
 
 function addChat(text) {
   $('.hideSend').hide()
@@ -118,7 +116,6 @@ function refreshView() {
   $('.tohoursperday').html(`(bis ${clc.hoursDay}h/Tag)<font class="f9"><sup>1</sup></font>`)
   $('.fromhoursperday').html(`&Uuml;berstunden <font class="f9"><sup>2</sup></font><font class="f6">(${clc.hoursDay}h +)</font>`)
   $('#otText').html(`2 &Uuml;berstunden: Bei mehr als ${clc.hoursDay} h pro Tag auf der Basis von 1/${clc.hoursDay} Tag.`)
-
 
   $('.gage').html(prj.p_gage)
   $('.foodrate').html(clc.lunch)
@@ -316,15 +313,19 @@ function refreshExpenseList(prj) {
   if (prj.expenses.length != 0) {
     for (let cur of prj.expenses) {
       if(cur.img != ''){
-        expenseList += `<td class="blue fs8">${formatDateSwiss(cur.date)}</td>
+        expenseList += `<tr>
+                        <td class="blue fs8">${formatDateSwiss(cur.date)}</td>
                         <td class="blue fs8"><a href="#" data-featherlight="https://filmstunden.ch/upload/${cur.img}">${cur.name}</a></td>
                         <td class="blue fs8" colspan="6"><a href="#" data-featherlight="https://filmstunden.ch/upload/${cur.img}">${cur.comment}</a></td>
-                        <td class="blue fs8 bold">${cur.value}</td>`
+                        <td class="blue fs8 bold">${cur.value}</td>
+                        </tr>`
       }else{
-        expenseList += `<td class="blue fs8">${formatDateSwiss(cur.date)}</td>
+        expenseList += `<tr>
+                        <td class="blue fs8">${formatDateSwiss(cur.date)}</td>
                         <td class="blue fs8">${cur.name}</td>
                         <td class="blue fs8" colspan="6">${cur.comment}</td>
-                        <td class="blue fs8 bold">${cur.value}</td>`
+                        <td class="blue fs8 bold">${cur.value}</td>
+                        </tr>`
       }
     }
   } else {

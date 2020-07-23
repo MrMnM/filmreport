@@ -677,7 +677,7 @@ input {
 }
 
 .panel.with-nav-tabs .panel-heading {
-  padding: 5px 5px 0 5px;
+  /*padding: 5px 5px 0 5px; FIXME: What was this for*/
 }
 
 .panel.with-nav-tabs .nav-tabs {

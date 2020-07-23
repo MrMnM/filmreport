@@ -88,6 +88,5 @@ $password = $db['password'];
 <script src="https://cdn.datatables.net/responsive/2.1.1/js/dataTables.responsive.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.1/jquery.form.min.js"></script>
 <script type="module" src="./js/enquiry_overview.js"></script>
-
     </body>
     </html>
