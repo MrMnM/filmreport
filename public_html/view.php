@@ -221,13 +221,13 @@ ob_start("ob_html_compress");
 								<td class="bluetop"></td>
 								<td class="bluetop"></td>
 								<td class="brightyellow"></td>
-								<td class="f8orange" rowspan="3" id="1Over">10.te</td>
-								<td class="f8orange" rowspan="3" id="2Over">11.te</td>
-								<td class="f8orange" rowspan="3" id="3Over">12.te</td>
-								<td class="f8orange" rowspan="3" id="4Over">13.te</td>
-								<td class="f8orange" rowspan="3" id="5Over">14.te</td>
-								<td class="f8orange" rowspan="3" id="6Over">15.te</td>
-								<td class="f8orange" colspan="2" rowspan="3" id="7Over">ab<br> 16.te</td>
+								<td class="f8orange" rowspan="3" id="1Over"></td>
+								<td class="f8orange" rowspan="3" id="2Over"></td>
+								<td class="f8orange" rowspan="3" id="3Over"></td>
+								<td class="f8orange" rowspan="3" id="4Over"></td>
+								<td class="f8orange" rowspan="3" id="5Over"></td>
+								<td class="f8orange" rowspan="3" id="6Over"></td>
+								<td class="f8orange" colspan="2" rowspan="3" id="7Over"></td>
 								<td class="f8orange" colspan="2">23:00</td>
 								<td class="brightgreen"></td>
 								<td class="brightgreen"></td>

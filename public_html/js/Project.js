@@ -148,4 +148,16 @@ export default class Project {
     }
     return JSON.stringify(addInfo)
   }
+
+  get settingsHTML(){ //TODO: Show All
+    let s = this.settings
+    if (typeof this.settings === 'string')
+    {
+      s = JSON.parse(this.settings)
+    }
+    return `Version: ${s.ver} </br>
+            Calc: ${s.calc} </br>
+            DailyHours: ${s.hoursDay} </br>
+            Lunch Money: ${s.lunch}`
+  }
 }

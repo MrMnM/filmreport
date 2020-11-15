@@ -58,3 +58,8 @@ export function formatDateSwiss(date){
   return [day, month, year].join('.')
 }
 export function pad ( val ) { return val > 9 ? val : '0' + val }
+export function addDays(date, days) {
+  var result = new Date(date);
+  result.setDate(result.getDate() + days);
+  return result;
+}

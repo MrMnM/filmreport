@@ -116,6 +116,13 @@ function refreshView() {
   $('.tohoursperday').html(`(bis ${clc.hoursDay}h/Tag)<font class="f9"><sup>1</sup></font>`)
   $('.fromhoursperday').html(`&Uuml;berstunden <font class="f9"><sup>2</sup></font><font class="f6">(${clc.hoursDay}h +)</font>`)
   $('#otText').html(`2 &Uuml;berstunden: Bei mehr als ${clc.hoursDay} h pro Tag auf der Basis von 1/${clc.hoursDay} Tag.`)
+  $('#1Over').html(`${clc.hoursDay+1}.te`)
+  $('#2Over').html(`${clc.hoursDay+2}.te`)
+  $('#3Over').html(`${clc.hoursDay+3}.te`)
+  $('#4Over').html(`${clc.hoursDay+4}.te`)
+  $('#5Over').html(`${clc.hoursDay+5}.te`)
+  $('#6Over').html(`${clc.hoursDay+6}.te`)
+  $('#7Over').html(`ab </br>${clc.hoursDay+7}.ter`)
 
   $('.gage').html(prj.p_gage)
   $('.foodrate').html(clc.lunch)

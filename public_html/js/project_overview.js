@@ -59,6 +59,7 @@ function companyCreated(cmp) {
 }
 
 function projFinished(data) {
+  console.log('finished')
   if (data.status == 'SUCCESS') {
     $('#finishProjectModal').modal('hide')
     table.ajax.reload()
@@ -100,6 +101,7 @@ window.setDelete = function(id, name) {
 }
 
 window.setFinish = function(id, name) {
+  console.log(id, name)
   $('#finishProject').attr('action', 'https://filmstunden.ch/api/v01/project/'+id+'/finish')
   $('#finModalTitle').html('' + name)
 }
@@ -159,19 +161,21 @@ $(()=> { // STARTFUNCTION
   let currentTime = new Date()
   document.getElementById('newDate').value = formatDate(currentTime)
 
-
   $('#newProject').ajaxForm({
     dataType: 'json',
     success: newCreated
   })
+
   $('#finishProject').ajaxForm({
     dataType: 'json',
     success: projFinished
   })
+
   $('#newProdcomp').ajaxForm({
     dataType: 'json',
     success: companyCreated
   })
+
   $('#sendMail').ajaxForm({
     dataType: 'json',
     success: mailSent

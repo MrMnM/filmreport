@@ -1,4 +1,4 @@
-import {roundToTwo, timeToMins, subTimes, timeFromMins} from './timeHelpers.js'
+import {roundToTwo, timeToMins, subTimes, timeFromMins, addDays} from './timeHelpers.js'
 export default class Row {
   constructor (idNr) {
     this.id = idNr
@@ -101,28 +101,23 @@ export default class Row {
     return ret
   }
 
-  getNightHours() { //TODO: make this work!
-    //let hours=0
-    let nightStart = moment('23:00','HH:mm')
-    let nightEnd = moment('05:00','HH:mm').add(1, 'd')
-    let start = moment(this.start,'HH:mm')
-    let end = moment(this.end,'HH:mm')
-    if(timeToMins(this.start)>timeToMins(this.end)){
-      end.add(1,'d')
-    }
-    let nighttime = nightStart.twix(nightEnd)
-    let worktime = start.twix(end)
-    let differ = worktime.difference(nighttime)
-    if (differ.length) {
-      let difference = moment.utc(moment(this.end,'HH:mm').diff(moment(this.start,'HH:mm'))).format('HH:mm')
-      let duration = moment.duration(difference)
-      duration.subtract(differ[0].length('minutes'),'m')
-      this.night = roundToTwo(moment.utc(+duration).format('m')/60)
-    }else{
-      let difference = moment.utc(moment(this.end,'HH:mm').diff(moment(this.start,'HH:mm'))).format('HH:mm')
-      let duration = moment.duration(difference)
-      this.night = roundToTwo(moment.utc(+duration).format('m')/60)
-    }
-    return this.night
+  getNightHours(){
+    const MS2H = 3600000
+    const D0 = 'January 1, 1970 '
+    const nStart = new Date(D0+'23:00')
+    const nEnd = new Date(D0+'05:00')
+    const start = new Date(D0+this.start)
+    let end = new Date(D0+this.end)
+    //Check if End is a Day later and add it
+    if(timeToMins(this.start)>timeToMins(this.end)){end = addDays(end, 1)}
+    const nightHours = Math.abs((nEnd-nStart)/MS2H)
+    let nightwork = nightHours
+    //Check wheter Start or end are in the night
+    if(start>=nStart){nightwork = nightwork + (nStart-start)/MS2H}
+    if(end<=nEnd){nightwork = nightwork + (end-nEnd)/MS2H}
+    let out = 0
+    if(nightwork>0){out = nightwork}
+    this.night = out
+    return out
   }
 }

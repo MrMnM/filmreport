@@ -56,6 +56,25 @@ public function list($request, $response, $args)
 
 public function new($request, $response, $args)
 {
+  $settings = json_encode(array (
+    'ver' => 1,
+    'calc' => 'SSFV_DAY',
+    'hoursDay' => 9,
+    'lunch' => 32,
+    'car' => 0.7,
+    'ferien' => 0.0833,
+    'ahv' => 0.0605,
+    'alv' => 0.011,
+    'bvg' => 0.06,
+    'uvg' => 0.0162,
+    'rate' => 
+    array (
+      0 => 1.25,
+      1 => 1.5,
+      2 => 2,
+      3 => 2.5,
+      4 => 0.25,
+    )));
   $this->auth->check();
   $req = $request->getParsedBody();
   $now = date(DATE_ATOM, time());
@@ -69,6 +88,7 @@ public function new($request, $response, $args)
     'p_job' => $req['work'],
     'p_gage' => $req['pay'],
     'p_company' => $req['company'],
+    'settings' =>$settings
   ]);
   $out= array('status'=>'SUCCESS','project_id'=>$project_id);
   return $response->withJson($out);
@@ -88,7 +108,7 @@ public function load($request, $response, $args)
     'projects.p_gage',
     'projects.p_json',
     'projects.p_comment',
-    'projects.settings',
+    'projects.settings[JSON]',
     'companies.name',
     'companies.address_1',
     'companies.address_2'
@@ -118,7 +138,8 @@ public function save($request, $response, $args)
   $p_id=$args['p_id'];
   $req = $request->getParsedBody();
   $add=json_decode($req['add'],true);
-  $calcBase='SSFV_DAY';
+  $settings=$req['settings'];
+  /*$calcBase='SSFV_DAY';
   $baseHours=9;
   $otRates = [25,25,50,50,100,100,150];
   $settings = json_encode(array (
@@ -140,7 +161,7 @@ public function save($request, $response, $args)
     3 => 2.5,
     4 => 0.25,
   ),
-));
+  */
 
   $comment = "";
   if (!empty($req['comment'])) {

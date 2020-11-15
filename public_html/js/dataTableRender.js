@@ -65,5 +65,5 @@ export function renderEnquiryTools (data, type, row) {
         <button type="button" class="btn btn-danger btn-circle" data-toggle="modal" data-target="#deleteEnquiry" onclick="setDelete('${data}','${row[3]}')">
             <i class="fa fa-times"></i>
         </button>`
-return tools
+    return tools
 }

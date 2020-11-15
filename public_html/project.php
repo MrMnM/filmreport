@@ -465,15 +465,18 @@ require_once('../api-app/lib/Globals.php');
                     <h4 class="modal-title" id="myModalLabel">Abrechnungseinstellungen modifizieren</h4>
                 </div>
                 <div class="modal-body">
+                <form role="form" action="" method="post" id="editSettings">
+
                   <div class="form-group input-group" id="exp_date_g">
-                      <span class="input-group-addon">Datum</span>
-                      <input type="date" id="exp_date" name="name" class="form-control" required>
+                      <span class="input-group-addon">Einstellungen</span>
+                      <input type="text" id="editsettings" name="editsettings" class="form-control">
                   </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
                         <button type="button" class="btn btn-primary" id="saveSettingsBtn">Speichern</button>
                     </div>
-                    </div><!-- /.modalbody -->
+                    </form>
+             </div><!-- /.modalbody -->
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->

@@ -104,6 +104,7 @@ require_once('../api-app/lib/Globals.php');
                                 <button type="submit" class="btn btn-primary" onclick="">Neues Projekt erstellen</button>
                             </div>
                         </form>
+                        </div><!--ModalBody-->
                     </div><!-- /.modal-content -->
                 </div><!-- /.modal-dialog -->
             </div><!-- /.modal -->
@@ -178,6 +179,7 @@ require_once('../api-app/lib/Globals.php');
                                 <button type="submit" class="btn btn-success">Abschliessen</button>
                             </div>
                         </form>
+                        </div><!--modalbody-->
                     </div><!-- /.modal-content -->
                 </div><!-- /.modal-dialog -->
             </div><!-- /.modal -->
@@ -215,6 +217,7 @@ require_once('../api-app/lib/Globals.php');
                                 <button type="submit" class="btn btn-primary" onclick="">Email versenden</button>
                             </div>
                         </form>
+                        </div><!--modalbody-->
                     </div><!-- /.modal-content -->
                 </div><!-- /.modal-dialog -->
             </div><!-- /.modal -->

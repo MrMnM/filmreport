@@ -2,9 +2,9 @@ import {refreshStats, refreshDonut, refreshYearView} from  './stats.js'
 import {activateSideMenu, switchTypes} from  './sidemenu.js'
 import {pad} from './timeHelpers.js'
 
-var chart = null
-var donut = null
-var yearView = null
+let chart = null
+let donut = null
+let yearView = null
 
 let e=0
 let s=0

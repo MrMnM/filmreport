@@ -261,7 +261,8 @@ function Save() {
     data: {
       'data': p.json,
       'add': p.addInfo,
-      'comment': p.comment
+      'comment': p.comment,
+      'settings': JSON.stringify(p.settings)
     },
     type: 'POST'
   }).done(() => {
@@ -423,7 +424,18 @@ function loadJSON(data) {
 
 function updateSuccess(data) {
   if (data.status == 'SUCCESS') {
-    $('#updateProjectModal').modal('hide')
+    $('#ProjectModal').modal('hide')
+    p.loadProject().then(() => {
+      updateAll()
+    })
+  } else {
+    console.error(data.message)
+  }
+}
+
+function settingsSuccess(data){
+  if (data.status == 'SUCCESS') {
+    $('#SettingsModal').modal('hide')
     p.loadProject().then(() => {
       updateAll()
     })
@@ -500,8 +512,8 @@ export function updateAll() {
   document.getElementById('projectJob').innerHTML = p.job
   document.getElementById('projectPay').innerHTML = p.pay
   document.getElementById('projectCompany').innerHTML = p.company
-  document.getElementById('projectSettings').innerHML = "TEST"
-  console.log('Settings',p.settings)
+  document.getElementById('projectSettings').innerHTML = p.settingsHTML
+  document.getElementById('editsettings').value = JSON.stringify(p.settings)
   document.getElementById('p_name').value = p.name
   document.getElementById('p_job').value = p.job
   document.getElementById('p_pay').value = p.pay
@@ -569,9 +581,13 @@ $(() => { // JQUERY STARTFUNCTION
     if (!p.saved) { Save()}
   }, 10000)
 
-  //Jqueery Form
+  //Jquery Form
   $('#updateProject').ajaxForm({
     dataType: 'json',
     success: updateSuccess
+  })
+  $('#editSettings').ajaxForm({
+    dataType: 'json',
+    success: settingsSuccess
   })
 })
