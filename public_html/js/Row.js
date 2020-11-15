@@ -101,7 +101,7 @@ export default class Row {
     return ret
   }
 
-  getNightHours() {
+  getNightHours() { //TODO: make this work!
     //let hours=0
     let nightStart = moment('23:00','HH:mm')
     let nightEnd = moment('05:00','HH:mm').add(1, 'd')

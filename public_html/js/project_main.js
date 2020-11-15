@@ -500,6 +500,8 @@ export function updateAll() {
   document.getElementById('projectJob').innerHTML = p.job
   document.getElementById('projectPay').innerHTML = p.pay
   document.getElementById('projectCompany').innerHTML = p.company
+  document.getElementById('projectSettings').innerHML = "TEST"
+  console.log('Settings',p.settings)
   document.getElementById('p_name').value = p.name
   document.getElementById('p_job').value = p.job
   document.getElementById('p_pay').value = p.pay

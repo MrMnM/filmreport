@@ -53,7 +53,7 @@ require_once('../api-app/lib/Globals.php');
     </div><!-- /row -->
 <!-- MAINCONTENT -->
     <div class="panel with-nav-tabs panel-default">
-        <div class="panel-heading">
+        <div class="panel-heading nopad-btm">
             <h4 id="title"><div class="loading-spinner-left"></div>&nbsp;</h4>
             <ul class="nav nav-tabs">
                 <li class="active"><a href="#project" data-toggle="tab" aria-expanded="true">Infos</a></li>
@@ -78,10 +78,10 @@ require_once('../api-app/lib/Globals.php');
                                     <i class="fa fa-briefcase fa-fw"></i> Projektinformationen
                                     <div class="pull-right">
                                         <div class="btn-group">
-                                            <button type="button" id="openProjectModal" class="btn btn-default btn-xs" data-toggle="modal" data-target="#updateProjectModal">
+                                            <button type="button" id="openProjectModal" class="btn btn-default btn-xs" data-toggle="modal" data-target="#ProjectModal">
                                                 <span class="fa fa-pencil"></span>
                                             </button>
-                                            <button type="button" id="openSettingsModal" class="btn btn-default btn-xs" data-toggle="modal" data-target="">
+                                            <button type="button" id="openSettingsModal" class="btn btn-default btn-xs" data-toggle="modal" data-target="#SettingsModal">
                                                 <span class="fa fa-cog"></span>
                                             </button>
                                         </div><!--btn-group-->
@@ -101,11 +101,15 @@ require_once('../api-app/lib/Globals.php');
                                                 </tr>
                                                 <tr>
                                                     <td><strong>Tagesgage:</strong></td>
-                                                    <td id=projectPay></td>
+                                                    <td id="projectPay"></td>
                                                 </tr>
                                                 <tr>
                                                     <td><strong>Produktion:</strong></td>
-                                                    <td id=projectCompany></td>
+                                                    <td id="projectCompany"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>Einstellungen:</strong></td>
+                                                    <td id="projectSettings"></td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -374,7 +378,7 @@ require_once('../api-app/lib/Globals.php');
         </div><!--panel-body-->
     </div><!--panel-->
 
-    <div class="modal fade" id="updateProjectModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal fade" id="ProjectModal" tabindex="-1" role="dialog" aria-labelledby="Chnage Project Properties" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -412,7 +416,7 @@ require_once('../api-app/lib/Globals.php');
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
-    <div class="modal fade" id="addExpenseModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal fade" id="addExpenseModal" tabindex="-1" role="dialog" aria-labelledby="Add Expense" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -448,7 +452,28 @@ require_once('../api-app/lib/Globals.php');
                         <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
                         <button type="button" class="btn btn-primary" id="saveExpenseBtn">Speichern</button>
                     </div>
+                </div><!--modalbody-->
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
+    <div class="modal fade" id="SettingsModal" tabindex="-1" role="dialog" aria-labelledby="Settings" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Abrechnungseinstellungen modifizieren</h4>
+                </div>
+                <div class="modal-body">
+                  <div class="form-group input-group" id="exp_date_g">
+                      <span class="input-group-addon">Datum</span>
+                      <input type="date" id="exp_date" name="name" class="form-control" required>
+                  </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Abbrechen</button>
+                        <button type="button" class="btn btn-primary" id="saveSettingsBtn">Speichern</button>
+                    </div>
+                    </div><!-- /.modalbody -->
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->

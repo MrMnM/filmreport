@@ -88,6 +88,7 @@ public function load($request, $response, $args)
     'projects.p_gage',
     'projects.p_json',
     'projects.p_comment',
+    'projects.settings',
     'companies.name',
     'companies.address_1',
     'companies.address_2'
@@ -105,7 +106,8 @@ public function load($request, $response, $args)
     "company"=>$company,
     "companyId"=>$in['p_company'],
     "data"=>$in['p_json'],
-    "comment"=>$in['p_comment']
+    "comment"=>$in['p_comment'],
+    "settings"=>$in['settings']
   ];
   return $response->withJson($o);
 }

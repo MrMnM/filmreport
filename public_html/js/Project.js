@@ -13,6 +13,7 @@ export default class Project {
     this.pay=0
     this.company=''
     this.companyId=''
+    this.settings = ''
 
     //Stunden
     this.json=null
@@ -52,6 +53,7 @@ export default class Project {
       this.companyId=data.companyId
       this.json=data.data
       this.comment=data.comment
+      this.settings = data.settings
     })
     return p
   }
@@ -66,10 +68,9 @@ export default class Project {
     this.companyId=data.companyId
     this.json=data.data
     this.comment=data.comment
+    this.settings = data.settings
     return p
   }
-
-
 
   addRow(c,d){
     this.rows.push(new Row(c))

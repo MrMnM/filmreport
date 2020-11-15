@@ -680,6 +680,10 @@ input {
   /*padding: 5px 5px 0 5px; FIXME: What was this for*/
 }
 
+.nopad-btm{
+  padding-bottom: 0;
+}
+
 .panel.with-nav-tabs .nav-tabs {
   border-bottom: none;
 }

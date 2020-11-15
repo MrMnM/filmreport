@@ -5,4 +5,5 @@ api-app/lib/Globals.php
 public_html/includes/Classes/
 public_html/template_rapport.xls
 ftp-sync.json
+sftp.json
 *.code-workspace
