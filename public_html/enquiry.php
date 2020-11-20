@@ -1,6 +1,6 @@
 <?
 
-//TODO Macheen das es ohne login klappt
+//TODO Machen das es ohne login klappt
 include './includes/inc_sessionhandler_default.php';
 require_once('../api-app/lib/Globals.php');
 $db=$GLOBALS['db'];

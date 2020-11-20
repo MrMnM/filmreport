@@ -776,7 +776,7 @@ ob_start("ob_html_compress");
 		$('#loading').hide()
 	}
 	</script>
-	<script type="module" src="./js/view.js"></script>
+	<script type="module" src="./js/view.min.js"></script>
 </body>
 </html>
 <?php ob_end_flush(); ?>

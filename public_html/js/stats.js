@@ -29,7 +29,6 @@ export function refreshStats(chart,start,end){
     credentials: 'include'
   }
 
-  // TODO Promise All & gotten rid of jQuery
   fetch('https://filmstunden.ch/api/v01/stats?start='+start+'&end='+end,fetchData)
     .then(response => response.json())
     .then(data=>{

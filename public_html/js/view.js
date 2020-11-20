@@ -1,7 +1,6 @@
 if (location.protocol !== "https:") location.protocol = "https:";
-
 import Project from './Project.js'
-import Company from './Company.js'
+//import Company from './Company.js'
 import {
   roundToTwo,
   addTimes,
@@ -21,10 +20,12 @@ let clc = {}
 
 function loadChats() {
   p.getChats().then(() => {
+    let chats
     if (p.chatViewHtml != '') {
-      $('#chats').html(p.chatViewHtml)
+      chats = p.chatViewHtml
+      /*$('#chats').html(p.chatViewHtml)*/
     } else {
-      let emptyComment = `
+      chats = `
       <li class="divider"></li>
       <li>
         <div>
@@ -34,8 +35,8 @@ function loadChats() {
         </div>
         <div>Noch keine Kommentare</div>
       </li>`
-      $('#chats').html(emptyComment)
     }
+    $('#chats').html(chats)
   })
 }
 
@@ -123,7 +124,6 @@ function refreshView() {
   $('#5Over').html(`${clc.hoursDay+5}.te`)
   $('#6Over').html(`${clc.hoursDay+6}.te`)
   $('#7Over').html(`ab </br>${clc.hoursDay+7}.ter`)
-
   $('.gage').html(prj.p_gage)
   $('.foodrate').html(clc.lunch)
   $('.kilrate').html(clc.car)

@@ -226,19 +226,6 @@ function redrawRows() {
                       <td><input type="checkbox" id="lunch${currentRow}" name="lunc${currentRow}" value="${p.rows[currentRow].lunch}"></td>
                       <td><input type="number" name="cark${currentRow}" min=0 value="${p.rows[currentRow].car}"></td>
                       </tr>`
-    /*  newRow = `<li class="list-group-item-project">
-                <div class="col-md-1" style="border:1px solid gray">
-                </div>
-                <div class="col-md-5">
-                  <h4 class="list-group-item-heading"> List group heading </h4>
-                    <p class="list-group-item-text"> Qui diam libris ei, vidisse incorrupte at mel. His euismod salutandi dissentiunt eu. Habeo offendit ea mea. Nostro blandit sea ea, viris timeam molestiae an has. At nisl platonem eum.
-                    </p>
-                </div>
-                <div class="col-md-6 text-center">
-                  <button type="button" class="btn btn-default btn-lg btn-block"> Vote Now! </button>
-                </div>
-              </li>`
-    */
     $('#workhours').append(newRow)
     if (c.lunch) {
       $('#lunch' + currentRow).prop('checked', true)

@@ -38,10 +38,10 @@ export default class Row {
       return this.workhours
     }
 
-    let brk = this.break
-    let pause = brk.split(':')
-    var difference = moment.utc(moment(this.end,'HH:mm').diff(moment(this.start,'HH:mm'))).format('HH:mm')
-    var duration = moment.duration(difference)
+    const brk = this.break //TODO: Get rid of Moment.js 
+    const pause = brk.split(':')
+    let difference = moment.utc(moment(this.end,'HH:mm').diff(moment(this.start,'HH:mm'))).format('HH:mm')
+    let duration = moment.duration(difference)
     duration.subtract(pause[0] + ':00', 'hours')
     duration.subtract('00:' + pause[1], 'minutes')
     this.workhours = moment.utc(+duration).format('H:mm')
@@ -105,7 +105,7 @@ export default class Row {
     const MS2H = 3600000
     const D0 = 'January 1, 1970 '
     const nStart = new Date(D0+'23:00')
-    const nEnd = new Date(D0+'05:00')
+    const nEnd = addDays(new Date(D0+'05:00'),1)
     const start = new Date(D0+this.start)
     let end = new Date(D0+this.end)
     //Check if End is a Day later and add it
@@ -115,9 +115,8 @@ export default class Row {
     //Check wheter Start or end are in the night
     if(start>=nStart){nightwork = nightwork + (nStart-start)/MS2H}
     if(end<=nEnd){nightwork = nightwork + (end-nEnd)/MS2H}
-    let out = 0
-    if(nightwork>0){out = nightwork}
-    this.night = out
-    return out
+    this.night = 0
+    if(nightwork>0 && nightwork<=nightHours){this.night = roundToTwo(nightwork)}
+    return this.night
   }
 }
