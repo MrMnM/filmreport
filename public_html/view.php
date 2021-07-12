@@ -4,8 +4,8 @@ function ob_html_compress($buf){
 }
 ob_start("ob_html_compress");
 ?>
-<html>
 
+<html>
 <head>
 	<!--TODO glyphicons printable & Centered-->
 	<meta content="text/html" http-equiv="Content-Type">
@@ -34,8 +34,8 @@ ob_start("ob_html_compress");
 					<ul class="nav navbar-nav navbar-right">
 						<li class="dropdown">
 							<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                  <i class="fa fa-comments fa-fw"></i> <i class="fa fa-caret-down"></i>
-              </a>
+                  				<i class="fa fa-comments fa-fw"></i> <i class="fa fa-caret-down"></i>
+              				</a>
 							<ul class="dropdown-menu dropdown-comments">
 								<div id="chats"></div>
 								<textarea style="border: none" class="col-lg-2 form-control send-message" rows="1" placeholder="Antworten..." id="commentText"></textarea>
@@ -85,7 +85,6 @@ ob_start("ob_html_compress");
 					<div id="ES6" class="alert alert-danger" style="display:none">
 						<strong>FEHLER!</strong> Der verwendete Browser unterst&uuml;tzt moderne Webtechnolgien nicht welche zur Anzeige verwendet werden. F&uuml;r die korrekte Anzeige der Seite bitte einen neuen Webbrowser verwenden.
 					</div>
-
 <!--------------------------------------------------------------------------------------------------------------->
 					<div id="rapport" style="display:none">
 						<table border="0" cellpadding="0" cellspacing="0" class="f10">
@@ -762,6 +761,7 @@ ob_start("ob_html_compress");
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/featherlight/1.7.13/featherlight.min.js"></script>
 	<script>
+	/* FIXME: UNSAFE INLINE CSP!
 	var supportsES6 = function() {
 	  try {
 	    new Function("(a = 0) => a");
@@ -775,6 +775,7 @@ ob_start("ob_html_compress");
 	  $( "#ES6" ).show();
 		$('#loading').hide()
 	}
+	*/
 	</script>
 	<script type="module" src="./js/view.min.js"></script>
 </body>

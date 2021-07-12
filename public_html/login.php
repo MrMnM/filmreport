@@ -196,6 +196,7 @@ function login($conn,$uid,$name,$type,$remember){
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script>
+/* FIXME: UNSAFE INLINE CSP!
 var supportsES6 = function() {
   try {
     new Function("(a = 0) => a");
@@ -207,7 +208,7 @@ var supportsES6 = function() {
 }();
 if(!supportsES6){
   $( "#ES6" ).show();
-}
+}*/
 </script>
 </body>
 </html>

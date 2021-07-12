@@ -85,12 +85,10 @@ $('#submitComment').click((event) => {
   let text = $('#commentText').val()
   addChat(text)
 })
-
 $('.collapseHeader').click(function() {
   $(this).find('i').toggleClass('fa-chevron-down').toggleClass('fa-chevron-right')
   $(this).parent('tr').nextUntil('.cat').toggle()
 })
-
 $('#saveExpenseBtn').click(() => {
   if (!$('#exp_date')[0].checkValidity()) {
     $('#exp_date_g').addClass('has-error')
@@ -141,7 +139,13 @@ $('#saveExpenseBtn').click(() => {
   })
 
 })
-
+$('#saveSettingsBtn').click(()=>{
+  p.settings = JSON.parse($('#editsettings').val())
+  p.saved = false
+  updateSaveStatus()
+  updateProjectInfo()
+  $('#SettingsModal').modal('toggle')
+})
 // CHHANGEFUNCTION ------------------------------------------------------------
 //-----------------------------------------------------------------------------
 
@@ -192,15 +196,15 @@ $('#comment').change(() => {
 //------------------------------------------------------------------------------
 function addRow() {
   let currentDate = p.startdate
-  let rowCounter = p.rows.length
+  const rowCounter = p.rows.length
   if (rowCounter > 0) {
     let currentCounter = rowCounter - 1
     let inputDate = $('[name="date' + currentCounter + '"]').val()
     currentDate = new Date(inputDate)
     currentDate.setDate(currentDate.getDate() + 1)
   }
-  let date = formatDate(currentDate)
-  p.addRow(rowCounter, date)
+  const date = formatDate(currentDate)
+  p.addRow(rowCounter, date, p.settings)
 }
 
 function redrawRows() {
@@ -266,16 +270,22 @@ function Save() {
 }
 
 function updateRow(row) {
-  $('#wtim' + row).html(p.rows[row].getWorkHours())
-  $('#tent' + row).html((p.rows[row].getOvertime(10) > 0) ? (p.rows[row].getOvertime(10)) : '&nbsp;')
-  $('#elev' + row).html((p.rows[row].getOvertime(11) > 0) ? (p.rows[row].getOvertime(11)) : '&nbsp;')
-  $('#twel' + row).html((p.rows[row].getOvertime(12) > 0) ? (p.rows[row].getOvertime(12)) : '&nbsp;')
-  $('#thir' + row).html((p.rows[row].getOvertime(13) > 0) ? (p.rows[row].getOvertime(13)) : '&nbsp;')
-  $('#four' + row).html((p.rows[row].getOvertime(14) > 0) ? (p.rows[row].getOvertime(14)) : '&nbsp;')
-  $('#fift' + row).html((p.rows[row].getOvertime(15) > 0) ? (p.rows[row].getOvertime(15)) : '&nbsp;')
-  $('#sixt' + row).html((p.rows[row].getOvertime(16) > 0) ? (p.rows[row].getOvertime(16)) : '&nbsp;')
-  $('#nigh' + row).html((p.rows[row].getNightHours() > 0) ? (p.rows[row].getNightHours()) : '&nbsp;')
-  $('#base' + row).val(p.rows[row].getBase())
+  const curRow = p.rows[row]
+  for (let i = 0; i < curRow.overtime.length; i++) {
+    curRow.calcOvertime(10+i)
+  }
+  curRow.calcNighttime()
+
+  $('#wtim' + row).html(curRow.getWorkHours())
+  $('#tent' + row).html((curRow.overtime[0] > 0) ? curRow.overtime[0] : '&nbsp;')
+  $('#elev' + row).html((curRow.overtime[1] > 0) ? curRow.overtime[1] : '&nbsp;')
+  $('#twel' + row).html((curRow.overtime[2] > 0) ? curRow.overtime[2] : '&nbsp;')
+  $('#thir' + row).html((curRow.overtime[3] > 0) ? curRow.overtime[3] : '&nbsp;')
+  $('#four' + row).html((curRow.overtime[4] > 0) ? curRow.overtime[4] : '&nbsp;')
+  $('#fift' + row).html((curRow.overtime[5] > 0) ? curRow.overtime[5] : '&nbsp;')
+  $('#sixt' + row).html((curRow.overtime[6] > 0) ? curRow.overtime[6] : '&nbsp;')
+  $('#nigh' + row).html((curRow.night > 0) ? (curRow.night) : '&nbsp;')
+  $('#base' + row).val(curRow.getBase())
 }
 
 function updateBottom() {
@@ -307,30 +317,30 @@ function updateBottom() {
 
   let hours125 = 0
   for (let i = 0; i < p.rows.length; ++i) {
-    hours125 += parseFloat(p.rows[i].getOvertime(10))
-    hours125 += parseFloat(p.rows[i].getOvertime(11))
+    hours125 += parseFloat(p.rows[i].overtime[0])
+    hours125 += parseFloat(p.rows[i].overtime[1])
   }
 
   let hours150 = 0
   for (let i = 0; i < p.rows.length; ++i) {
-    hours150 += parseFloat(p.rows[i].getOvertime(12))
-    hours150 += parseFloat(p.rows[i].getOvertime(13))
+    hours150 += parseFloat(p.rows[i].overtime[2])
+    hours150 += parseFloat(p.rows[i].overtime[3])
   }
 
   let hours200 = 0
   for (let i = 0; i < p.rows.length; ++i) {
-    hours200 += parseFloat(p.rows[i].getOvertime(14))
-    hours200 += parseFloat(p.rows[i].getOvertime(15))
+    hours200 += parseFloat(p.rows[i].overtime[4])
+    hours200 += parseFloat(p.rows[i].overtime[5])
   }
 
   let hours250 = 0
   for (let i = 0; i < p.rows.length; ++i) {
-    hours250 += parseFloat(p.rows[i].getOvertime(16))
+    hours250 += parseFloat(p.rows[i].overtime[6])
   }
 
   let hours25 = 0
   for (let i = 0; i < p.rows.length; ++i) {
-    hours25 += parseFloat(p.rows[i].getNightHours())
+    hours25 += parseFloat(p.rows[i].night)
   }
 
   let total125 = roundToTwo(hours125 * getRate(125))
@@ -492,7 +502,7 @@ function deleteExpense(e_id) {
   })
 }
 
-export function updateAll() {
+function updateProjectInfo(){
   document.getElementById('comment').innerHTML = p.comment
   document.getElementById('projectName').innerHTML = p.name
   document.getElementById('title').innerHTML = p.name
@@ -504,7 +514,10 @@ export function updateAll() {
   document.getElementById('p_name').value = p.name
   document.getElementById('p_job').value = p.job
   document.getElementById('p_pay').value = p.pay
+}
 
+export function updateAll() {
+  updateProjectInfo()
   redrawRows()
 
   for (let i = 0; i < p.rows.length; i++) {

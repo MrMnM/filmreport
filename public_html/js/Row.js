@@ -1,8 +1,8 @@
 import {roundToTwo, timeToMins, subTimes, timeFromMins, addDays} from './timeHelpers.js'
 export default class Row {
-  constructor (idNr) {
+  constructor (idNr,date) {
     this.id = idNr
-    this.date = null
+    this.date = date
     this.start = '00:00'
     this.end = '00:00'
     this.work = ''
@@ -70,7 +70,8 @@ export default class Row {
     return this.base
   }
 
-  getOvertime(hour) {
+
+  calcOvertime(hour) { //TODO: Split in Get//SetOvertime
     let ret=0
     const workhours = this.getWorkHours()
     const currentHour = timeFromMins((hour-1)*60)
@@ -101,7 +102,7 @@ export default class Row {
     return ret
   }
 
-  getNightHours(){
+  calcNighttime(){
     const MS2H = 3600000
     const D0 = 'January 1, 1970 '
     const nStart = new Date(D0+'23:00')

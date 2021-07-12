@@ -25,7 +25,6 @@ $('#delete-btn').click(() => {
   })
 })
 
-
 function newCreated(data) {
   if (data.status == 'SUCCESS') {
     window.location.href = './project.php?id=' + data.project_id
@@ -59,7 +58,7 @@ function companyCreated(cmp) {
 }
 
 function projFinished(data) {
-  console.log('finished')
+  //FIXME: Projects with special characters often can't be finished
   if (data.status == 'SUCCESS') {
     $('#finishProjectModal').modal('hide')
     table.ajax.reload()

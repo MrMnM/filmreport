@@ -51,7 +51,7 @@ export function refreshStats(chart,start,end){
   return chart
 }
 
-export function refreshDonut (donut) {
+export function refreshDonut (donut,start,end) {
   if (donut === null) {
     donut = Morris.Donut({
       element: 'donut',
@@ -63,7 +63,7 @@ export function refreshDonut (donut) {
       window.location.href = './project_overview.php?search=' + encodeURIComponent(row.label)
     })
   }
-  fetch('https://filmstunden.ch/api/v01/stats/chart/donut',{credentials: 'include'})
+  fetch('https://filmstunden.ch/api/v01/stats/chart/donut?start='+start+'&end='+end,{credentials: 'include'})
     .then(response => response.json())
     .then(data=>{
       donut.setData(data)

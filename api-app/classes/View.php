@@ -138,14 +138,13 @@ class View
 
       $oWs->getPageSetup()->setPaperSize(PHPExcel_Worksheet_PageSetup::PAPERSIZE_A4);
       $oWs->getPageSetup()->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
-
       $oWs->getPageMargins()->setTop(0.12);
       $oWs->getPageMargins()->setRight(0.12);
       $oWs->getPageMargins()->setLeft(0.12);
       $oWs->getPageMargins()->setBottom(0.12);
       $oWs->getPageSetup()->setFitToWidth(1);
 
-    /*COLORS-------*/
+    // COLORS
 
       $darkOrange =     array('fill' => array(
                               'type' => PHPExcel_Style_Fill::FILL_SOLID,
@@ -172,6 +171,8 @@ class View
                               'type' => PHPExcel_Style_Fill::FILL_SOLID,
                               'color' => array('rgb' => 'FFFFE5')));
 
+
+      // RAPPORT                        
       $oWs->setCellValue('G2', $pay);
       $oWs->setCellValue('A3', $in[0]["userData"]["name"]);
       $oWs->setCellValue('A4', $in[0]["userData"]["address_1"]);
@@ -199,7 +200,6 @@ class View
       $allhours2 = new DateTime('2000-01-01 00:00:00');
 
       $i = 0;
-
       $len = count($dat);
 
       foreach($dat as $arr){
@@ -244,6 +244,7 @@ class View
               $oWs->mergeCells('R'.$rowCounter.':S'.$rowCounter);
               $oWs->mergeCells('T'.$rowCounter.':U'.$rowCounter);
           }
+
           $rowCounter++;
           $i++;
       }
@@ -306,7 +307,116 @@ class View
           $cur++;
       }
 
+      // ABRECHNUNG
+      $objPHPExcel->setActiveSheetIndexByName('Abrechnung');
+      $oWs = $objPHPExcel->getActiveSheet();
+      $oWs->getPageSetup()->setPaperSize(PHPExcel_Worksheet_PageSetup::PAPERSIZE_A4);
+      $oWs->getPageSetup()->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_PORTRAIT);
 
+      $oWs->getPageMargins()->setTop(0.12);
+      $oWs->getPageMargins()->setRight(0.12);
+      $oWs->getPageMargins()->setLeft(0.12);
+      $oWs->getPageMargins()->setBottom(0.12);
+      $oWs->getPageSetup()->setFitToWidth(1);
+
+      $oWs->setCellValue('B3', $in[0]["userData"]["name"]);
+      $oWs->setCellValue('B4', $in[0]["userData"]["address_1"]);
+      $oWs->setCellValue('B5', $in[0]["userData"]["address_2"]);
+      $oWs->setCellValue('B7', $in[0]["userData"]["tel"]);
+      $oWs->setCellValue('B6', $in[0]["userData"]["mail"]);
+      $oWs->setCellValue('B8', $in[0]["userData"]["ahv"]);
+      $oWs->setCellValue('B9', $u_dob);
+      $oWs->setCellValue('B10', $in[0]["userData"]["konto"]);
+      $oWs->setCellValue('B11', $in[0]["userData"]["bvg"]);
+      // TODO: DATE AND PROJECTNUMBER
+      $oWs->setCellValue('F4', $in[0]["projectData"]["p_name"]);
+      $oWs->setCellValue('F5', $sdate);
+      $oWs->setCellValue('G5', $edate);
+      $oWs->setCellValue('F9', $in[0]["companyData"]["c_name"]);
+      $oWs->setCellValue('F10', $in[0]["companyData"]["c_address_1"]);
+      $oWs->setCellValue('F11', $in[0]["companyData"]["c_address_2"]);
+      $oWs->setCellValue('F6', $in[0]["projectData"]["p_job"]);
+      $oWs->setCellValue('F7', $pay);
+
+      $rowCounter = 16;
+      $i = 0;
+
+      $len = count($dat);
+
+      foreach($dat as $arr){
+          if($arr['workhours']==0){
+              break;
+          }
+          list($hours, $minutes) = explode(':', $arr['workhours']);
+          $date = DateTime::createFromFormat('Y-m-d', $arr['date']);
+          $date = $date->format('d/m/Y');
+          $cur=$rowCounter-1;
+          $oWs->setCellValue("A".$cur, $date);
+          $oWs->setCellValue("B".$cur,$arr['work']);
+          $oWs->setCellValue("C".$cur,$arr['base']);
+          $oWs->setCellValue("F".$cur,$pay);
+          $oWs->setCellValue("G".$cur,round($pay*$arr['base'],2));
+     
+          if ($i != $len - 1) {
+              $oWs->insertNewRowBefore($rowCounter, 1);
+              $oWs->mergeCells('G'.$rowCounter.':H'.$rowCounter);
+          }
+          $rowCounter++;
+          $i++;
+      }
+
+      $rowCounter--;
+      $grundlohn = $all["base"]*$pay;
+      $oWs->setCellValue("C".$rowCounter, round($all["base"],2));
+      $oWs->setCellValue("G".$rowCounter, round($grundlohn,2));
+
+      $rowCounter++;
+      $ferienzulage = ($all["base"]*$pay)*0.0833;
+      $oWs->setCellValue("G".$rowCounter, round($ferienzulage,2));
+      $rowCounter++;
+      $oWs->setCellValue("G".$rowCounter, round($grundlohn + $ferienzulage,2));
+
+      $rowCounter = $rowCounter +3;
+      $oWs->setCellValue("C".$rowCounter, round($all["125"],2));
+      $oWs->setCellValue("G".$rowCounter, $p125);
+
+      $rowCounter++;
+      $oWs->setCellValue("C".$rowCounter, round($all["150"],2));
+      $oWs->setCellValue("G".$rowCounter, $p150);
+
+      $rowCounter++;
+      $oWs->setCellValue("C".$rowCounter, round($all["200"],2));
+      $oWs->setCellValue("G".$rowCounter, $p200);
+
+      $rowCounter++;
+      $oWs->setCellValue("C".$rowCounter, round($all["250"],2));
+      $oWs->setCellValue("G".$rowCounter, $p250);
+
+      $rowCounter++;
+      $oWs->setCellValue("C".$rowCounter, round($all["25"],2));
+      $oWs->setCellValue("G".$rowCounter, $p25);
+
+      $rowCounter++;
+      $oWs->setCellValue("G".$rowCounter, $overtime);
+
+      $rowCounter = $rowCounter +2;
+      $oWs->setCellValue("G".$rowCounter, round($grundlohn + $ferienzulage + $overtime,2));
+
+      // SPESEN
+      $objPHPExcel->setActiveSheetIndexByName('Spesen');
+      $oWs = $objPHPExcel->getActiveSheet();
+      $oWs->getPageSetup()->setPaperSize(PHPExcel_Worksheet_PageSetup::PAPERSIZE_A4);
+      $oWs->getPageSetup()->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
+      $oWs->getPageMargins()->setTop(0.12);
+      $oWs->getPageMargins()->setRight(0.12);
+      $oWs->getPageMargins()->setLeft(0.12);
+      $oWs->getPageMargins()->setBottom(0.12);
+      $oWs->getPageSetup()->setFitToWidth(1);
+
+      $objPHPExcel->setActiveSheetIndexByName('Rapport');
+      $oWs = $objPHPExcel->getActiveSheet();
+
+      // SAVING & EXPORTING
       $filename = $title;
       if ($type=="xlsx") {
           $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
@@ -317,8 +427,14 @@ class View
       }elseif ($type=="pdf") {
           $rendererName = PHPExcel_Settings::PDF_RENDERER_DOMPDF;
           $rendererLibrary = 'dompdf.php';
-          require_once '../../vendor/dompdf/lib/Cpdf.php';
-          $rendererLibraryPath = '../../vendor/dompdf/';
+          //require_once '../../vendor/dompdf/lib/Cpdf.php';
+          //$rendererLibraryPath = '../../vendor/dompdf/';
+          //$rendererName = PHPExcel_Settings::PDF_RENDERER_DOMPDF;
+          $rendererLibraryPath = '../../vendor/dompdf_old';
+          //require_once $rendererLibraryPath.'/src/Autoloader.php';
+          require_once $rendererLibraryPath.'/lib/Cpdf.php';
+
+
           if (!PHPExcel_Settings::setPdfRenderer(
               $rendererName,
               $rendererLibraryPath
@@ -332,9 +448,13 @@ class View
 
           $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'PDF');
           //$objWriter->writeAllSheets();
-          return $response->withHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+          $objWriter-> setSheetIndex(0);
+          return $response->withHeader('Content-Type', 'application/pdf')
                           ->withHeader('Content-Disposition', 'attachment;filename="'.$filename.'.pdf"')
                           ->write($objWriter->save('php://output'));
+      }elseif ($type=="html"){
+        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'HTML');
+        $objWriter->save('test.html');
       }
       exit;
     }

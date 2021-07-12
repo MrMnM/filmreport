@@ -72,13 +72,18 @@ class Stats
   public function donutchart($request, $response, $args)
   {
     $this->auth->check();
+    $start = new DateTime($request->getQueryParam('start'));
+    $end = new DateTime($request->getQueryParam('end'));
     $indata = $this->db->select('projects', [
       "[>]companies" => ["p_company" => "company_id"]
     ], [
       'projects.tot_money',
       'companies.name'
     ], [
-      "user_id" => $_SESSION['user'],
+      "AND" => [
+        "user_id" => $_SESSION['user'],
+        "p_end[<>]" => [$start->format('Y-m-d'), $end->format('Y-m-d')],
+      ],
       "ORDER" => ["projects.p_company" => "DESC"]
     ]);
     $o = [];

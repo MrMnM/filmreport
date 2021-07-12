@@ -72,9 +72,8 @@ export default class Project {
     return p
   }
 
-  addRow(c,d){
-    this.rows.push(new Row(c))
-    this.rows[c].date = d
+  addRow(current,date,settings){
+    this.rows.push(new Row(current,date))
   }
 
   getExpenses(){

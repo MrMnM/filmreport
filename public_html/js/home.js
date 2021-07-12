@@ -27,12 +27,16 @@ $( '#toDate' ).change(function() {
   e=$('#toDate').val()
   sessionStorage.setItem('interval',s+';'+e)
   chart = refreshStats(chart,s,e)
+  donut = refreshDonut(donut,s,e)
+
 })
 
 $( '#fromDate' ).change(function() {
   s=$('#fromDate').val()
   sessionStorage.setItem('interval',s+';'+e)
   chart = refreshStats(chart,s,e)
+  donut = refreshDonut(donut,s,e)
+
 })
 
 // --------------------------------------------------------
@@ -50,7 +54,7 @@ $(()=> { // STARTFUNCTION
     })
   })
   yearView = refreshYearView(yearView)
-  donut = refreshDonut(donut)
+  donut = refreshDonut(donut,s,e)
   chart = refreshStats(chart,s,e)
   chart.redraw()
 })
