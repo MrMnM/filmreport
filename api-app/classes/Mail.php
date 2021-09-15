@@ -23,6 +23,10 @@ class Mail
             ' ' . $template . ' ');
     }
 
+    public function sendActivation($request,$response,$args){
+    //TODO: MOVE ACTIVATION MAIL HERE
+    }
+
     public function sendBill($request,$response,$args){
             $req = $request->getParsedBody();
             $date = date('ymd');

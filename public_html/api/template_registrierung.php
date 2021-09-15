@@ -1,7 +1,7 @@
 <!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 <head>
-    <title>Abrechnung</title>
+    <title>Registrierung</title>
     <!--[if !mso]><!-- -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <!--<![endif]-->
@@ -83,6 +83,7 @@
                                                 <tbody>
                                                     <tr>
                                                         <td style="width:64px;">
+                    
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -142,8 +143,7 @@
                                                     <tr>
                                                         <td align="center" style="font-size:0px;padding:0;word-break:break-word;">
                                                             <div style="font-family:'Helvetica Neue',Arial,sans-serif;font-size:12px;font-weight:300;line-height:1;text-align:center;color:#575757;">
-                                                                <span class="apple-link" style="color: #999999; font-size: 12px; text-align: center;">Email versendet aus <a href="https://filmstunden.ch" style="color: #999999; font-size: 12px; text-align: center; text-decoration: none;">Filmstunden.ch</a></span>
-                                                                <br><span class="apple-link" style="color: #999999; font-size: 12px; text-align: center;">Um zu Antworten, direkt auf diese Mail antworten.</span>
+                                                                <span class="apple-link" style="color: #999999; font-size: 12px; text-align: center;">Email versendet von <a href="https://filmstunden.ch" style="color: #999999; font-size: 12px; text-align: center; text-decoration: none;">Filmstunden.ch</a></span>
                                                             </div>
                                                         </td>
                                                     </tr>

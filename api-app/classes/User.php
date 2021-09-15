@@ -1,5 +1,11 @@
 <?php
 use \Medoo\Medoo;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require_once('../../vendor/PHPMailer/Exception.php');
+require_once('../../vendor/PHPMailer/PHPMailer.php');
+require_once('../../vendor/PHPMailer/SMTP.php');
 
 class User
 {
@@ -134,10 +140,34 @@ class User
     return $response->withJson($out);
   }
 
-  private function sendRegistrationMail($mail, $active)
+  private function sendRegistrationMail($address, $active)
   {
-    $subject = 'Filmabrechnungsgenerator';
-    $message = 'Hallo, bitte bestaetige deine Email Addresse mit folgendem Link: https://filmstunden.ch/validate/'.$active;
+
+    $body = 'Hallo, bitte bestaetige deine Email Addresse mit folgendem Link: <br/> https://filmstunden.ch/validate/'.$active;
+    $subject = 'Registrierung bei Filmstunden.ch';
+    ///----------------------------------------------------------------------------------------------------------------------------
+    ob_start();
+    include('template_registrierung.php');
+    $body = ob_get_clean();
+
+    ///--------------------------------------------------------------------------
+  
+    //$url = 'https://filmstunden.ch/api/v01/view/download/'.$p_id.'?format=pdf';
+    //$binary_content = file_get_contents($url);
+
+    $mail = new PHPMailer;
+    $mail->CharSet = 'utf-8';  
+    $mail->SetFrom('registration@filmstunden.ch', $name);
+    $mail->addAddress($address);
+    $mail->Subject = $subject;
+    $mail->Body    = $body;
+    $mail->IsHTML(true);
+    if($mail->send()) {
+      return true;
+    } else {
+      return false;
+    }
+/*     $subject = 'Filmabrechnungsgenerator';
     $message = wordwrap($message, 76, "\r\n");
     $encoding = "utf-8";
     // Preferences for Subject field
@@ -161,7 +191,7 @@ class User
       return true;
     } else {
       return false;
-    }
+    } */
   }
 
   public function validate($request, $response, $args)
