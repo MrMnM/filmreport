@@ -2,67 +2,31 @@ import {activateSideMenu} from  './sidemenu.js'
 
 let u = {}
 
-$('tr.name')
-  .mouseenter(function() {
-    $(this).find('.name').html('<input type="text" id="name" value="' + u.name + '">')
-  })
-  .mouseleave(function() {
-    u.name = $('#name').val()
-    $(this).find('.name').html(u.name)
-  })
-$('tr.address')
-  .mouseenter(function() {
-    $(this).find('.address').html('<input type="text" id="address1" value="' + u.address_1 + '"><br><input type="text" id="address2" value="' + u.address_2 + '">')
-  })
-  .mouseleave(function() {
-    u.address_1 = $('#address1').val()
-    u.address_2 = $('#address2').val()
-    $(this).find('.address').html(u.address_1 + '<br>' + u.address_2)
-  })
-$('tr.tel')
-  .mouseenter(function() {
-    $(this).find('.tel').html('<input type="text" id="tel" value="' + u.tel + '">')
-  })
-  .mouseleave(function() {
-    u.tel = $('#tel').val()
-    $(this).find('.tel').html(u.tel)
-  })
 
-$('tr.ahv')
-  .mouseenter(function() {
-    $(this).find('.ahv').html('<input type="text" id="ahv" pattern="756\.\d{4}\.\d{4}\.\d{2}" value="' + u.ahv + '">')
-  })
-  .mouseleave(function() {
-    u.ahv = $('#ahv').val()
-    $(this).find('.ahv').html(u.ahv)
-  })
-$('tr.dob')
-  .mouseenter(function() {
-    $(this).find('.dob').html('<input type="date" id="dob" value="' + u.dateob + '">')
-  })
-  .mouseleave(function() {
-    u.dateob = $('#dob').val()
-    $(this).find('.adob').html(u.dateob)
-  })
-$('tr.konto')
-  .mouseenter(function() {
-    $(this).find('.konto').html('<input type="text" id="konto" value="' + u.konto + '">')
-  })
-  .mouseleave(function() {
-    u.konto = $('#konto').val()
-    $(this).find('.konto').html(u.konto)
-  })
-$('tr.bvg')
-  .mouseenter(function() {
-    $(this).find('.bvg').html('<input type="text" id="bvg" value="' + u.bvg + '">')
-  })
-  .mouseleave(function() {
-    u.bvg = $('#bvg').val()
-    $(this).find('.bvg').html(u.bvg)
-  })
+$('#editInfo').click(function(event) {event.preventDefault(); activateEdit()})
+$('#editPassword').click(function(event) {event.preventDefault(); editPassword()})
+$('#saveInfo').click(function(event) {event.preventDefault(); saveUser()})
 
-jQuery('#saveInfo').click(function(event) {
-  event.preventDefault()
+function activateEdit(){
+  document.getElementById('editBtn').style.display = "none"
+  document.getElementById('saveBtn').style.display = "block"
+  let readOnlyElements = document.getElementsByClassName("readonly")
+  for (let i = 0; i < readOnlyElements.length; i++) {
+    readOnlyElements[i].readOnly = false
+  } 
+}
+
+function disableEdit(){
+  document.getElementById('editBtn').style.display = "block"
+  document.getElementById('saveBtn').style.display = "none"
+  let readOnlyElements = document.getElementsByClassName("readonly")
+  for (let i = 0; i < readOnlyElements.length; i++) {
+    readOnlyElements[i].readOnly = true
+  } 
+}
+
+function saveUser(){
+  readData()
   $.ajax({
     url: 'https://filmstunden.ch/api/v01/user',
     type: 'POST',
@@ -80,12 +44,14 @@ jQuery('#saveInfo').click(function(event) {
     success: function(data) {
       if (data.msg == 'SUCCESS') {
         console.log(data.msg)
+        disableEdit()
+        LoadUser()
       } else {
         console.error(data.msg)
       }
     }
   })
-})
+}
 
 
 function LoadUser() {
@@ -96,23 +62,77 @@ function LoadUser() {
   })
     .done(data => {
       u=data
+      disableEdit()
       Redraw()
     })
 }
 
+function readData(){
+  u.tel = document.getElementById('tel').value 
+  u.name = document.getElementById('name').value
+  u.ahv = document.getElementById('ahv').value
+  u.dateob = document.getElementById('dob').value 
+  u.konto = document.getElementById('konto').value 
+  u.address_1 = document.getElementById('address1').value
+  u.address_2 = document.getElementById('address2').value
+  u.name = document.getElementById('name').value
+  u.bvg = document.getElementById('bvg').value
+}
+
 function Redraw() {
-  $('td.tel').html(u.tel)
-  $('td.name').html(u.name)
-  $('td.mail').html(u.mail)
-  $('td.ahv').html(u.ahv)
-  $('td.dob').html(u.dateob)
-  $('td.konto').html(u.konto)
-  $('td.address').html(u.address_1 + '<br>' + u.address_2)
-  $('td.name').html(u.name)
-  $('td.bvg').html(u.bvg)
+  document.getElementById('tel').value = u.tel
+  document.getElementById('name').value = u.name
+  document.getElementById('mail').value = u.mail
+  document.getElementById('ahv').value = u.ahv
+  document.getElementById('dob').value = u.dateob
+  document.getElementById('konto').value = u.konto
+  document.getElementById('address1').value = u.address_1 
+  document.getElementById('address2').value = u.address_2
+  document.getElementById('name').value = u.name
+  document.getElementById('bvg').value = u.bvg
+}
+
+function editPassword(){
+  $.ajax({
+    url: 'https://filmstunden.ch/api/v01/user/setpw',
+    type: 'POST',
+    dataType: 'json',
+    data: {
+      'mail': document.getElementById('mail').value,
+      'curpw': document.getElementById('curpw').value,
+      'newpw1': document.getElementById('newpw1').value,
+      'newpw2': document.getElementById('newpw2').value,
+    },
+    success: function(data) {
+      //console.log(data)
+      document.getElementById('curpw').value = ""
+      document.getElementById('newpw1').value = ""
+      document.getElementById('newpw2').value = ""
+      if (data.status == 'SUCCESS') {
+        //console.log(data.msg)
+        document.getElementById('PWsuccess').innerHTML = data.msg
+        document.getElementById('PWsuccess').style.display = "block"
+        setTimeout(function() {
+          document.getElementById('PWsuccess').style.display = "none"
+        }, 5000);
+      } else {
+        console.error(data.msg)
+        document.getElementById('PWerror').innerHTML = data.msg
+        document.getElementById('PWerror').style.display = "block"
+        setTimeout(function() {
+          document.getElementById('PWerror').style.display = "none"
+        }, 5000);
+      }
+    }
+  })
+
 }
 
 $(()=>{ // JQUERY STARTFUNCTION
   activateSideMenu()
   LoadUser()
+  document.getElementById('table').style.display = "block"
+  document.getElementById('loading').style.display = "none"
+
+
 })

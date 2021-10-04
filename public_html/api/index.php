@@ -66,6 +66,8 @@ $app->group('/v01', function() {
   $this->post('/user', 'User:update');
   $this->post('/user/new', 'User:new');
   $this->get('/user/validate', 'User:validate'); //?v=xx
+  $this->post('/user/setpw', 'User:setPassword');
+
 
   // Company
   $this->get('/company', 'Company:list');

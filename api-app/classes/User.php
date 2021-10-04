@@ -82,8 +82,8 @@ class User
       $this->db->update("users", [
         "name" => $body['name'],
         "tel" => $body['tel'],
-        "address_1" => $body['address_2'],
-        "address_2" => $body['address_1'],
+        "address_1" => $body['address_1'],
+        "address_2" => $body['address_2'],
         "ahv" => $this->enc->encrypt($body['ahv'], 'e'),
         "dateob" => $body['dateob'],
         "konto" => $this->enc->encrypt($body['konto'], 'e'),
@@ -96,6 +96,41 @@ class User
       return $response->withStatus(500);
     }
     return $response->withJson($data);
+  }
+
+  public function setPassword($request, $response, $args){
+    $this->auth->check();
+    $req = $request->getParsedBody();
+    if (empty($req["mail"]) || empty($req["curpw"]) || empty($req["newpw1"]) || empty($req["newpw2"])) {
+      return $response->withJson(array('status'=>'ERROR','msg'=>'Es wurden nicht alle Daten übermittelt'));
+    }
+    if ($req["newpw1"]!=$req["newpw2"]) {
+      return $response->withJson(array('status'=>'ERROR','msg'=>'Passwörter stimmen nicht überein'));
+    }
+
+    $pw = $this->db->select('users', [
+      'pw'
+    ], [
+      "u_id" => $_SESSION['user']
+    ]);
+
+    if (!password_verify($req['curpw'],$pw[0]["pw"])){
+      return $response->withJson(array('status'=>'ERROR','msg'=>'Falsches Passwort'));
+    }
+
+    $newhash = password_hash($req['newpw1'], PASSWORD_DEFAULT);
+
+    $this->db->update("users", [
+      "pw" => $newhash,
+    ], [
+      "AND" => [
+        "mail" => $req['mail'],
+        "u_id" => $_SESSION['user']
+        ]]);
+        return $response->withJson(array('status'=>'SUCCESS','msg'=>'Passwort geändert'));
+  
+        return $response->withJson(array('status'=>'ERROR','msg'=>'Irgend ein Fehler'));
+
   }
 
   public function new($request, $response, $args)
@@ -142,19 +177,14 @@ class User
 
   private function sendRegistrationMail($address, $active)
   {
-
-    $body = 'Hallo, bitte bestaetige deine Email Addresse mit folgendem Link: <br/> https://filmstunden.ch/validate/'.$active;
+    $body = 'Hallo, bitte bestaetige deine Email Addresse mit folgendem Link: <br/> <a href="https://filmstunden.ch/validate/'.$active.'">https://filmstunden.ch/validate/'.$active.'</a>';
     $subject = 'Registrierung bei Filmstunden.ch';
-    ///----------------------------------------------------------------------------------------------------------------------------
+    ///--------------------------------------------------------------------------
     ob_start();
     include('template_registrierung.php');
     $body = ob_get_clean();
-
     ///--------------------------------------------------------------------------
   
-    //$url = 'https://filmstunden.ch/api/v01/view/download/'.$p_id.'?format=pdf';
-    //$binary_content = file_get_contents($url);
-
     $mail = new PHPMailer;
     $mail->CharSet = 'utf-8';  
     $mail->SetFrom('registration@filmstunden.ch', $name);
@@ -167,35 +197,11 @@ class User
     } else {
       return false;
     }
-/*     $subject = 'Filmabrechnungsgenerator';
-    $message = wordwrap($message, 76, "\r\n");
-    $encoding = "utf-8";
-    // Preferences for Subject field
-    $subject_preferences = array(
-      "input-charset" => $encoding,
-      "output-charset" => $encoding,
-      "line-length" => 76,
-      "line-break-chars" => "\r\n"
-    );
-    $from_mail = "info@filmstunden.ch";
-    $from_name = "Filmstunden";
-    // Mail header
-    $header = "Content-type: text/html; charset=".$encoding." \r\n";
-    $header .= "From: ".$from_name." <".$from_mail."> \r\n";
-    $header .= "MIME-Version: 1.0 \r\n";
-    $header .= "Content-Transfer-Encoding: 8bit \r\n";
-    $header .= "Date: ".date("r (T)")." \r\n";
-    $header .= iconv_mime_encode("Subject", $subject, $subject_preferences);
-
-    if (mail($mail, $subject, $message, $header)) {
-      return true;
-    } else {
-      return false;
-    } */
   }
 
   public function validate($request, $response, $args)
   {
+    // TODO: Make a function that deletes unvalidated users
     $this->db->query("DELETE FROM tokens WHERE timeout < NOW()");
     $token = $request->getQueryParam('v');
     $validated = false;

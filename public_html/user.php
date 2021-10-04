@@ -31,43 +31,53 @@ require_once('../api-app/lib/Globals.php');
       <div class="panel panel-default">
         <div class="panel-heading">
           <i class="fa fa-user fa-fw"></i> Persönliche Informationen
+            <div id="editBtn" class="pull-right">
+                <div class="btn-group">
+                    <button type="button" id="editInfo" class="btn btn-default btn-xs">
+                        <span class="fa fa-pencil"></span>
+                    </button>
+                </div><!--btn-group-->
+            </div><!--pull-right-->
         </div><!--panel heading-->
         <div class="panel-body">
           <div class="row">
-            <div class="col-lg-12">
-              <table class="table table-hover">
+          <div id="loading" class="col-lg-12">
+            <i class="fa fa-spinner fa-spin"></i>
+          </div>
+            <div hidden id="table" class="col-lg-12">
+              <table class="table table-hover" >
                 <tbody>
                   <tr class="name">
                       <td width="150px"><strong>Name:</strong></td>
-                      <td class="name"></td>
+                      <td class="name"> <input class="readonly" type="text" id="name" readonly></td>
                   </tr>
                   <tr class="address">
                       <td><strong>Addresse:</strong></td>
-                      <td class="address"></td>
+                      <td class="address"><input class="readonly" type="text" id="address1" readonly><br><input class="readonly" type="text" id="address2" readonly></td>
                   </tr>
                   <tr class="tel">
                       <td><strong>Telefon:</strong></td>
-                      <td class="tel"></td>
+                      <td class="tel"><input class="readonly" type="text" id="tel" readonly></td>
                   </tr>
                   <tr class="ahv">
                       <td><strong>AHV#:</strong></td>
-                      <td class="ahv"></td>
+                      <td class="ahv"><input class="readonly" type="text" id="ahv" pattern="756\.\d{4}\.\d{4}\.\d{2}" readonly></td>
                   </tr>
                   <tr class="dob">
                       <td><strong>Geburtsdatum:</strong></td>
-                      <td class=dob></td>
+                      <td class=dob><input class="readonly" type="date" id="dob" readonly></td>
                   </tr>
                   <tr class="konto">
                       <td><strong>Konto:</strong></td>
-                      <td class="konto"></td>
+                      <td class="konto"><input class="readonly" type="text" id="konto" readonly></td>
                   </tr>
                   <tr class="bvg">
                       <td><strong>BVG:</strong></td>
-                      <td class="bvg"></td>
+                      <td class="bvg"><input class="readonly" type="text" id="bvg" readonly></td>
                   </tr>
                 </tbody>
               </table><!--tableresponsive-->
-              <div class="pull-right">
+              <div id="saveBtn" class="pull-right">
                 <div class="btn-group">
                   <button class="btn btn-default" id="saveInfo">Speichern</button>
                 </div>
@@ -85,29 +95,36 @@ require_once('../api-app/lib/Globals.php');
         <div class="panel-body">
           <div class="row">
             <div class="col-lg-12">
+                <div id="PWsuccess" hidden class="alert alert-success" role="alert">
+                </div>
+                <div id="PWerror" hidden class="alert alert-danger" role="alert">
+                </div>
+            </div>
+            <div class="col-lg-12">
               <form role="form">
                 <table class="table table-hover">
                   <tbody>
                     <tr class="mail">
                       <td width="150px"><strong>E-Mail:</strong></td>
-                      <td class="mail"></td>
+                      <td class="mail"><input class="readonly" type="text" id="mail" readonly></td>
                     </tr>
-                    <tr class="mail">
+                    <tr class="pw">
                       <td width="150px"><strong>Aktuelles Passwort:</strong></td>
-                      <td class="curpw"></td>
+                      <td class="curpw"><input type="password" id="curpw" placeholder="&#0149;&#0149;&#0149;&#0149;&#0149;&#0149&#0149;&#0149;&#0149;&#0149;&#0149;&#0149;"></td>
                     </tr>
-                    <tr class="mail">
-                      <td width="150px"><strong>Neues Passwort:</strong></td>                          <td class="newpw"></td>
+                    <tr class="pw">
+                      <td width="150px"><strong>Neues Passwort:</strong></td>                          
+                      <td class="newpw1"><input type="password" id="newpw1" placeholder="&#0149;&#0149;&#0149;&#0149;&#0149;&#0149&#0149;&#0149;&#0149;&#0149;&#0149;&#0149;"></td>
                     </tr>
-                    <tr class="mail">
+                    <tr class="pw">
                       <td width="150px"><strong>Wiederholen:</strong></td>
-                      <td class="newpw2"></td>
+                      <td class="newpw2"><input type="password" id="newpw2" placeholder="&#0149;&#0149;&#0149;&#0149;&#0149;&#0149&#0149;&#0149;&#0149;&#0149;&#0149;&#0149;"></td>
                     </tr>
                   </tbody>
                 </table>
                 <div class="pull-right">
                   <div class="btn-group">
-                    <button type="submit" class="btn btn-default disabled">Speichern</button>
+                    <button class="btn btn-default" id="editPassword">Speichern</button>                  
                   </div>
                 </div><!--pull-right-->
               </form>

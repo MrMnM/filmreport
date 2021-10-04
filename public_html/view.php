@@ -16,7 +16,6 @@ ob_start("ob_html_compress");
 	<link href="./css/view_style.css" rel="stylesheet" media="print">
 	<title>Loading...</title>
 </head>
-
 <body>
 	<div id="wrapper">
 		<div class="no-print">
@@ -760,23 +759,7 @@ ob_start("ob_html_compress");
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/featherlight/1.7.13/featherlight.min.js"></script>
-	<script>
-	/* FIXME: UNSAFE INLINE CSP!
-	var supportsES6 = function() {
-	  try {
-	    new Function("(a = 0) => a");
-	    return true;
-	  }
-	  catch (err) {
-	    return false;
-	  }
-	}();
-	if(!supportsES6){
-	  $( "#ES6" ).show();
-		$('#loading').hide()
-	}
-	*/
-	</script>
+	<script nomodule src="./js/checkES6.js"></script>
 	<script type="module" src="./js/view.min.js"></script>
 </body>
 </html>

@@ -55,8 +55,12 @@ if (isset($_POST['remember']) && strtolower($_POST['remember']) == 'remember'){
 if (!empty($_POST["pw"]) && !empty($_POST["mail"])) {
     $pw= $_POST["pw"];
     $mail = $_POST["mail"];
-    $sql = "SELECT pw, u_id, name, active, type, affiliation FROM `users` WHERE mail='$mail';";
-    $result = $conn->query($sql);
+    //$sql = "SELECT pw, u_id, name, active, type, affiliation FROM `users` WHERE mail='$mail';";
+    $stmt = $conn->prepare("SELECT pw, u_id, name, active, type, affiliation FROM `users` WHERE mail=?;");
+    $stmt->bind_param("s", $mail);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    //$result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
         while($row = $result->fetch_assoc()) {
@@ -195,20 +199,6 @@ function login($conn,$uid,$name,$type,$remember){
 </div><!--container-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script>
-/* FIXME: UNSAFE INLINE CSP!
-var supportsES6 = function() {
-  try {
-    new Function("(a = 0) => a");
-    return true;
-  }
-  catch (err) {
-    return false;
-  }
-}();
-if(!supportsES6){
-  $( "#ES6" ).show();
-}*/
-</script>
+<script nomodule src="./js/checkES6.js"></script>
 </body>
 </html>
